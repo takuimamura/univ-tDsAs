@@ -1,0 +1,11 @@
+{
+    "AppSyncApiName": "tmudsx",
+    "DynamoDBBillingMode": "PAY_PER_REQUEST",
+    "DynamoDBEnableServerSideEncryption": false,
+    "AuthCognitoUserPoolId": {
+        "Fn::GetAtt": [
+            "authdatastore2020aug4aaa3801",
+            "Outputs.UserPoolId"
+        ]
+    }
+}

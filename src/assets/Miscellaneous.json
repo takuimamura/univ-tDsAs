@@ -1,0 +1,20 @@
+[
+  { "username": "b-kirkwood", "name": "Brian Kirkwood", "role": "headinstructor" },
+  { "username": "s-harper", "name": "Samuel Harper", "role": "instructor" },
+  { "username": "j-lee", "name": "Jason Lee", "role": "instructor" },
+  { "username": "j-buckle", "name": "John Buckley", "role": "instructor" },
+  { "username": "m-graham", "name": "Mitchell Graham", "role": "instructor" },
+  { "username": "r-humphr", "name": "Roger Humphreys", "role": "instructor" },
+  { "username": "k-orreill", "name": "Kirsten Orreill", "role": "instructor" },
+  { "username": "j-prowse", "name": "James Prowse", "role": "instructor" },
+  { "username": "l-tyner", "name": "Leann Tyner", "role": "instructor" },
+  { "username": "d-anders", "name": "Daniel Anderson", "role": "instructor" },
+  { "username": "t-knott", "name": "Thomas Knott", "role": "instructor" },
+  { "username": "t-philli", "name": "Todd Phillips", "role": "instructor" },
+  { "username": "d-bizzel", "name": "Damon Bizzell", "role": "instructor" },
+  { "username": "j-robert", "name": "Joe Roberts", "role": "instructor" },
+  { "username": "g-torren", "name": "Glenn Torrens", "role": "instructor" },
+  { "username": "p-hoogt", "name": "Pieter Van Der Hoogt", "role": "instructor" },
+  { "username": "s-petre", "name": "Simon Petre", "role": "instructor" },
+  { "username": "e-clarke", "name": "Elliot Clark", "role": "instructor" }
+]
