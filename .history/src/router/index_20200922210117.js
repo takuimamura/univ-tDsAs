@@ -6,13 +6,6 @@ import Body from "../components/Body.vue";
 
 Vue.use(VueRouter);
 
-// Amplify
-// import Amplify, * as AmplifyModules from "aws-amplify";
-// import * as AmplifyModules from "aws-amplify";
-// import { AmplifyPlugin } from "aws-amplify-vue";
-
-// Vue.use(AmplifyPlugin, AmplifyModules);
-
 const routes = [
   // {
   //   path: "/",

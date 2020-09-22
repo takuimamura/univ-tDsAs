@@ -18,7 +18,7 @@
 <script>
 // import { Auth } from "aws-amplify";
 // import Header from "./components/Header.vue";
-import Body from "./components/Body.vue";
+// import Body from "./components/Body.vue";
 // import Buefy from "./components/Buefy.vue";
 // import Manage from "./components/Manage.vue";
 
