@@ -2,7 +2,7 @@
   <div id="app">
     <div v-if="getStartingUrl === 'localhost'">
       <!--■■■開発用 ローカル限定表示■■■-->
-      sett {{ sett.alias }} <br />app {{ app }}
+      sett {{ sett.alias }}
       <!-- | dayChainJSON {{dayChainJSON}} -->
       <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
       <template v-if="sett.sw1">
@@ -2365,9 +2365,9 @@
         </b-tab-item>
       </b-tabs>
     </section>
-    <!-- <span style="visibility: hidden;">
+    <span style="visibility: hidden;">
       <v-idle @idle="periodicValidationFromIdol()" :duration="3" />
-    </span> -->
+    </span>
   </div>
 </template>
 
@@ -2385,10 +2385,10 @@ import UsersJSON from "../assets/Users.json";
 // import allclassesjson from "../assets/allclasses.json";
 import EnvJSON from "../assets/env.json";
 
-// import { DataStore, Predicates } from "aws-amplify";
+import { DataStore, Predicates } from "aws-amplify";
 import { Clrm, Inst, Misc } from "../models";
 
-import Amplify, { DataStore, Predicates, Hub, Auth } from "aws-amplify";
+import Amplify, { Hub, Auth } from "aws-amplify";
 import awsconfig from "../aws-exports";
 Amplify.configure(awsconfig);
 
@@ -2435,11 +2435,6 @@ export default {
   },
   data() {
     return {
-      app: {
-        ready: false,
-        network: false,
-        sync: false,
-      },
       ds: {
         clrms: null,
         clrmUp: null,
@@ -5126,59 +5121,21 @@ export default {
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    Hub.listen("datastore", async (hubData) => {
-      const { event, data } = hubData.payload;
-      // if (event === "networkStatus") {
-      //   console.log(`User has a network connection? ${data.active}`);
-      // }
-      switch (event) {
-        case "networkStatus":
-          console.log(`HUB User has a network connection? ${data.active}`);
-          if (data.active === false) {
-            this.app.network = false;
-          }
+    Hub.listen("auth", (data) => {
+      this.createdval = "payload:" + data.payload.event;
+      switch (data.payload.event) {
+        case "signIn":
+          // this.createdvalasync = "signIn";
+          // うまくセッションが反映しない処置としてログイン後一度リロードさせる
+          // Amplifyのバグか。
+          this.$router.go();
           break;
-        case "syncQueriesReady":
-          // console.log("HUB syncQueriesReady");
-          this.app.network = true;
+        case "signIn_failure":
           break;
-        // case "storageSubscribed":
-        //   console.log(`HUB storageSubscribed:${data}`);
-        //   break;
-        // case "subscriptionsEstablished":
-        //   console.log(`HUB subscriptionsEstablished:${data}`);
-        //   break;
-        // case "syncQueriesStarted":
-        //   console.log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
-        //   break;
-        case "modelSynced":
-          console.log(`HUB modelSynced:${JSON.stringify(data)}`);
-          break;
-        case "outboxStatus":
-          console.log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          this.app.sync = data.isEmpty;
-          break;
-        case "ready":
-          console.log("HUB ready");
-          this.app.ready = true;
+        default:
           break;
       }
     });
-    // Hub.listen("auth", (data) => {
-    //   this.createdval = "payload:" + data.payload.event;
-    //   switch (data.payload.event) {
-    //     case "signIn":
-    //       // this.createdvalasync = "signIn";
-    //       // うまくセッションが反映しない処置としてログイン後一度リロードさせる
-    //       // Amplifyのバグか。
-    //       this.$router.go();
-    //       break;
-    //     case "signIn_failure":
-    //       break;
-    //     default:
-    //       break;
-    //   }
-    // });
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();

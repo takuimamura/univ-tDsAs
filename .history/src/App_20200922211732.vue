@@ -4,7 +4,6 @@
       <!-- <router-link to="/manage">Management View</router-link> -->
       <!-- <Header></Header> -->
       aws-amplify-react
-      <Buefy></Buefy>
     </amplify-authenticator>
     <Body></Body>
     <!-- <router-link to="/manage">Management View</router-link> -->
@@ -19,7 +18,6 @@
 <script>
 // import Header from "./components/Header.vue";
 import Body from "./components/Body.vue";
-import Buefy from "./components/Buefy.vue";
 // import Manage from "./components/Manage.vue";
 
 window.LOG_LEVEL = "VERBOSE";
@@ -28,8 +26,7 @@ export default {
   // name: "Authenticator",
   components: {
     // Header,
-    Body,
-    Buefy
+    Body
     // Manage,
   },
   name: "Authenticator",

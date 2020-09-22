@@ -2365,9 +2365,9 @@
         </b-tab-item>
       </b-tabs>
     </section>
-    <!-- <span style="visibility: hidden;">
+    <span style="visibility: hidden;">
       <v-idle @idle="periodicValidationFromIdol()" :duration="3" />
-    </span> -->
+    </span>
   </div>
 </template>
 

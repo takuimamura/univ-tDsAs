@@ -1,6 +1,5 @@
 import Vue from "vue";
 import App from "./App.vue";
-import router from "./router";
 
 
 // Amplify
@@ -14,6 +13,7 @@ Vue.use(AmplifyPlugin, AmplifyModules);
 
 import Buefy from "buefy";
 import "buefy/dist/buefy.css";
+import router from "./router";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 // import { faCoffee } from "@fortawesome/free-solid-svg-icons";
