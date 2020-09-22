@@ -180,7 +180,7 @@
           </div>
         </div>
         <div class="level-item">
-          <div class="column f23 has-text-centered">
+          <div class="column f23">
             <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
             {{ " " + authdetail.name }}
           </div>
@@ -199,27 +199,27 @@
     </section>
 
     <section>
-      <!-- <section>
-        <div
-          class="columns is-half has-text-left"
-          style="margin-bottom: -20px;"
-          v-show="!cRoom.showABList"
-        >
-          <div class="column hugetext is-one-quater">
-            {{ dayACjsHmm }}
-            <span style="font-size: 22px;">{{ dayACjsA }}</span>
-            {{ dayACjsdddMMMD }}
-          </div>
-
-          <div class="column f23 is-one-quater">
-            <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
-            {{ " " + authdetail.name }}
-          </div>
-          <template v-if="sett.env.isTestMode">
-            <span class="has-text-primary is-size-1">{{ sett.env.devCaption }}</span>
-          </template>
+      <div
+        class="columns is-half has-text-left"
+        style="margin-bottom: -20px;"
+        v-show="!cRoom.showABList"
+      >
+        <!-- <b-icon icon="account" size="is-small"></b-icon> -->
+        <div class="column hugetext is-one-quater">
+          {{ dayACjsHmm }}
+          <span style="font-size: 22px;">{{ dayACjsA }}</span>
+          {{ dayACjsdddMMMD }}
         </div>
-      </section>-->
+
+        <!-- <div class="column f23 is-one-quater">{{ " " + "(Instructor's name appears here)" }}</div> -->
+        <div class="column f23 is-one-quater">
+          <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
+          {{ " " + authdetail.name }}
+        </div>
+        <template v-if="sett.env.isTestMode">
+          <span class="has-text-primary is-size-1">{{ sett.env.devCaption }}</span>
+        </template>
+      </div>
 
       <!-- ここから -->
 

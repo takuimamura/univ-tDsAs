@@ -3,9 +3,35 @@
     <div v-if="getStartingUrl === 'localhost'">
       <!-- 上部表示 -->
       <div class="block">
+        <!-- <font-awesome-icon
+              icon="times-circle"
+              size="lg"
+              color="lightgrey"
+              :class="{ 'is-ready': !app.ready }"
+            />
+            <font-awesome-icon
+              icon="exclamation-triangle"
+              size="lg"
+              color="lightgrey"
+              :class="{ 'is-network': !app.network }"
+            />
+            <font-awesome-icon
+              icon="sync-alt"
+              size="lg"
+              color="lightgrey"
+              :class="{ 'is-syncing': !app.syncing }"
+        />-->
         <b-icon icon="times-circle" :class="[ !app.ready ? 'is-ready' : 'is-normal' ]"></b-icon>
-        <b-icon icon="exclamation-triangle" :class="[ !app.network ? 'is-network' : 'is-normal' ]"></b-icon>
-        <b-icon icon="sync-alt" :class="[ app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
+        <b-icon
+          icon="exclamation-triangle"
+          size="lg"
+          :class="[ !app.network ? 'is-network' : 'is-normal' ]"
+        ></b-icon>
+        <b-icon
+          icon="sync-alt"
+          :class="[ !app.syncing ? 'is-syncing' : 'is-normal' ]"
+          size="is-small"
+        ></b-icon>
         app: {{ app }}
         <br />
       </div>
@@ -13,6 +39,8 @@
       <!--■■■開発用 ローカル限定表示■■■-->
       sett {{ sett.alias }}
       <br />
+      app {{ app }}
+      <!-- | dayChainJSON {{dayChainJSON}} -->
       <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
       <template v-if="sett.sw1">
         <div>
@@ -168,61 +196,28 @@
         >
       </b-tooltip>-->
     </section>
-
     <section>
-      <!-- 上部表示 -->
-      <nav class="level">
-        <div class="level-left">
-          <div class="column hugetext is-one-quater">
-            {{ dayACjsHmm }}
-            <span style="font-size: 22px;">{{ dayACjsA }}</span>
-            {{ dayACjsdddMMMD }}
-          </div>
+      <div
+        class="columns is-half has-text-left"
+        style="margin-bottom: -20px;"
+        v-show="!cRoom.showABList"
+      >
+        <!-- <b-icon icon="account" size="is-small"></b-icon> -->
+        <div class="column hugetext is-one-quater">
+          {{ dayACjsHmm }}
+          <span style="font-size: 22px;">{{ dayACjsA }}</span>
+          {{ dayACjsdddMMMD }}
         </div>
-        <div class="level-item">
-          <div class="column f23 has-text-centered">
-            <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
-            {{ " " + authdetail.name }}
-          </div>
+
+        <!-- <div class="column f23 is-one-quater">{{ " " + "(Instructor's name appears here)" }}</div> -->
+        <div class="column f23 is-one-quater">
+          <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
+          {{ " " + authdetail.name }}
         </div>
-        <div class="level-right">
-          <div class="block">
-            <b-icon icon="times-circle" :class="[ !app.ready ? 'is-ready' : 'is-normal' ]"></b-icon>
-            <b-icon
-              icon="exclamation-triangle"
-              :class="[ !app.network ? 'is-network' : 'is-normal' ]"
-            ></b-icon>
-            <b-icon icon="sync-alt" :class="[ app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
-          </div>
-        </div>
-      </nav>
-    </section>
-
-    <section>
-      <!-- <section>
-        <div
-          class="columns is-half has-text-left"
-          style="margin-bottom: -20px;"
-          v-show="!cRoom.showABList"
-        >
-          <div class="column hugetext is-one-quater">
-            {{ dayACjsHmm }}
-            <span style="font-size: 22px;">{{ dayACjsA }}</span>
-            {{ dayACjsdddMMMD }}
-          </div>
-
-          <div class="column f23 is-one-quater">
-            <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
-            {{ " " + authdetail.name }}
-          </div>
-          <template v-if="sett.env.isTestMode">
-            <span class="has-text-primary is-size-1">{{ sett.env.devCaption }}</span>
-          </template>
-        </div>
-      </section>-->
-
-      <!-- ここから -->
-
+        <template v-if="sett.env.isTestMode">
+          <span class="has-text-primary is-size-1">{{ sett.env.devCaption }}</span>
+        </template>
+      </div>
       <b-tabs
         v-model="sett.activeTab"
         size="is-large"
@@ -232,6 +227,8 @@
       >
         <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
         <b-tab-item label="Info" icon="info-circle">
+          <section class="manageview p40" v-if="showManagementViewSuper">dev0531</section>
+          <!-- 管理用画面 --------------------------------------------------------- 管理用画面-->
           <!-- 管理用画面 --------------------------------------------------------- 管理用画面-->
           <section class="manageview p40" v-if="showManagementView">
             <a href="https://management.d36k1gty6yz9hg.amplifyapp.com/" target="_blank">
