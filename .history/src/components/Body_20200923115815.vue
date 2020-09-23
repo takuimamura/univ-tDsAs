@@ -3347,8 +3347,7 @@ export default {
       const original = await DataStore.query(Misc, c =>
         c.type("eq", cr.type).name("eq", cr.name)
       );
-      this.sett.dummy = original;
-      // console.warn(original);
+      console.warn(original);
     },
 
     async createMisc(cr) {
@@ -3746,6 +3745,8 @@ export default {
         detail: arr
       };
       try {
+        // console.warn("xx:salvageFail");
+        //$$$$$              await API.graphql(graphqlOperation(createMisc, { input: crArr }));
         for (var key2 in localStorage) {
           if (key2.match(/appFail/)) {
             localStorage.removeItem(key2);
@@ -3767,6 +3768,7 @@ export default {
     async listClrmsDataID() {
       await this.fetchClrms();
 
+      // console.warn("xx");
       // const ClrmsData = null;
       // //$$$$$
       // // const ClrmsData = await API.graphql(

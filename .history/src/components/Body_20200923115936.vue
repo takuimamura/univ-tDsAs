@@ -3347,7 +3347,6 @@ export default {
       const original = await DataStore.query(Misc, c =>
         c.type("eq", cr.type).name("eq", cr.name)
       );
-      this.sett.dummy = original;
       // console.warn(original);
     },
 
