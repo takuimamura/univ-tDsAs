@@ -222,12 +222,12 @@
         </div>
         <div class="level-right">
           <div class="block">
-            <!-- <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon> -->
-            <!-- icon="exclamation-triangle" -->
-            <!-- <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon> -->
-            <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
-            <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
-            <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
+            <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
+            <b-icon
+              icon="exclamation-triangle"
+              :class="[!app.network ? 'is-network' : 'is-normal']"
+            ></b-icon>
+            <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
           </div>
         </div>
       </nav>
