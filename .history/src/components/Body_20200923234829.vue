@@ -139,9 +139,9 @@
     <!-- 管理用 -->
     <section v-if="getStartingUrl === 'localhost'">
       <article>
-        <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
+        <p class="subtitle">学期ごと、開講前の設定作業</p>
         allClasses: ClssJSON の 全クラス分をMiscに構築。
-        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button> -->
+        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>
       </article>
     </section>
 
@@ -3537,15 +3537,16 @@ export default {
       const original = await DataStore.query(Misc, (c) =>
         c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
       );
-      // console.table(original);
+      console.table(original);
       const outt = original.find((arr) => {
         return arr.detail.length > 0;
       });
-      // console.warn(outt.detail);
+      console.warn(outt.detail);
       const dt = JSON.parse(outt.detail);
-      // console.warn(dt.oldest);
-      // console.warn(dt.newest);
-      return dt;
+      console.warn(dt.oldest);
+      console.warn(dt.newest);
+      console.warn(this.getDateMDhmm(dt.oldest));
+      console.warn(this.getDateMDddd(dt.newest));
     },
     async FIREQueryMiscCo() {
       const cr = {
@@ -3573,22 +3574,20 @@ export default {
     },
     //// クラス毎のサマリDB 一括作成
 
-    // <p class="subtitle">学期ごと、開講前の設定作業</p>
-    // allClasses: ClssJSON の 全クラス分をMiscに構築。
-    // async createMiscClassSummary() {
-    //   await Promise.all(
-    //     this.dataset.allClasses.forEach((s) => {
-    //       DataStore.save(
-    //         new Misc({
-    //           type: this.ds.typeMisc.classSum,
-    //           name: s.id,
-    //         })
-    //       );
-    //     })
-    //   );
-    //   // console.warn("createMiscClassSummary done");
-    //   // this.fetchMiscs();
-    // },
+    async createMiscClassSummary() {
+      await Promise.all(
+        this.dataset.allClasses.forEach((s) => {
+          DataStore.save(
+            new Misc({
+              type: this.ds.typeMisc.classSum,
+              name: s.id,
+            })
+          );
+        })
+      );
+      console.warn("createMiscClassSummary done");
+      // this.fetchMiscs();
+    },
     //// クラス毎のサマリDB 更新
 
     async devClassSummary(classcode) {
@@ -3602,6 +3601,7 @@ export default {
     // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
     // const mx = ret.reduce((a, b) => (a > b ? a : b));
     // const mn = ret.reduce((a, b) => (a < b ? a : b));
+    // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
 
     async updateMiscClassSummary(classcode) {
       //生徒単位でタイムスタンプの最大、最小を調べる
@@ -3632,6 +3632,20 @@ export default {
       });
       return JSON.parse(outt.detail);
     },
+
+    // const dt = queryMiscClassSummary(classcode);
+    // console.warn(this.getDateMDhmm(dt.oldest));
+    // console.warn(this.getDateMDddd(dt.newest));
+
+    // FIREcreateMiscCo() {
+    //   const dt = this.$dayjs().format("H:mm:ss");
+    //   // console.warn("FIREcreateMisc" + dt);
+    //   this.createMiscC({
+    //     type: "TEST",
+    //     name: this.sett.dummy,
+    //     detail: dt
+    //   });
+    // },
 
     async createMisc() {
       try {
@@ -3688,6 +3702,16 @@ export default {
 
     //// graphql
     //// graphql
+
+    // async updateInst(upArr) {
+    //   upArr.id = this.authdetail.username;
+    //   try {
+    //     // console.warn("xx:updateInst");
+    //     //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+    //   } catch (err) {
+    //     this.writeFail("InstUpdate", upArr, err);
+    //   }
+    // },
 
     //編集用
     async updateClrmEdit(uid, fname, fval, logtx) {

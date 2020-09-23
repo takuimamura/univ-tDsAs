@@ -1,24 +1,19 @@
 <template>
   <div id="app">
-    <!-- 検証用 -->
     <div v-if="getStartingUrl === 'localhost'">
       <b-field>
-        <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
         <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
         <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
         <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
         <b-button @click="createMisc">Create Misc</b-button>
         <b-button @click="getMiscId">get Misc id</b-button>
+        misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}
       </b-field>
-      <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
-
-      <b-field>
-        <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
-        <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
-        <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
-        <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-        <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
-      </b-field>
+      <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
+      <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
+      <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
+      <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
+      <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
       <b-input v-model="sett.dummy"></b-input>
       {{ sett.dummy }}
       <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
@@ -135,15 +130,6 @@
       <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
       <br />
     </div>
-
-    <!-- 管理用 -->
-    <section v-if="getStartingUrl === 'localhost'">
-      <article>
-        <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
-        allClasses: ClssJSON の 全クラス分をMiscに構築。
-        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button> -->
-      </article>
-    </section>
 
     <!-- ABリスト -->
     <section v-show="cRoom.showABList">
@@ -3472,6 +3458,21 @@ export default {
     async fetchClrmsChk() {
       this.dataset.ClrmsChk = await DataStore.query(Clrm, Predicates.ALL);
     },
+
+    // async listMiscsDataID() {
+    //   //    async listMiscsDataID(typ, ids) {
+    //   console.warn("xx:listMiscsDataID");
+    //   const MiscsData = null;
+
+    //   //          //$$$$$    const MiscsData = await API.graphql(
+    //   //   graphqlOperation(listMiscs, {
+    //   //     type: typ,
+    //   //     name: { eq: ids },
+    //   //     limit: 500
+    //   //   })
+    //   // );
+    //   this.dataset.Miscs.push(...MiscsData.data.listMiscs.items);
+    // },
     async fetchClrmsDatainstByday(dow) {
       this.dataset.ClrmsInstByday = await DataStore.query(Clrm, (c) =>
         c.dayofweek("eq", dow).uid("eq", this.sett.alias.name)
@@ -3537,15 +3538,16 @@ export default {
       const original = await DataStore.query(Misc, (c) =>
         c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
       );
-      // console.table(original);
+      console.table(original);
       const outt = original.find((arr) => {
         return arr.detail.length > 0;
       });
-      // console.warn(outt.detail);
+      console.warn(outt.detail);
       const dt = JSON.parse(outt.detail);
-      // console.warn(dt.oldest);
-      // console.warn(dt.newest);
-      return dt;
+      console.warn(dt.oldest);
+      console.warn(dt.newest);
+      console.warn(this.getDateMDhmm(dt.oldest));
+      console.warn(this.getDateMDddd(dt.newest));
     },
     async FIREQueryMiscCo() {
       const cr = {
@@ -3573,40 +3575,21 @@ export default {
     },
     //// クラス毎のサマリDB 一括作成
 
-    // <p class="subtitle">学期ごと、開講前の設定作業</p>
-    // allClasses: ClssJSON の 全クラス分をMiscに構築。
-    // async createMiscClassSummary() {
-    //   await Promise.all(
-    //     this.dataset.allClasses.forEach((s) => {
-    //       DataStore.save(
-    //         new Misc({
-    //           type: this.ds.typeMisc.classSum,
-    //           name: s.id,
-    //         })
-    //       );
-    //     })
-    //   );
-    //   // console.warn("createMiscClassSummary done");
-    //   // this.fetchMiscs();
-    // },
-    //// クラス毎のサマリDB 更新
+    async createMiscClassSummary() {
+      this.dataset.allClasses.forEach((s) =>{
+        await DataStore.save(new Misc(
+         {
+          type: this.ds.typeMisc.classSum,
+          name: s.id,
+        };
 
-    async devClassSummary(classcode) {
-      const ret = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
+          ));
+      });
 
-      const newest = ret.reduce((a, b) => (a._lastChangedAt > b._lastChangedAt ? a : b));
-      const oldest = ret.reduce((a, b) => (a._lastChangedAt < b._lastChangedAt ? a : b));
-      return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
+      this.fetchMiscs();
     },
-
-    // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
-    // const mx = ret.reduce((a, b) => (a > b ? a : b));
-    // const mn = ret.reduce((a, b) => (a < b ? a : b));
-
+    //// クラス毎のサマリDB 更新
     async updateMiscClassSummary(classcode) {
-      //生徒単位でタイムスタンプの最大、最小を調べる
-
-      //記録する
       const cr = {
         type: this.ds.typeMisc.classSum,
         name: classcode,
@@ -3615,15 +3598,18 @@ export default {
           newest: new Date(),
         }),
       };
-
-      await DataStore.save(new Misc(cr));
+      try {
+        await DataStore.save(new Misc(cr));
+      } catch (err) {
+        this.writeFail("MiscCreate", cr, err);
+      }
 
       this.fetchMiscs();
     },
     //// クラス毎のサマリDB 取得
     async queryMiscClassSummary(classcode) {
       const original = await DataStore.query(Misc, (c) =>
-        c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
+        c.type("eq", "classSummary").name("eq", classcode)
       );
       // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
       // データの持ち方とか厳密に正しさを求めないことにしている
@@ -3632,6 +3618,20 @@ export default {
       });
       return JSON.parse(outt.detail);
     },
+
+    // const dt = queryMiscClassSummary(classcode);
+    // console.warn(this.getDateMDhmm(dt.oldest));
+    // console.warn(this.getDateMDddd(dt.newest));
+
+    // FIREcreateMiscCo() {
+    //   const dt = this.$dayjs().format("H:mm:ss");
+    //   // console.warn("FIREcreateMisc" + dt);
+    //   this.createMiscC({
+    //     type: "TEST",
+    //     name: this.sett.dummy,
+    //     detail: dt
+    //   });
+    // },
 
     async createMisc() {
       try {
@@ -3688,6 +3688,16 @@ export default {
 
     //// graphql
     //// graphql
+
+    // async updateInst(upArr) {
+    //   upArr.id = this.authdetail.username;
+    //   try {
+    //     // console.warn("xx:updateInst");
+    //     //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+    //   } catch (err) {
+    //     this.writeFail("InstUpdate", upArr, err);
+    //   }
+    // },
 
     //編集用
     async updateClrmEdit(uid, fname, fval, logtx) {

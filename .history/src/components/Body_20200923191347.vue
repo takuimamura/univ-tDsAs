@@ -1,26 +1,20 @@
 <template>
   <div id="app">
-    <!-- 検証用 -->
     <div v-if="getStartingUrl === 'localhost'">
       <b-field>
-        <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
         <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
         <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
         <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
         <b-button @click="createMisc">Create Misc</b-button>
         <b-button @click="getMiscId">get Misc id</b-button>
+        misc ret: {{ds.nMisc.return}} - miscs {{dataset.Miscs}}
       </b-field>
-      <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
-
-      <b-field>
-        <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
-        <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
-        <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
-        <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-        <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
-      </b-field>
+      <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
+      <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
+      <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
+      <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
       <b-input v-model="sett.dummy"></b-input>
-      {{ sett.dummy }}
+      {{sett.dummy}}
       <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
       <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
       <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
@@ -34,25 +28,20 @@
       <!-- 上部表示 -->
       TESTarr0 -
       <ul>
-        <li v-for="r in TESTarr0" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-      </ul>
-      TESTarr1
+        <li v-for="r in TESTarr0" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
+      </ul>TESTarr1
       <ul>
-        <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-      </ul>
-      TESTarr2
+        <li v-for="r in TESTarr1" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
+      </ul>TESTarr2
       <ul>
-        <li v-for="r in TESTarr2" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
+        <li v-for="r in TESTarr2" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
       </ul>
       <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
       <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
       <div class="block">
-        <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-        <b-icon
-          icon="exclamation-triangle"
-          :class="[!app.network ? 'is-network' : 'is-normal']"
-        ></b-icon>
-        <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
+        <b-icon icon="times-circle" :class="[ !app.ready ? 'is-ready' : 'is-normal' ]"></b-icon>
+        <b-icon icon="exclamation-triangle" :class="[ !app.network ? 'is-network' : 'is-normal' ]"></b-icon>
+        <b-icon icon="sync-alt" :class="[ !app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
         app: {{ app }}
         <br />
       </div>
@@ -96,8 +85,7 @@
           dummytest();
           workspaceValication(true);
         "
-        >reflect day change</b-button
-      >
+      >reflect day change</b-button>
       <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
       <!-- sett.alias:: {{ sett.alias }} -->
       <!-- dummy::::::{{ sett.dummy }}      <br /> -->
@@ -135,15 +123,6 @@
       <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
       <br />
     </div>
-
-    <!-- 管理用 -->
-    <section v-if="getStartingUrl === 'localhost'">
-      <article>
-        <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
-        allClasses: ClssJSON の 全クラス分をMiscに構築。
-        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button> -->
-      </article>
-    </section>
 
     <!-- ABリスト -->
     <section v-show="cRoom.showABList">
@@ -202,8 +181,7 @@
         size="is-medium"
         @click="cRoom.showABList = !cRoom.showABList"
         expanded
-        >A / B</b-button
-      >
+      >A / B</b-button>
       <!-- <b-tooltip label="Visibility change" size="is-large" always>
         <b-switch size="is-large" v-model="cRoom.showABListStudentCode"
           >Student Code</b-switch
@@ -229,12 +207,12 @@
         </div>
         <div class="level-right">
           <div class="block">
-            <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
+            <b-icon icon="times-circle" :class="[ !app.ready ? 'is-ready' : 'is-normal' ]"></b-icon>
             <b-icon
               icon="exclamation-triangle"
-              :class="[!app.network ? 'is-network' : 'is-normal']"
+              :class="[ !app.network ? 'is-network' : 'is-normal' ]"
             ></b-icon>
-            <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
+            <b-icon icon="sync-alt" :class="[ !app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
           </div>
         </div>
       </nav>
@@ -287,9 +265,11 @@
             <section class="p40">
               <!-- <p class="title">Students</p> -->
               <b-collapse :open="false" aria-id="contentIdForA11y1">
-                <button class="button is-primary" slot="trigger" aria-controls="contentIdForA11y1">
-                  Students search
-                </button>
+                <button
+                  class="button is-primary"
+                  slot="trigger"
+                  aria-controls="contentIdForA11y1"
+                >Students search</button>
                 <div class="notification">
                   <template v-if="!sett.isLoadingClrmManage">
                     <div class>
@@ -318,12 +298,7 @@
                       :active.sync="sett.isLoadingClrmManage"
                       :can-cancel="false"
                     >
-                      <b-icon
-                        pack="fas"
-                        icon="sync-alt"
-                        size="is-large"
-                        custom-class="fa-spin"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                     </b-loading>
                   </template>
                 </div>
@@ -396,14 +371,15 @@
                       :key="index"
                       :native-value="m"
                       v-model="instructor.yourattendvisiblemonth"
-                      >{{ m }}</b-radio-button
-                    >
+                    >{{ m }}</b-radio-button>
                   </b-field>
                   <b-table :data="yourattendancesMonth">
                     <!-- <b-table :data="instructor.yourattendances"> -->
                     <template slot-scope="props">
                       <b-table-column field="date" label="Date" width="150">
-                        {{ getDateMDddd(props.row.date) }}
+                        {{
+                        getDateMDddd(props.row.date)
+                        }}
                       </b-table-column>
                       <!-- {{ props.row.date | dateMDddd }} -->
 
@@ -417,7 +393,9 @@
                       </b-table-column>
 
                       <b-table-column field="detail" label="Note">
-                        {{ props.row.detail }}
+                        {{
+                        props.row.detail
+                        }}
                       </b-table-column>
                     </template>
                   </b-table>
@@ -431,8 +409,7 @@
                       @click="instClockIn"
                       class="is-pulled-right"
                       :disabled="ifYouClockIn"
-                      >Clock in</b-button
-                    >
+                    >Clock in</b-button>
                   </div>
                   <div class="column">
                     <b-button
@@ -440,8 +417,7 @@
                       size="is-large"
                       @click="instClockOut"
                       :disabled="!ifYouClockInAndStillIn"
-                      >Clock out</b-button
-                    >
+                    >Clock out</b-button>
                   </div>
                 </div>
               </div>
@@ -470,9 +446,11 @@
                   @input="selectClassroomClear()"
                 >
                   <!-- @input="evalCriteriaSelectChange()" -->
-                  <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">{{
-                    n.name
-                  }}</option>
+                  <option
+                    v-for="n in instructor.nameConv"
+                    :key="n.username"
+                    :value="n.name"
+                  >{{ n.name }}</option>
                 </b-select>
                 {{ yourClasses.length }} / {{ dataset.allClasses.length }}
                 <!-- <b-button
@@ -493,9 +471,7 @@
             </div>
             <div class="column f18" style="padding:20px 0px 0px 0px;">
               <b-field>
-                <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum"
-                  >Total Counts</b-switch
-                >
+                <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
                 <template v-if="cRoom.showClassesSum"></template>
               </b-field>
             </div>
@@ -525,7 +501,9 @@
                     {{ selCrlm.dayofweek }}
                     {{ selCrlm.slot }}
                     {{ selCrlm.timefrom }}-{{ selCrlm.timeto }}
-                    <span style="font-size:16px;">room:</span>
+                    <span
+                      style="font-size:16px;"
+                    >room:</span>
                     {{ selCrlm.roomnum }}
                     <br />
                     <span style="font-size:20px;">{{ selCrlm.title }}</span>
@@ -539,8 +517,7 @@
                       icon-left="hand-point-right"
                       size="is-large"
                       @click="enterClassroom"
-                      >Go</b-button
-                    >
+                    >Go</b-button>
                   </template>
                   <template v-else>
                     <span class="subtitle is-3 has-text-black">(Loading...)</span>
@@ -549,12 +526,7 @@
                       :active.sync="isClrmLoading"
                       :can-cancel="false"
                     >
-                      <b-icon
-                        pack="fas"
-                        icon="sync-alt"
-                        size="is-large"
-                        custom-class="fa-spin"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                     </b-loading>
                   </template>
                 </div>
@@ -567,9 +539,7 @@
                     class="button is-primary is-medium"
                     rounded
                     @click="listClrmsDataIDCheck(sett.alias.name)"
-                  >
-                    Check Uploaded Data
-                  </button>
+                  >Check Uploaded Data</button>
                   <br />
                   <p v-html="manage.chkStatus"></p>
                   <b-loading
@@ -578,15 +548,9 @@
                     :can-cancel="true"
                   ></b-loading>
                   <b-field>
-                    <b-radio-button :native-value="0" v-model="manage.showNumClassesSum"
-                      >Attendance</b-radio-button
-                    >
-                    <b-radio-button :native-value="1" v-model="manage.showNumClassesSum"
-                      >Evaluation</b-radio-button
-                    >
-                    <b-radio-button :native-value="2" v-model="manage.showNumClassesSum"
-                      >Both</b-radio-button
-                    >
+                    <b-radio-button :native-value="0" v-model="manage.showNumClassesSum">Attendance</b-radio-button>
+                    <b-radio-button :native-value="1" v-model="manage.showNumClassesSum">Evaluation</b-radio-button>
+                    <b-radio-button :native-value="2" v-model="manage.showNumClassesSum">Both</b-radio-button>
                   </b-field>
                 </template>
               </b-notification>
@@ -819,33 +783,25 @@
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
                     @click="selectClassroom(yitem)"
-                  >
-                    {{ yitem.id }}
-                  </td>
+                  >{{ yitem.id }}</td>
                   <td
                     :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
                     @click="selectClassroom(yitem)"
-                  >
-                    {{ yitem.grade }}({{ yitem.classnum }})
-                  </td>
+                  >{{ yitem.grade }}({{ yitem.classnum }})</td>
                   <td
                     :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
                     @click="selectClassroom(yitem)"
-                  >
-                    {{ yitem.dayofweek }}
-                  </td>
+                  >{{ yitem.dayofweek }}</td>
                   <td
                     :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
                     @click="selectClassroom(yitem)"
-                  >
-                    {{ yitem.slot }}
-                  </td>
+                  >{{ yitem.slot }}</td>
                   <td
                     :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
@@ -861,18 +817,14 @@
                     }"
                     @click="selectClassroom(yitem)"
                     v-show="!cRoom.showClassesSum"
-                  >
-                    {{ yitem.roomnum }}
-                  </td>
+                  >{{ yitem.roomnum }}</td>
                   <td
                     :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
                     @click="selectClassroom(yitem)"
                     v-show="!cRoom.showClassesSum"
-                  >
-                    {{ yitem.classtitle | subStr }}
-                  </td>
+                  >{{ yitem.classtitle | subStr }}</td>
 
                   <!-- summary-->
                   <td
@@ -1010,7 +962,9 @@
                     show-value
                   >
                     <span style="font-size: 28px; color: black;">
-                      {{ att.modeset[`${att.mode}`].barcaption }}
+                      {{
+                      att.modeset[`${att.mode}`].barcaption
+                      }}
                     </span>
                   </b-progress>
                 </div>
@@ -1020,9 +974,7 @@
                   v-show="att.mode < 2"
                   class="button is-large"
                   @click="attnModeChangeConfirm"
-                >
-                  change
-                </button>
+                >change</button>
                 <b-button
                   v-show="att.mode === 2"
                   class="button is-large"
@@ -1043,8 +995,7 @@
                 icon-left="people-arrows"
                 size="is-large"
                 @click="cRoom.showABList = !cRoom.showABList"
-                >A / B</b-button
-              >
+              >A / B</b-button>
             </div>
             <div class="level-right">
               <div class="level-item">
@@ -1081,8 +1032,7 @@
                   :class="getIsDoneToday(props.row._lastChangedAt)"
                   width="10"
                   sticky
-                  >{{ getTimeIfTodayOrDate(props.row._lastChangedAt) }}</b-table-column
-                >
+                >{{getTimeIfTodayOrDate(props.row._lastChangedAt)}}</b-table-column>
                 <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
                 <b-table-column
@@ -1121,8 +1071,7 @@
                   sortable
                   sticky
                   :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
-                  >{{ props.row.studentcode }}</b-table-column
-                >
+                >{{ props.row.studentcode }}</b-table-column>
                 <b-table-column
                   field="studentname"
                   label="Name"
@@ -1397,8 +1346,8 @@
                         <b-field>
                           <span style="color:#ce1836; font-size:20px;">
                             {{
-                              props.row.homeworkincomplete20 +
-                                (props.row[getTodayJSON.hwic] === false ? 1 : 0)
+                            props.row.homeworkincomplete20 +
+                            (props.row[getTodayJSON.hwic] === false ? 1 : 0)
                             }}
                           </span>
                           <span style="color:#fff">-</span>
@@ -1444,9 +1393,9 @@
                           <div style="margin:0px 3px;"></div>
                           {{ " " + indiRow.studentname }}
                           <div style="margin:0px 10px;"></div>
-                          <span class="is-size-5 has-text-grey-lighter">{{
-                            getTimeIfTodayOrDate(indiRow._lastChangedAt)
-                          }}</span>
+                          <span
+                            class="is-size-5 has-text-grey-lighter"
+                          >{{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}</span>
                         </div>
 
                         <div class="level-right title is-4">
@@ -1466,9 +1415,9 @@
                             style="font-size:25px"
                           >
                             {{
-                              indiRow[getTodayJSON.attendance] === null
-                                ? "(attendance unconfirmed)"
-                                : indiRow[getTodayJSON.attendance]
+                            indiRow[getTodayJSON.attendance] === null
+                            ? "(attendance unconfirmed)"
+                            : indiRow[getTodayJSON.attendance]
                             }}
                           </b-tag>
                         </div>
@@ -1498,8 +1447,8 @@
                                         <span style="color:#ce1836;">
                                           ( incomplete
                                           {{
-                                            indiRow.homeworkincomplete20 +
-                                              (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
+                                          indiRow.homeworkincomplete20 +
+                                          (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                           }})
                                         </span>
                                       </td>
@@ -1530,12 +1479,10 @@
                                         </a>
                                       </td>
                                       <td
-                                        :class="[
-                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                        ]"
+                                        :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                                       >
-                                        <span v-show="indiRow[k.evl] == -1">absent</span>
-                                        <span v-show="indiRow[k.evl] !== -1">
+                                        <span v-show="indiRow[k.evl]==-1">absent</span>
+                                        <span v-show="indiRow[k.evl]!==-1">
                                           <star-rating
                                             v-model="indiRow[k.evl]"
                                             v-show="k.p1ptshow"
@@ -1545,20 +1492,18 @@
                                             :star-points="cRoom.customstarShape"
                                             @rating-selected="goEvalUpTarget"
                                             @current-rating="
-                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                            "
+                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                          "
                                           ></star-rating>
                                         </span>
                                         <template v-if="!k.p1ptshow">
-                                          <div class="level has-text-grey f20 has-text-centered">
-                                            ( tap left button to edit )
-                                          </div>
+                                          <div
+                                            class="level has-text-grey f20 has-text-centered"
+                                          >( tap left button to edit )</div>
                                         </template>
                                       </td>
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">{{
-                                          indiRow[k.evl]
-                                        }}</span>
+                                        <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <td v-show="cRoom.showEvalComp === 2">
                                         <b-button
@@ -1571,8 +1516,7 @@
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
                                             class="has-text-grey-light"
-                                            >{{ indiRow[k.comm] | description(6) }}</span
-                                          >
+                                          >{{ indiRow[k.comm] | description(6) }}</span>
                                           <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                         </b-button>
                                         <b-input
@@ -1599,8 +1543,7 @@
                                     :class="[
                                       cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                     ]"
-                                    >{{ " " + indiSc["subtotal" + index] }}</span
-                                  >
+                                  >{{ " " + indiSc["subtotal" + index] }}</span>
                                 </td>
                               </tr>
                             </table>
@@ -1630,8 +1573,8 @@
                                       <span style="color:#ce1836;">
                                         ( incomplete
                                         {{
-                                          indiRow.homeworkincomplete20 +
-                                            (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
+                                        indiRow.homeworkincomplete20 +
+                                        (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                         }})
                                       </span>
                                     </td>
@@ -1662,12 +1605,10 @@
                                       </a>
                                     </td>
                                     <td
-                                      :class="[
-                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                      ]"
+                                      :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                                     >
-                                      <span v-show="indiRow[k.evl] == -1">absent</span>
-                                      <span v-show="indiRow[k.evl] !== -1">
+                                      <span v-show="indiRow[k.evl]==-1">absent</span>
+                                      <span v-show="indiRow[k.evl]!==-1">
                                         <star-rating
                                           v-model="indiRow[k.evl]"
                                           :show-rating="false"
@@ -1676,8 +1617,8 @@
                                           :star-points="cRoom.customstarShape"
                                           @rating-selected="goEvalUpTarget"
                                           @current-rating="
-                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                          "
+                                          setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                        "
                                         ></star-rating>
                                       </span>
                                     </td>
@@ -1688,9 +1629,8 @@
                                             ? 'has-pink-strong'
                                             : 'has-text-black',
                                         ]"
-                                        v-show="indiRow[k.evl] !== -1"
-                                        >{{ indiRow[k.evl] }}</span
-                                      >
+                                        v-show="indiRow[k.evl]!==-1"
+                                      >{{ indiRow[k.evl] }}</span>
                                     </td>
                                     <td>
                                       <b-button
@@ -1703,8 +1643,7 @@
                                         <span
                                           v-show="!cRoom.showComEv[k.comm]"
                                           class="has-text-grey-light"
-                                          >{{ indiRow[k.comm] | description(6) }}</span
-                                        >
+                                        >{{ indiRow[k.comm] | description(6) }}</span>
                                         <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                       </b-button>
                                       <b-input
@@ -1728,8 +1667,7 @@
                                 <span class="has-text-grey-light title is-4">Sub Total :</span>
                                 <span
                                   :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
-                                  >{{ " " + indiSc.subtotal0 }}</span
-                                >
+                                >{{ " " + indiSc.subtotal0 }}</span>
                               </td>
                             </tr>
                           </table>
@@ -1753,7 +1691,10 @@
                                     <template v-else>
                                       <span class="subtitle is-4">
                                         {{ k.title }}
-                                        <span class="has-text-grey" v-if="cRoom.showAttnEval">
+                                        <span
+                                          class="has-text-grey"
+                                          v-if="cRoom.showAttnEval"
+                                        >
                                           - (
                                           <span class="subtitle is-6">week</span>
                                           {{ k.week }})
@@ -1788,12 +1729,10 @@
                                   <template v-if="!checkifAbsent(indiRow[k.comm])">
                                     <!-- 通常の場合 -->
                                     <td
-                                      :class="[
-                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                      ]"
+                                      :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                                     >
-                                      <span v-show="indiRow[k.evl] == -1">absent</span>
-                                      <span v-show="indiRow[k.evl] !== -1">
+                                      <span v-show="indiRow[k.evl]==-1">absent</span>
+                                      <span v-show="indiRow[k.evl]!==-1">
                                         <star-rating
                                           v-model="indiRow[k.evl]"
                                           :show-rating="false"
@@ -1802,8 +1741,8 @@
                                           :star-points="cRoom.customstarShape"
                                           @rating-selected="goEvalUpTarget"
                                           @current-rating="
-                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                          "
+                                          setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                        "
                                         ></star-rating>
                                       </span>
                                     </td>
@@ -1814,9 +1753,7 @@
                                       "
                                     >{{ indiRow[k.evl] }}</td>-->
                                     <td class="title is-4">
-                                      <span v-show="indiRow[k.evl] !== -1">{{
-                                        indiRow[k.evl]
-                                      }}</span>
+                                      <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
                                     </td>
                                     <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                   </template>
@@ -1827,8 +1764,7 @@
                                         rounded
                                         class="is-pulled-right attend-hist-absent"
                                         style="font-size:25px"
-                                        >Absent</b-tag
-                                      >
+                                      >Absent</b-tag>
                                     </td>
                                   </template>
                                 </template>
@@ -1854,9 +1790,7 @@
                                   class="title is-4"
                                   :class="getAttendStatusClassHist(indiRow['attn' + k.week])"
                                   v-if="cRoom.showAttnEval"
-                                >
-                                  {{ getAttendSymbol(indiRow["attn" + k.week]) }}
-                                </td>
+                                >{{ getAttendSymbol(indiRow["attn" + k.week]) }}</td>
                                 <!-- 期末対応 -->
                                 <td>
                                   <b-button
@@ -1867,8 +1801,7 @@
                                     <span
                                       v-show="!cRoom.showComEv[k.comm]"
                                       class="has-text-grey-light"
-                                      >{{ indiRow[k.comm] | description(6) }}</span
-                                    >
+                                    >{{ indiRow[k.comm] | description(6) }}</span>
                                     <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                   </b-button>
                                   <b-input
@@ -1903,9 +1836,7 @@
                                       :key="`endsemester-${index}`"
                                       style="padding:0px 10px 0px 15px;"
                                       :class="getAttendStatusClassHist(indiRow[m.at])"
-                                    >
-                                      {{ getAttendSymbol(indiRow[m.at]) }}
-                                    </td>
+                                    >{{ getAttendSymbol(indiRow[m.at]) }}</td>
                                   </tr>
                                 </table>
                               </td>
@@ -1918,8 +1849,7 @@
                                 <span class="has-text-grey-light title is-4">Sub Total :</span>
                                 <span
                                   :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
-                                  >{{ " " + indiSc.subtotal1 }}</span
-                                >
+                                >{{ " " + indiSc.subtotal1 }}</span>
                               </td>
                               <td v-if="cRoom.showAttnEval"></td>
                               <td></td>
@@ -1952,8 +1882,7 @@
                               @click="cRoom.showEvalSingle = !cRoom.showEvalSingle"
                               class="title is-3 is-fullwidth"
                               style="height:60px"
-                              >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button
-                            >
+                            >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button>
                           </div>
                           <div class="colum"></div>
                         </section>
@@ -1961,67 +1890,41 @@
                         <section class="columns">
                           <div class="column is-pulled-right" style="width:70px;margin-left:20px">
                             <a
-                              @click="
-                                minusEvalUpTarget(
-                                  indiRow,
-                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                )
-                              "
+                              @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                             >
                               <b-icon
                                 pack="fas"
                                 icon="user-slash"
                                 size="is-medium"
                                 type="is-danger"
-                                @click="
-                                  minusEvalUpTarget(
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                  )
-                                "
+                                @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                               />
                             </a>
                           </div>
                           <div class="column">
                             <a
-                              @click="
-                                zeroEvalUpTarget(
-                                  indiRow,
-                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                )
-                              "
+                              @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                             >
                               <b-icon
                                 pack="fas"
                                 icon="ban"
                                 size="is-medium"
                                 type="is-bluedark"
-                                @click="
-                                  zeroEvalUpTarget(
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                  )
-                                "
+                                @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                               />
                             </a>
                           </div>
                           <!-- あとまわし★なぜか赤にならない -->
                           <div
                             class="column"
-                            :class="[
-                              indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
-                                ? 'title is-3 is-pinkishalert'
-                                : '',
-                            ]"
+                            :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                           >
                             <div
                               style="background-color:#ce1836;color:#fae3ec;padding:5px"
-                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1"
-                            >
-                              absent
-                            </div>
+                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1"
+                            >absent</div>
                             <span
-                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
+                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
                             >
                               <star-rating
                                 class="level-item"
@@ -2032,22 +1935,20 @@
                                 :star-points="cRoom.customstarShape"
                                 @rating-selected="goEvalUpTarget"
                                 @current-rating="
-                                  setEvalUpTarget(
-                                    $event,
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl,
-                                    cRoom.indiNo
-                                  )
-                                "
+                                setEvalUpTarget(
+                                  $event,
+                                  indiRow,
+                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].evl,
+                                  cRoom.indiNo
+                                )
+                              "
                               ></star-rating>
                             </span>
                           </div>
                           <div
                             class="column title is-2"
-                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
-                          >
-                            {{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}
-                          </div>
+                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
+                          >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                         </section>
 
                         <!-- indi comment -->
@@ -2067,13 +1968,11 @@
                             >
                               <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
                                 {{
-                                  indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
-                                    | description(50)
+                                indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
+                                | description(50)
                                 }}
                               </span>
-                              <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5"
-                                >Save</span
-                              >
+                              <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5">Save</span>
                             </b-button>
                             <b-input
                               type="textarea"
@@ -2095,8 +1994,7 @@
                               <span class="has-text-grey-light title is-4">Grand Total :</span>
                               <span
                                 :class="[cRoom.showEvalComp === 0 ? 'title is-1' : 'title is-4']"
-                                >{{ " " + indiSc.total }}</span
-                              >
+                              >{{ " " + indiSc.total }}</span>
                             </div>
                           </div>
                         </footer>
@@ -2118,7 +2016,9 @@
                           <!-- :label="st.classcount + ' ' + st.studentname" -->
                           <!-- ><template slot="header" slot-scope="{ column }"> -->
                           <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">
-                            {{ st.classcount + " " + st.studentname }}
+                            {{
+                            st.classcount + " " + st.studentname
+                            }}
                           </span>
                         </template>
                       </b-tab-item>
@@ -2167,8 +2067,7 @@
                       :key="index"
                       :native-value="m"
                       v-model="instructor.attendvisiblemonth"
-                      >{{ m }}</b-radio-button
-                    >
+                    >{{ m }}</b-radio-button>
 
                     <b-select
                       placeholder="Instructors.."
@@ -2181,8 +2080,7 @@
                         v-for="n in instructor.nameConv"
                         :key="n.username"
                         :value="n.username"
-                        >{{ n.name }}</option
-                      >
+                      >{{ n.name }}</option>
                     </b-select>
                   </b-field>
                   <div class="notification">
@@ -2218,28 +2116,38 @@
                     >
                       <template slot-scope="props">
                         <b-table-column field="id" label="Name" sticky>
-                          {{ props.row.id }}
+                          {{
+                          props.row.id
+                          }}
                         </b-table-column>
                         <b-table-column field="date" label="Date" sticky>
-                          {{ props.row.date }}
+                          {{
+                          props.row.date
+                          }}
                         </b-table-column>
 
                         <b-table-column field="clockin" label="In">
-                          {{ props.row.clockin }}
+                          {{
+                          props.row.clockin
+                          }}
                         </b-table-column>
                         <b-table-column field="clockincorrect" label="In(Fixed)" sticky>
                           <span>{{ props.row.clockincorrect }}</span>
                         </b-table-column>
 
                         <b-table-column field="clockout" label="Out">
-                          {{ props.row.clockout }}
+                          {{
+                          props.row.clockout
+                          }}
                         </b-table-column>
                         <b-table-column field="clockoutcorrect" label="Out(Fixed)" sticky>
                           <span>{{ props.row.clockoutcorrect }}</span>
                         </b-table-column>
 
                         <b-table-column field="detail" label="Note">
-                          {{ props.row.detail }}
+                          {{
+                          props.row.detail
+                          }}
                         </b-table-column>
 
                         <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
@@ -2270,8 +2178,7 @@
                                         props.row.note
                                       )
                                     "
-                                    >〇</b-radio-button
-                                  >
+                                  >〇</b-radio-button>
                                 </b-field>
                               </div>
                             </div>
@@ -2284,8 +2191,7 @@
                           size="is-large"
                           class="manageview-accent"
                           @click="manage.checkedRowsInst = []"
-                          >Close</b-button
-                        >
+                        >Close</b-button>
                       </template>
                     </b-table>
                   </section>
@@ -2299,21 +2205,11 @@
                       <b-radio-button v-model="manage.dow" native-value="All" size="is-medium">
                         <div style="padding:0px 25px; font-size:14px;">All</div>
                       </b-radio-button>
-                      <b-radio-button v-model="manage.dow" native-value="Mon" size="is-medium"
-                        >Mon</b-radio-button
-                      >
-                      <b-radio-button v-model="manage.dow" native-value="Tue" size="is-medium"
-                        >Tue</b-radio-button
-                      >
-                      <b-radio-button v-model="manage.dow" native-value="Wed" size="is-medium"
-                        >Wed</b-radio-button
-                      >
-                      <b-radio-button v-model="manage.dow" native-value="Thu" size="is-medium"
-                        >Thu</b-radio-button
-                      >
-                      <b-radio-button v-model="manage.dow" native-value="Fri" size="is-medium"
-                        >Fri</b-radio-button
-                      >
+                      <b-radio-button v-model="manage.dow" native-value="Mon" size="is-medium">Mon</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Tue" size="is-medium">Tue</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Wed" size="is-medium">Wed</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Thu" size="is-medium">Thu</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Fri" size="is-medium">Fri</b-radio-button>
                     </b-field>
 
                     <b-field>
@@ -2328,8 +2224,7 @@
                           v-for="n in instructor.nameConv"
                           :key="n.username"
                           :value="n.name"
-                          >{{ n.name }}</option
-                        >
+                        >{{ n.name }}</option>
                       </b-select>
                     </b-field>
                   </b-field>
@@ -2366,14 +2261,20 @@
                     >
                       <template slot-scope="props">
                         <b-table-column field="dayofweek" label="Day" sticky>
-                          {{ props.row.dayofweek }}
+                          {{
+                          props.row.dayofweek
+                          }}
                         </b-table-column>
                         <b-table-column field="classcode" label="Class" sticky>
-                          {{ props.row.classcode }}
+                          {{
+                          props.row.classcode
+                          }}
                         </b-table-column>
 
                         <b-table-column field="studentcode" label="Code" sticky>
-                          {{ props.row.studentcode }}
+                          {{
+                          props.row.studentcode
+                          }}
                         </b-table-column>
                         <b-table-column field="studentname" label="Name" sticky>
                           <span>{{ props.row.studentname }}</span>
@@ -2434,8 +2335,7 @@
                                         props.row.note
                                       )
                                     "
-                                    >〇</b-radio-button
-                                  >
+                                  >〇</b-radio-button>
                                   <b-radio-button
                                     v-model="props.row[manage.selAttn]"
                                     native-value="late"
@@ -2449,8 +2349,7 @@
                                         props.row.note
                                       )
                                     "
-                                    >LA</b-radio-button
-                                  >
+                                  >LA</b-radio-button>
                                   <b-radio-button
                                     v-model="props.row[manage.selAttn]"
                                     native-value="early leave"
@@ -2464,8 +2363,7 @@
                                       )
                                     "
                                     size="is-medium"
-                                    >EL</b-radio-button
-                                  >
+                                  >EL</b-radio-button>
 
                                   <b-radio-button
                                     v-model="props.row[manage.selAttn]"
@@ -2480,8 +2378,7 @@
                                       )
                                     "
                                     size="is-medium"
-                                    >X</b-radio-button
-                                  >
+                                  >X</b-radio-button>
                                 </b-field>
                               </div>
                             </div>
@@ -2494,8 +2391,7 @@
                           size="is-large"
                           class="manageview-accent"
                           @click="manage.checkedRows = []"
-                          >Close</b-button
-                        >
+                        >Close</b-button>
                       </template>
                     </b-table>
                   </section>
@@ -2568,7 +2464,7 @@ export default {
       app: {
         ready: false,
         network: false,
-        syncing: false,
+        syncing: false
       },
       ds: {
         clrms: null,
@@ -2576,15 +2472,14 @@ export default {
         clrmDl: null,
         clrmItems: null,
         crMisc: { type: null, name: null, detail: null },
-        nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary" }, //定数
+        nMisc: { id: null, type: null, name: null, detail: null, return: null }
       },
       setval1: null,
       setval2: null,
       stTable: { pagenationPosition: "both" },
       proc: {
         success: [],
-        fail: [],
+        fail: []
       },
       sett: {
         env: EnvJSON,
@@ -2603,16 +2498,16 @@ export default {
         isLoadingClrmManage: false,
         isLoadingClrmsChk: false,
         pageStyle: {
-          "--background-color": "#ffff4f",
+          "--background-color": "#ffff4f"
         },
         classSelected: null,
-        alias: { usename: null, name: "all" },
+        alias: { usename: null, name: "all" }
       },
       authdetail: {
         username: null,
         nickname: null,
         name: null,
-        role: null,
+        role: null
       }, //ログインユーザー情報
       filterABstate: 0,
       vacstate: "",
@@ -2620,15 +2515,15 @@ export default {
         {
           value: "studentcode",
           text: "code",
-          sortable: true,
+          sortable: true
         },
         {
           value: "studentname",
           text: "name",
-          sortable: true,
+          sortable: true
         },
         { value: "checkin", text: "check in" },
-        { value: "col1", text: "column1" },
+        { value: "col1", text: "column1" }
       ],
       /////
       bBoard: {
@@ -2651,7 +2546,7 @@ export default {
                 <div class="column is-one-third">tmu-nse20@alc-class.jp</div>
                 <div class="column is-one-third">Gr8lesson20!</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2661,12 +2556,12 @@ export default {
               <div class="column is-one-third">kyoukasho@tmucoop.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
+            text: "(detail)"
+          }
         ],
         collapsesSample: [
           {
@@ -2686,7 +2581,7 @@ export default {
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2696,17 +2591,26 @@ export default {
               <div class="column is-one-third">123456@abcdefg.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
-        ],
+            text: "(detail)"
+          }
+        ]
       },
       instructor: {
         showPeople: false,
-        peopleNow: ["George", "John", "George1", "John1", "George2", "John3", "George3", "John4"],
+        peopleNow: [
+          "George",
+          "John",
+          "George1",
+          "John1",
+          "George2",
+          "John3",
+          "George3",
+          "John4"
+        ],
         // yourhistory: [],
         // youactive: 0, // 0 before in / 1 clock in / 2 clock out
         // disableInBtn: false,
@@ -2719,7 +2623,7 @@ export default {
         yourTodaysClasses: [],
         yourattendvisiblemonth: null,
         attendvisiblemonth: null,
-        nameConv: UsersJSON,
+        nameConv: UsersJSON
       },
 
       lbls: {
@@ -2729,27 +2633,27 @@ export default {
             label: "ID",
             width: "100",
             numeric: true,
-            sortable: true,
+            sortable: true
           },
           {
             field: "classtitle",
             label: "title",
-            sortable: true,
+            sortable: true
           },
           {
             field: "classnum",
             label: "num",
-            sortable: true,
+            sortable: true
           },
           {
             field: "roomnum",
             label: "Room",
-            centered: true,
+            centered: true
           },
           {
             field: "grade",
-            label: "grade",
-          },
+            label: "grade"
+          }
         ],
         clrmCols: [
           // {
@@ -2778,34 +2682,34 @@ export default {
             field: "id",
             label: "Instructor",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: true,
+            searchable: true
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
-        ],
+            searchable: true
+          }
+        ]
       },
       selCrlm: [],
       attendMng: { status: ["ok", "maybe", "ng"], dummy: 2 },
@@ -2820,7 +2724,7 @@ export default {
             title2: "not here",
             pct: 33,
             colortype: "is-success",
-            transitmsg: "open classroom",
+            transitmsg: "open classroom"
           },
           {
             num: 2,
@@ -2829,7 +2733,7 @@ export default {
             title2: "not here",
             pct: 66,
             colortype: "is-warning",
-            transitmsg: "accepting late students",
+            transitmsg: "accepting late students"
           },
           {
             num: 4,
@@ -2838,7 +2742,7 @@ export default {
             title2: "absent",
             pct: 100,
             colortype: "is-danger",
-            transitmsg: "attendance closed",
+            transitmsg: "attendance closed"
           },
           // 出欠取れないモード（当日以外）
           {
@@ -2848,9 +2752,9 @@ export default {
             title2: "-",
             pct: 0,
             colortype: "is-light",
-            transitmsg: "-",
-          },
-        ],
+            transitmsg: "-"
+          }
+        ]
       },
       cRoom: {
         showIndividual: false,
@@ -2900,7 +2804,7 @@ export default {
           ecom10: false,
           ecom11: false,
           ecom12: false,
-          ecomAny: false,
+          ecomAny: false
           // eval01: false,
           // eval02: false,
           // eval03: false,
@@ -2945,7 +2849,7 @@ export default {
           46,
           19,
           31,
-          17,
+          17
         ],
         // ctype: null,
         evalCriteriaSelect: null, // ??保留 "writing", // presentationでも、どちらでも。Criteriaをデフォルト値で
@@ -2958,7 +2862,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Participation 2",
@@ -2968,7 +2872,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 1",
@@ -2978,7 +2882,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 2",
@@ -2988,7 +2892,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Homework",
@@ -2998,7 +2902,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "ALC Adademy NEXT",
@@ -3008,7 +2912,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Speech 1",
@@ -3018,7 +2922,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "06", // 実施週
+            week: "06" // 実施週
           },
           {
             title: "Speech 2",
@@ -3028,7 +2932,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "09", // 実施週
+            week: "09" // 実施週
           },
           {
             title: "Discussion 1",
@@ -3038,7 +2942,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "07", // 実施週
+            week: "07" // 実施週
           },
           {
             title: "Discussion 2",
@@ -3048,7 +2952,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "10", // 実施週
+            week: "10" // 実施週
           },
           {
             title: "Discussion Final [w11]",
@@ -3058,7 +2962,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "11", // 実施週
+            week: "11" // 実施週
           },
           {
             title: "Discussion Final [w12]",
@@ -3068,7 +2972,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "12", // 実施週
+            week: "12" // 実施週
           },
           {
             title: "Presentation Final",
@@ -3078,8 +2982,8 @@ export default {
             pt: 20,
             p1ptshow: false,
             ssize: [0, 30, 40, 0, 40],
-            week: "14", // 実施週
-          },
+            week: "14" // 実施週
+          }
         ],
         showAttnEval: false,
         evalTypeArea: null, // ["", "", "", "", "", "", ""],
@@ -3104,7 +3008,7 @@ export default {
         showPrevHW: false,
         indirep: [
           [0, 1, 2, 3, 4, 5],
-          [6, 7, 8, 9, 10, 11, 12],
+          [6, 7, 8, 9, 10, 11, 12]
         ],
         evscVa: true,
         evscVb: false,
@@ -3113,7 +3017,7 @@ export default {
         evsc1a: true,
         evsc1b: false,
         evsc1c: false,
-        evsc1d: false,
+        evsc1d: false
       },
       manage: {
         isOpenSummary: false,
@@ -3137,72 +3041,72 @@ export default {
             field: "id",
             label: "Instructor",
             sortable: true,
-            searchable: false,
+            searchable: false
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: false,
+            searchable: false
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
         instCols: [
           {
             field: "id",
             label: "Name",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "date",
             label: "Date",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "clockin",
             label: "In",
-            centered: true,
+            centered: true
           },
           {
             field: "clockincorrect",
             label: "In(Correction)",
-            centered: true,
+            centered: true
           },
           {
             field: "clockout",
             label: "Out",
-            searchable: false,
+            searchable: false
           },
           {
             field: "clockoutcorrect",
             label: "Out(Correction)",
-            searchable: false,
+            searchable: false
           },
           {
             field: "detail",
             label: "Note",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
 
         vforEdit: [
@@ -3219,7 +3123,7 @@ export default {
           { at: "attn11", md: 10 },
           { at: "attn12", md: 11 },
           { at: "attn13", md: 12 },
-          { at: "attn14", md: 13 },
+          { at: "attn14", md: 13 }
         ],
         vforEval: [
           {
@@ -3227,78 +3131,78 @@ export default {
             cm: "eval01",
             cap: "P 1",
             caption: "Participation 1",
-            md: 0,
+            md: 0
           },
           {
             ev: "eval02",
             cm: "eval02",
             cap: "P 2",
             caption: "Participation 2",
-            md: 1,
+            md: 1
           },
           {
             ev: "eval03",
             cm: "eval03",
             cap: "Im 1",
             caption: "Improvement 1",
-            md: 2,
+            md: 2
           },
           {
             ev: "eval04",
             cm: "eval04",
             cap: "Im 2",
             caption: "Improvement 2",
-            md: 3,
+            md: 3
           },
           {
             ev: "eval06",
             cm: "eval06",
             cap: "Sp 1",
             caption: "Speech 1",
-            md: 5,
+            md: 5
           },
           {
             ev: "eval07",
             cm: "eval07",
             cap: "Sp 2",
             caption: "Speech 2",
-            md: 6,
+            md: 6
           },
           {
             ev: "eval08",
             cm: "eval08",
             cap: "Ds 1",
             caption: "Discussion 1",
-            md: 7,
+            md: 7
           },
           {
             ev: "eval09",
             cm: "eval09",
             cap: "Ds 2",
             caption: "Discussion 2",
-            md: 8,
+            md: 8
           },
           {
             ev: "eval10",
             cm: "eval10",
             cap: "Ds F w11",
             caption: "Discussion Final w11",
-            md: 9,
+            md: 9
           },
           {
             ev: "eval12",
             cm: "eval12",
             cap: "Ds F w12",
             caption: "Discussion Final w12",
-            md: 10,
+            md: 10
           },
           {
             ev: "eval11",
             cm: "eval11",
             cap: "Pr F",
             caption: "Presentation Final",
-            md: 11,
-          },
+            md: 11
+          }
         ],
 
         convAttnToDateMDNum: {
@@ -3315,7 +3219,7 @@ export default {
           attn11: 10,
           attn12: 11,
           attn13: 12,
-          attn14: 13,
+          attn14: 13
         },
         attnElChr: [
           "attn01",
@@ -3356,7 +3260,7 @@ export default {
           "ecom09",
           "ecom10",
           "ecom11",
-          "ecom12",
+          "ecom12"
         ],
         selCrlmDv: {
           students: "x",
@@ -3398,9 +3302,9 @@ export default {
           ecom09: "",
           ecom10: "",
           ecom11: "",
-          ecom12: "",
+          ecom12: ""
         },
-        queryRowCrlm: "",
+        queryRowCrlm: ""
       },
       showManagementView: false,
       showManagementViewSuper: false,
@@ -3426,10 +3330,10 @@ export default {
         upMiscs: [],
         sample: [],
         listInsts: [],
-        qInsts: [],
+        qInsts: []
       },
       createdval: null,
-      periodicValidationFromIdolNum: 0,
+      periodicValidationFromIdolNum: 0
     };
   },
   methods: {
@@ -3459,21 +3363,36 @@ export default {
       //   );
       //自分の勤怠
       this.instructor.yourattendances = this.instructor.attendances.filter(
-        (x) => x.uid === this.authdetail.username
+        x => x.uid === this.authdetail.username
       );
     },
     async fetchMiscs() {
+      this.ds.clrms = await DataStore.query(Misc, Predicates.ALL);
       this.dataset.Miscs = [];
-      this.dataset.Miscs = await DataStore.query(Misc, Predicates.ALL);
-      // this.dataset.Miscs = [...this.ds.xxxxclrms];
+      this.dataset.Miscs = [...this.ds.clrms];
       // this.dataset.Clrms.splice();
       // this.dataset.Clrms.push(...this.ds.clrms);
     },
     async fetchClrmsChk() {
       this.dataset.ClrmsChk = await DataStore.query(Clrm, Predicates.ALL);
     },
+
+    // async listMiscsDataID() {
+    //   //    async listMiscsDataID(typ, ids) {
+    //   console.warn("xx:listMiscsDataID");
+    //   const MiscsData = null;
+
+    //   //          //$$$$$    const MiscsData = await API.graphql(
+    //   //   graphqlOperation(listMiscs, {
+    //   //     type: typ,
+    //   //     name: { eq: ids },
+    //   //     limit: 500
+    //   //   })
+    //   // );
+    //   this.dataset.Miscs.push(...MiscsData.data.listMiscs.items);
+    // },
     async fetchClrmsDatainstByday(dow) {
-      this.dataset.ClrmsInstByday = await DataStore.query(Clrm, (c) =>
+      this.dataset.ClrmsInstByday = await DataStore.query(Clrm, c =>
         c.dayofweek("eq", dow).uid("eq", this.sett.alias.name)
       );
     },
@@ -3491,7 +3410,7 @@ export default {
           uid: this.authd.name,
           index: cr.index,
           classcode: cr.classcode,
-          studentcode: cr.studentcode,
+          studentcode: cr.studentcode
         })
       );
 
@@ -3504,7 +3423,7 @@ export default {
       // this.clrmUp =
       //   clrmItem.index + " " + clrmItem.classcode + " " + clrmItem.studentcode;
       await DataStore.save(
-        Clrm.copyOf(clrmItem, (updated) => {
+        Clrm.copyOf(clrmItem, updated => {
           updated[fname] = fval;
         })
       );
@@ -3519,11 +3438,8 @@ export default {
     async DEVcreateMisc() {
       const cr = {
         type: "classRoom",
-        name: this.ds.crMisc.name,
-        detail: JSON.stringify({
-          oldest: this.$dayjs(),
-          newest: new Date(),
-        }),
+        name: "X0061",
+        detail: updateAt:{oldest:this.$dayjs().format("H:mm:ss"),newest:this.$dayjs().format("H:mm:ss")}
       };
       try {
         await DataStore.save(new Misc(cr));
@@ -3533,37 +3449,11 @@ export default {
 
       this.fetchMiscs();
     },
-    async DEVcreateMisc2() {
-      const original = await DataStore.query(Misc, (c) =>
-        c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
-      );
-      // console.table(original);
-      const outt = original.find((arr) => {
-        return arr.detail.length > 0;
-      });
-      // console.warn(outt.detail);
-      const dt = JSON.parse(outt.detail);
-      // console.warn(dt.oldest);
-      // console.warn(dt.newest);
-      return dt;
-    },
-    async FIREQueryMiscCo() {
-      const cr = {
-        type: "TEST",
-        name: "TEST",
-      };
-      const original = await DataStore.query(Misc, (c) =>
-        c.type("eq", cr.type).name("eq", cr.name)
-      );
-      this.sett.dummy = original.length;
-      // console.warn(original);
-    },
-
     async FIREcreateMisc() {
       const cr = {
         type: "TEST",
         name: this.sett.dummy,
-        detail: this.$dayjs().format("H:mm:ss"),
+        detail: this.$dayjs().format("H:mm:ss")
       };
       try {
         await DataStore.save(new Misc(cr));
@@ -3571,66 +3461,25 @@ export default {
         this.writeFail("MiscCreate", cr, err);
       }
     },
-    //// クラス毎のサマリDB 一括作成
-
-    // <p class="subtitle">学期ごと、開講前の設定作業</p>
-    // allClasses: ClssJSON の 全クラス分をMiscに構築。
-    // async createMiscClassSummary() {
-    //   await Promise.all(
-    //     this.dataset.allClasses.forEach((s) => {
-    //       DataStore.save(
-    //         new Misc({
-    //           type: this.ds.typeMisc.classSum,
-    //           name: s.id,
-    //         })
-    //       );
-    //     })
-    //   );
-    //   // console.warn("createMiscClassSummary done");
-    //   // this.fetchMiscs();
+    // FIREcreateMiscCo() {
+    //   const dt = this.$dayjs().format("H:mm:ss");
+    //   // console.warn("FIREcreateMisc" + dt);
+    //   this.createMiscC({
+    //     type: "TEST",
+    //     name: this.sett.dummy,
+    //     detail: dt
+    //   });
     // },
-    //// クラス毎のサマリDB 更新
-
-    async devClassSummary(classcode) {
-      const ret = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-
-      const newest = ret.reduce((a, b) => (a._lastChangedAt > b._lastChangedAt ? a : b));
-      const oldest = ret.reduce((a, b) => (a._lastChangedAt < b._lastChangedAt ? a : b));
-      return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
-    },
-
-    // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
-    // const mx = ret.reduce((a, b) => (a > b ? a : b));
-    // const mn = ret.reduce((a, b) => (a < b ? a : b));
-
-    async updateMiscClassSummary(classcode) {
-      //生徒単位でタイムスタンプの最大、最小を調べる
-
-      //記録する
+    async FIREQueryMiscCo() {
       const cr = {
-        type: this.ds.typeMisc.classSum,
-        name: classcode,
-        detail: JSON.stringify({
-          oldest: this.$dayjs(),
-          newest: new Date(),
-        }),
+        type: "TEST",
+        name: this.sett.dummy
       };
-
-      await DataStore.save(new Misc(cr));
-
-      this.fetchMiscs();
-    },
-    //// クラス毎のサマリDB 取得
-    async queryMiscClassSummary(classcode) {
-      const original = await DataStore.query(Misc, (c) =>
-        c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
+      const original = await DataStore.query(Misc, c =>
+        c.type("eq", cr.type).name("eq", cr.name)
       );
-      // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
-      // データの持ち方とか厳密に正しさを求めないことにしている
-      const outt = original.find((arr) => {
-        return arr.detail.length > 0;
-      });
-      return JSON.parse(outt.detail);
+      this.sett.dummy = original;
+      // console.warn(original);
     },
 
     async createMisc() {
@@ -3645,7 +3494,7 @@ export default {
         cr = this.ds.crMisc;
       }
       try {
-        const original = await DataStore.query(Misc, (c) =>
+        const original = await DataStore.query(Misc, c =>
           c.type("eq", cr.type).name("eq", cr.name)
         );
         this.ds.nMisc.return = original;
@@ -3660,7 +3509,7 @@ export default {
       try {
         const itm = await DataStore.query(Misc, id);
         await DataStore.save(
-          Clrm.copyOf(itm, (updated) => {
+          Clrm.copyOf(itm, updated => {
             updated.type = upd.type;
             updated.name = upd.name;
             updated.detail = upd.detail;
@@ -3689,10 +3538,20 @@ export default {
     //// graphql
     //// graphql
 
+    // async updateInst(upArr) {
+    //   upArr.id = this.authdetail.username;
+    //   try {
+    //     // console.warn("xx:updateInst");
+    //     //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+    //   } catch (err) {
+    //     this.writeFail("InstUpdate", upArr, err);
+    //   }
+    // },
+
     //編集用
     async updateClrmEdit(uid, fname, fval, logtx) {
       const upArr = {
-        id: uid,
+        id: uid
       };
       upArr[fname] = fval;
       //テスト時はログを記録しない
@@ -3730,12 +3589,12 @@ export default {
       // ★対象全てをひとづずつCopyOfしようか
       //念のためmiscに
       const classtemp = this.dataset.ClrmsChk.filter(
-        (x) => x.classcode === this.selCrlm.id && x.enable === true
+        x => x.classcode === this.selCrlm.id && x.enable === true
       );
       const crArr = {
         type: "appClrmDeviceUpload",
         name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-        detail: classtemp,
+        detail: classtemp
       };
       try {
         // console.warn("xx:manageUpdateClrmDvAll");
@@ -3746,13 +3605,13 @@ export default {
 
       // いれる
       const classmem = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selCrlm.id && x.enable === true
+        x => x.classcode === this.selCrlm.id && x.enable === true
       ).sort(function(a, b) {
         if (a.sortid < b.sortid) return -1;
         if (a.sortid > b.sortid) return 1;
         return 0;
       });
-      classmem.forEach((rowval) => {
+      classmem.forEach(rowval => {
         this.updateClrmAll(rowval);
       });
 
@@ -3766,7 +3625,7 @@ export default {
         // 出欠と宿題は該当週のみ、評価はすべて
         const upArr = {
           id: rw.id,
-          index: rw.index,
+          index: rw.index
         };
         //   eval01: rw.eval01,
         //   eval02: rw.eval02,
@@ -3793,13 +3652,24 @@ export default {
         //   homeworkincomplete20: rw.homeworkincomplete20
         // };
         //とりあえず安全策で
-        const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
-        estr.forEach((x) => {
+        const estr = [
+          "01",
+          "02",
+          "03",
+          "04",
+          "06",
+          "07",
+          "08",
+          "09",
+          "10",
+          "11"
+        ];
+        estr.forEach(x => {
           if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
             upArr["eval" + x] = rw["eval" + x];
           }
         });
-        estr.forEach((x) => {
+        estr.forEach(x => {
           if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
             upArr["ecom" + x] = rw["ecom" + x];
           }
@@ -3861,7 +3731,9 @@ export default {
         case 0:
           return this.cRoom.showEvalComp < 2 ? true : false;
         case 1:
-          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2 ? true : false;
+          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2
+            ? true
+            : false;
       }
     },
     clearIndi() {
@@ -3883,7 +3755,8 @@ export default {
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
 
       const newval = this.cRoom.indiNo + num;
-      this.cRoom.indiNo = this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
+      this.cRoom.indiNo =
+        this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
       // const modnum =
       //   bool === true
       //     ? this.classmembers.length > this.cRoom.indiNo
@@ -3919,7 +3792,7 @@ export default {
       const upArr = {
         type: "class" + this.dayjsYYYYMMDDh,
         name: this.authdetail.username,
-        detail: this.instructor.yourTodaysClasses,
+        detail: this.instructor.yourTodaysClasses
       };
       this.updateMisc(upArr);
     },
@@ -3948,7 +3821,11 @@ export default {
     },
     goEvalUpTarget(val) {
       //スターの確定
-      this.updateClrm(this.cRoom.evalUpTargetRow.id, this.cRoom.evalUpTargetCol, val);
+      this.updateClrm(
+        this.cRoom.evalUpTargetRow.id,
+        this.cRoom.evalUpTargetCol,
+        val
+      );
     },
     // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
@@ -3981,7 +3858,9 @@ export default {
 
     ////////////Fail処理
     writeFail(dest, arr, ret) {
-      localStorage["appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")] =
+      localStorage[
+        "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
+      ] =
         this.getStartingUrl +
         ", auth:" +
         this.authdetail.name +
@@ -4006,7 +3885,7 @@ export default {
       const crArr = {
         type: "appFailSalvage",
         name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-        detail: arr,
+        detail: arr
       };
       try {
         for (var key2 in localStorage) {
@@ -4021,7 +3900,7 @@ export default {
     scrollTop: function() {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth"
       });
     },
     ////////////
@@ -4119,14 +3998,19 @@ export default {
         "ecom09",
         "ecom10",
         "ecom11",
-        "ecom12",
+        "ecom12"
       ];
 
       const groupsum = this.dataset.ClrmsChk.reduce(function(result, elm) {
         //数値化
         let sm = {};
-        attnElChr.forEach((s) => {
-          sm[s] = elm[s] === null || elm[s] === undefined ? 0 : elm[s].length > 0 ? 1 : 0;
+        attnElChr.forEach(s => {
+          sm[s] =
+            elm[s] === null || elm[s] === undefined
+              ? 0
+              : elm[s].length > 0
+              ? 1
+              : 0;
         });
 
         var el = result.find(function(x) {
@@ -4134,14 +4018,14 @@ export default {
         });
         if (el) {
           el.students++; // count
-          attnElChr.forEach((s) => {
+          attnElChr.forEach(s => {
             el[s] += sm[s];
           });
         } else {
           let arr = {};
           arr.classcode = elm.classcode;
           arr.students = 1;
-          attnElChr.forEach((s) => {
+          attnElChr.forEach(s => {
             arr[s] = sm[s];
           });
           result.push(arr);
@@ -4152,12 +4036,12 @@ export default {
       // this.sett.dummy1 = groupsum;
 
       //統合
-      groupsum.forEach((x) => {
+      groupsum.forEach(x => {
         //該当クラスを探してsplice
-        const idx = this.dataset.allClasses.findIndex((v) => v.id == x.classcode);
+        const idx = this.dataset.allClasses.findIndex(v => v.id == x.classcode);
         if (idx != -1) {
           const spl = this.dataset.allClasses[idx];
-          attnElChr.forEach((s) => {
+          attnElChr.forEach(s => {
             spl[s] = x[s];
           });
           spl.students = x.students;
@@ -4173,7 +4057,7 @@ export default {
     sumClrmsChkDv() {
       //デバイス側のデータを集計
       const classtemp = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selCrlm.id && x.enable === true
+        x => x.classcode === this.selCrlm.id && x.enable === true
       );
 
       const attnElChr = [
@@ -4215,13 +4099,13 @@ export default {
         "ecom09",
         "ecom10",
         "ecom11",
-        "ecom12",
+        "ecom12"
       ];
 
       const groupsum = classtemp.reduce(function(result, elm) {
         //数値化
         let sm = {};
-        attnElChr.forEach((s) => {
+        attnElChr.forEach(s => {
           sm[s] = elm[s] === null ? 0 : 1;
         });
 
@@ -4230,14 +4114,14 @@ export default {
         });
         if (el) {
           el.students++; // count
-          attnElChr.forEach((s) => {
+          attnElChr.forEach(s => {
             el[s] += sm[s];
           });
         } else {
           let arr = {};
           arr.classcode = elm.classcode;
           arr.students = 1;
-          attnElChr.forEach((s) => {
+          attnElChr.forEach(s => {
             arr[s] = sm[s];
           });
           result.push(arr);
@@ -4247,8 +4131,8 @@ export default {
       // this.sett.dummy1 = groupsum;
 
       //統合
-      groupsum.forEach((x) => {
-        attnElChr.forEach((s) => {
+      groupsum.forEach(x => {
+        attnElChr.forEach(s => {
           this.manage.selCrlmDv[s] = x[s];
         });
         this.manage.selCrlmDv.students = x.students;
@@ -4258,7 +4142,10 @@ export default {
       return true;
     },
     manageClrms() {
-      if (this.authdetail.role === "instructor" || this.authdetail.role === "headinstructor") {
+      if (
+        this.authdetail.role === "instructor" ||
+        this.authdetail.role === "headinstructor"
+      ) {
         this.listClrmsDataID(this.sett.alias.name);
       }
     },
@@ -4268,12 +4155,12 @@ export default {
       //デバイス側のデータを集計
       // this.sumClrmsChkDv();
 
-      const val = this.dataset.allClasses.map((m) => {
+      const val = this.dataset.allClasses.map(m => {
         return {
           id: m.id,
           grade: m.grade,
           dayofweek: m.dayofweek,
-          slot: m.slot,
+          slot: m.slot
         };
       });
 
@@ -4356,16 +4243,16 @@ export default {
       const todayclass = this.yourClasses
 
         // .filter((x) => x.dayofweek === this.sett.dayofweek)
-        .filter((x) => x.dayofweek === this.dayjsddd)
-        .map((x) => ({
+        .filter(x => x.dayofweek === this.dayjsddd)
+        .map(x => ({
           id: x.id,
-          status: 0,
+          status: 0
         }));
       this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
       const crArr = {
         type: "class" + this.$dayjs().format("YYYY-MM-DD"),
         name: this.authdetail.username,
-        detail: todayclass,
+        detail: todayclass
       };
 
       if (ifUp) {
@@ -4406,7 +4293,9 @@ export default {
     },
     setInstMonth() {
       //勤怠用 createdのとき
-      this.instructor.yourattendvisiblemonth = this.$dayjs(this.sett.acdate).format("YYYY-MM");
+      this.instructor.yourattendvisiblemonth = this.$dayjs(
+        this.sett.acdate
+      ).format("YYYY-MM");
 
       //manage用
       this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
@@ -4460,7 +4349,7 @@ export default {
           const add = {
             date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
             clockin: this.$dayjs().format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
-            clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            clockout: null //.format("hh:mm:ss.sss"), //.format("h:mm"),
           };
           this.instructor.yourattendances.push(add); //ローカル配列に追加
           this.createInst(add); //DBに追加
@@ -4468,12 +4357,14 @@ export default {
           this.instructor.peopleNow.push(this.instructor.you.firstName);
           this.$buefy.toast.open({
             message:
-              "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
+              "<span style='font-size:40px'>Good morning " +
+              this.authdetail.nickname +
+              "!</span>",
             type: "is-success",
             size: "is-large",
-            duration: 3000,
+            duration: 3000
           });
-        },
+        }
       });
     },
     instClockOut() {
@@ -4502,9 +4393,9 @@ export default {
               ", have a good rest.</span>",
             type: "is-pinkish",
             size: "is-large",
-            duration: 3000,
+            duration: 3000
           });
-        },
+        }
       });
     },
 
@@ -4526,7 +4417,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selCrlm.dayofweek === this.dayjsddd) {
             // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             this.updateClassModeChange();
           }
 
@@ -4536,9 +4429,9 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
       // } else {
       //   this.$buefy.dialog.alert({
@@ -4556,7 +4449,8 @@ export default {
     attnModeRestartConfirm() {
       this.$buefy.dialog.confirm({
         title: "Attendance record mode change:",
-        message: "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
+        message:
+          "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
         size: "is-large",
         onConfirm: () => {
           const attMode = 0;
@@ -4564,7 +4458,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selCrlm.dayofweek === this.dayjsddd) {
             // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             this.updateClassModeChange();
           }
           this.cRoom.showAttenHist = 0;
@@ -4575,9 +4471,9 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
     },
     attnModeChangeRegardlessOfTheDayConfirm() {
@@ -4598,11 +4494,12 @@ export default {
             this.cRoom.showAttenHist = 0;
 
             this.$buefy.toast.open({
-              message: "<span style='font-size:40px'>You can edit. " + "</span>",
+              message:
+                "<span style='font-size:40px'>You can edit. " + "</span>",
               type: "is-beige",
-              size: "is-large",
+              size: "is-large"
             });
-          },
+          }
         });
       } else {
         this.att.mode = 3;
@@ -4672,7 +4569,9 @@ export default {
     getIndiPaneClass(val) {
       switch (val) {
         case "left":
-          return this.cRoom.showIndiList ? "tile is-vertical is-10" : "tile is-vertical is-12";
+          return this.cRoom.showIndiList
+            ? "tile is-vertical is-10"
+            : "tile is-vertical is-12";
         case "right":
           return "tile is-parent is-narrow";
       }
@@ -4749,11 +4648,14 @@ export default {
       }
     },
     enterClassroomPrevSeeIfAlter() {
-      const dt = this.dataset.Miscs.find((el) => {
+      const dt = this.dataset.Miscs.find(el => {
         return el.type === "alter";
       });
       // 設定があり曜日も合致するなら編集日付を変更する
-      if (dt !== undefined && this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")) {
+      if (
+        dt !== undefined &&
+        this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")
+      ) {
         this.sett.ddate = this.$dayjs(dt.detail);
       }
       this.workspaceValication(true);
@@ -4765,7 +4667,7 @@ export default {
       // && x.enable === trueはほんとはAppSyncの時点でやりたい
       // this.classmembers = this.dataset.Clrms.filter(
       const classmem = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selCrlm.id && x.enable === true
+        x => x.classcode === this.selCrlm.id && x.enable === true
       ).sort(function(a, b) {
         if (a.sortid < b.sortid) return -1;
         if (a.sortid > b.sortid) return 1;
@@ -4875,13 +4777,15 @@ export default {
       if (this.selCrlm.dayofweek === this.dayjsddd) {
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
-          (item) => item.id === this.selCrlm.id
+          item => item.id === this.selCrlm.id
         );
 
         this.cRoom.showAttenHist = 0;
 
         // status参照するためにインデックスを格納
-        this.att.mode = this.instructor.yourTodaysClasses[this.classroomIndex].status;
+        this.att.mode = this.instructor.yourTodaysClasses[
+          this.classroomIndex
+        ].status;
       } else {
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
@@ -4901,7 +4805,7 @@ export default {
     },
     enterClassroomUp() {
       const classmem = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selCrlm.id && x.enable === true
+        x => x.classcode === this.selCrlm.id && x.enable === true
       ).sort(function(a, b) {
         if (a.sortid < b.sortid) return -1;
         if (a.sortid > b.sortid) return 1;
@@ -4914,7 +4818,7 @@ export default {
       this.manage.isOpenSummary = false;
 
       const classmem = this.dataset.ClrmsInstByday.filter(
-        (x) => x.classcode === arr.classcode && x.enable === true
+        x => x.classcode === arr.classcode && x.enable === true
       ).sort(function(a, b) {
         if (a.sortid < b.sortid) return -1;
         if (a.sortid > b.sortid) return 1;
@@ -4948,25 +4852,29 @@ export default {
       }
     },
     convertInstructorsInfo(val) {
-      const result = this.instructor.nameConv.find((x) => x.username === val);
+      const result = this.instructor.nameConv.find(x => x.username === val);
       return result;
     },
 
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date).format(
-            "M/D"
-          )
+        ? this.$dayjs(
+            this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDEditTgt() {
-      return this.getDateMD(this.manage.convAttnToDateMDNum[this.manage.selAttn]);
+      return this.getDateMD(
+        this.manage.convAttnToDateMDNum[this.manage.selAttn]
+      );
     },
     getDateMD(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.selCrlm.dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.selCrlm.dayofweek][num].date).format("M/D")
+        ? this.$dayjs(
+            this.dayChainJSON[this.selCrlm.dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDddd(val) {
@@ -4983,7 +4891,9 @@ export default {
     },
     getIsDoneToday(val) {
       //当日更新かどうか
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD") ? "is-new" : "is-old";
+      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
+        ? "is-new"
+        : "is-old";
     },
     getTimeIfTodayOrDate(val) {
       //当日更新なら時刻、違えば日付
@@ -5000,7 +4910,7 @@ export default {
     },
     dateDevAddDate() {
       this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
-    },
+    }
   },
   filters: {
     subStr: function(string) {
@@ -5008,7 +4918,7 @@ export default {
     },
     subStrD: function(string) {
       return string.substring(0, 200) + "...";
-    },
+    }
     // subStrr: function(string) {
     //   return string.substring(0, 500) + "...";
     // }
@@ -5017,14 +4927,14 @@ export default {
     TESTarr0() {
       if (this.ds.clrms) {
         return this.ds.clrms
-          .filter((x) => x.classcode === "X0063")
-          .map((m) => {
+          .filter(x => x.classcode === "X0063")
+          .map(m => {
             return {
               c: m.classcode,
               s: m.studentcode,
               n: m.studentname,
               e: m.eval01,
-              up: m._lastChangedAt,
+              up: m._lastChangedAt
             };
           });
       } else {
@@ -5033,15 +4943,17 @@ export default {
     },
     TESTarr1() {
       if (this.dataset.Clrms) {
-        return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
-          return {
-            c: m.classcode,
-            s: m.studentcode,
-            n: m.studentname,
-            e: m.eval01,
-            up: m._lastChangedAt,
-          };
-        });
+        return this.dataset.Clrms.filter(x => x.classcode === "X0063").map(
+          m => {
+            return {
+              c: m.classcode,
+              s: m.studentcode,
+              n: m.studentname,
+              e: m.eval01,
+              up: m._lastChangedAt
+            };
+          }
+        );
       } else {
         return null;
       }
@@ -5049,14 +4961,14 @@ export default {
     TESTarr2() {
       if (this.classmembers) {
         return this.classmembers
-          .filter((x) => x.classcode === "X0063")
-          .map((m) => {
+          .filter(x => x.classcode === "X0063")
+          .map(m => {
             return {
               c: m.classcode,
               s: m.studentcode,
               n: m.studentname,
               e: m.eval01,
-              up: m._lastChangedAt,
+              up: m._lastChangedAt
             };
           });
       } else {
@@ -5080,7 +4992,9 @@ export default {
     },
 
     indiRow() {
-      return this.classmembers.length > 0 ? this.classmembers[this.cRoom.indiNo] : "";
+      return this.classmembers.length > 0
+        ? this.classmembers[this.cRoom.indiNo]
+        : "";
     },
     //合計点計算
     indiSc() {
@@ -5165,7 +5079,7 @@ export default {
           .format("ddd"),
         this.$dayjs(this.sett.ddate)
           .add(-2, "d")
-          .format("ddd"),
+          .format("ddd")
       ];
     },
     dayACjsHmm() {
@@ -5196,16 +5110,16 @@ export default {
     },
     getTodayJSON: function() {
       //本日の情報 // 5/25: 土日に不具合になるので、ピンポイントではなく最大値でだすようにした
-      return this.dataset.Cldrs.filter((x) => x.date <= this.dayjsYYYYMMDDt).reduce((a, b) =>
-        a.date > b.date ? a : b
-      );
+      return this.dataset.Cldrs.filter(
+        x => x.date <= this.dayjsYYYYMMDDt
+      ).reduce((a, b) => (a.date > b.date ? a : b));
     },
     dayChainJSON: function() {
-      const cMon = this.dataset.Cldrs.filter((x) => x.dayofweek === "Mon");
-      const cTue = this.dataset.Cldrs.filter((x) => x.dayofweek === "Tue");
-      const cWed = this.dataset.Cldrs.filter((x) => x.dayofweek === "Wed");
-      const cThu = this.dataset.Cldrs.filter((x) => x.dayofweek === "Thu");
-      const cFri = this.dataset.Cldrs.filter((x) => x.dayofweek === "Fri");
+      const cMon = this.dataset.Cldrs.filter(x => x.dayofweek === "Mon");
+      const cTue = this.dataset.Cldrs.filter(x => x.dayofweek === "Tue");
+      const cWed = this.dataset.Cldrs.filter(x => x.dayofweek === "Wed");
+      const cThu = this.dataset.Cldrs.filter(x => x.dayofweek === "Thu");
+      const cFri = this.dataset.Cldrs.filter(x => x.dayofweek === "Fri");
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },
 
@@ -5214,7 +5128,7 @@ export default {
       // return this.dayChainJSON.Tue; //[this.dayjsddd];
       //本日の情報
       return this.dataset.Cldrs.filter(
-        (x) =>
+        x =>
           Number(x.lessonnum) < Number(this.getTodayJSON.lessonnum) &&
           x.dayofweek === this.dayjsddd &&
           x.hwic !== undefined
@@ -5229,8 +5143,8 @@ export default {
     monthChainUntilCurrentMonthJSON: function() {
       // YYYY-MMで当月まで（勤怠用）
       const arr = this.dataset.Cldrs.filter(
-        (x) => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
-      ).map((x) => this.$dayjs(x.date).format("YYYY-MM"));
+        x => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
+      ).map(x => this.$dayjs(x.date).format("YYYY-MM"));
       return Array.from(new Set(arr));
     },
     // getDayChainJSON: function() {
@@ -5239,17 +5153,17 @@ export default {
     // },
     yourClasses: function() {
       const fname = this.sett.alias.name;
-      return this.dataset.allClasses.filter((x) => x.instructor === fname);
+      return this.dataset.allClasses.filter(x => x.instructor === fname);
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
       return this.instructor.yourattendances.some(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
     },
     ifYouClockInAndStillIn: function() {
       const fnd = this.instructor.yourattendances.find(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
       if (fnd != undefined) {
         return fnd.clockout == null ? true : false; //出社/退社
@@ -5259,17 +5173,17 @@ export default {
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
-        (x) => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
+        x => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
       );
     },
     allattendancesMonth: function() {
       let filtered;
       filtered = this.instructor.attendances.filter(
-        (x) => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
+        x => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
       );
 
       if (this.manage.instinstname !== "all") {
-        filtered = filtered.filter((x) => x.id === this.manage.instinstname);
+        filtered = filtered.filter(x => x.id === this.manage.instinstname);
       }
 
       return filtered;
@@ -5282,10 +5196,10 @@ export default {
       }, this);
     },
     classmembersA: function() {
-      return this.classmembers.filter((x) => x.group === "A");
+      return this.classmembers.filter(x => x.group === "A");
     },
     classmembersB: function() {
-      return this.classmembers.filter((x) => x.group === "B");
+      return this.classmembers.filter(x => x.group === "B");
     },
     isClrmLoading: function() {
       return this.dataset.Clrms.length > 0 ? false : true;
@@ -5298,31 +5212,35 @@ export default {
         if (this.manage.dow == "All") {
           filtered = this.dataset.ClrmsInstByday;
         } else {
-          filtered = this.dataset.ClrmsInstByday.filter((x) => x.dayofweek === this.manage.dow);
+          filtered = this.dataset.ClrmsInstByday.filter(
+            x => x.dayofweek === this.manage.dow
+          );
         }
 
         if (this.manage.instname !== "all") {
-          filtered = filtered.filter((x) => x.id === this.manage.instname);
+          filtered = filtered.filter(x => x.id === this.manage.instname);
         }
       } else {
         if (this.manage.dow == "All") {
-          filtered = this.dataset.ClrmsInstByday.filter((x) => x.id !== "dummy instructor");
+          filtered = this.dataset.ClrmsInstByday.filter(
+            x => x.id !== "dummy instructor"
+          );
         } else {
           filtered = this.dataset.ClrmsInstByday.filter(
-            (x) => x.dayofweek === this.manage.dow && x.id !== "dummy instructor"
+            x => x.dayofweek === this.manage.dow && x.id !== "dummy instructor"
           );
         }
 
         // 講師フィルタ
         if (this.manage.instname !== "all") {
-          filtered = filtered.filter((x) => x.id === this.manage.instname);
+          filtered = filtered.filter(x => x.id === this.manage.instname);
         }
       }
       return filtered;
     },
     queryRowCrlmData() {
       let filtered;
-      filtered = this.dataset.ClrmsInstByday.filter((x) =>
+      filtered = this.dataset.ClrmsInstByday.filter(x =>
         x.studentcode.includes(this.manage.queryRowCrlm)
       ).map(function(item) {
         let js = "";
@@ -5334,7 +5252,7 @@ export default {
 
       // replace(",", "\n")
       return filtered;
-    },
+    }
   },
   // watch: {
   //          cRoom.showComEv: function (newFlag, oldFlag) {
@@ -5353,22 +5271,22 @@ export default {
     await this.fetchInsts(); //今のところ全件とる
 
     await Auth.currentAuthenticatedUser()
-      .then((user) => {
+      .then(user => {
         this.authdetail = {
           username: user.username,
           name: user.attributes.name,
           nickname: user.attributes.nickname,
-          role: user.signInUserSession.idToken.payload["custom:role"],
+          role: user.signInUserSession.idToken.payload["custom:role"]
         };
 
         this.sett.alias = {
           username: user.username,
-          name: user.attributes.name,
+          name: user.attributes.name
         };
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    Hub.listen("datastore", async (hubData) => {
+    Hub.listen("datastore", async hubData => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
       //   console.log(`User has a network connection? ${data.active}`);
@@ -5457,7 +5375,7 @@ export default {
     );
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
-  },
+  }
 };
 </script>
 

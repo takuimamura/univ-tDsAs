@@ -139,9 +139,9 @@
     <!-- 管理用 -->
     <section v-if="getStartingUrl === 'localhost'">
       <article>
-        <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
+        <p class="subtitle">学期ごと、開講前の設定作業</p>
         allClasses: ClssJSON の 全クラス分をMiscに構築。
-        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button> -->
+        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>
       </article>
     </section>
 
@@ -3573,22 +3573,20 @@ export default {
     },
     //// クラス毎のサマリDB 一括作成
 
-    // <p class="subtitle">学期ごと、開講前の設定作業</p>
-    // allClasses: ClssJSON の 全クラス分をMiscに構築。
-    // async createMiscClassSummary() {
-    //   await Promise.all(
-    //     this.dataset.allClasses.forEach((s) => {
-    //       DataStore.save(
-    //         new Misc({
-    //           type: this.ds.typeMisc.classSum,
-    //           name: s.id,
-    //         })
-    //       );
-    //     })
-    //   );
-    //   // console.warn("createMiscClassSummary done");
-    //   // this.fetchMiscs();
-    // },
+    async createMiscClassSummary() {
+      await Promise.all(
+        this.dataset.allClasses.forEach((s) => {
+          DataStore.save(
+            new Misc({
+              type: this.ds.typeMisc.classSum,
+              name: s.id,
+            })
+          );
+        })
+      );
+      console.warn("createMiscClassSummary done");
+      // this.fetchMiscs();
+    },
     //// クラス毎のサマリDB 更新
 
     async devClassSummary(classcode) {
