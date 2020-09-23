@@ -1376,7 +1376,7 @@
                 <div :class="getIndiPaneClass('left')">
                   <div class="tile is-parent is-vertical">
                     <div class="tile is-child box">
-                      <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)">
+                      <nav class="level has-background-grey-lighter">
                         <div class="level-left title">
                           {{ indiRow.classcount + ". " }}
                           <div style="margin:0px 3px;"></div>

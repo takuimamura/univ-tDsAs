@@ -1376,17 +1376,13 @@
                 <div :class="getIndiPaneClass('left')">
                   <div class="tile is-parent is-vertical">
                     <div class="tile is-child box">
-                      <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)">
+                      <nav class="level">
                         <div class="level-left title">
                           {{ indiRow.classcount + ". " }}
                           <div style="margin:0px 3px;"></div>
                           <span class="has-text-grey-light">{{ indiRow.studentcode + " " }}</span>
                           <div style="margin:0px 3px;"></div>
                           {{ " " + indiRow.studentname }}
-                          <div style="margin:0px 10px;"></div>
-                          <span
-                            class="is-size-5 has-text-grey-lighter"
-                          >{{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}</span>
                         </div>
 
                         <div class="level-right title is-4">
@@ -3413,7 +3409,7 @@ export default {
 
       await this.fetchClrms();
       await this.enterClassroomUp();
-      setTimeout(this.enterClassroomUp, 3000); // 直後だとタイムスタンプ取れないので再実施させる
+      setTimeout(this.enterClassroomUp, 3000);
       // await this.fetchClrms(clrmItem.clrm);
     },
 

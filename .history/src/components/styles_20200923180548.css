@@ -101,8 +101,8 @@ body {
   color: grey;
 }
 .is-old {
-  background-color: #afafaf !important;
-  color: rgb(241, 241, 241);
+  background-color: #9db1a6 !important;
+  color: grey;
 }
 /* .attend-hist-absent {
   background: hsl(348, 44%, 40%) !important;
