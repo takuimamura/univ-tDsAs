@@ -1451,9 +1451,12 @@
                                         </a>
                                       </td>
                                       <td
-                                        :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
+                                        :class="[indiRow[k.evl]!==-1 ? 'has-background-danger' : '']"
                                       >
-                                        <span v-show="indiRow[k.evl]==-1">absent</span>
+                                        <span
+                                          v-show="indiRow[k.evl]==-1"
+                                          class="title is-3 has-background-danger"
+                                        >absent</span>
                                         <span v-show="indiRow[k.evl]!==-1">
                                           <star-rating
                                             v-model="indiRow[k.evl]"
@@ -1474,9 +1477,7 @@
                                           >( tap left button to edit )</div>
                                         </template>
                                       </td>
-                                      <td class="title is-4">
-                                        <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
-                                      </td>
+                                      <td class="title is-4">{{ indiRow[k.evl] }}</td>
                                       <td v-show="cRoom.showEvalComp === 2">
                                         <b-button
                                           icon-left="comment"
@@ -1576,23 +1577,18 @@
                                         />
                                       </a>
                                     </td>
-                                    <td
-                                      :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
-                                    >
-                                      <span v-show="indiRow[k.evl]==-1">absent</span>
-                                      <span v-show="indiRow[k.evl]!==-1">
-                                        <star-rating
-                                          v-model="indiRow[k.evl]"
-                                          :show-rating="false"
-                                          :star-size="k.ssize[cRoom.showEvalComp]"
-                                          :max-rating="k.pt"
-                                          :star-points="cRoom.customstarShape"
-                                          @rating-selected="goEvalUpTarget"
-                                          @current-rating="
+                                    <td>
+                                      <star-rating
+                                        v-model="indiRow[k.evl]"
+                                        :show-rating="false"
+                                        :star-size="k.ssize[cRoom.showEvalComp]"
+                                        :max-rating="k.pt"
+                                        :star-points="cRoom.customstarShape"
+                                        @rating-selected="goEvalUpTarget"
+                                        @current-rating="
                                           setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
                                         "
-                                        ></star-rating>
-                                      </span>
+                                      ></star-rating>
                                     </td>
                                     <td class="title is-4">
                                       <span
@@ -1601,7 +1597,6 @@
                                             ? 'has-pink-strong'
                                             : 'has-text-black',
                                         ]"
-                                        v-show="indiRow[k.evl]!==-1"
                                       >{{ indiRow[k.evl] }}</span>
                                     </td>
                                     <td>
@@ -1700,23 +1695,18 @@
                                 <template v-if="k.p1ptshow">
                                   <template v-if="!checkifAbsent(indiRow[k.comm])">
                                     <!-- 通常の場合 -->
-                                    <td
-                                      :class="[indiRow[k.evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
-                                    >
-                                      <span v-show="indiRow[k.evl]==-1">absent</span>
-                                      <span v-show="indiRow[k.evl]!==-1">
-                                        <star-rating
-                                          v-model="indiRow[k.evl]"
-                                          :show-rating="false"
-                                          :star-size="k.ssize[cRoom.showEvalComp]"
-                                          :max-rating="k.pt"
-                                          :star-points="cRoom.customstarShape"
-                                          @rating-selected="goEvalUpTarget"
-                                          @current-rating="
+                                    <td>
+                                      <star-rating
+                                        v-model="indiRow[k.evl]"
+                                        :show-rating="false"
+                                        :star-size="k.ssize[cRoom.showEvalComp]"
+                                        :max-rating="k.pt"
+                                        :star-points="cRoom.customstarShape"
+                                        @rating-selected="goEvalUpTarget"
+                                        @current-rating="
                                           setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
                                         "
-                                        ></star-rating>
-                                      </span>
+                                      ></star-rating>
                                     </td>
                                     <!-- <td
                                       class="title is-4"
@@ -1724,9 +1714,7 @@
                                         indiRow[k.evl] === null ? 'has-background-grey-light' : ''
                                       "
                                     >{{ indiRow[k.evl] }}</td>-->
-                                    <td class="title is-4">
-                                      <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
-                                    </td>
+                                    <td class="title is-4">{{ indiRow[k.evl] }}</td>
                                     <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                   </template>
                                   <template v-else>
@@ -1884,26 +1872,16 @@
                               />
                             </a>
                           </div>
-                          <!-- あとまわし★なぜか赤にならない -->
-                          <div
-                            class="column"
-                            :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
-                          >
-                            <span
-                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1"
-                            >absent</span>
-                            <span
-                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
-                            >
-                              <star-rating
-                                class="level-item"
-                                v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]"
-                                :show-rating="false"
-                                :star-size="cRoom.evalCriItems[cRoom.tgtEvalSingle].ssize[4]"
-                                :max-rating="cRoom.evalCriItems[cRoom.tgtEvalSingle].pt"
-                                :star-points="cRoom.customstarShape"
-                                @rating-selected="goEvalUpTarget"
-                                @current-rating="
+                          <div class="column">
+                            <star-rating
+                              class="level-item"
+                              v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]"
+                              :show-rating="false"
+                              :star-size="cRoom.evalCriItems[cRoom.tgtEvalSingle].ssize[4]"
+                              :max-rating="cRoom.evalCriItems[cRoom.tgtEvalSingle].pt"
+                              :star-points="cRoom.customstarShape"
+                              @rating-selected="goEvalUpTarget"
+                              @current-rating="
                                 setEvalUpTarget(
                                   $event,
                                   indiRow,
@@ -1911,12 +1889,10 @@
                                   cRoom.indiNo
                                 )
                               "
-                              ></star-rating>
-                            </span>
+                            ></star-rating>
                           </div>
                           <div
                             class="column title is-2"
-                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
                           >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                         </section>
 

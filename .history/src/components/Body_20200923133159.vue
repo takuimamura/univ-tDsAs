@@ -1884,7 +1884,6 @@
                               />
                             </a>
                           </div>
-                          <!-- あとまわし★なぜか赤にならない -->
                           <div
                             class="column"
                             :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
@@ -1916,7 +1915,7 @@
                           </div>
                           <div
                             class="column title is-2"
-                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
+                            v-show="indiRow[k.evl]!==-1"
                           >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                         </section>
 

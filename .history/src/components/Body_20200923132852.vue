@@ -1474,9 +1474,7 @@
                                           >( tap left button to edit )</div>
                                         </template>
                                       </td>
-                                      <td class="title is-4">
-                                        <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
-                                      </td>
+                                      <td class="title is-4">{{ indiRow[k.evl] }}</td>
                                       <td v-show="cRoom.showEvalComp === 2">
                                         <b-button
                                           icon-left="comment"
@@ -1601,7 +1599,6 @@
                                             ? 'has-pink-strong'
                                             : 'has-text-black',
                                         ]"
-                                        v-show="indiRow[k.evl]!==-1"
                                       >{{ indiRow[k.evl] }}</span>
                                     </td>
                                     <td>
@@ -1724,9 +1721,7 @@
                                         indiRow[k.evl] === null ? 'has-background-grey-light' : ''
                                       "
                                     >{{ indiRow[k.evl] }}</td>-->
-                                    <td class="title is-4">
-                                      <span v-show="indiRow[k.evl]!==-1">{{ indiRow[k.evl] }}</span>
-                                    </td>
+                                    <td class="title is-4">{{ indiRow[k.evl] }}</td>
                                     <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                   </template>
                                   <template v-else>
@@ -1884,7 +1879,6 @@
                               />
                             </a>
                           </div>
-                          <!-- あとまわし★なぜか赤にならない -->
                           <div
                             class="column"
                             :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
@@ -1916,7 +1910,6 @@
                           </div>
                           <div
                             class="column title is-2"
-                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
                           >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                         </section>
 
