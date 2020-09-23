@@ -1422,7 +1422,7 @@
                                           <b-icon
                                             pack="fas"
                                             icon="user-slash"
-                                            size="is-small"
+                                            size="is-medium"
                                             type="is-pink"
                                             @click="minusEvalUpTarget(indiRow, k.evl)"
                                           />

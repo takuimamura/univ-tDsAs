@@ -1,11 +1,6 @@
 <template>
   <div id="app">
     <div v-if="getStartingUrl === 'localhost'">
-      <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
-      <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-      <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
-      <b-input v-model="sett.dummy"></b-input>
-      {{sett.dummy}}
       <!-- 上部表示 -->
       <!-- TESTarr0 - {{TESTarr0 }}    <br /> -->
       <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
@@ -1418,19 +1413,10 @@
 
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
-                                        <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                          <b-icon
-                                            pack="fas"
-                                            icon="user-slash"
-                                            size="is-small"
-                                            type="is-pink"
-                                            @click="minusEvalUpTarget(indiRow, k.evl)"
-                                          />
-                                        </a>
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
-                                            icon="running"
+                                            icon="ban"
                                             size="is-medium"
                                             type="is-pink"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
@@ -2068,9 +2054,10 @@
                                     @input="
                                       updateClrmEdit(
                                         props.row.id,
+                                        props.row.index,
                                         manage.selAttn,
                                         'here',
-                                        props.row.note
+                                        props.row.attn19
                                       )
                                     "
                                   >〇</b-radio-button>
@@ -2225,9 +2212,10 @@
                                     @input="
                                       updateClrmEdit(
                                         props.row.id,
+                                        props.row.index,
                                         manage.selAttn,
                                         'here',
-                                        props.row.note
+                                        props.row.attn19
                                       )
                                     "
                                   >〇</b-radio-button>
@@ -2239,9 +2227,10 @@
                                     @input="
                                       updateClrmEdit(
                                         props.row.id,
+                                        props.row.index,
                                         manage.selAttn,
                                         'late',
-                                        props.row.note
+                                        props.row.attn19
                                       )
                                     "
                                   >LA</b-radio-button>
@@ -2252,9 +2241,10 @@
                                     @input="
                                       updateClrmEdit(
                                         props.row.id,
+                                        props.row.index,
                                         manage.selAttn,
                                         'early leave',
-                                        props.row.note
+                                        props.row.attn19
                                       )
                                     "
                                     size="is-medium"
@@ -2267,9 +2257,10 @@
                                     @input="
                                       updateClrmEdit(
                                         props.row.id,
+                                        props.row.index,
                                         manage.selAttn,
                                         'not here',
-                                        props.row.note
+                                        props.row.attn19
                                       )
                                     "
                                     size="is-medium"
@@ -2312,6 +2303,7 @@ import ClssJSON from "../assets/Clss.json";
 // import CldrJSON from "../assets/Cldr.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
+// import MiscellaneousJSON from "../assets/Miscellaneous.json";
 // import ClrmJSON from "../assets/Clrm.json";
 // import allclassesjson from "../assets/allclasses.json";
 import EnvJSON from "../assets/env.json";
@@ -2516,7 +2508,7 @@ export default {
         yourTodaysClasses: [],
         yourattendvisiblemonth: null,
         attendvisiblemonth: null,
-        nameConv: UsersJSON
+        nameConv: UsersJSON // MiscellaneousJSON,
       },
 
       lbls: {
@@ -3326,95 +3318,91 @@ export default {
       // console.warn("FIREcreateMisc" + dt);
       this.createMisc({
         type: "TEST",
-        name: this.sett.dummy,
+        name: "TEST",
         detail: dt
       });
     },
-    // FIREcreateMiscCo() {
-    //   const dt = this.$dayjs().format("H:mm:ss");
-    //   // console.warn("FIREcreateMisc" + dt);
-    //   this.createMiscC({
-    //     type: "TEST",
-    //     name: this.sett.dummy,
-    //     detail: dt
-    //   });
-    // },
-    async FIREQueryMiscCo() {
-      const cr = {
-        type: "TEST",
-        name: this.sett.dummy
-      };
-      const original = await DataStore.query(Misc, c =>
-        c.type("eq", cr.type).name("eq", cr.name)
-      );
-      console.warn(original);
+    FIREcreateMiscCo() {
+      const dt = this.$dayjs().format("H:mm:ss");
+      // console.warn("FIREcreateMisc" + dt);
+      this.createMiscC({
+        type: "TEEST",
+        name: "TEEST",
+        detail: dt
+      });
     },
 
     async createMisc(cr) {
       if (!cr) {
         return;
       }
-      try {
-        await DataStore.save(new Misc(cr));
-      } catch (err) {
-        this.writeFail("MiscCreate", cr, err);
-      }
-    },
 
-    // async updateMisc(id,upd) {
-    async updateMisc(upd) {
-      const id = "dummy★"; //あとまわし★
-      try {
-        const itm = await DataStore.query(Misc, id);
-        await DataStore.save(
-          Clrm.copyOf(itm, updated => {
-            updated.type = upd.type;
-            updated.name = upd.name;
-            updated.detail = upd.detail;
-          })
-        );
-      } catch (err) {
-        this.writeFail("MiscUpdate", id + upd, err);
-      }
+      await DataStore.save(new Misc(cr));
     },
-
-    // async createMiscC(cr) {
-    //   //★うまくできない
-    //   if (!cr) {
-    //     return;
-    //   }
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", cr.type).name("eq", cr.name)
-    //   );
-    //   await DataStore.save(
-    //     Misc.copyOf(original, updated => {
-    //       updated.detail = "updatedetail";
-    //     })
-    //   );
-    // },
+    async createMiscC(cr) {
+      if (!cr) {
+        return;
+      }
+      const original = await DataStore.query(Misc, c =>
+        c.type("eq", cr.type).name("eq", cr.name)
+      );
+      await DataStore.save(
+        Misc.copyOf(original, updated => {
+          updated.detail = "updatedetail";
+        })
+      );
+    },
 
     //// graphql
     //// graphql
 
-    // async updateInst(upArr) {
-    //   upArr.id = this.authdetail.username;
-    //   try {
-    //     // console.warn("xx:updateInst");
-    //     //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
-    //   } catch (err) {
-    //     this.writeFail("InstUpdate", upArr, err);
-    //   }
-    // },
-
+    async createInst(crArr) {
+      crArr.id = this.authdetail.username;
+      try {
+        // console.warn("xx:createInst");
+        //$$$$$           // await API.graphql(graphqlOperation(createInst, { input: crArr }));
+      } catch (err) {
+        this.writeFail("InstCreate", crArr, err);
+      }
+    },
+    async updateInst(upArr) {
+      upArr.id = this.authdetail.username;
+      try {
+        // console.warn("xx:updateInst");
+        //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+      } catch (err) {
+        this.writeFail("InstUpdate", upArr, err);
+      }
+    },
+    async createInMisc(crArr) {
+      try {
+        // console.warn("xx:createInMisc");
+        //$$$$$           await API.graphql(graphqlOperation(createMisc, { input: crArr }));
+      } catch (err) {
+        this.writeFail("MiscCreate", crArr, err);
+      }
+    },
+    async updateInMisc(upArr) {
+      try {
+        // console.warn("xx:updateInMisc");
+        //$$$$$           await API.graphql(graphqlOperation(updateMisc, { input: upArr }));
+      } catch (err) {
+        this.writeFail("MiscUpdate", upArr, err);
+      }
+    },
+    updateClrmDev(row, fname, fval) {
+      this.updateClrm(row.id, row.index, fname, fval);
+    },
     //編集用
-    async updateClrmEdit(uid, fname, fval, logtx) {
+    async updateClrmEdit(uid, uidx, fname, fval, logtx) {
       const upArr = {
-        id: uid
+        id: uid,
+        index: uidx
       };
       upArr[fname] = fval;
       //テスト時はログを記録しない
       if (this.sett.env.isTestMode !== true) {
-        upArr.note =
+        upArr.attn19 =
           (logtx === null ? "" : logtx) +
           "_@[" +
           this.$dayjs().format("YYYY-MM-DD HH:mm") +
@@ -3436,15 +3424,14 @@ export default {
       }
     },
 
-    // async manageUpdateClrmAll() {
-    //   //  this.classmembers.forEach((rowval, idx) => {
-    //   this.classmembers.forEach(rowval => {
-    //     this.updateClrmAll(rowval);
-    //     // this.dataset.up0514[num].result = this.$xxxdayjs();
-    //   });
-    // },
+    async manageUpdateClrmAll() {
+      //  this.classmembers.forEach((rowval, idx) => {
+      this.classmembers.forEach(rowval => {
+        this.updateClrmAll(rowval);
+        // this.dataset.up0514[num].result = this.$xxxdayjs();
+      });
+    },
     async manageUpdateClrmDvAll() {
-      // ★対象全てをひとづずつCopyOfしようか
       //念のためmiscに
       const classtemp = this.dataset.ClrmsChk.filter(
         x => x.classcode === this.selCrlm.id && x.enable === true
@@ -3567,10 +3554,10 @@ export default {
     },
     showIndividualChange() {
       this.cRoom.showIndividual = !this.cRoom.showIndividual;
-      // // 戻るときだけすべて保存する
-      // if (!this.cRoom.showIndividual) {
-      //   this.manageUpdateClrmAll();
-      // }
+      // 戻るときだけすべて保存する
+      if (!this.cRoom.showIndividual) {
+        this.manageUpdateClrmAll();
+      }
     },
     showEvalCompChange() {
       // 行全体保存
@@ -3598,7 +3585,7 @@ export default {
       //個人ページが切り替わりまたは離脱の際にリセットしとく
 
       // 行全体保存 ※直前の行
-      // this.updateClrmAll(this.classmembers[this.cRoom.indiNoPrev]);
+      this.updateClrmAll(this.classmembers[this.cRoom.indiNoPrev]);
 
       this.cRoom.indiNoPrev = this.cRoom.indiNo;
       // this.cRoom.showComEv.forEach(function(m) {
@@ -3610,7 +3597,7 @@ export default {
     },
     manageIndiNo(num) {
       // 行全体保存
-      // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
+      this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
 
       const newval = this.cRoom.indiNo + num;
       this.cRoom.indiNo =
@@ -3635,7 +3622,7 @@ export default {
       //単一項目評価画面で項目移動
 
       // 行全体保存
-      // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
+      this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
 
       const newval = this.cRoom.tgtEvalSingle + num;
       this.cRoom.tgtEvalSingle =
@@ -3652,7 +3639,7 @@ export default {
         name: this.authdetail.username,
         detail: this.instructor.yourTodaysClasses
       };
-      this.updateMisc(upArr);
+      this.updateInMisc(upArr);
     },
 
     hideComEv() {
@@ -3681,35 +3668,30 @@ export default {
       //スターの確定
       this.updateClrm(
         this.cRoom.evalUpTargetRow.id,
+        this.cRoom.evalUpTargetRow.index,
         this.cRoom.evalUpTargetCol,
         val
       );
     },
-    // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
-      // prow[fname] = 0;
+      prow[fname] = 0;
 
       //0点にしてUpする
-      this.updateClrm(prow.id, fname, 0);
+      this.updateClrm(prow.id, prow.index, fname, 0);
     },
-    // 評価を欠席
-    minusEvalUpTarget(prow, fname) {
-      this.updateClrm(prow.id, fname, -1);
-    },
-
     updateClrmEvalsIndi(row, fname, fval) {
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {
-        this.updateClrm(row.id, fname, fval);
+        this.updateClrm(row.id, row.index, fname, fval);
       }
     },
     updateClrmEvalsIndiAny(row, fname, fval) {
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv.ecomAny = !this.cRoom.showComEv.ecomAny;
       if (!this.cRoom.showComEv.ecomAny) {
-        this.updateClrm(row.id, fname, fval);
+        this.updateClrm(row.id, row.index, fname, fval);
       }
     },
 
@@ -4026,6 +4008,18 @@ export default {
 
       this.sett.dummy1 = val;
       // this.sett.dummy2 = this.classmembers.map((m) => {
+      //   return m.attn06;
+      // });
+      //      this.sett.dummy2 = [].concat(this.classmembers[0]);
+      // this.sett.dummy1 = this.getTodayJSON.attendance; //this.$dayjs("2020-04-03");
+      // this.sett.acdate = this.$dayjs().add(5, "d");
+
+      // const dt = this.dataset.Miscs.find((el) => {
+      //   return el.type === "alter";
+      // });
+      // this.sett.dummy1 = this.dayChainJSON[this.selCrlm.dayofweek];
+      // this.sett.dummy2 = this.selCrlm.dayofweek; //this.sett.dummy1.index + "|||" + this.sett.dummy1.id;
+      // this.sett.dummy1 = this.cRoom.showEvalComptest;
     },
     initializeInst() {
       this.workspaceValication();
@@ -4073,10 +4067,10 @@ export default {
         //部屋から出たのか
         if (this.isEnteredselCrlm) {
           this.isEnteredselCrlm = false;
-          // if (this.classmembers.length > 0) {
-          //   //全員保存
-          //   this.manageUpdateClrmAll();
-          // }
+          if (this.classmembers.length > 0) {
+            //全員保存
+            this.manageUpdateClrmAll();
+          }
           if (this.isOpenselCrlm) {
             //集計
             this.listClrmsDataIDCheck(this.sett.alias.name);
@@ -4117,9 +4111,9 @@ export default {
 
       if (ifUp) {
         //出欠モード保持のレコード
-        this.updateMisc(crArr);
+        this.updateInMisc(crArr);
       } else {
-        this.createMisc(crArr);
+        this.createInMisc(crArr);
       }
       // if (this.instructor.yourTodaysClasses.length < 1) {
 

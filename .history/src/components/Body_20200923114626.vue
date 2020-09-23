@@ -1418,18 +1418,15 @@
 
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
-                                        <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                          <b-icon
-                                            pack="fas"
-                                            icon="user-slash"
-                                            size="is-small"
-                                            type="is-pink"
-                                            @click="minusEvalUpTarget(indiRow, k.evl)"
-                                          />
-                                        </a>
+                                        <b-icon
+                                          pack="fas"
+                                          icon="user-slash"
+                                          size="is-medium"
+                                          type="is-pink"
+                                        />
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
-                                            pack="fas"
+                                            pack="fab"
                                             icon="running"
                                             size="is-medium"
                                             type="is-pink"

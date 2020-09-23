@@ -1418,19 +1418,10 @@
 
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
-                                        <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                          <b-icon
-                                            pack="fas"
-                                            icon="user-slash"
-                                            size="is-small"
-                                            type="is-pink"
-                                            @click="minusEvalUpTarget(indiRow, k.evl)"
-                                          />
-                                        </a>
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
-                                            icon="running"
+                                            icon="ban"
                                             size="is-medium"
                                             type="is-pink"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
@@ -3685,19 +3676,13 @@ export default {
         val
       );
     },
-    // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
-      // prow[fname] = 0;
+      prow[fname] = 0;
 
       //0点にしてUpする
       this.updateClrm(prow.id, fname, 0);
     },
-    // 評価を欠席
-    minusEvalUpTarget(prow, fname) {
-      this.updateClrm(prow.id, fname, -1);
-    },
-
     updateClrmEvalsIndi(row, fname, fval) {
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];

@@ -1418,19 +1418,10 @@
 
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
-                                        <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                          <b-icon
-                                            pack="fas"
-                                            icon="user-slash"
-                                            size="is-small"
-                                            type="is-pink"
-                                            @click="minusEvalUpTarget(indiRow, k.evl)"
-                                          />
-                                        </a>
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
-                                            icon="running"
+                                            icon="ban"
                                             size="is-medium"
                                             type="is-pink"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
@@ -3355,28 +3346,27 @@ export default {
         return;
       }
       try {
-        await DataStore.save(new Misc(cr));
+      await DataStore.save(new Misc(cr));
       } catch (err) {
         this.writeFail("MiscCreate", cr, err);
       }
     },
 
-    // async updateMisc(id,upd) {
-    async updateMisc(upd) {
-      const id = "dummy★"; //あとまわし★
+    async updateMisc(id,upd) {
       try {
-        const itm = await DataStore.query(Misc, id);
-        await DataStore.save(
-          Clrm.copyOf(itm, updated => {
-            updated.type = upd.type;
-            updated.name = upd.name;
-            updated.detail = upd.detail;
-          })
-        );
+      const itm = await DataStore.query(Misc, id);
+      await DataStore.save(
+        Clrm.copyOf(itm, (updated) => {
+          updated.type = upd.type;
+          updated.name = upd.name;
+          updated.detail = upd.detail;
+        })
       } catch (err) {
-        this.writeFail("MiscUpdate", id + upd, err);
+        this.writeFail("MiscCreate", cr, err);
       }
-    },
+
+
+      );
 
     // async createMiscC(cr) {
     //   //★うまくできない
@@ -3396,16 +3386,40 @@ export default {
     //// graphql
     //// graphql
 
-    // async updateInst(upArr) {
-    //   upArr.id = this.authdetail.username;
+    async createInst(crArr) {
+      crArr.id = this.authdetail.username;
+      try {
+        // console.warn("xx:createInst");
+        //$$$$$           // await API.graphql(graphqlOperation(createInst, { input: crArr }));
+      } catch (err) {
+        this.writeFail("InstCreate", crArr, err);
+      }
+    },
+    async updateInst(upArr) {
+      upArr.id = this.authdetail.username;
+      try {
+        // console.warn("xx:updateInst");
+        //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+      } catch (err) {
+        this.writeFail("InstUpdate", upArr, err);
+      }
+    },
+    // async createInMisc(crArr) {
     //   try {
-    //     // console.warn("xx:updateInst");
-    //     //$$$$$           await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+    //     // console.warn("xx:createInMisc");
+    //     //$$$$$           await API.graphql(graphqlOperation(createMisc, { input: crArr }));
     //   } catch (err) {
-    //     this.writeFail("InstUpdate", upArr, err);
+    //     this.writeFail("MiscCreate", crArr, err);
     //   }
     // },
-
+    async updateInMisc(upArr) {
+      try {
+        // console.warn("xx:updateInMisc");
+        //$$$$$           await API.graphql(graphqlOperation(updateMisc, { input: upArr }));
+      } catch (err) {
+        this.writeFail("MiscUpdate", upArr, err);
+      }
+    },
     //編集用
     async updateClrmEdit(uid, fname, fval, logtx) {
       const upArr = {
@@ -3652,7 +3666,7 @@ export default {
         name: this.authdetail.username,
         detail: this.instructor.yourTodaysClasses
       };
-      this.updateMisc(upArr);
+      this.updateInMisc(upArr);
     },
 
     hideComEv() {
@@ -3685,19 +3699,13 @@ export default {
         val
       );
     },
-    // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
-      // prow[fname] = 0;
+      prow[fname] = 0;
 
       //0点にしてUpする
       this.updateClrm(prow.id, fname, 0);
     },
-    // 評価を欠席
-    minusEvalUpTarget(prow, fname) {
-      this.updateClrm(prow.id, fname, -1);
-    },
-
     updateClrmEvalsIndi(row, fname, fval) {
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
@@ -4117,7 +4125,7 @@ export default {
 
       if (ifUp) {
         //出欠モード保持のレコード
-        this.updateMisc(crArr);
+        this.updateInMisc(crArr);
       } else {
         this.createMisc(crArr);
       }
