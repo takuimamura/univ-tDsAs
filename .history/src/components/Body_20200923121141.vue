@@ -1442,7 +1442,7 @@
                                             pack="fas"
                                             icon="running"
                                             size="is-medium"
-                                            type="is-bluedark"
+                                            type="bluedark"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>

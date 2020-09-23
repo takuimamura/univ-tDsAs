@@ -32,8 +32,7 @@ $brown: #757763;
 $beige: #a0a07edf;
 $beige-light: #d0d1cd;
 $beige-lighter: #eff0eb;
-$dark-blue: #2320cc;
-$dark-bluelighter: #3c379e;
+$dark-blue: #02006c;
 $orange: #ff9900;
 $orange-light: #e4c39e;
 
@@ -59,8 +58,7 @@ $colors: (
   "pinkish": ($pink-light, $pink-pure),
   "pinkishclear": ($pink-light, $pink-strong),
   "beige": ($beige, $beige-lighter),
-  "orange": ($orange, $orange-light),
-  "bluedark":($dark-blue,$dark-bluelighter)
+  "orange": ($orange, $orange-light)
 
   // "white": (
     //   $white,

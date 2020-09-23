@@ -7,7 +7,7 @@
       <b-input v-model="sett.dummy"></b-input>
       {{sett.dummy}}
       <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-blue" />
       <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
       <b-icon pack="fas" icon="running" size="is-medium" type="is-pink" />
       <b-icon pack="fas" icon="running" size="is-medium" type="orange" />
@@ -1442,7 +1442,7 @@
                                             pack="fas"
                                             icon="running"
                                             size="is-medium"
-                                            type="is-bluedark"
+                                            type="bluedark"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>

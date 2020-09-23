@@ -6,15 +6,7 @@
       <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
       <b-input v-model="sett.dummy"></b-input>
       {{sett.dummy}}
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-pink" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="orange" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-orange" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-      <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="bluedark" />
 
       <!-- 上部表示 -->
       <!-- TESTarr0 - {{TESTarr0 }}    <br /> -->
@@ -1442,7 +1434,7 @@
                                             pack="fas"
                                             icon="running"
                                             size="is-medium"
-                                            type="is-bluedark"
+                                            type="bluedark"
                                             @click="zeroEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>

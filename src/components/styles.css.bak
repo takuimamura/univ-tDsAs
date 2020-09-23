@@ -71,6 +71,7 @@ body {
 .wba {
   word-break: break-all;
 }
+
 .is-ready {
   color: #e61818;
 }
@@ -87,9 +88,6 @@ body {
 .is-info {
   background: #167df0;
   color: #fff;
-}
-.is-normal {
-  color: #b4aba0;
 }
 .f8 {
   font-size: 8px;
