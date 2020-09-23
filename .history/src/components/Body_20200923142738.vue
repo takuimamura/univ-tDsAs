@@ -1861,6 +1861,7 @@
                         <!-- rating -->
                         <section class="columns">
                           <div class="column is-pulled-right" style="width:70px;margin-left:20px">
+                            <div></div>
                             <a
                               @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                             >
@@ -1873,7 +1874,7 @@
                               />
                             </a>
                           </div>
-                          <div class="column">
+                          <div>
                             <a
                               @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                             >
@@ -1886,15 +1887,15 @@
                               />
                             </a>
                           </div>
+                          </div>
                           <!-- あとまわし★なぜか赤にならない -->
                           <div
                             class="column"
                             :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                           >
-                            <div
-                              style="background-color:#ce1836;color:#fae3ec;padding:5px"
+                            <span
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1"
-                            >absent</div>
+                            >absent</span>
                             <span
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
                             >

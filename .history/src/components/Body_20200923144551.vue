@@ -1892,7 +1892,8 @@
                             :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                           >
                             <div
-                              style="background-color:#ce1836;color:#fae3ec;padding:5px"
+                              class="is-pinkishalert"
+                              style="background-color:#ce1836"
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1"
                             >absent</div>
                             <span

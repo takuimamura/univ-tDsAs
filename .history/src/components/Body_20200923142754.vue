@@ -1861,40 +1861,41 @@
                         <!-- rating -->
                         <section class="columns">
                           <div class="column is-pulled-right" style="width:70px;margin-left:20px">
-                            <a
-                              @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
-                            >
-                              <b-icon
-                                pack="fas"
-                                icon="user-slash"
-                                size="is-medium"
-                                type="is-danger"
+                            <div>
+                              <a
                                 @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
-                              />
-                            </a>
-                          </div>
-                          <div class="column">
-                            <a
-                              @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
-                            >
-                              <b-icon
-                                pack="fas"
-                                icon="ban"
-                                size="is-medium"
-                                type="is-bluedark"
+                              >
+                                <b-icon
+                                  pack="fas"
+                                  icon="user-slash"
+                                  size="is-medium"
+                                  type="is-danger"
+                                  @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
+                                />
+                              </a>
+                            </div>
+                            <div>
+                              <a
                                 @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
-                              />
-                            </a>
+                              >
+                                <b-icon
+                                  pack="fas"
+                                  icon="ban"
+                                  size="is-medium"
+                                  type="is-bluedark"
+                                  @click="zeroEvalUpTarget(indiRow,cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
+                                />
+                              </a>
+                            </div>
                           </div>
                           <!-- あとまわし★なぜか赤にならない -->
                           <div
                             class="column"
                             :class="[indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1 ? 'title is-3 is-pinkishalert' : '']"
                           >
-                            <div
-                              style="background-color:#ce1836;color:#fae3ec;padding:5px"
+                            <span
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]==-1"
-                            >absent</div>
+                            >absent</span>
                             <span
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]!==-1"
                             >
