@@ -1016,7 +1016,7 @@
                 <b-table-column
                   field="sync"
                   label
-                  style="padding:8px 0px 0px 0px;width:10px"
+                  style="padding:0px;width:10px"
                   class="has-text-centered"
                   :class="getIsDoneToday(props.row._lastChangedAt)"
                   width="10"

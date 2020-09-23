@@ -1016,12 +1016,13 @@
                 <b-table-column
                   field="sync"
                   label
-                  style="padding:8px 0px 0px 0px;width:10px"
-                  class="has-text-centered"
+                  style="padding:0px"
                   :class="getIsDoneToday(props.row._lastChangedAt)"
-                  width="10"
+                  width="20"
                   sticky
-                >{{getTimeIfTodayOrDate(props.row._lastChangedAt)}}</b-table-column>
+                >
+                  <div :class="getIsDoneToday(props.row._lastChangedAt)">__</div>
+                </b-table-column>
                 <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
                 <b-table-column
@@ -4842,12 +4843,6 @@ export default {
       return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
         ? "is-new"
         : "is-old";
-    },
-    getTimeIfTodayOrDate(val) {
-      //当日更新なら時刻、違えば日付
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
-        ? this.$dayjs(val).format("H:mm")
-        : this.$dayjs(val).format("M/D");
     },
     addParenthesisIfCorrectExists(str) {
       if (str) {

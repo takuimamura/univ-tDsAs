@@ -1013,15 +1013,11 @@
               :sticky-header="stickyHeaders"
             >
               <template slot-scope="props">
-                <b-table-column
-                  field="sync"
-                  label
-                  style="padding:8px 0px 0px 0px;width:10px"
-                  class="has-text-centered"
-                  :class="getIsDoneToday(props.row._lastChangedAt)"
-                  width="10"
-                  sticky
-                >{{getTimeIfTodayOrDate(props.row._lastChangedAt)}}</b-table-column>
+                <b-table-column field="sync" label class="has-background-light" width="1" sticky>
+                  <div
+                    :class="getIsDoneToday(props.row._lastChangedAt)"
+                  >__{{props.row._lastChangedAt}}</div>
+                </b-table-column>
                 <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
                 <b-table-column
@@ -4842,12 +4838,6 @@ export default {
       return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
         ? "is-new"
         : "is-old";
-    },
-    getTimeIfTodayOrDate(val) {
-      //当日更新なら時刻、違えば日付
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
-        ? this.$dayjs(val).format("H:mm")
-        : this.$dayjs(val).format("M/D");
     },
     addParenthesisIfCorrectExists(str) {
       if (str) {

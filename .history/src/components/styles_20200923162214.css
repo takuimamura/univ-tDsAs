@@ -91,25 +91,6 @@ body {
 .is-normal {
   color: #b4aba0;
 }
-
-.is-new {
-  background: #fff !important;
-  width: 100%;
-  height: 100%;
-  color: grey;
-}
-.is-old {
-  background-color: #9db1a6 !important;
-  width: 100%;
-  height: 100%;
-  color: grey;
-}
-/* .attend-hist-absent {
-  background: hsl(348, 44%, 40%) !important;
-  color: hsla(0, 0%, 100%, 0.883) !important;
-  font-weight: bold;
-} */
-
 .f8 {
   font-size: 8px;
 }

@@ -19,20 +19,15 @@
       <!-- 上部表示 -->
       TESTarr0 -
       <ul>
-        <li v-for="r in TESTarr0" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
-      </ul>TESTarr1
-      <ul>
-        <li v-for="r in TESTarr1" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
-      </ul>TESTarr2
-      <ul>
-        <li v-for="r in TESTarr2" :key="r.s">{{$dayjs(r.up).format("M/D H:mm")}} - {{r }}</li>
+        <li v-for="r in TESTarr0" :key="r.s">{{TESTarr0 }}</li>
       </ul>
+      <br />
       <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
       <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
       <div class="block">
         <b-icon icon="times-circle" :class="[ !app.ready ? 'is-ready' : 'is-normal' ]"></b-icon>
         <b-icon icon="exclamation-triangle" :class="[ !app.network ? 'is-network' : 'is-normal' ]"></b-icon>
-        <b-icon icon="sync-alt" :class="[ !app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
+        <b-icon icon="sync-alt" :class="[ app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
         app: {{ app }}
         <br />
       </div>
@@ -201,7 +196,7 @@
               icon="exclamation-triangle"
               :class="[ !app.network ? 'is-network' : 'is-normal' ]"
             ></b-icon>
-            <b-icon icon="sync-alt" :class="[ !app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
+            <b-icon icon="sync-alt" :class="[ app.syncing ? 'is-syncing' : 'is-normal' ]"></b-icon>
           </div>
         </div>
       </nav>
@@ -1013,16 +1008,12 @@
               :sticky-header="stickyHeaders"
             >
               <template slot-scope="props">
-                <b-table-column
-                  field="sync"
-                  label
-                  style="padding:8px 0px 0px 0px;width:10px"
-                  class="has-text-centered"
-                  :class="getIsDoneToday(props.row._lastChangedAt)"
-                  width="10"
-                  sticky
-                >{{getTimeIfTodayOrDate(props.row._lastChangedAt)}}</b-table-column>
-                <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
+                <b-table-column field="sync" label class="has-background-light" width="1" sticky>
+                  <div
+                    :class="getSyncStatusClass(props.row.ssync)"
+                    style="width: 12px; height: 100%; color: #f5f5f5;"
+                  >__</div>
+                </b-table-column>
 
                 <b-table-column
                   field="sortid"
@@ -2449,7 +2440,7 @@ export default {
       app: {
         ready: false,
         network: false,
-        syncing: false
+        sync: false
       },
       ds: {
         clrms: null,
@@ -2467,8 +2458,8 @@ export default {
       sett: {
         env: EnvJSON,
         isModalActive: false,
-        acdate: null, // 実際の日
-        ddate: null, // 処理につかう日付
+        acdate: null,
+        ddate: null,
         today: null, // YYYY/MM/DD
         hasMobileCards: false, //buefy
         dummy: "hoge", //null,
@@ -4536,18 +4527,18 @@ export default {
           return "table is-striped";
       }
     },
-    // getSyncStatusClass(num) {
-    //   switch (num) {
-    //     case 0:
-    //       return "has-background-light";
-    //     case 1:
-    //       return "has-red";
-    //     case 2:
-    //       return "has-background-info";
-    //     case 3:
-    //       return "has-blue-clean";
-    //   }
-    // },
+    getSyncStatusClass(num) {
+      switch (num) {
+        case 0:
+          return "has-background-light";
+        case 1:
+          return "has-red";
+        case 2:
+          return "has-background-info";
+        case 3:
+          return "has-blue-clean";
+      }
+    },
     checkifAbsent(comm) {
       if (comm === undefined || comm === null) {
         return false;
@@ -4837,18 +4828,6 @@ export default {
     getDateMixYYYYMMDHHmm(d, t) {
       return this.$dayjs(d + " " + t).format("YYYY-MM-DD HH:mm");
     },
-    getIsDoneToday(val) {
-      //当日更新かどうか
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
-        ? "is-new"
-        : "is-old";
-    },
-    getTimeIfTodayOrDate(val) {
-      //当日更新なら時刻、違えば日付
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
-        ? this.$dayjs(val).format("H:mm")
-        : this.$dayjs(val).format("M/D");
-    },
     addParenthesisIfCorrectExists(str) {
       if (str) {
         return "(" + str + ")";
@@ -4891,34 +4870,14 @@ export default {
     },
     TESTarr1() {
       if (this.dataset.Clrms) {
-        return this.dataset.Clrms.filter(x => x.classcode === "X0063").map(
-          m => {
-            return {
-              c: m.classcode,
-              s: m.studentcode,
-              n: m.studentname,
-              e: m.eval01,
-              up: m._lastChangedAt
-            };
-          }
-        );
+        return this.dataset.Clrms.filter(x => x.classcode === "X0063")[0];
       } else {
         return null;
       }
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers
-          .filter(x => x.classcode === "X0063")
-          .map(m => {
-            return {
-              c: m.classcode,
-              s: m.studentcode,
-              n: m.studentname,
-              e: m.eval01,
-              up: m._lastChangedAt
-            };
-          });
+        return this.classmembers.filter(x => x.classcode === "X0063")[0];
       } else {
         return null;
       }
@@ -5039,9 +4998,7 @@ export default {
     dayACjsA() {
       return this.$dayjs(this.sett.acdate).format("a");
     },
-    dayACjsYYYMMDD() {
-      return this.$dayjs(this.sett.acdate).format("YYYYMMDD");
-    },
+
     dayjsYYYYMMDDh() {
       return this.$dayjs(this.sett.ddate).format("YYYY-MM-DD");
     },
@@ -5264,7 +5221,7 @@ export default {
           break;
         case "outboxStatus":
           // console.log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          this.app.syncing = data.isEmpty;
+          this.app.sync = data.isEmpty;
           break;
         case "ready":
           // console.log("HUB ready");

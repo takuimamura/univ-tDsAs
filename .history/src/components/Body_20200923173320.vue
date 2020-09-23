@@ -1016,12 +1016,13 @@
                 <b-table-column
                   field="sync"
                   label
-                  style="padding:8px 0px 0px 0px;width:10px"
-                  class="has-text-centered"
+                  style="padding:0px;margin:0px;width:10px"
                   :class="getIsDoneToday(props.row._lastChangedAt)"
                   width="10"
                   sticky
-                >{{getTimeIfTodayOrDate(props.row._lastChangedAt)}}</b-table-column>
+                >
+                  <div :class="getTimeIfTodayOrDate(props.row._lastChangedAt)"></div>
+                </b-table-column>
                 <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
                 <b-table-column
