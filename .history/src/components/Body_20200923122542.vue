@@ -1426,20 +1426,37 @@
                                       </td>
                                     </template>
 
-                                    <!-- 欠、０ボタンいっこめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
                                         <a @click="minusEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
                                             icon="user-slash"
-                                            size="is-medium"
+                                            size="is-small"
                                             type="is-danger"
                                             @click="minusEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>
+                                        <a @click="zeroEvalUpTarget(indiRow, k.evl)">
+                                          <b-icon
+                                            pack="fas"
+                                            icon="ban"
+                                            size="is-medium"
+                                            type="is-bluedark"
+                                            @click="zeroEvalUpTarget(indiRow, k.evl)"
+                                          />
+                                        </a>
                                       </td>
-                                      <td style="padding-left:15px">
+                                      <td style="padding-left:30px">
+                                        <a @click="minusEvalUpTarget(indiRow, k.evl)">
+                                          <b-icon
+                                            pack="fas"
+                                            icon="user-slash"
+                                            size="is-small"
+                                            type="is-danger"
+                                            @click="minusEvalUpTarget(indiRow, k.evl)"
+                                          />
+                                        </a>
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
@@ -1551,13 +1568,11 @@
                                         <b-icon
                                           pack="fas"
                                           icon="user-slash"
-                                          size="is-medium"
+                                          size="is-small"
                                           type="is-danger"
                                           @click="minusEvalUpTarget(indiRow, k.evl)"
                                         />
                                       </a>
-                                    </td>
-                                    <td style="padding-left:20px">
                                       <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                         <b-icon
                                           pack="fas"
@@ -1666,13 +1681,12 @@
                                     <b-icon
                                       pack="fas"
                                       icon="user-slash"
-                                      size="is-medium"
+                                      size="is-small"
                                       type="is-danger"
                                       @click="minusEvalUpTarget(indiRow, k.evl)"
                                     />
                                   </a>
-                                </td>
-                                <td style="padding-left:30px">
+
                                   <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                     <b-icon
                                       pack="fas"
@@ -1699,14 +1713,12 @@
                                         "
                                       ></star-rating>
                                     </td>
-                                    <!-- <td
+                                    <td
                                       class="title is-4"
                                       :class="
-                                        indiRow[k.evl] === null ? 'has-background-grey-light' : ''
+                                        indiRow[k.evl] === null ? 'has-background-orange' : ''
                                       "
-                                    >{{ indiRow[k.evl] }}</td>-->
-                                    <td class="title is-4">{{ indiRow[k.evl] }}</td>
-                                    <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
+                                    >{{ indiRow[k.evl] }}</td>
                                   </template>
                                   <template v-else>
                                     <!-- Absentの場合 -->
@@ -1724,12 +1736,10 @@
                                   <td>
                                     <span class="has-text-grey">( tap left button to edit )</span>
                                   </td>
-                                  <!-- <td
+                                  <td
                                     class="title is-4"
-                                    :class="indiRow[k.evl] === null ? 'has-background-grey-light' : ''"
-                                  >{{ indiRow[k.evl] }}</td>-->
-                                  <!-- :class="indiRow[k.evl] === null ? 'has-background-orange' : ''" -->
-                                  <td class="title is-4">{{ indiRow[k.evl] }}</td>
+                                    :class="indiRow[k.evl] === null ? 'has-background-orange' : ''"
+                                  >{{ indiRow[k.evl] }}</td>
                                 </template>
                                 <!-- </td>
                                 <td
@@ -1846,7 +1856,7 @@
                               <b-icon
                                 pack="fas"
                                 icon="user-slash"
-                                size="is-medium"
+                                size="is-small"
                                 type="is-danger"
                                 @click="minusEvalUpTarget(indiRow, cRoom.evalCriItems[cRoom.tgtEvalSingle].evl)"
                               />
@@ -3348,7 +3358,6 @@ export default {
       // await this.fetchClrms(clrm);
     },
     async updateClrm(id, fname, fval) {
-      console.warn(id, fname, fval);
       const clrmItem = await DataStore.query(Clrm, id);
       // this.clrmUp =
       //   clrmItem.index + " " + clrmItem.classcode + " " + clrmItem.studentcode;
@@ -3742,7 +3751,6 @@ export default {
     },
 
     updateClrmEvalsIndi(row, fname, fval) {
-      console.table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {
@@ -4855,26 +4863,25 @@ export default {
         ? this.classmembers[this.cRoom.indiNo]
         : "";
     },
-    //合計点計算
     indiSc() {
       const jsn = {};
       jsn.hw = 0;
       // Number(this.indiRow.hwicmisc) +
       if (this.classmembers.length > 0) {
         jsn.subtotal0 =
-          (this.indiRow.eval01 == -1 ? 0 : this.indiRow.eval01) +
-          (this.indiRow.eval02 == -1 ? 0 : this.indiRow.eval02) +
-          (this.indiRow.eval03 == -1 ? 0 : this.indiRow.eval03) +
-          (this.indiRow.eval04 == -1 ? 0 : this.indiRow.eval04) +
+          this.indiRow.eval01 +
+          this.indiRow.eval02 +
+          this.indiRow.eval03 +
+          this.indiRow.eval04 +
           jsn.hw;
         jsn.subtotal1 =
-          (this.indiRow.eval06 == -1 ? 0 : this.indiRow.eval06) +
-          (this.indiRow.eval07 == -1 ? 0 : this.indiRow.eval07) +
-          (this.indiRow.eval08 == -1 ? 0 : this.indiRow.eval08) +
-          (this.indiRow.eval09 == -1 ? 0 : this.indiRow.eval09) +
-          (this.indiRow.eval10 == -1 ? 0 : this.indiRow.eval10) +
-          (this.indiRow.eval12 == -1 ? 0 : this.indiRow.eval12) +
-          (this.indiRow.eval11 == -1 ? 0 : this.indiRow.eval11);
+          this.indiRow.eval06 +
+          this.indiRow.eval07 +
+          this.indiRow.eval08 +
+          this.indiRow.eval09 +
+          this.indiRow.eval10 +
+          this.indiRow.eval12 +
+          this.indiRow.eval11;
       } else {
         jsn.subtotal0 = 0 + jsn.hw;
         jsn.subtotal1 = 0;

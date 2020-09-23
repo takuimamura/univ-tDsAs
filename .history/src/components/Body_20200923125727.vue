@@ -1426,7 +1426,6 @@
                                       </td>
                                     </template>
 
-                                    <!-- 欠、０ボタンいっこめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
                                         <a @click="minusEvalUpTarget(indiRow, k.evl)">

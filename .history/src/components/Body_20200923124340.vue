@@ -1426,7 +1426,6 @@
                                       </td>
                                     </template>
 
-                                    <!-- 欠、０ボタンいっこめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
                                         <a @click="minusEvalUpTarget(indiRow, k.evl)">
@@ -1705,7 +1704,7 @@
                                         indiRow[k.evl] === null ? 'has-background-grey-light' : ''
                                       "
                                     >{{ indiRow[k.evl] }}</td>-->
-                                    <td class="title is-4">{{ indiRow[k.evl] }}</td>
+                                    <td>{{ indiRow[k.evl] }}</td>
                                     <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                   </template>
                                   <template v-else>
@@ -1729,7 +1728,7 @@
                                     :class="indiRow[k.evl] === null ? 'has-background-grey-light' : ''"
                                   >{{ indiRow[k.evl] }}</td>-->
                                   <!-- :class="indiRow[k.evl] === null ? 'has-background-orange' : ''" -->
-                                  <td class="title is-4">{{ indiRow[k.evl] }}</td>
+                                  <td>{{ indiRow[k.evl] }}</td>
                                 </template>
                                 <!-- </td>
                                 <td
@@ -3348,7 +3347,6 @@ export default {
       // await this.fetchClrms(clrm);
     },
     async updateClrm(id, fname, fval) {
-      console.warn(id, fname, fval);
       const clrmItem = await DataStore.query(Clrm, id);
       // this.clrmUp =
       //   clrmItem.index + " " + clrmItem.classcode + " " + clrmItem.studentcode;
@@ -3742,7 +3740,6 @@ export default {
     },
 
     updateClrmEvalsIndi(row, fname, fval) {
-      console.table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {

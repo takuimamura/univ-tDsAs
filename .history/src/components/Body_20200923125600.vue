@@ -1426,7 +1426,6 @@
                                       </td>
                                     </template>
 
-                                    <!-- 欠、０ボタンいっこめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
                                         <a @click="minusEvalUpTarget(indiRow, k.evl)">
@@ -3742,7 +3741,6 @@ export default {
     },
 
     updateClrmEvalsIndi(row, fname, fval) {
-      console.table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {
