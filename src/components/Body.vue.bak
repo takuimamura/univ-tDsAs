@@ -4190,6 +4190,15 @@ export default {
       //デバイス側のデータを集計
       // this.sumClrmsChkDv();
 
+      const val = this.dataset.allClasses.map(m => {
+        return {
+          id: m.id,
+          grade: m.grade,
+          dayofweek: m.dayofweek,
+          slot: m.slot
+        };
+      });
+
       this.sett.dummy1 = "val";
       // this.sett.dummy2 = this.classmembers.map((m) => {
     },
