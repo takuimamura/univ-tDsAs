@@ -721,8 +721,8 @@
               <table class="table f23">
                 <thead>
                   <tr>
-                    <th colspan="2" class="is-size-6 has-text-grey has-text-light">updates</th>
-                    <!-- <th class="is-size-7 has-text-light">new</th> -->
+                    <th class="is-size-7">oldest</th>
+                    <th>newest</th>
                     <th></th>
                     <th></th>
                     <th>Day</th>
@@ -3312,7 +3312,7 @@ export default {
       // },
       // // async listInstsData() {
       //   //初期だけ実施してるのかな
-      //   warn("xx:listInstsData");
+      //   console.warn("xx:listInstsData");
       //   this.instructor.attendances.push(
       //     ...this.instructor.attendances,
       //     ...InstsData.data.listInsts.items
@@ -3397,7 +3397,7 @@ export default {
       const original = await DataStore.query(Misc, c =>
         c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
       );
-      // table(original);
+      // console.table(original);
       const outt = original.find(arr => {
         return arr.detail.length > 0;
       });
@@ -3446,7 +3446,7 @@ export default {
     //       );
     //     })
     //   );
-    //   // warn("createMiscClassSummary done");
+    //   // console.warn("createMiscClassSummary done");
     //   // this.fetchMiscs();
     // },
     //// クラス毎のサマリDB 更新
@@ -3467,7 +3467,7 @@ export default {
 
       // クラスのタイムスタンプを取得
       const tgt = this.yourClasses.find(arr => {
-        return arr.id == classcode;
+        return arr.id == this.selCrlm.id;
       });
       tgt.newest = newest._lastChangedAt;
       tgt.oldest = oldest._lastChangedAt;
@@ -3512,19 +3512,19 @@ export default {
       this.fetchMiscs();
     },
     //// クラス毎のサマリDB 取得
-    // async queryMiscClassSummary(classcode) {
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
-    //   );
-    //   // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
-    //   // データの持ち方とか厳密に正しさを求めないことにしている
-    //   const outt = original.find(arr => {
-    //     return arr.detail.length > 0;
-    //   });
-    //   // console.warn("outt");
-    //   // console.warn(outt);
-    //   return outt !== undefined ? JSON.parse(outt.detail) : "";
-    // },
+    async queryMiscClassSummary(classcode) {
+      const original = await DataStore.query(Misc, c =>
+        c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
+      );
+      // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
+      // データの持ち方とか厳密に正しさを求めないことにしている
+      const outt = original.find(arr => {
+        return arr.detail.length > 0;
+      });
+      // console.warn("outt");
+      // console.warn(outt);
+      return outt !== undefined ? JSON.parse(outt.detail) : "";
+    },
 
     async createMisc() {
       try {
@@ -3571,18 +3571,55 @@ export default {
     // JSONからのallClassesを整える
     initallClassesDev() {
       this.yourClasses.forEach(m => {
-        // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
+        console.warn(m.id, m.newest);
       });
     },
-    initallClasses() {
-      this.yourClasses.forEach(m => {
-        // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
-      });
+    async initallClasses() {
+      this.sett.dummy1 = ""; // dummy
+      // const allClassesUp = await this.dataset.allClasses.forEach(m => {
+      //   // console.warn(m.id);
+      //   //m.newest = this.queryMiscClassSummary(m.id);
+      //   // console.warn(this.queryMiscClassSummary(m.id));
+      //   // m.newest = this.queryMiscClassSummary(m.classcode);
+      // });
+      // this.dataset.allClasses = [...allClassesUp];
+      // this.dataset.allClasses = [];
+      // this.sett.dummy1 = [...allClassesUp];
+      // // console.warn("dummy1");
+      // console.warn(allClassesUp);
 
       // this.dataset.allClasses = [...allClassesUp];
+
+      // Promise.all(
+      //   this.dataset.allClasses.forEach(m => {
+      //     m.newest = this.queryMiscClassSummary(m.classcode);
+      //   })
+      // );
+      // await Promise.all(
+      //   this.dataset.allClasses.map(m => {
       //     // const timestamp = this.queryMiscClassSummary(m.classcode);
+
+      //     return {
+      //       id: m.id,
+      //       classtitle: m.classtitle,
+      //       classtitleJ: m.classtitleJ,
+      //       classnum: m.classnum,
+      //       roomnum: m.roomnum,
+      //       grade: m.grade,
+      //       dayofweek: m.dayofweek,
+      //       slot: m.slot,
+      //       semester: m.semester,
+      //       timefrom: m.timefrom,
+      //       timeto: m.timeto,
+      //       instructor: m.instructor,
+      //       type: m.type,
+      //       detail: m.detail,
+      //       newest: "te", //timestamp
+      //       oldest: "ol"
+      //       // numofstudents: null,
+      //     };
+      //   })
+      // );
       // this.dataset.allClasses.splice();
     },
 
@@ -5231,37 +5268,37 @@ export default {
     Hub.listen("datastore", async hubData => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
-      //   .log(`User has a network connection? ${data.active}`);
+      //   console.log(`User has a network connection? ${data.active}`);
       // }
       switch (event) {
         case "networkStatus":
-          // .log(`HUB User has a network connection? ${data.active}`);
+          // console.log(`HUB User has a network connection? ${data.active}`);
           if (data.active === false) {
             this.app.network = false;
           }
           break;
         case "syncQueriesReady":
-          // log("HUB syncQueriesReady");
+          // console.log("HUB syncQueriesReady");
           this.app.network = true;
           break;
         // case "storageSubscribed":
-        //   log(`HUB storageSubscribed:${data}`);
+        //   console.log(`HUB storageSubscribed:${data}`);
         //   break;
         // case "subscriptionsEstablished":
-        //   log(`HUB subscriptionsEstablished:${data}`);
+        //   console.log(`HUB subscriptionsEstablished:${data}`);
         //   break;
         // case "syncQueriesStarted":
-        //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
+        //   console.log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
         //   break;
         case "modelSynced":
-          // log(`HUB modelSynced:${JSON.stringify(data)}`);
+          // console.log(`HUB modelSynced:${JSON.stringify(data)}`);
           break;
         case "outboxStatus":
-          // log(`HUB outboxStatus:${JSON.stringify(data)}`);
+          // console.log(`HUB outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
           break;
         case "ready":
-          // log("HUB ready");
+          // console.log("HUB ready");
           this.app.ready = true;
           break;
       }

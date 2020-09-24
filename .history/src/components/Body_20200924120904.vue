@@ -15,7 +15,6 @@
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
       <div v-if="getStartingUrl === 'localhost'">
-        dyjstest {{ $dayjs(null)}} - {{ $dayjs(new Date()).format("H:mm") == "Invalid Date" ? true: false }}
         <b-field>
           <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
           <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
@@ -86,9 +85,7 @@
 
         <b-modal :active.sync="sett.isModalActive"></b-modal>
 
-        <b-button @click="initallClassesDev">initallClassesDev</b-button>
-        <b-button @click="initallClasses">initallClasses</b-button>
-        <!-- <b-button @click="enterClassroomUp">enterClassroomUp</b-button> -->
+        <b-button @click="enterClassroomUp">enterClassroomUp</b-button>
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
@@ -103,25 +100,30 @@
           workspaceValication(true);
         "
         >reflect day change</b-button>
-        sett.activeTab {{sett.activeTab}}
         <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
         <!-- sett.alias:: {{ sett.alias }} -->
         <!-- dummy::::::{{ sett.dummy }}      <br /> -->
-        dummy1::::::{{ sett.dummy1 }}
-        <br />
-        dummy2::::::{{ sett.dummy2 }} ::
-        dummy3::::::{{ sett.dummy3 }}
-        <br />
-        allClasses; {{dataset.allClasses.length}} | yours | {{yourClasses.length}}
+        <!-- dummy1::::::{{ sett.dummy1 }}      <br /> -->
+        <!-- dummy2::::::{{ sett.dummy2 }} :: -->
+        <!-- dummy3::::::{{ sett.dummy3 }}<br />-->
         InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{ dataset.Clrms.length }} |
         ClrmsChk::{{ dataset.ClrmsChk.length }} | insts: {{ dataset.Insts.length }} | class:
-        {{ classmembers.length }} |
-        <br />
-        -- classroomIndex {{classroomIndex}} | selCrlm {{selCrlm}} |
-        dataset.allClasses {{dataset.allClasses[0]}}
+        {{ classmembers.length }}
         <br />
         <!-- {{indiRow}} -->
         <!--
+        <template v-if="classmembers.length>0">
+          ■Class:{{classmembers[0].studentcode }}
+          - eval {{ classmembers[0].eval01 }}- {{ classmembers[0].ecom01 }}
+          - eval4: {{ classmembers[0].eval04 }}- {{ classmembers[0].ecom04 }}
+          - eval11: {{ classmembers[0].eval11 }}- {{ classmembers[0].ecom11 }}
+          <br />
+        </template>
+        <template v-if="selCrlm.eval01 !== undefined">
+          selCrlm:::: eval{{ selCrlm.eval01 }}- {{ selCrlm.ecom01 }}
+          - eval4:{{ selCrlm.eval04 }}- {{ selCrlm.ecom04 }}
+          - eval11:{{ selCrlm.eval11 }}- {{ selCrlm.ecom11 }}
+        </template>
         <br />
         selCrlmDv:: eval{{ manage.selCrlmDv.eval01 }}- {{ manage.selCrlmDv.ecom01 }}
         - eval4:{{ manage.selCrlmDv.eval04 }}- {{ manage.selCrlmDv.ecom04 }}
@@ -716,13 +718,62 @@
               </template>
             </section>
 
-            <!-- クラス一覧 -->
+            <!-- <section class="columns is-centered" style="font-size: 16px; padding: 0px 0px;">
+            <b-collapse :open="isOpenselCrlm" class="is-full">
+              <div
+                class="columns"
+                :class="
+                  selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'
+                "
+                style="width:500px;padding:20px"
+              >
+                <div class="content column is-9">
+                  <h3>
+                    {{ selCrlm.id }}
+                    {{ selCrlm.grade }}({{ selCrlm.classnum }})
+                  </h3>
+                  <p class="f23">
+                    {{ selCrlm.dayofweek }}
+                    {{ selCrlm.slot }}
+                    {{ selCrlm.timefrom }}-{{ selCrlm.timeto }}
+                    <span
+                      style="font-size:16px;"
+                    >room:</span>
+                    {{ selCrlm.roomnum }}
+                    <br />
+                    <span style="font-size:20px;">{{ selCrlm.title }}</span>
+                    <span style="font-size:20px;">{{ selCrlm.classtitle }}</span>
+                  </p>
+                </div>
+                <div class="column is-3">
+                  <template v-if="!isClrmLoading">
+                    <b-button
+                      pack="fas"
+                      icon-left="hand-point-right"
+                      size="is-large"
+                      @click="enterClassroom"
+                    >Go</b-button>
+                  </template>
+                  <template v-else>
+                    <span class="subtitle is-3 has-text-black">(Loading...)</span>
+                    <b-loading
+                      :is-full-page="false"
+                      :active.sync="isClrmLoading"
+                      :can-cancel="false"
+                    >
+                      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
+                    </b-loading>
+                  </template>
+                </div>
+              </div>
+            </b-collapse>
+            </section>-->
+
             <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
               <table class="table f23">
                 <thead>
                   <tr>
-                    <th colspan="2" class="is-size-6 has-text-grey has-text-light">updates</th>
-                    <!-- <th class="is-size-7 has-text-light">new</th> -->
+                    <th></th>
                     <th></th>
                     <th></th>
                     <th>Day</th>
@@ -758,53 +809,65 @@
                 <tbody class="cPointer">
                   <tr v-for="yitem in yourClasses" :key="yitem.id">
                     <td
-                      style="padding:10px 2px 0px 2px;width:10px"
-                      class="has-text-centered is-size-5"
-                      :class="getIsDoneToday(yitem.oldest)"
-                    >{{ getTimeIfTodayOrDate(yitem.oldest) }}</td>
-                    <td
-                      style="padding:10px 2px 0px 2px;width:10px"
-                      class="has-text-centered is-size-5"
-                      :class="getIsDoneToday(yitem.newest)"
-                    >{{ getTimeIfTodayOrDate(yitem.newest) }}</td>
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
+                      @click="selectClassroom(yitem)"
+                    >{{ yitem.newest + yitem.oldest }}</td>
 
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.id }}</td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.grade }}({{ yitem.classnum }})</td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.dayofweek }}</td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.slot }}</td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >
                       <div class="is-pulled-right">{{ yitem.timefrom }}-{{ yitem.timeto }}</div>
                     </td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >{{ yitem.roomnum }}</td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >{{ yitem.classtitle | subStr }}</td>
 
                     <!-- summary-->
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       v-show="cRoom.showClassesSum"
                       @click="selectClassroom(yitem)"
                     >
@@ -842,7 +905,9 @@
                       <span class="f14">-{{ yitem[n.cm] }}</span>
                     </td>
                     <td
-                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      :class="{
+                      dayofweekToday: yitem.dayofweek === dayjsddd,
+                    }"
                       @click="selectClassroom(yitem)"
                     >
                       <b-icon
@@ -3312,7 +3377,7 @@ export default {
       // },
       // // async listInstsData() {
       //   //初期だけ実施してるのかな
-      //   warn("xx:listInstsData");
+      //   console.warn("xx:listInstsData");
       //   this.instructor.attendances.push(
       //     ...this.instructor.attendances,
       //     ...InstsData.data.listInsts.items
@@ -3397,7 +3462,7 @@ export default {
       const original = await DataStore.query(Misc, c =>
         c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
       );
-      // table(original);
+      // console.table(original);
       const outt = original.find(arr => {
         return arr.detail.length > 0;
       });
@@ -3446,33 +3511,10 @@ export default {
     //       );
     //     })
     //   );
-    //   // warn("createMiscClassSummary done");
+    //   // console.warn("createMiscClassSummary done");
     //   // this.fetchMiscs();
     // },
     //// クラス毎のサマリDB 更新
-    async reflectClassSummary(classcode) {
-      const ret = await DataStore.query(Clrm, c =>
-        c.classcode("eq", classcode)
-      );
-
-      // クラスのタイムスタンプを取得
-      const newest = ret.reduce((a, b) =>
-        a._lastChangedAt > b._lastChangedAt ? a : b
-      );
-      const oldest = ret.reduce((a, b) =>
-        a._lastChangedAt < b._lastChangedAt ? a : b
-      );
-      // this.sett.dummy1 = newest._lastChangedAt;
-      // this.sett.dummy2 = oldest._lastChangedAt;
-
-      // クラスのタイムスタンプを取得
-      const tgt = this.yourClasses.find(arr => {
-        return arr.id == classcode;
-      });
-      tgt.newest = newest._lastChangedAt;
-      tgt.oldest = oldest._lastChangedAt;
-      // this.dataset.allClasses.splice(); // いらない
-    },
 
     async devClassSummary(classcode) {
       const ret = await DataStore.query(Clrm, c =>
@@ -3485,8 +3527,6 @@ export default {
       const oldest = ret.reduce((a, b) =>
         a._lastChangedAt < b._lastChangedAt ? a : b
       );
-      this.sett.dummy1 = newest._lastChangedAt;
-      this.sett.dummy2 = oldest._lastChangedAt;
       return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
     },
 
@@ -3512,19 +3552,17 @@ export default {
       this.fetchMiscs();
     },
     //// クラス毎のサマリDB 取得
-    // async queryMiscClassSummary(classcode) {
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
-    //   );
-    //   // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
-    //   // データの持ち方とか厳密に正しさを求めないことにしている
-    //   const outt = original.find(arr => {
-    //     return arr.detail.length > 0;
-    //   });
-    //   // console.warn("outt");
-    //   // console.warn(outt);
-    //   return outt !== undefined ? JSON.parse(outt.detail) : "";
-    // },
+    async queryMiscClassSummary(classcode) {
+      const original = await DataStore.query(Misc, c =>
+        c.type("eq", this.ds.typeMisc.classSum).name("eq", classcode)
+      );
+      // 設定時に1クラス1レコードを用意する前提。DB上は複数可能。AmplifyのDataStoreがまだいろいろあるので、
+      // データの持ち方とか厳密に正しさを求めないことにしている
+      const outt = original.find(arr => {
+        return arr.detail.length > 0;
+      });
+      return JSON.parse(outt.detail);
+    },
 
     async createMisc() {
       try {
@@ -3569,21 +3607,36 @@ export default {
 
     //初期処理
     // JSONからのallClassesを整える
-    initallClassesDev() {
-      this.yourClasses.forEach(m => {
-        // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
-      });
-    },
-    initallClasses() {
-      this.yourClasses.forEach(m => {
-        // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
-      });
+    async initallClasses() {
+      await Promise.all(
 
-      // this.dataset.allClasses = [...allClassesUp];
-      //     // const timestamp = this.queryMiscClassSummary(m.classcode);
-      // this.dataset.allClasses.splice();
+      this.dataset.allClasses.map(m => {
+        const timestamp =  this.queryMiscClassSummary(m.classcode)
+
+        return {
+          id: m.id,
+          classtitle: m.classtitle,
+          classtitleJ: m.classtitleJ,
+          classnum: m.classnum,
+          roomnum: m.roomnum,
+          grade: m.grade,
+          dayofweek: m.dayofweek,
+          slot: m.slot,
+          semester: m.semester,
+          timefrom: m.timefrom,
+          timeto: m.timeto,
+          instructor: m.instructor,
+          type: m.type,
+          detail: m.detail,
+          newest: "te", //timestamp
+          oldest: "ol",
+          // numofstudents: null,
+        };
+      }))
+
+    }  
+
+
     },
 
     //編集用
@@ -3964,6 +4017,7 @@ export default {
       await this.fetchClrms();
       this.sett.isLoadingClrmsChk = false;
       // try {
+      //   console.warn("xx");
       //   const ClrmsData = null;
       //   // const ClrmsData = await API.graphql(
       //   //   graphqlOperation(listClrms, { id: idstr, limit: 5000 })
@@ -4262,11 +4316,11 @@ export default {
       if (this.sett.activeTab !== 2) {
         //部屋から出たのか
         if (this.isEnteredselCrlm) {
-          this.isEnteredselCrlm = false; // 部屋から出たことを記録
-
-          // クラスのタイムスタンプを反映
-          this.reflectClassSummary(this.selCrlm.id);
-
+          this.isEnteredselCrlm = false;
+          // if (this.classmembers.length > 0) {
+          //   //全員保存
+          //   this.manageUpdateClrmAll();
+          // }
           if (this.isOpenselCrlm) {
             //集計
             this.listClrmsDataIDCheck(this.sett.alias.name);
@@ -4336,6 +4390,7 @@ export default {
     reloadIfUndefinedName() {
       // undefinedなら再読み込み
       if (this.authdetail.name === undefined) {
+        // console.warn("name:" + this.authdetail.name);
         this.$router.go();
       }
     },
@@ -4746,7 +4801,6 @@ export default {
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
     },
-    // 都度の書込みごとにView反映させる
     enterClassroomUp() {
       const classmem = this.dataset.Clrms.filter(
         x => x.classcode === this.selCrlm.id && x.enable === true
@@ -4841,9 +4895,7 @@ export default {
     },
     getTimeIfTodayOrDate(val) {
       //当日更新なら時刻、違えば日付
-      return this.$dayjs(val).format("H:mm") == "Invalid Date"
-        ? null
-        : this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
+      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
         ? this.$dayjs(val).format("H:mm")
         : this.$dayjs(val).format("M/D");
     },
@@ -5231,37 +5283,37 @@ export default {
     Hub.listen("datastore", async hubData => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
-      //   .log(`User has a network connection? ${data.active}`);
+      //   console.log(`User has a network connection? ${data.active}`);
       // }
       switch (event) {
         case "networkStatus":
-          // .log(`HUB User has a network connection? ${data.active}`);
+          // console.log(`HUB User has a network connection? ${data.active}`);
           if (data.active === false) {
             this.app.network = false;
           }
           break;
         case "syncQueriesReady":
-          // log("HUB syncQueriesReady");
+          // console.log("HUB syncQueriesReady");
           this.app.network = true;
           break;
         // case "storageSubscribed":
-        //   log(`HUB storageSubscribed:${data}`);
+        //   console.log(`HUB storageSubscribed:${data}`);
         //   break;
         // case "subscriptionsEstablished":
-        //   log(`HUB subscriptionsEstablished:${data}`);
+        //   console.log(`HUB subscriptionsEstablished:${data}`);
         //   break;
         // case "syncQueriesStarted":
-        //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
+        //   console.log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
         //   break;
         case "modelSynced":
-          // log(`HUB modelSynced:${JSON.stringify(data)}`);
+          // console.log(`HUB modelSynced:${JSON.stringify(data)}`);
           break;
         case "outboxStatus":
-          // log(`HUB outboxStatus:${JSON.stringify(data)}`);
+          // console.log(`HUB outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
           break;
         case "ready":
-          // log("HUB ready");
+          // console.log("HUB ready");
           this.app.ready = true;
           break;
       }
@@ -5274,7 +5326,7 @@ export default {
     this.manageClrms();
 
     // JSONからのallClassesを整える
-    await this.initallClasses();
+    this.initallClasses();
     // this.getInstsData(this.authdetail.username);
     // this.getMiscsData("classmanagement", this.authdetail.name);
     // this.listMiscsData();
