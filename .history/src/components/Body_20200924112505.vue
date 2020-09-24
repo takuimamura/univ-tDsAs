@@ -89,6 +89,11 @@
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
+        <!-- dayjsddd:{{ dayjsddd }} - lenient{{ dayjslenient }} dayjsYYYYMMDD::{{ dayjsYYYYMMDDh }} -->
+        <!-- <ul>        <li v-for="ch in yourClasses" :key="ch.classcode">{{ ch }}</li>      </ul> -->
+        <!-- <ul>        <li v-for="ch in dataset.allClasses" :key="ch.classcode">{{ ch }}</li>     </ul> -->
+        <!-- sett.ddate::::::{{ sett.ddate }}      <br /> -->
+        <!-- sett.acdate::::::{{ sett.acdate }}      <br /> -->
         <!-- authdetail:: {{authdetail}}      <br /> -->
         cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
@@ -3331,6 +3336,8 @@ export default {
         Clrms: [], // [], //学生データ
         ClrmsChk: [], //チェック用
         ClrmsInstByday: [],
+        // Cinfs: [], //クラス情報 // 謎の取得できないやつ
+        // allClasses: CinfJSON, // [],
         allClasses: ClssJSON, // [],
         Cldrs: SchdJSON, //[], //カレンダ
         Insts: [], //講師（勤怠とか）
@@ -4346,7 +4353,7 @@ export default {
     reloadIfUndefinedName() {
       // undefinedなら再読み込み
       if (this.authdetail.name === undefined) {
-        // console.warn("name:" + this.authdetail.name);
+        console.warn("name:" + this.authdetail.name);
         this.$router.go();
       }
     },
