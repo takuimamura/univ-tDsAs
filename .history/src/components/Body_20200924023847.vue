@@ -1,16 +1,19 @@
 <template>
   <div id="app">
-    <template v-if="this.authdetail.name === undefined">
-      <section class="hero is-fullheight">
-        <div class="hero-body">
-          <div class="container has-text-centered">
-            <b-button
-              size="title is-1 is-large is-outlined"
-              @click="$router.go()"
-            >Click to initialize (only for the first use)</b-button>
+    <!-- <template v-if="this.authdetail.name === undefined"> -->
+    <template>
+      <div class="columns">
+        <div class="column is-full">
+          <div class="buttons">
+            <p class="level-item has-text-center">
+              <b-button size="is-large" @click="$router.go()">Click to initialize (on first use)</b-button>
+            </p>
           </div>
         </div>
-      </section>
+      </div>
+      <nav class="level">
+        <b-button size="is-large" @click="$router.go()">Click to initialize (on first use)</b-button>
+      </nav>
     </template>
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
@@ -117,23 +120,23 @@
         <br />
         <!-- {{indiRow}} -->
         <!--
-        <template v-if="classmembers.length>0">
-          ■Class:{{classmembers[0].studentcode }}
-          - eval {{ classmembers[0].eval01 }}- {{ classmembers[0].ecom01 }}
-          - eval4: {{ classmembers[0].eval04 }}- {{ classmembers[0].ecom04 }}
-          - eval11: {{ classmembers[0].eval11 }}- {{ classmembers[0].ecom11 }}
-          <br />
-        </template>
-        <template v-if="selCrlm.eval01 !== undefined">
-          selCrlm:::: eval{{ selCrlm.eval01 }}- {{ selCrlm.ecom01 }}
-          - eval4:{{ selCrlm.eval04 }}- {{ selCrlm.ecom04 }}
-          - eval11:{{ selCrlm.eval11 }}- {{ selCrlm.ecom11 }}
-        </template>
+      <template v-if="classmembers.length>0">
+        ■Class:{{classmembers[0].studentcode }}
+        - eval {{ classmembers[0].eval01 }}- {{ classmembers[0].ecom01 }}
+        - eval4: {{ classmembers[0].eval04 }}- {{ classmembers[0].ecom04 }}
+        - eval11: {{ classmembers[0].eval11 }}- {{ classmembers[0].ecom11 }}
         <br />
-        selCrlmDv:: eval{{ manage.selCrlmDv.eval01 }}- {{ manage.selCrlmDv.ecom01 }}
-        - eval4:{{ manage.selCrlmDv.eval04 }}- {{ manage.selCrlmDv.ecom04 }}
-        - eval11:{{ manage.selCrlmDv.eval11 }}- {{ manage.selCrlmDv.ecom11 }}
-        <br />
+      </template>
+      <template v-if="selCrlm.eval01 !== undefined">
+        selCrlm:::: eval{{ selCrlm.eval01 }}- {{ selCrlm.ecom01 }}
+        - eval4:{{ selCrlm.eval04 }}- {{ selCrlm.ecom04 }}
+        - eval11:{{ selCrlm.eval11 }}- {{ selCrlm.ecom11 }}
+      </template>
+      <br />
+      selCrlmDv:: eval{{ manage.selCrlmDv.eval01 }}- {{ manage.selCrlmDv.ecom01 }}
+      - eval4:{{ manage.selCrlmDv.eval04 }}- {{ manage.selCrlmDv.ecom04 }}
+      - eval11:{{ manage.selCrlmDv.eval11 }}- {{ manage.selCrlmDv.ecom11 }}
+      <br />
         indiRow:::{{indiRow}}-->
         <!-- classmembersEdit {{manage.classmembersEdit.length}} -->
         <!-- ::instructor.attendances.length{{instructor.attendances.length}} -->
@@ -336,7 +339,6 @@
               </section>
             </template>
 
-            <!-- ----- information ----- -->
             <section class="p40">
               <p class="title">Information</p>
               <b-collapse
@@ -359,7 +361,6 @@
               </b-collapse>
             </section>
 
-            <!-- ----- Clock in / Clock out ----- -->
             <section class="p40">
               <p class="title">Attendance</p>
               <b-collapse
@@ -393,7 +394,7 @@
                   </div>
                 </transition>
                 <div class="card-content">
-                  <!-- <p class="subtitle">Your record</p>
+                  <p class="subtitle">Your record</p>
                   <div class="content">
                     <b-field>
                       <b-radio-button
@@ -404,6 +405,7 @@
                       >{{ m }}</b-radio-button>
                     </b-field>
                     <b-table :data="yourattendancesMonth">
+                      <!-- <b-table :data="instructor.yourattendances"> -->
                       <template slot-scope="props">
                         <b-table-column
                           field="date"
@@ -423,7 +425,7 @@
                         <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
                       </template>
                     </b-table>
-                  </div>-->
+                  </div>
 
                   <div class="columns">
                     <div class="column">
@@ -4350,13 +4352,14 @@ export default {
         this.setcurrentAcDate();
       }
     },
-    // reloadIfUndefinedName() {
-    //   // undefinedなら再読み込み
-    //   if (this.authdetail.name === undefined) {
-    //     // console.warn("name:" + this.authdetail.name);
-    //     // this.$router.go();
-    //   }
-    // },
+    reloadIfUndefinedName() {
+      console.warn("これ.authdetail.name:" + this.authdetail.name);
+      // 文字列としてのundefinedなら再読み込み（文字列ならループはしない）
+      if (this.authdetail.name === undefined) {
+        console.warn("name:ひっかかった" + this.authdetail.name);
+        // this.$router.go();
+      }
+    },
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
     },
@@ -5112,21 +5115,19 @@ export default {
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
-      return true; //とりあえず★
-      // return this.instructor.yourattendances.some(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
+      return this.instructor.yourattendances.some(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
     },
     ifYouClockInAndStillIn: function() {
-      return false; //とりあえず★
-      // const fnd = this.instructor.yourattendances.find(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
-      // if (fnd != undefined) {
-      //   return fnd.clockout == null ? true : false; //出社/退社
-      // } else {
-      //   return false; //出社前
-      // }
+      const fnd = this.instructor.yourattendances.find(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
+      if (fnd != undefined) {
+        return fnd.clockout == null ? true : false; //出社/退社
+      } else {
+        return false; //出社前
+      }
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(

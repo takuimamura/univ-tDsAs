@@ -1,250 +1,237 @@
 <template>
   <div id="app">
-    <template v-if="this.authdetail.name === undefined">
-      <section class="hero is-fullheight">
-        <div class="hero-body">
-          <div class="container has-text-centered">
-            <b-button
-              size="title is-1 is-large is-outlined"
-              @click="$router.go()"
-            >Click to initialize (only for the first use)</b-button>
-          </div>
-        </div>
-      </section>
-    </template>
-    <template v-if="this.authdetail.name !== undefined">
-      <!-- 検証用 -->
-      <div v-if="getStartingUrl === 'localhost'">
-        <b-field>
-          <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
-          <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
-          <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
-          <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
-          <b-button @click="createMisc">Create Misc</b-button>
-          <b-button @click="getMiscId">get Misc id</b-button>
-        </b-field>
-        <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
+    <!-- 検証用 -->
+    <div v-if="getStartingUrl === 'localhost'">
+      <b-field>
+        <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
+        <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
+        <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
+        <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
+        <b-button @click="createMisc">Create Misc</b-button>
+        <b-button @click="getMiscId">get Misc id</b-button>
+      </b-field>
+      <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
 
-        <b-field>
-          <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
-          <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
-          <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
-          <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-          <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
-        </b-field>
-        <b-input v-model="sett.dummy"></b-input>
-        {{ sett.dummy }}
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-pink" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="orange" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-orange" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
+      <b-field>
+        <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
+        <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
+        <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
+        <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
+        <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
+      </b-field>
+      <b-input v-model="sett.dummy"></b-input>
+      {{ sett.dummy }}
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-pink" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="orange" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-orange" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
+      <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
 
-        <!-- 上部表示 -->
-        TESTarr0 -
-        <ul>
-          <li v-for="r in TESTarr0" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr1
-        <ul>
-          <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr2
-        <ul>
-          <li v-for="r in TESTarr2" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>
-        <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
-        <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
-        <div class="block">
-          <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-          <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
-          <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
-          app: {{ app }}
-          <br />
-        </div>
-
-        <!--■■■開発用 ローカル限定表示■■■-->
-        sett {{ sett.alias }}
+      <!-- 上部表示 -->
+      TESTarr0 -
+      <ul>
+        <li v-for="r in TESTarr0" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
+      </ul>TESTarr1
+      <ul>
+        <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
+      </ul>TESTarr2
+      <ul>
+        <li v-for="r in TESTarr2" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
+      </ul>
+      <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
+      <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
+      <div class="block">
+        <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
+        <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
+        <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
+        app: {{ app }}
         <br />
-        <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
-        <template v-if="sett.sw1">
-          <div>
-            <!-- selCrlm:{{ $store.state.selCrlm }}          <br /> -->
-            <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-            <!-- -- {{ isAuthenticated }}          <br /> -->
-            <!-- user: {{ authd }} -->
-            <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-            <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-            <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-          </div>
-          <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-          <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-        </template>
+      </div>
 
-        <b-modal :active.sync="sett.isModalActive"></b-modal>
+      <!--■■■開発用 ローカル限定表示■■■-->
+      sett {{ sett.alias }}
+      <br />
+      <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
+      <template v-if="sett.sw1">
+        <div>
+          <!-- selCrlm:{{ $store.state.selCrlm }}          <br /> -->
+          <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+          <!-- -- {{ isAuthenticated }}          <br /> -->
+          <!-- user: {{ authd }} -->
+          <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+          <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+          <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
+        </div>
+        <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+        <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+      </template>
 
-        <b-button @click="enterClassroomUp">enterClassroomUp</b-button>
-        <b-button @click="dummytest">dummytest</b-button>
-        sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
-        <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
-        <!-- dayjsddd:{{ dayjsddd }} - lenient{{ dayjslenient }} dayjsYYYYMMDD::{{ dayjsYYYYMMDDh }} -->
-        <!-- <ul>        <li v-for="ch in yourClasses" :key="ch.classcode">{{ ch }}</li>      </ul> -->
-        <!-- <ul>        <li v-for="ch in dataset.allClasses" :key="ch.classcode">{{ ch }}</li>     </ul> -->
-        <!-- sett.ddate::::::{{ sett.ddate }}      <br /> -->
-        <!-- sett.acdate::::::{{ sett.acdate }}      <br /> -->
-        <!-- authdetail:: {{authdetail}}      <br /> -->
-        cRoom.showEvalComp {{ cRoom.showEvalComp }}
-        <br />
-        <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
-        <b-button
-          @click="
+      <b-modal :active.sync="sett.isModalActive"></b-modal>
+
+      <b-button @click="enterClassroomUp">enterClassroomUp</b-button>
+      <b-button @click="dummytest">dummytest</b-button>
+      sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
+      <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
+      <!-- dayjsddd:{{ dayjsddd }} - lenient{{ dayjslenient }} dayjsYYYYMMDD::{{ dayjsYYYYMMDDh }} -->
+      <!-- <ul>        <li v-for="ch in yourClasses" :key="ch.classcode">{{ ch }}</li>      </ul> -->
+      <!-- <ul>        <li v-for="ch in dataset.allClasses" :key="ch.classcode">{{ ch }}</li>     </ul> -->
+      <!-- sett.ddate::::::{{ sett.ddate }}      <br /> -->
+      <!-- sett.acdate::::::{{ sett.acdate }}      <br /> -->
+      <!-- authdetail:: {{authdetail}}      <br /> -->
+      cRoom.showEvalComp {{ cRoom.showEvalComp }}
+      <br />
+      <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+      <b-button
+        @click="
           dateDevAddDate();
           dummytest();
           workspaceValication(true);
         "
-        >reflect day change</b-button>
-        <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-        <!-- sett.alias:: {{ sett.alias }} -->
-        <!-- dummy::::::{{ sett.dummy }}      <br /> -->
-        <!-- dummy1::::::{{ sett.dummy1 }}      <br /> -->
-        <!-- dummy2::::::{{ sett.dummy2 }} :: -->
-        <!-- dummy3::::::{{ sett.dummy3 }}<br />-->
-        InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{ dataset.Clrms.length }} |
-        ClrmsChk::{{ dataset.ClrmsChk.length }} | insts: {{ dataset.Insts.length }} | class:
-        {{ classmembers.length }}
+      >reflect day change</b-button>
+      <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+      <!-- sett.alias:: {{ sett.alias }} -->
+      <!-- dummy::::::{{ sett.dummy }}      <br /> -->
+      <!-- dummy1::::::{{ sett.dummy1 }}      <br /> -->
+      <!-- dummy2::::::{{ sett.dummy2 }} :: -->
+      <!-- dummy3::::::{{ sett.dummy3 }}<br />-->
+      InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{ dataset.Clrms.length }} |
+      ClrmsChk::{{ dataset.ClrmsChk.length }} | insts: {{ dataset.Insts.length }} | class:
+      {{ classmembers.length }}
+      <br />
+      <!-- {{indiRow}} -->
+      <!--
+      <template v-if="classmembers.length>0">
+        ■Class:{{classmembers[0].studentcode }}
+        - eval {{ classmembers[0].eval01 }}- {{ classmembers[0].ecom01 }}
+        - eval4: {{ classmembers[0].eval04 }}- {{ classmembers[0].ecom04 }}
+        - eval11: {{ classmembers[0].eval11 }}- {{ classmembers[0].ecom11 }}
         <br />
-        <!-- {{indiRow}} -->
-        <!--
-        <template v-if="classmembers.length>0">
-          ■Class:{{classmembers[0].studentcode }}
-          - eval {{ classmembers[0].eval01 }}- {{ classmembers[0].ecom01 }}
-          - eval4: {{ classmembers[0].eval04 }}- {{ classmembers[0].ecom04 }}
-          - eval11: {{ classmembers[0].eval11 }}- {{ classmembers[0].ecom11 }}
-          <br />
-        </template>
-        <template v-if="selCrlm.eval01 !== undefined">
-          selCrlm:::: eval{{ selCrlm.eval01 }}- {{ selCrlm.ecom01 }}
-          - eval4:{{ selCrlm.eval04 }}- {{ selCrlm.ecom04 }}
-          - eval11:{{ selCrlm.eval11 }}- {{ selCrlm.ecom11 }}
-        </template>
-        <br />
-        selCrlmDv:: eval{{ manage.selCrlmDv.eval01 }}- {{ manage.selCrlmDv.ecom01 }}
-        - eval4:{{ manage.selCrlmDv.eval04 }}- {{ manage.selCrlmDv.ecom04 }}
-        - eval11:{{ manage.selCrlmDv.eval11 }}- {{ manage.selCrlmDv.ecom11 }}
-        <br />
-        indiRow:::{{indiRow}}-->
-        <!-- classmembersEdit {{manage.classmembersEdit.length}} -->
-        <!-- ::instructor.attendances.length{{instructor.attendances.length}} -->
-        <!-- ::instructor.yourTodaysClasses{{ instructor.yourTodaysClasses.length }} ::{{instructor.yourTodaysClasses}}      <br /> -->
-        <!-- dataset.Clrms:{{ dataset.Clrms.length }} {{ dataset.Clrms[0] }}<br /> -->
-        <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-        <br />
-      </div>
+      </template>
+      <template v-if="selCrlm.eval01 !== undefined">
+        selCrlm:::: eval{{ selCrlm.eval01 }}- {{ selCrlm.ecom01 }}
+        - eval4:{{ selCrlm.eval04 }}- {{ selCrlm.ecom04 }}
+        - eval11:{{ selCrlm.eval11 }}- {{ selCrlm.ecom11 }}
+      </template>
+      <br />
+      selCrlmDv:: eval{{ manage.selCrlmDv.eval01 }}- {{ manage.selCrlmDv.ecom01 }}
+      - eval4:{{ manage.selCrlmDv.eval04 }}- {{ manage.selCrlmDv.ecom04 }}
+      - eval11:{{ manage.selCrlmDv.eval11 }}- {{ manage.selCrlmDv.ecom11 }}
+      <br />
+      indiRow:::{{indiRow}}-->
+      <!-- classmembersEdit {{manage.classmembersEdit.length}} -->
+      <!-- ::instructor.attendances.length{{instructor.attendances.length}} -->
+      <!-- ::instructor.yourTodaysClasses{{ instructor.yourTodaysClasses.length }} ::{{instructor.yourTodaysClasses}}      <br /> -->
+      <!-- dataset.Clrms:{{ dataset.Clrms.length }} {{ dataset.Clrms[0] }}<br /> -->
+      <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
+      <br />
+    </div>
 
-      <!-- 管理用 -->
-      <section v-if="getStartingUrl === 'localhost'">
-        <article>
-          <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
+    <!-- 管理用 -->
+    <section v-if="getStartingUrl === 'localhost'">
+      <article>
+        <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
         allClasses: ClssJSON の 全クラス分をMiscに構築。
-          <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>-->
-        </article>
-      </section>
+        <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>-->
+      </article>
+    </section>
 
-      <!-- ABリスト -->
-      <section v-show="cRoom.showABList">
-        <div class="columns">
-          <div class="column is-half" v-show="cRoom.showABListShowA">
-            <div class="has-text-centered f40">Group A</div>
-            <div class="f26" style="margin: 0px 40px;">
-              <table class="table is-fullwidth">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th v-show="cRoom.showABListStudentCode">Code</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="itemA in classmembersA" :key="itemA.classcount">
-                    <td>{{ itemA.classcount }}</td>
-                    <td v-show="cRoom.showABListStudentCode">({{ itemA.studentcode }})</td>
-                    <td>{{ itemA.studentname }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
-            <div class="has-text-centered f40">Group B</div>
-            <div class="f26" style="margin: 0px 40px;">
-              <table class="table is-fullwidth">
-                <thead>
-                  <tr>
-                    <th>No.</th>
-                    <th v-show="cRoom.showABListStudentCode">Code</th>
-                    <th>Name</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="itemB in classmembersB" :key="itemB.classcount">
-                    <td>{{ itemB.classcount }}</td>
-                    <td v-show="cRoom.showABListStudentCode">({{ itemB.studentcode }})</td>
-                    <td>{{ itemB.studentname }}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+    <!-- ABリスト -->
+    <section v-show="cRoom.showABList">
+      <div class="columns">
+        <div class="column is-half" v-show="cRoom.showABListShowA">
+          <div class="has-text-centered f40">Group A</div>
+          <div class="f26" style="margin: 0px 40px;">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th v-show="cRoom.showABListStudentCode">Code</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itemA in classmembersA" :key="itemA.classcount">
+                  <td>{{ itemA.classcount }}</td>
+                  <td v-show="cRoom.showABListStudentCode">({{ itemA.studentcode }})</td>
+                  <td>{{ itemA.studentname }}</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
-        <br />
-        <br />
-        <br />
-        <br />
-        <br />
-        <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
-        <b-button
-          icon-left="people-arrows"
-          size="is-medium"
-          @click="cRoom.showABList = !cRoom.showABList"
-          expanded
-        >A / B</b-button>
-        <!-- <b-tooltip label="Visibility change" size="is-large" always>
+        <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
+          <div class="has-text-centered f40">Group B</div>
+          <div class="f26" style="margin: 0px 40px;">
+            <table class="table is-fullwidth">
+              <thead>
+                <tr>
+                  <th>No.</th>
+                  <th v-show="cRoom.showABListStudentCode">Code</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="itemB in classmembersB" :key="itemB.classcount">
+                  <td>{{ itemB.classcount }}</td>
+                  <td v-show="cRoom.showABListStudentCode">({{ itemB.studentcode }})</td>
+                  <td>{{ itemB.studentname }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <br />
+      <br />
+      <br />
+      <br />
+      <br />
+      <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
+      <b-button
+        icon-left="people-arrows"
+        size="is-medium"
+        @click="cRoom.showABList = !cRoom.showABList"
+        expanded
+      >A / B</b-button>
+      <!-- <b-tooltip label="Visibility change" size="is-large" always>
         <b-switch size="is-large" v-model="cRoom.showABListStudentCode"
           >Student Code</b-switch
         >
-        </b-tooltip>-->
-      </section>
+      </b-tooltip>-->
+    </section>
 
-      <!-- 上部表示 -->
-      <section v-show="!cRoom.showABList">
-        <nav class="level">
-          <div class="level-left">
-            <div class="column hugetext is-one-quater">
-              {{ dayACjsHmm }}
-              <span style="font-size: 22px;">{{ dayACjsA }}</span>
-              {{ dayACjsdddMMMD }}
-            </div>
+    <!-- 上部表示 -->
+    <section v-show="!cRoom.showABList">
+      <nav class="level">
+        <div class="level-left">
+          <div class="column hugetext is-one-quater">
+            {{ dayACjsHmm }}
+            <span style="font-size: 22px;">{{ dayACjsA }}</span>
+            {{ dayACjsdddMMMD }}
           </div>
-          <div class="level-item">
-            <div class="column f23 has-text-centered">
-              <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
-              {{ " " + authdetail.name }}
-            </div>
+        </div>
+        <div class="level-item">
+          <div class="column f23 has-text-centered">
+            <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
+            {{ " " + authdetail.name }}
           </div>
-          <div class="level-right">
-            <div class="block">
-              <!-- <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon> -->
-              <!-- icon="exclamation-triangle" -->
-              <!-- <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon> -->
-              <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
-              <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
-              <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
-            </div>
+        </div>
+        <div class="level-right">
+          <div class="block">
+            <!-- <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon> -->
+            <!-- icon="exclamation-triangle" -->
+            <!-- <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon> -->
+            <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
+            <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
+            <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
           </div>
-        </nav>
-        <!-- <section>
+        </div>
+      </nav>
+      <!-- <section>
         <div
           class="columns is-half has-text-left"
           style="margin-bottom: -20px;"
@@ -264,374 +251,367 @@
             <span class="has-text-primary is-size-1">{{ sett.env.devCaption }}</span>
           </template>
         </div>
-        </section>-->
-      </section>
+      </section>-->
+    </section>
 
-      <!-- ここから -->
-      <section>
-        <b-tabs
-          v-model="sett.activeTab"
-          size="is-large"
-          position="is-right"
-          v-show="!cRoom.showABList"
-          @change="periodicValidation"
-        >
-          <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
-          <b-tab-item label="Info" icon="info-circle">
-            <!-- 管理用画面 --------------------------------------------------------- 管理用画面-->
-            <section class="manageview p40" v-if="showManagementView">
-              <a href="https://management.d36k1gty6yz9hg.amplifyapp.com/" target="_blank">
-                <span class="manageview">
-                  Management
-                  <b-icon icon="external-link-alt"></b-icon>
-                </span>
-              </a>
-            </section>
-            <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
-            <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
-            <template v-if="!showManagementView">
-              <section class="p40">
-                <!-- <p class="title">Students</p> -->
-                <b-collapse :open="false" aria-id="contentIdForA11y1">
-                  <button
-                    class="button is-primary"
-                    slot="trigger"
-                    aria-controls="contentIdForA11y1"
-                  >Students search</button>
-                  <div class="notification">
-                    <template v-if="!sett.isLoadingClrmManage">
-                      <div class>
-                        <b-table
-                          :data="dataset.ClrmsInstByday"
-                          :columns="lbls.clrmCols"
-                          :paginated="true"
-                          :per-page="15"
-                          :pagination-simple="false"
-                        >
-                          <b-input
-                            slot="searchable"
-                            slot-scope="props"
-                            v-model="props.filters[props.column.field]"
-                            placeholder="Search..."
-                            icon="magnify"
-                            size="is-small"
-                          />
-                        </b-table>
-                      </div>
-                    </template>
-                    <template v-else>
-                      <span class="subtitlehas-text-black">(Loading...)</span>
-                      <b-loading
-                        :is-full-page="false"
-                        :active.sync="sett.isLoadingClrmManage"
-                        :can-cancel="false"
-                      >
-                        <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
-                      </b-loading>
-                    </template>
-                  </div>
-                </b-collapse>
-
-                <!-- <b-collapse class="card" animation="slide"></b-collapse> -->
-              </section>
-            </template>
-
-            <!-- ----- information ----- -->
+    <!-- ここから -->
+    <section>
+      <b-tabs
+        v-model="sett.activeTab"
+        size="is-large"
+        position="is-right"
+        v-show="!cRoom.showABList"
+        @change="periodicValidation"
+      >
+        <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
+        <b-tab-item label="Info" icon="info-circle">
+          <!-- 管理用画面 --------------------------------------------------------- 管理用画面-->
+          <section class="manageview p40" v-if="showManagementView">
+            <a href="https://management.d36k1gty6yz9hg.amplifyapp.com/" target="_blank">
+              <span class="manageview">
+                Management
+                <b-icon icon="external-link-alt"></b-icon>
+              </span>
+            </a>
+          </section>
+          <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
+          <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
+          <template v-if="!showManagementView">
             <section class="p40">
-              <p class="title">Information</p>
-              <b-collapse
-                class="card"
-                animation="slide"
-                v-for="(collapse, index) of bBoardArticles"
-                :key="index"
-                :open="bBoard.isOpen == index"
-                @open="bBoard.isOpen = index"
-              >
-                <div slot="trigger" slot-scope="props" class="card-header" role="button">
-                  <p class="card-header-title">{{ collapse.title }}</p>
-                  <a class="card-header-icon">
-                    <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
-                  </a>
-                </div>
-                <div class="card-content">
-                  <span v-html="collapse.text"></span>
+              <!-- <p class="title">Students</p> -->
+              <b-collapse :open="false" aria-id="contentIdForA11y1">
+                <button
+                  class="button is-primary"
+                  slot="trigger"
+                  aria-controls="contentIdForA11y1"
+                >Students search</button>
+                <div class="notification">
+                  <template v-if="!sett.isLoadingClrmManage">
+                    <div class>
+                      <b-table
+                        :data="dataset.ClrmsInstByday"
+                        :columns="lbls.clrmCols"
+                        :paginated="true"
+                        :per-page="15"
+                        :pagination-simple="false"
+                      >
+                        <b-input
+                          slot="searchable"
+                          slot-scope="props"
+                          v-model="props.filters[props.column.field]"
+                          placeholder="Search..."
+                          icon="magnify"
+                          size="is-small"
+                        />
+                      </b-table>
+                    </div>
+                  </template>
+                  <template v-else>
+                    <span class="subtitlehas-text-black">(Loading...)</span>
+                    <b-loading
+                      :is-full-page="false"
+                      :active.sync="sett.isLoadingClrmManage"
+                      :can-cancel="false"
+                    >
+                      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
+                    </b-loading>
+                  </template>
                 </div>
               </b-collapse>
-            </section>
 
-            <!-- ----- Clock in / Clock out ----- -->
-            <section class="p40">
-              <p class="title">Attendance</p>
-              <b-collapse
-                class="card"
-                animation="slide"
-                aria-id="contentIdForA11y3"
-                @open="periodicValidation"
-                @close="periodicValidation"
+              <!-- <b-collapse class="card" animation="slide"></b-collapse> -->
+            </section>
+          </template>
+
+          <section class="p40">
+            <p class="title">Information</p>
+            <b-collapse
+              class="card"
+              animation="slide"
+              v-for="(collapse, index) of bBoardArticles"
+              :key="index"
+              :open="bBoard.isOpen == index"
+              @open="bBoard.isOpen = index"
+            >
+              <div slot="trigger" slot-scope="props" class="card-header" role="button">
+                <p class="card-header-title">{{ collapse.title }}</p>
+                <a class="card-header-icon">
+                  <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
+                </a>
+              </div>
+              <div class="card-content">
+                <span v-html="collapse.text"></span>
+              </div>
+            </b-collapse>
+          </section>
+
+          <section class="p40">
+            <p class="title">Attendance</p>
+            <b-collapse
+              class="card"
+              animation="slide"
+              aria-id="contentIdForA11y3"
+              @open="periodicValidation"
+              @close="periodicValidation"
+            >
+              <div
+                slot="trigger"
+                slot-scope="props"
+                class="card-header"
+                role="button"
+                aria-controls="contentIdForA11y3"
               >
-                <div
-                  slot="trigger"
-                  slot-scope="props"
-                  class="card-header"
-                  role="button"
-                  aria-controls="contentIdForA11y3"
-                >
-                  <p class="card-header-title"></p>
-                  <a class="card-header-icon">
-                    <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
-                  </a>
-                </div>
-                <transition name="people-fade">
-                  <div class="card-content" v-if="instructor.showPeople">
-                    <!-- <p class="subtitle-mb10">People now</p>
+                <p class="card-header-title"></p>
+                <a class="card-header-icon">
+                  <b-icon :icon="props.open ? 'angle-down' : 'angle-up'"></b-icon>
+                </a>
+              </div>
+              <transition name="people-fade">
+                <div class="card-content" v-if="instructor.showPeople">
+                  <!-- <p class="subtitle-mb10">People now</p>
                   <span v-for="k in instructor.peopleNow" :key="k">
                     <b-tag rounded size="is-large" type="is-smile" class="tagfor">
                       <b-icon icon="smile" size="is-medium"></b-icon>
                       <span>{{ k }}</span>
                     </b-tag>
-                    </span>-->
+                  </span>-->
+                </div>
+              </transition>
+              <div class="card-content">
+                <p class="subtitle">Your record</p>
+                <div class="content">
+                  <b-field>
+                    <b-radio-button
+                      v-for="(m, index) in monthChainUntilCurrentMonthJSON"
+                      :key="index"
+                      :native-value="m"
+                      v-model="instructor.yourattendvisiblemonth"
+                    >{{ m }}</b-radio-button>
+                  </b-field>
+                  <b-table :data="yourattendancesMonth">
+                    <!-- <b-table :data="instructor.yourattendances"> -->
+                    <template slot-scope="props">
+                      <b-table-column
+                        field="date"
+                        label="Date"
+                        width="150"
+                      >{{ getDateMDddd(props.row.date) }}</b-table-column>
+
+                      <b-table-column field="clockin" label="In">
+                        {{ props.row.clockin
+                        }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
+                      </b-table-column>
+                      <b-table-column field="clockout" label="Out">
+                        {{ props.row.clockout
+                        }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
+                      </b-table-column>
+
+                      <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
+                    </template>
+                  </b-table>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <b-button
+                      icon-left="user-check"
+                      size="is-large"
+                      @click="instClockIn"
+                      class="is-pulled-right"
+                      :disabled="ifYouClockIn"
+                    >Clock in</b-button>
                   </div>
-                </transition>
-                <div class="card-content">
-                  <!-- <p class="subtitle">Your record</p>
-                  <div class="content">
-                    <b-field>
-                      <b-radio-button
-                        v-for="(m, index) in monthChainUntilCurrentMonthJSON"
-                        :key="index"
-                        :native-value="m"
-                        v-model="instructor.yourattendvisiblemonth"
-                      >{{ m }}</b-radio-button>
-                    </b-field>
-                    <b-table :data="yourattendancesMonth">
-                      <template slot-scope="props">
-                        <b-table-column
-                          field="date"
-                          label="Date"
-                          width="150"
-                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
-
-                        <b-table-column field="clockin" label="In">
-                          {{ props.row.clockin
-                          }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
-                        </b-table-column>
-                        <b-table-column field="clockout" label="Out">
-                          {{ props.row.clockout
-                          }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
-                        </b-table-column>
-
-                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
-                      </template>
-                    </b-table>
-                  </div>-->
-
-                  <div class="columns">
-                    <div class="column">
-                      <b-button
-                        icon-left="user-check"
-                        size="is-large"
-                        @click="instClockIn"
-                        class="is-pulled-right"
-                        :disabled="ifYouClockIn"
-                      >Clock in</b-button>
-                    </div>
-                    <div class="column">
-                      <b-button
-                        icon-left="snowboarding"
-                        size="is-large"
-                        @click="instClockOut"
-                        :disabled="!ifYouClockInAndStillIn"
-                      >Clock out</b-button>
-                    </div>
+                  <div class="column">
+                    <b-button
+                      icon-left="snowboarding"
+                      size="is-large"
+                      @click="instClockOut"
+                      :disabled="!ifYouClockInAndStillIn"
+                    >Clock out</b-button>
                   </div>
                 </div>
-                <footer class="card-footer"></footer>
-              </b-collapse>
-            </section>
-            <div class="column">
-              <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
-            </div>
-          </b-tab-item>
+              </div>
+              <footer class="card-footer"></footer>
+            </b-collapse>
+          </section>
+          <div class="column">
+            <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
+          </div>
+        </b-tab-item>
 
-          <!-- schedule --------------------------------------------------------------------schedule -->
-          <!-- <b-tab-item> -->
-          <b-tab-item label="Schedule" icon="calendar-alt">
-            <!-- <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;"> -->
-            <template v-if="showManagementViewSuper">
-              <!-- <template v-if="showManagementView"> -->
-              <section class="manageview p40" v-if="showManagementViewSuper">
-                <!-- <section class="manageview p40" v-if="showManagementView"> -->
-                <div class="has-text-centered f40"></div>
-                <b-field class="level-item" type="is-primary">
-                  <b-select
-                    placeholder="Instructors.."
-                    v-model="sett.alias.name"
-                    size="is-medium"
-                    @input="selectClassroomClear()"
-                  >
-                    <!-- @input="evalCriteriaSelectChange()" -->
-                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">
-                      {{
-                      n.name
-                      }}
-                    </option>
-                  </b-select>
-                  {{ yourClasses.length }} / {{ dataset.allClasses.length }}
-                  <!-- <b-button
+        <!-- schedule --------------------------------------------------------------------schedule -->
+        <!-- <b-tab-item> -->
+        <b-tab-item label="Schedule" icon="calendar-alt">
+          <!-- <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;"> -->
+          <template v-if="showManagementViewSuper">
+            <!-- <template v-if="showManagementView"> -->
+            <section class="manageview p40" v-if="showManagementViewSuper">
+              <!-- <section class="manageview p40" v-if="showManagementView"> -->
+              <div class="has-text-centered f40"></div>
+              <b-field class="level-item" type="is-primary">
+                <b-select
+                  placeholder="Instructors.."
+                  v-model="sett.alias.name"
+                  size="is-medium"
+                  @input="selectClassroomClear()"
+                >
+                  <!-- @input="evalCriteriaSelectChange()" -->
+                  <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">
+                    {{
+                    n.name
+                    }}
+                  </option>
+                </b-select>
+                {{ yourClasses.length }} / {{ dataset.allClasses.length }}
+                <!-- <b-button
                 icon-right="chevron-right"
                 size="is-medium"
                 @click="shNmEvalCriChange()"
                 style="margin:5px;height:25px"
                 >Criteria</b-button
-                  >-->
-                </b-field>
-              </section>
-            </template>
-
-            <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
-              <div class="column"></div>
-              <div class="column">
-                <div class="has-text-centered f40">Classes</div>
-              </div>
-              <div class="column f18" style="padding:20px 0px 0px 0px;">
-                <b-field>
-                  <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
-                  <template v-if="cRoom.showClassesSum"></template>
-                </b-field>
-              </div>
+                >-->
+              </b-field>
             </section>
+          </template>
 
-            <section class="columns is-centered" style="font-size: 16px; padding: 10px 10px;">
-              <div class="column"></div>
-              <div class="column">
-                <div
-                  class="columns"
-                  :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
-                  style="width:500px;padding:0px 15px;"
-                  v-if="isOpenselCrlm"
-                >
-                  <div class="content column is-9">
-                    <h3>
-                      {{ selCrlm.id }}
-                      {{ selCrlm.grade }}({{ selCrlm.classnum }})
-                      <b-icon
-                        v-show="selCrlm.sumNg > 0"
-                        icon="exclamation-triangle"
-                        size="is-medium"
-                        type="is-danger"
-                      ></b-icon>
-                    </h3>
-                    <p class="f23">
-                      {{ selCrlm.dayofweek }}
-                      {{ selCrlm.slot }}
-                      {{ selCrlm.timefrom }}-{{ selCrlm.timeto }}
-                      <span
-                        style="font-size:16px;"
-                      >room:</span>
-                      {{ selCrlm.roomnum }}
-                      <br />
-                      <span style="font-size:20px;">{{ selCrlm.title }}</span>
-                      <span style="font-size:20px;">{{ selCrlm.classtitle }}</span>
-                    </p>
-                  </div>
-                  <div class="column is-3">
-                    <template v-if="!isClrmLoading">
-                      <b-button
-                        pack="fas"
-                        icon-left="hand-point-right"
-                        size="is-large"
-                        @click="enterClassroom"
-                      >Go</b-button>
-                    </template>
-                    <template v-else>
-                      <span class="subtitle is-3 has-text-black">(Loading...)</span>
-                      <b-loading
-                        :is-full-page="false"
-                        :active.sync="isClrmLoading"
-                        :can-cancel="false"
-                      >
-                        <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
-                      </b-loading>
-                    </template>
-                  </div>
+          <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
+            <div class="column"></div>
+            <div class="column">
+              <div class="has-text-centered f40">Classes</div>
+            </div>
+            <div class="column f18" style="padding:20px 0px 0px 0px;">
+              <b-field>
+                <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
+                <template v-if="cRoom.showClassesSum"></template>
+              </b-field>
+            </div>
+          </section>
+
+          <section class="columns is-centered" style="font-size: 16px; padding: 10px 10px;">
+            <div class="column"></div>
+            <div class="column">
+              <div
+                class="columns"
+                :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
+                style="width:500px;padding:0px 15px;"
+                v-if="isOpenselCrlm"
+              >
+                <div class="content column is-9">
+                  <h3>
+                    {{ selCrlm.id }}
+                    {{ selCrlm.grade }}({{ selCrlm.classnum }})
+                    <b-icon
+                      v-show="selCrlm.sumNg > 0"
+                      icon="exclamation-triangle"
+                      size="is-medium"
+                      type="is-danger"
+                    ></b-icon>
+                  </h3>
+                  <p class="f23">
+                    {{ selCrlm.dayofweek }}
+                    {{ selCrlm.slot }}
+                    {{ selCrlm.timefrom }}-{{ selCrlm.timeto }}
+                    <span
+                      style="font-size:16px;"
+                    >room:</span>
+                    {{ selCrlm.roomnum }}
+                    <br />
+                    <span style="font-size:20px;">{{ selCrlm.title }}</span>
+                    <span style="font-size:20px;">{{ selCrlm.classtitle }}</span>
+                  </p>
+                </div>
+                <div class="column is-3">
+                  <template v-if="!isClrmLoading">
+                    <b-button
+                      pack="fas"
+                      icon-left="hand-point-right"
+                      size="is-large"
+                      @click="enterClassroom"
+                    >Go</b-button>
+                  </template>
+                  <template v-else>
+                    <span class="subtitle is-3 has-text-black">(Loading...)</span>
+                    <b-loading
+                      :is-full-page="false"
+                      :active.sync="isClrmLoading"
+                      :can-cancel="false"
+                    >
+                      <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
+                    </b-loading>
+                  </template>
                 </div>
               </div>
-              <div class="column f18">
-                <b-notification :closable="false">
-                  <template v-if="cRoom.showClassesSum">
-                    <button
-                      class="button is-primary is-medium"
-                      rounded
-                      @click="listClrmsDataIDCheck(sett.alias.name)"
-                    >Check Uploaded Data</button>
-                    <br />
-                    <p v-html="manage.chkStatus"></p>
-                    <b-loading
-                      :is-full-page="true"
-                      :active.sync="sett.isLoadingClrmsChk"
-                      :can-cancel="true"
-                    ></b-loading>
-                    <b-field>
-                      <b-radio-button
-                        :native-value="0"
-                        v-model="manage.showNumClassesSum"
-                      >Attendance</b-radio-button>
-                      <b-radio-button
-                        :native-value="1"
-                        v-model="manage.showNumClassesSum"
-                      >Evaluation</b-radio-button>
-                      <b-radio-button :native-value="2" v-model="manage.showNumClassesSum">Both</b-radio-button>
-                    </b-field>
-                  </template>
-                </b-notification>
-              </div>
-            </section>
+            </div>
+            <div class="column f18">
+              <b-notification :closable="false">
+                <template v-if="cRoom.showClassesSum">
+                  <button
+                    class="button is-primary is-medium"
+                    rounded
+                    @click="listClrmsDataIDCheck(sett.alias.name)"
+                  >Check Uploaded Data</button>
+                  <br />
+                  <p v-html="manage.chkStatus"></p>
+                  <b-loading
+                    :is-full-page="true"
+                    :active.sync="sett.isLoadingClrmsChk"
+                    :can-cancel="true"
+                  ></b-loading>
+                  <b-field>
+                    <b-radio-button :native-value="0" v-model="manage.showNumClassesSum">Attendance</b-radio-button>
+                    <b-radio-button :native-value="1" v-model="manage.showNumClassesSum">Evaluation</b-radio-button>
+                    <b-radio-button :native-value="2" v-model="manage.showNumClassesSum">Both</b-radio-button>
+                  </b-field>
+                </template>
+              </b-notification>
+            </div>
+          </section>
 
-            <section
-              class="columns is-centered"
-              style="font-size: 16px; padding: 0px 10px;"
-              v-if="isOpenselCrlm"
-            >
-              <template v-if="cRoom.showClassesSum">
-                <table class="table f23">
-                  <thead>
-                    <tr>
-                      <th style="padding:0px 10px;"></th>
-                      <th style="padding:0px 10px;">
-                        <b-icon icon="user" size="is-small"></b-icon>
-                      </th>
+          <section
+            class="columns is-centered"
+            style="font-size: 16px; padding: 0px 10px;"
+            v-if="isOpenselCrlm"
+          >
+            <template v-if="cRoom.showClassesSum">
+              <table class="table f23">
+                <thead>
+                  <tr>
+                    <th style="padding:0px 10px;"></th>
+                    <th style="padding:0px 10px;">
+                      <b-icon icon="user" size="is-small"></b-icon>
+                    </th>
 
-                      <th
-                        v-for="(k, index) in manage.vforEdit"
-                        :key="`first-${index}`"
-                        style="padding:0px 5px 0px 15px;"
-                        v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
-                      >
-                        <span class="f18">{{ k.md + 1 }}</span>
-                      </th>
+                    <th
+                      v-for="(k, index) in manage.vforEdit"
+                      :key="`first-${index}`"
+                      style="padding:0px 5px 0px 15px;"
+                      v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
+                    >
+                      <span class="f18">{{ k.md + 1 }}</span>
+                    </th>
 
-                      <th
-                        v-for="(l, index) in manage.vforEval"
-                        :key="`second-${index}`"
-                        style="padding:0px 5px 0px 10px;"
-                        v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
-                      >
-                        <span class="f18">{{ l.cap }}</span>
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody class="cPointer">
-                    <tr>
-                      <td style="padding:0px 10px;">Uploaded</td>
-                      <td style="padding:0px 10px;">
-                        <b>{{ selCrlm.students }}</b>
-                      </td>
+                    <th
+                      v-for="(l, index) in manage.vforEval"
+                      :key="`second-${index}`"
+                      style="padding:0px 5px 0px 10px;"
+                      v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
+                    >
+                      <span class="f18">{{ l.cap }}</span>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody class="cPointer">
+                  <tr>
+                    <td style="padding:0px 10px;">Uploaded</td>
+                    <td style="padding:0px 10px;">
+                      <b>{{ selCrlm.students }}</b>
+                    </td>
 
-                      <td
-                        v-for="(m, index) in manage.vforEdit"
-                        :key="`third-${index}`"
-                        style="padding:0px 10px 0px 15px;"
-                        :class="[
+                    <td
+                      v-for="(m, index) in manage.vforEdit"
+                      :key="`third-${index}`"
+                      style="padding:0px 10px 0px 15px;"
+                      :class="[
                         manage.selCrlmDv[m.at] !== selCrlm[m.at]
                           ? 'sumNg'
                           : selCrlm[m.at] === selCrlm.students
@@ -640,16 +620,16 @@
                           ? 'sumYet'
                           : '',
                       ]"
-                        v-show="manage.showNumClassesSum % 2 === 0"
-                      >
-                        <span class="f18">{{ selCrlm[m.at] }}</span>
-                      </td>
+                      v-show="manage.showNumClassesSum % 2 === 0"
+                    >
+                      <span class="f18">{{ selCrlm[m.at] }}</span>
+                    </td>
 
-                      <td
-                        v-for="(n, index) in manage.vforEval"
-                        :key="`fourth-${index}`"
-                        style="padding:0px 10px 0px 15px;"
-                        :class="[
+                    <td
+                      v-for="(n, index) in manage.vforEval"
+                      :key="`fourth-${index}`"
+                      style="padding:0px 10px 0px 15px;"
+                      :class="[
                         manage.selCrlmDv[n.ev] + manage.selCrlmDv[n.cm] !==
                         selCrlm[n.ev] + selCrlm[n.cm]
                           ? 'sumNg'
@@ -659,24 +639,24 @@
                           ? 'sumYet'
                           : '',
                       ]"
-                        v-show="manage.showNumClassesSum > 0"
-                      >
-                        <span class="f16">{{ selCrlm[n.ev] }}</span>
-                        <span class="f14">-{{ selCrlm[n.cm] }}</span>
-                      </td>
-                    </tr>
+                      v-show="manage.showNumClassesSum > 0"
+                    >
+                      <span class="f16">{{ selCrlm[n.ev] }}</span>
+                      <span class="f14">-{{ selCrlm[n.cm] }}</span>
+                    </td>
+                  </tr>
 
-                    <tr style="background-color:#eee;">
-                      <td style="padding:0px 10px;">Device</td>
-                      <td style="padding:0px 10px;">
-                        <b>{{ manage.selCrlmDv.students }}</b>
-                      </td>
+                  <tr style="background-color:#eee;">
+                    <td style="padding:0px 10px;">Device</td>
+                    <td style="padding:0px 10px;">
+                      <b>{{ manage.selCrlmDv.students }}</b>
+                    </td>
 
-                      <td
-                        v-for="(m, index) in manage.vforEdit"
-                        :key="`third-${index}`"
-                        style="padding:0px 10px 0px 15px;"
-                        :class="[
+                    <td
+                      v-for="(m, index) in manage.vforEdit"
+                      :key="`third-${index}`"
+                      style="padding:0px 10px 0px 15px;"
+                      :class="[
                         manage.selCrlmDv[m.at] !== selCrlm[m.at]
                           ? 'sumNg'
                           : manage.selCrlmDv[m.at] === manage.selCrlmDv.students
@@ -685,16 +665,16 @@
                           ? 'sumYet'
                           : '',
                       ]"
-                        v-show="manage.showNumClassesSum % 2 === 0"
-                      >
-                        <span class="f18">{{ manage.selCrlmDv[m.at] }}</span>
-                      </td>
+                      v-show="manage.showNumClassesSum % 2 === 0"
+                    >
+                      <span class="f18">{{ manage.selCrlmDv[m.at] }}</span>
+                    </td>
 
-                      <td
-                        v-for="(n, index) in manage.vforEval"
-                        :key="`fourth-${index}`"
-                        style="padding:0px 10px 0px 15px;"
-                        :class="[
+                    <td
+                      v-for="(n, index) in manage.vforEval"
+                      :key="`fourth-${index}`"
+                      style="padding:0px 10px 0px 15px;"
+                      :class="[
                         manage.selCrlmDv[n.ev] + manage.selCrlmDv[n.cm] !==
                         selCrlm[n.ev] + selCrlm[n.cm]
                           ? 'sumNg'
@@ -705,21 +685,21 @@
                           ? 'sumYet'
                           : '',
                       ]"
-                        v-show="manage.showNumClassesSum > 0"
-                      >
-                        <span class="f16">{{ manage.selCrlmDv[n.ev] }}</span>
-                        <span class="f14">-{{ manage.selCrlmDv[n.cm] }}</span>
-                      </td>
-                      <td>
-                        <b-button @click="manageUpdateClrmDvAll">Upload</b-button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </template>
-            </section>
+                      v-show="manage.showNumClassesSum > 0"
+                    >
+                      <span class="f16">{{ manage.selCrlmDv[n.ev] }}</span>
+                      <span class="f14">-{{ manage.selCrlmDv[n.cm] }}</span>
+                    </td>
+                    <td>
+                      <b-button @click="manageUpdateClrmDvAll">Upload</b-button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </section>
 
-            <!-- <section class="columns is-centered" style="font-size: 16px; padding: 0px 0px;">
+          <!-- <section class="columns is-centered" style="font-size: 16px; padding: 0px 0px;">
             <b-collapse :open="isOpenselCrlm" class="is-full">
               <div
                 class="columns"
@@ -768,347 +748,347 @@
                 </div>
               </div>
             </b-collapse>
-            </section>-->
+          </section>-->
 
-            <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
-              <table class="table f23">
-                <thead>
-                  <tr>
-                    <th></th>
-                    <th></th>
-                    <th>Day</th>
-                    <th>Slot</th>
-                    <th v-show="!cRoom.showClassesSum">Time</th>
-                    <th v-show="!cRoom.showClassesSum">Room</th>
-                    <th v-show="cRoom.showClassesSum">
-                      <b-icon icon="user" size="is-small"></b-icon>
-                    </th>
+          <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
+            <table class="table f23">
+              <thead>
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th>Day</th>
+                  <th>Slot</th>
+                  <th v-show="!cRoom.showClassesSum">Time</th>
+                  <th v-show="!cRoom.showClassesSum">Room</th>
+                  <th v-show="cRoom.showClassesSum">
+                    <b-icon icon="user" size="is-small"></b-icon>
+                  </th>
 
-                    <th
-                      v-for="(k, index) in manage.vforEdit"
-                      :key="`first-${index}`"
-                      style="padding:5px 5px 0px 15px;"
-                      v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
-                    >
-                      <span class="f18">{{ k.md + 1 }}</span>
-                    </th>
+                  <th
+                    v-for="(k, index) in manage.vforEdit"
+                    :key="`first-${index}`"
+                    style="padding:5px 5px 0px 15px;"
+                    v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
+                  >
+                    <span class="f18">{{ k.md + 1 }}</span>
+                  </th>
 
-                    <th
-                      v-for="(l, index) in manage.vforEval"
-                      :key="`second-${index}`"
-                      style="padding:5px 5px 0px 10px;"
-                      v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
-                    >
-                      <span class="f18">{{ l.cap }}</span>
-                    </th>
-                    <th>
-                      <!--Consistency check-->
-                    </th>
-                  </tr>
-                </thead>
-                <tbody class="cPointer">
-                  <tr v-for="yitem in yourClasses" :key="yitem.id">
-                    <td
-                      :class="{
+                  <th
+                    v-for="(l, index) in manage.vforEval"
+                    :key="`second-${index}`"
+                    style="padding:5px 5px 0px 10px;"
+                    v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
+                  >
+                    <span class="f18">{{ l.cap }}</span>
+                  </th>
+                  <th>
+                    <!--Consistency check-->
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="cPointer">
+                <tr v-for="yitem in yourClasses" :key="yitem.id">
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                    >{{ yitem.id }}</td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                  >{{ yitem.id }}</td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                    >{{ yitem.grade }}({{ yitem.classnum }})</td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                  >{{ yitem.grade }}({{ yitem.classnum }})</td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                    >{{ yitem.dayofweek }}</td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                  >{{ yitem.dayofweek }}</td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                    >{{ yitem.slot }}</td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                  >{{ yitem.slot }}</td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                      v-show="!cRoom.showClassesSum"
-                    >
-                      <div class="is-pulled-right">{{ yitem.timefrom }}-{{ yitem.timeto }}</div>
-                    </td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                    v-show="!cRoom.showClassesSum"
+                  >
+                    <div class="is-pulled-right">{{ yitem.timefrom }}-{{ yitem.timeto }}</div>
+                  </td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                      v-show="!cRoom.showClassesSum"
-                    >{{ yitem.roomnum }}</td>
-                    <td
-                      :class="{
+                    @click="selectClassroom(yitem)"
+                    v-show="!cRoom.showClassesSum"
+                  >{{ yitem.roomnum }}</td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                      v-show="!cRoom.showClassesSum"
-                    >{{ yitem.classtitle | subStr }}</td>
+                    @click="selectClassroom(yitem)"
+                    v-show="!cRoom.showClassesSum"
+                  >{{ yitem.classtitle | subStr }}</td>
 
-                    <!-- summary-->
-                    <td
-                      :class="{
+                  <!-- summary-->
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      v-show="cRoom.showClassesSum"
-                      @click="selectClassroom(yitem)"
-                    >
-                      <b>{{ yitem.students }}</b>
-                    </td>
+                    v-show="cRoom.showClassesSum"
+                    @click="selectClassroom(yitem)"
+                  >
+                    <b>{{ yitem.students }}</b>
+                  </td>
 
-                    <td
-                      v-for="(m, index) in manage.vforEdit"
-                      :key="`third-${index}`"
-                      style="padding:5px 10px 0px 15px;"
-                      :class="[
+                  <td
+                    v-for="(m, index) in manage.vforEdit"
+                    :key="`third-${index}`"
+                    style="padding:5px 10px 0px 15px;"
+                    :class="[
                       yitem[m.at] === yitem.students ? 'sumOk' : yitem[m.at] > 0 ? 'sumYet' : '',
                     ]"
-                      v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
-                      @click="selectClassroom(yitem)"
-                    >
-                      <span class="f18">{{ yitem[m.at] }}</span>
-                    </td>
+                    v-show="cRoom.showClassesSum && manage.showNumClassesSum % 2 === 0"
+                    @click="selectClassroom(yitem)"
+                  >
+                    <span class="f18">{{ yitem[m.at] }}</span>
+                  </td>
 
-                    <td
-                      v-for="(n, index) in manage.vforEval"
-                      :key="`fourth-${index}`"
-                      style="padding:5px 10px 0px 15px;"
-                      :class="[
+                  <td
+                    v-for="(n, index) in manage.vforEval"
+                    :key="`fourth-${index}`"
+                    style="padding:5px 10px 0px 15px;"
+                    :class="[
                       yitem[n.ev] + yitem[n.cm] === yitem.students * 2
                         ? 'sumOk'
                         : yitem[n.ev] + yitem[n.cm] > 0
                         ? 'sumYet'
                         : '',
                     ]"
-                      v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
-                      @click="selectClassroom(yitem)"
-                    >
-                      <span class="f16">{{ yitem[n.ev] }}</span>
-                      <span class="f14">-{{ yitem[n.cm] }}</span>
-                    </td>
-                    <td
-                      :class="{
+                    v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
+                    @click="selectClassroom(yitem)"
+                  >
+                    <span class="f16">{{ yitem[n.ev] }}</span>
+                    <span class="f14">-{{ yitem[n.cm] }}</span>
+                  </td>
+                  <td
+                    :class="{
                       dayofweekToday: yitem.dayofweek === dayjsddd,
                     }"
-                      @click="selectClassroom(yitem)"
-                    >
-                      <b-icon
-                        v-show="yitem.sumNg > 0"
-                        icon="exclamation-triangle"
-                        size="is-small"
-                        type="is-danger"
-                      ></b-icon>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </section>
-            <br />
-            <br />
-          </b-tab-item>
+                    @click="selectClassroom(yitem)"
+                  >
+                    <b-icon
+                      v-show="yitem.sumNg > 0"
+                      icon="exclamation-triangle"
+                      size="is-small"
+                      type="is-danger"
+                    ></b-icon>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </section>
+          <br />
+          <br />
+        </b-tab-item>
 
-          <!-- classroom --------------------------------------------------------------------classroom -->
-          <!-- <b-tab-item> -->
-          <b-tab-item label disabled icon="chalkboard-teacher">
-            <!-- <template v-if="selCrlm.type !== undefined"> -->
-            <nav class="level">
-              <div class="level-left">
-                <div class="level-item f30" style="margin-bottom: 10px;">
-                  <div>
-                    <p>
-                      {{ selCrlm.id }}
-                      {{ selCrlm.grade }}
-                      ({{ selCrlm.classnum }})
-                      {{ selCrlm.dayofweek }}
-                      {{ selCrlm.slot }}
-                      {{ selCrlm.timefrom }} -
-                      {{ selCrlm.timeto }}
-                      <!-- room:{{ selCrlm.room }} -->
-                    </p>
-                    <p class="subtitle" style="line-height:0.8em;">{{ selCrlm.classtitle }}</p>
-                  </div>
-                  <!-- <div
+        <!-- classroom --------------------------------------------------------------------classroom -->
+        <!-- <b-tab-item> -->
+        <b-tab-item label disabled icon="chalkboard-teacher">
+          <!-- <template v-if="selCrlm.type !== undefined"> -->
+          <nav class="level">
+            <div class="level-left">
+              <div class="level-item f30" style="margin-bottom: 10px;">
+                <div>
+                  <p>
+                    {{ selCrlm.id }}
+                    {{ selCrlm.grade }}
+                    ({{ selCrlm.classnum }})
+                    {{ selCrlm.dayofweek }}
+                    {{ selCrlm.slot }}
+                    {{ selCrlm.timefrom }} -
+                    {{ selCrlm.timeto }}
+                    <!-- room:{{ selCrlm.room }} -->
+                  </p>
+                  <p class="subtitle" style="line-height:0.8em;">{{ selCrlm.classtitle }}</p>
+                </div>
+                <!-- <div
                   style="margin-left:10px;"
                   v-show="!cRoom.showIndividual"
-                  >{{ selCrlm.classtitle }}</div>-->
-                </div>
+                >{{ selCrlm.classtitle }}</div>-->
               </div>
-              <div class="level-right">
-                <div class="level-item" v-show="cRoom.showIndividual">
-                  <b-switch v-model="cRoom.showIndiList">
-                    <div style="margin-right:10px;">List</div>
-                  </b-switch>
-                  <b-button
-                    class="w40"
-                    icon-left="chevron-left"
-                    size="is-medium"
-                    @click="manageIndiNo(-1)"
-                  ></b-button>
-                  <b-button
-                    class="w40"
-                    icon-left="chevron-right"
-                    size="is-medium"
-                    @click="manageIndiNo(1)"
-                  ></b-button>
-                  <b-button
-                    style="margin-left:10px"
-                    class="level-item w80"
-                    size="is-medium"
-                    @click="showEvalCompChange()"
-                  >
-                    <b-icon pack="fas" icon="map" size="is-medium" />
-                    <!-- <b-icon pack="fas" icon="star" size="is-medium" />
-                  <span class="has-text-grey-light">{{ " | " }}</span>
-                    <b-icon pack="fas" icon="comment" size="is-medium" />-->
-                  </b-button>
-                </div>
+            </div>
+            <div class="level-right">
+              <div class="level-item" v-show="cRoom.showIndividual">
+                <b-switch v-model="cRoom.showIndiList">
+                  <div style="margin-right:10px;">List</div>
+                </b-switch>
                 <b-button
-                  class="level-item w40"
-                  icon-left="binoculars"
+                  class="w40"
+                  icon-left="chevron-left"
                   size="is-medium"
-                  @click="showIndividualChange"
+                  @click="manageIndiNo(-1)"
                 ></b-button>
-              </div>
-            </nav>
-            <nav class="level" v-show="!cRoom.showIndividual">
-              <div class="level-left">
-                <div class="level-item f30" style="margin-bottom: 10px;">
-                  <div style="width: 250px; margin: 20px;" v-show="att.mode != 3">
-                    <b-progress
-                      :value="att.modeset[`${att.mode}`].pct"
-                      size="is-large"
-                      :type="att.modeset[`${att.mode}`].colortype"
-                      show-value
-                    >
-                      <span
-                        style="font-size: 28px; color: black;"
-                      >{{ att.modeset[`${att.mode}`].barcaption }}</span>
-                    </b-progress>
-                  </div>
-                </div>
-                <div class="level-left" style="width: 200px; height: 80px;">
-                  <button
-                    v-show="att.mode < 2"
-                    class="button is-large"
-                    @click="attnModeChangeConfirm"
-                  >change</button>
-                  <b-button
-                    v-show="att.mode === 2"
-                    class="button is-large"
-                    @click="attnModeRestartConfirm"
-                    icon-left="undo-alt"
-                  ></b-button>
-                  <!-- 後日修正用 -->
-                  <b-button
-                    v-show="isdeadlinelenient"
-                    class="button is-large is-beige"
-                    @click="attnModeChangeRegardlessOfTheDayConfirm"
-                    icon-left="edit"
-                  >
-                    <span v-show="att.mode === 3">edit</span>
-                  </b-button>
-                </div>
                 <b-button
-                  icon-left="people-arrows"
-                  size="is-large"
-                  @click="cRoom.showABList = !cRoom.showABList"
-                >A / B</b-button>
+                  class="w40"
+                  icon-left="chevron-right"
+                  size="is-medium"
+                  @click="manageIndiNo(1)"
+                ></b-button>
+                <b-button
+                  style="margin-left:10px"
+                  class="level-item w80"
+                  size="is-medium"
+                  @click="showEvalCompChange()"
+                >
+                  <b-icon pack="fas" icon="map" size="is-medium" />
+                  <!-- <b-icon pack="fas" icon="star" size="is-medium" />
+                  <span class="has-text-grey-light">{{ " | " }}</span>
+                  <b-icon pack="fas" icon="comment" size="is-medium" />-->
+                </b-button>
               </div>
-              <div class="level-right">
-                <div class="level-item">
-                  <b-button
-                    icon-left="hand-paper"
-                    size="is-medium"
-                    @click="showAttenChange"
-                    style="margin-right:20px;"
+              <b-button
+                class="level-item w40"
+                icon-left="binoculars"
+                size="is-medium"
+                @click="showIndividualChange"
+              ></b-button>
+            </div>
+          </nav>
+          <nav class="level" v-show="!cRoom.showIndividual">
+            <div class="level-left">
+              <div class="level-item f30" style="margin-bottom: 10px;">
+                <div style="width: 250px; margin: 20px;" v-show="att.mode != 3">
+                  <b-progress
+                    :value="att.modeset[`${att.mode}`].pct"
+                    size="is-large"
+                    :type="att.modeset[`${att.mode}`].colortype"
+                    show-value
                   >
-                    Attendance
-                    <!-- / <b-icon icon="pen-nib" size="is-medium" /> Evaluation -->
-                  </b-button>
+                    <span
+                      style="font-size: 28px; color: black;"
+                    >{{ att.modeset[`${att.mode}`].barcaption }}</span>
+                  </b-progress>
                 </div>
               </div>
-            </nav>
-            <section v-show="!cRoom.showIndividual">
-              <!-- ----------------------------------------------------table------------------------------ -->
-              <!-- ----------------------------------------------------table------------------------------ -->
-              <!-- --classroom--------------------------------------------table------------------------------ -->
-              <!-- {{ classmembers }} -->
-              <!-- <template v-if="classmembers[0] !== undefined">{{ classmembers[0] }}</template> -->
+              <div class="level-left" style="width: 200px; height: 80px;">
+                <button
+                  v-show="att.mode < 2"
+                  class="button is-large"
+                  @click="attnModeChangeConfirm"
+                >change</button>
+                <b-button
+                  v-show="att.mode === 2"
+                  class="button is-large"
+                  @click="attnModeRestartConfirm"
+                  icon-left="undo-alt"
+                ></b-button>
+                <!-- 後日修正用 -->
+                <b-button
+                  v-show="isdeadlinelenient"
+                  class="button is-large is-beige"
+                  @click="attnModeChangeRegardlessOfTheDayConfirm"
+                  icon-left="edit"
+                >
+                  <span v-show="att.mode === 3">edit</span>
+                </b-button>
+              </div>
+              <b-button
+                icon-left="people-arrows"
+                size="is-large"
+                @click="cRoom.showABList = !cRoom.showABList"
+              >A / B</b-button>
+            </div>
+            <div class="level-right">
+              <div class="level-item">
+                <b-button
+                  icon-left="hand-paper"
+                  size="is-medium"
+                  @click="showAttenChange"
+                  style="margin-right:20px;"
+                >
+                  Attendance
+                  <!-- / <b-icon icon="pen-nib" size="is-medium" /> Evaluation -->
+                </b-button>
+              </div>
+            </div>
+          </nav>
+          <section v-show="!cRoom.showIndividual">
+            <!-- ----------------------------------------------------table------------------------------ -->
+            <!-- ----------------------------------------------------table------------------------------ -->
+            <!-- --classroom--------------------------------------------table------------------------------ -->
+            <!-- {{ classmembers }} -->
+            <!-- <template v-if="classmembers[0] !== undefined">{{ classmembers[0] }}</template> -->
 
-              <b-table
-                :data="classmembers"
-                :mobile-cards="sett.hasMobileCards"
-                :sticky-header="stickyHeaders"
-              >
-                <template slot-scope="props">
-                  <b-table-column
-                    field="sync"
-                    label
-                    style="padding:8px 0px 0px 0px;width:10px"
-                    class="has-text-centered"
-                    :class="getIsDoneToday(props.row._lastChangedAt)"
-                    width="10"
-                    sticky
-                  >{{ getTimeIfTodayOrDate(props.row._lastChangedAt) }}</b-table-column>
-                  <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
+            <b-table
+              :data="classmembers"
+              :mobile-cards="sett.hasMobileCards"
+              :sticky-header="stickyHeaders"
+            >
+              <template slot-scope="props">
+                <b-table-column
+                  field="sync"
+                  label
+                  style="padding:8px 0px 0px 0px;width:10px"
+                  class="has-text-centered"
+                  :class="getIsDoneToday(props.row._lastChangedAt)"
+                  width="10"
+                  sticky
+                >{{ getTimeIfTodayOrDate(props.row._lastChangedAt) }}</b-table-column>
+                <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
-                  <b-table-column
-                    field="sortid"
-                    label="No."
-                    width="15"
-                    numeric
-                    sortable
-                    sticky
-                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
-                  >
-                    <span class="f23">{{ props.row.classcount }}</span>
-                  </b-table-column>
-                  <b-table-column
-                    field="group"
-                    label="Group"
-                    width="20"
-                    sticky
-                    sortable
-                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
-                  >
-                    <div class="f30">
-                      <b-tag
-                        size="is-small"
-                        rounded
-                        :class="props.row.group == 'A' ? 'ab-a' : 'ab-b'"
-                      >
-                        <span class="f23 fb">{{ props.row.group }}</span>
-                      </b-tag>
-                    </div>
-                  </b-table-column>
-                  <b-table-column
-                    field="studentcode"
-                    label="Code"
-                    width="50"
-                    sortable
-                    sticky
-                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
-                  >{{ props.row.studentcode }}</b-table-column>
-                  <b-table-column
-                    field="studentname"
-                    label="Name"
-                    sortable
-                    width="220"
-                    sticky
-                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
-                  >
-                    <!-- <template slot="header" slot-scope="{ column }">
+                <b-table-column
+                  field="sortid"
+                  label="No."
+                  width="15"
+                  numeric
+                  sortable
+                  sticky
+                  :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
+                >
+                  <span class="f23">{{ props.row.classcount }}</span>
+                </b-table-column>
+                <b-table-column
+                  field="group"
+                  label="Group"
+                  width="20"
+                  sticky
+                  sortable
+                  :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
+                >
+                  <div class="f30">
+                    <b-tag
+                      size="is-small"
+                      rounded
+                      :class="props.row.group == 'A' ? 'ab-a' : 'ab-b'"
+                    >
+                      <span class="f23 fb">{{ props.row.group }}</span>
+                    </b-tag>
+                  </div>
+                </b-table-column>
+                <b-table-column
+                  field="studentcode"
+                  label="Code"
+                  width="50"
+                  sortable
+                  sticky
+                  :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
+                >{{ props.row.studentcode }}</b-table-column>
+                <b-table-column
+                  field="studentname"
+                  label="Name"
+                  sortable
+                  width="220"
+                  sticky
+                  :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
+                >
+                  <!-- <template slot="header" slot-scope="{ column }">
                     <b-button
                       icon-left="people-arrows"
                       size="is-medium"
@@ -1116,495 +1096,363 @@
                       >A / B</b-button
                     >
                     {{ column.label }}
-                    </template>-->
+                  </template>-->
 
-                    <span class="f23">{{ props.row.studentname }}</span>
-                  </b-table-column>
-                  <b-table-column
-                    field="attn01"
-                    label="1"
-                    :visible="clrmShowCol[1]"
-                    :class="getAttendStatusClassHist(props.row.attn01)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(0) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn01) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn02"
-                    label="2"
-                    :visible="clrmShowCol[2]"
-                    :class="getAttendStatusClassHist(props.row.attn02)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(1) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn02) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn03"
-                    label="3"
-                    :visible="clrmShowCol[3]"
-                    :class="getAttendStatusClassHist(props.row.attn03)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(2) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn03) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn04"
-                    label="4"
-                    :visible="clrmShowCol[4]"
-                    :class="getAttendStatusClassHist(props.row.attn04)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(3) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn04) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn05"
-                    label="5"
-                    :visible="clrmShowCol[5]"
-                    :class="getAttendStatusClassHist(props.row.attn05)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(4) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn05) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn06"
-                    label="6"
-                    :visible="clrmShowCol[6]"
-                    :class="getAttendStatusClassHist(props.row.attn06)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(5) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn06) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn07"
-                    label="7"
-                    :visible="clrmShowCol[7]"
-                    :class="getAttendStatusClassHist(props.row.attn07)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(6) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn07) }}
-                  </b-table-column>
+                  <span class="f23">{{ props.row.studentname }}</span>
+                </b-table-column>
+                <b-table-column
+                  field="attn01"
+                  label="1"
+                  :visible="clrmShowCol[1]"
+                  :class="getAttendStatusClassHist(props.row.attn01)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(0) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn01) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn02"
+                  label="2"
+                  :visible="clrmShowCol[2]"
+                  :class="getAttendStatusClassHist(props.row.attn02)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(1) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn02) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn03"
+                  label="3"
+                  :visible="clrmShowCol[3]"
+                  :class="getAttendStatusClassHist(props.row.attn03)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(2) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn03) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn04"
+                  label="4"
+                  :visible="clrmShowCol[4]"
+                  :class="getAttendStatusClassHist(props.row.attn04)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(3) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn04) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn05"
+                  label="5"
+                  :visible="clrmShowCol[5]"
+                  :class="getAttendStatusClassHist(props.row.attn05)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(4) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn05) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn06"
+                  label="6"
+                  :visible="clrmShowCol[6]"
+                  :class="getAttendStatusClassHist(props.row.attn06)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(5) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn06) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn07"
+                  label="7"
+                  :visible="clrmShowCol[7]"
+                  :class="getAttendStatusClassHist(props.row.attn07)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(6) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn07) }}
+                </b-table-column>
 
-                  <b-table-column
-                    field="attn08"
-                    label="8"
-                    :visible="clrmShowCol[8]"
-                    :class="getAttendStatusClassHist(props.row.attn08)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(7) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn08) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn09"
-                    label="9"
-                    :visible="clrmShowCol[9]"
-                    :class="getAttendStatusClassHist(props.row.attn09)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(8) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn09) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn10"
-                    label="10"
-                    :visible="clrmShowCol[10]"
-                    :class="getAttendStatusClassHist(props.row.attn10)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(9) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn10) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn11"
-                    label="11"
-                    :visible="clrmShowCol[11]"
-                    :class="getAttendStatusClassHist(props.row.attn11)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(10) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn11) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn12"
-                    label="12"
-                    :visible="clrmShowCol[12]"
-                    :class="getAttendStatusClassHist(props.row.attn12)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(11) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn12) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn13"
-                    label="13"
-                    :visible="clrmShowCol[13]"
-                    :class="getAttendStatusClassHist(props.row.attn13)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(12) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn13) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attn14"
-                    label="14"
-                    :visible="clrmShowCol[14]"
-                    :class="getAttendStatusClassHist(props.row.attn14)"
-                    width="30"
-                  >
-                    <template slot="header" slot-scope="{ column }">
-                      {{ column.label }}
-                      <br />
-                      <span class="f18">{{ getDateMD(13) }}</span>
-                    </template>
-                    {{ getAttendSymbol(props.row.attn14) }}
-                  </b-table-column>
-                  <b-table-column
-                    field="attendrec"
-                    :visible="cRoom.showAttenHist === 0"
-                    label="Attendance"
-                    width="200"
-                  >
-                    <div class="tile is-ancestor" style="z-index: 1;">
-                      <div class="tile is-parent">
-                        <div class="tile is-child">
-                          <b-field v-show="att.mode < 2">
-                            <b-radio-button
-                              v-model="props.row[getTodayJSON.attendance]"
-                              :native-value="att.modeset[att.mode].title"
-                              :type="att.modeset[att.mode].colortype"
-                              @input="
+                <b-table-column
+                  field="attn08"
+                  label="8"
+                  :visible="clrmShowCol[8]"
+                  :class="getAttendStatusClassHist(props.row.attn08)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(7) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn08) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn09"
+                  label="9"
+                  :visible="clrmShowCol[9]"
+                  :class="getAttendStatusClassHist(props.row.attn09)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(8) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn09) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn10"
+                  label="10"
+                  :visible="clrmShowCol[10]"
+                  :class="getAttendStatusClassHist(props.row.attn10)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(9) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn10) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn11"
+                  label="11"
+                  :visible="clrmShowCol[11]"
+                  :class="getAttendStatusClassHist(props.row.attn11)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(10) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn11) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn12"
+                  label="12"
+                  :visible="clrmShowCol[12]"
+                  :class="getAttendStatusClassHist(props.row.attn12)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(11) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn12) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn13"
+                  label="13"
+                  :visible="clrmShowCol[13]"
+                  :class="getAttendStatusClassHist(props.row.attn13)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(12) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn13) }}
+                </b-table-column>
+                <b-table-column
+                  field="attn14"
+                  label="14"
+                  :visible="clrmShowCol[14]"
+                  :class="getAttendStatusClassHist(props.row.attn14)"
+                  width="30"
+                >
+                  <template slot="header" slot-scope="{ column }">
+                    {{ column.label }}
+                    <br />
+                    <span class="f18">{{ getDateMD(13) }}</span>
+                  </template>
+                  {{ getAttendSymbol(props.row.attn14) }}
+                </b-table-column>
+                <b-table-column
+                  field="attendrec"
+                  :visible="cRoom.showAttenHist === 0"
+                  label="Attendance"
+                  width="200"
+                >
+                  <div class="tile is-ancestor" style="z-index: 1;">
+                    <div class="tile is-parent">
+                      <div class="tile is-child">
+                        <b-field v-show="att.mode < 2">
+                          <b-radio-button
+                            v-model="props.row[getTodayJSON.attendance]"
+                            :native-value="att.modeset[att.mode].title"
+                            :type="att.modeset[att.mode].colortype"
+                            @input="
                               updateClrm(
                                 props.row.id,
                                 getTodayJSON.attendance,
                                 att.modeset[att.mode].title
                               )
                             "
-                              size="is-medium"
-                            >
-                              <div :class="att.modeset[att.mode].colortype">
-                                <b-icon icon="check"></b-icon>
-                                <span>{{ att.modeset[att.mode].title }}</span>
-                              </div>
-                            </b-radio-button>
-                            <!-- :native-value="att.modeset[2].num" -->
-                            <b-radio-button
-                              v-model="props.row[getTodayJSON.attendance]"
-                              :native-value="att.modeset[att.mode].title2"
-                              type="is-danger"
-                              @input="
+                            size="is-medium"
+                          >
+                            <div :class="att.modeset[att.mode].colortype">
+                              <b-icon icon="check"></b-icon>
+                              <span>{{ att.modeset[att.mode].title }}</span>
+                            </div>
+                          </b-radio-button>
+                          <!-- :native-value="att.modeset[2].num" -->
+                          <b-radio-button
+                            v-model="props.row[getTodayJSON.attendance]"
+                            :native-value="att.modeset[att.mode].title2"
+                            type="is-danger"
+                            @input="
                               updateClrm(
                                 props.row.id,
                                 getTodayJSON.attendance,
                                 att.modeset[att.mode].title2
                               )
                             "
-                              size="is-medium"
-                            >
-                              <b-icon icon="times"></b-icon>
-                              <span>{{ att.modeset[att.mode].title2 }}</span>
-                            </b-radio-button>
-                          </b-field>
-                        </div>
+                            size="is-medium"
+                          >
+                            <b-icon icon="times"></b-icon>
+                            <span>{{ att.modeset[att.mode].title2 }}</span>
+                          </b-radio-button>
+                        </b-field>
                       </div>
                     </div>
-                  </b-table-column>
-                  <b-table-column field="homeworkincomplete" label="Homework Incomplete" width="30">
-                    <div class="tile is-ancestor">
-                      <div>
-                        <div class="tile is-child">
-                          <b-field>
-                            <span style="color:#ce1836; font-size:20px;">
-                              {{
-                              props.row.homeworkincomplete20 +
-                              (props.row[getTodayJSON.hwic] === false ? 1 : 0)
-                              }}
-                            </span>
-                            <span style="color:#fff">-</span>
-                            <b-checkbox-button
-                              v-model="props.row[getTodayJSON.hwic]"
-                              type="is-danger"
-                              rounded
-                              :disabled="att.mode === 3"
-                              @input="
+                  </div>
+                </b-table-column>
+                <b-table-column field="homeworkincomplete" label="Homework Incomplete" width="30">
+                  <div class="tile is-ancestor">
+                    <div>
+                      <div class="tile is-child">
+                        <b-field>
+                          <span style="color:#ce1836; font-size:20px;">
+                            {{
+                            props.row.homeworkincomplete20 +
+                            (props.row[getTodayJSON.hwic] === false ? 1 : 0)
+                            }}
+                          </span>
+                          <span style="color:#fff">-</span>
+                          <b-checkbox-button
+                            v-model="props.row[getTodayJSON.hwic]"
+                            type="is-danger"
+                            rounded
+                            :disabled="att.mode === 3"
+                            @input="
                               updateClrm(
                                 props.row.id,
                                 getTodayJSON.hwic,
                                 props.row[getTodayJSON.hwic]
                               )
                             "
-                            >
-                              <b-icon icon="book-open"></b-icon>HW
-                            </b-checkbox-button>
-                          </b-field>
-                        </div>
+                          >
+                            <b-icon icon="book-open"></b-icon>HW
+                          </b-checkbox-button>
+                        </b-field>
                       </div>
                     </div>
-                  </b-table-column>
-                  <!-- --------------------------------------evaluation -->
-                  <!-- --------------------------------------evaluation -->
+                  </div>
+                </b-table-column>
+                <!-- --------------------------------------evaluation -->
+                <!-- --------------------------------------evaluation -->
 
-                  <!-- --------------------------------------evaluation history-->
-                </template>
-              </b-table>
-            </section>
-            <!-- individual view-->
-            <template v-if="classmembers.length > 0">
-              <section v-show="cRoom.showIndividual">
-                <div class="tile is-ancestor is-marginless is-paddingless">
-                  <div :class="getIndiPaneClass('left')">
-                    <div class="tile is-parent is-vertical">
-                      <div class="tile is-child box">
-                        <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)">
-                          <div class="level-left title">
-                            {{ indiRow.classcount + ". " }}
-                            <div style="margin:0px 3px;"></div>
-                            <span class="has-text-grey-light">{{ indiRow.studentcode + " " }}</span>
-                            <div style="margin:0px 3px;"></div>
-                            {{ " " + indiRow.studentname }}
-                            <div style="margin:0px 10px;"></div>
-                            <span class="is-size-5 has-text-grey-lighter">
-                              {{
-                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
-                              }}
-                            </span>
-                          </div>
+                <!-- --------------------------------------evaluation history-->
+              </template>
+            </b-table>
+          </section>
+          <!-- individual view-->
+          <template v-if="classmembers.length > 0">
+            <section v-show="cRoom.showIndividual">
+              <div class="tile is-ancestor is-marginless is-paddingless">
+                <div :class="getIndiPaneClass('left')">
+                  <div class="tile is-parent is-vertical">
+                    <div class="tile is-child box">
+                      <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)">
+                        <div class="level-left title">
+                          {{ indiRow.classcount + ". " }}
+                          <div style="margin:0px 3px;"></div>
+                          <span class="has-text-grey-light">{{ indiRow.studentcode + " " }}</span>
+                          <div style="margin:0px 3px;"></div>
+                          {{ " " + indiRow.studentname }}
+                          <div style="margin:0px 10px;"></div>
+                          <span class="is-size-5 has-text-grey-lighter">
+                            {{
+                            getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                            }}
+                          </span>
+                        </div>
 
-                          <div class="level-right title is-4">
-                            <!-- 期末対応 -->
-                            <b-switch
-                              size="is-medium"
-                              v-model="cRoom.showAttnEval"
-                              v-show="cRoom.showEvalComp === 2"
-                            >
-                              <div style="margin-right:20px;">Attendance</div>
-                            </b-switch>
-                            <!-- 期末対応 -->
+                        <div class="level-right title is-4">
+                          <!-- 期末対応 -->
+                          <b-switch
+                            size="is-medium"
+                            v-model="cRoom.showAttnEval"
+                            v-show="cRoom.showEvalComp === 2"
+                          >
+                            <div style="margin-right:20px;">Attendance</div>
+                          </b-switch>
+                          <!-- 期末対応 -->
 
-                            <b-tag
-                              rounded
-                              :class="getAttendStatusClass(indiRow[getTodayJSON.attendance])"
-                              style="font-size:25px"
-                            >
-                              {{
-                              indiRow[getTodayJSON.attendance] === null
-                              ? "(attendance unconfirmed)"
-                              : indiRow[getTodayJSON.attendance]
-                              }}
-                            </b-tag>
-                          </div>
-                        </nav>
+                          <b-tag
+                            rounded
+                            :class="getAttendStatusClass(indiRow[getTodayJSON.attendance])"
+                            style="font-size:25px"
+                          >
+                            {{
+                            indiRow[getTodayJSON.attendance] === null
+                            ? "(attendance unconfirmed)"
+                            : indiRow[getTodayJSON.attendance]
+                            }}
+                          </b-tag>
+                        </div>
+                      </nav>
 
-                        <article v-show="!cRoom.showEvalSingle">
-                          <!-- indi ---------- [ view showEvalComp 0 ] -->
-                          <section class="columns" v-show="cRoom.showEvalComp === 0">
-                            <div class="column" v-for="(j, index) in cRoom.indirep" :key="index">
-                              <table class="table">
-                                <tr v-for="(k, index) in cRoom.evalCriItems" :key="k.index">
-                                  <template v-if="j.includes(index)">
-                                    <template v-if="k.title !== 'ALC Adademy NEXT'">
-                                      <template v-if="k.title !== 'Homework'">
-                                        <td class="subtitle">
-                                          <button
-                                            class="button is-fullwidth"
-                                            @click="manageEvalSingle(index)"
-                                          >
-                                            <span class="subtitle is-6">{{ k.title }}</span>
-                                          </button>
-                                        </td>
-                                      </template>
-                                      <template v-else>
-                                        <td class="subtitle" colspan="4" height="106">
-                                          {{ k.title }}
-                                          <span style="color:#ce1836;">
-                                            ( incomplete
-                                            {{
-                                            indiRow.homeworkincomplete20 +
-                                            (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
-                                            }})
-                                          </span>
-                                        </td>
-                                      </template>
-
-                                      <!-- 欠、０ボタンいっこめ -->
-                                      <template v-if="k.title !== 'Homework'">
-                                        <td style="padding-left:30px">
-                                          <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                            <b-icon
-                                              pack="fas"
-                                              icon="user-slash"
-                                              size="is-medium"
-                                              type="is-danger"
-                                              @click="minusEvalUpTarget(indiRow, k.evl)"
-                                            />
-                                          </a>
-                                        </td>
-                                        <td style="padding-left:15px">
-                                          <a @click="zeroEvalUpTarget(indiRow, k.evl)">
-                                            <b-icon
-                                              pack="fas"
-                                              icon="ban"
-                                              size="is-medium"
-                                              type="is-bluedark"
-                                              @click="zeroEvalUpTarget(indiRow, k.evl)"
-                                            />
-                                          </a>
-                                        </td>
-                                        <td
-                                          :class="[
-                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                        ]"
-                                        >
-                                          <span v-show="indiRow[k.evl] == -1">absent</span>
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            <star-rating
-                                              v-model="indiRow[k.evl]"
-                                              v-show="k.p1ptshow"
-                                              :show-rating="false"
-                                              :star-size="k.ssize[cRoom.showEvalComp]"
-                                              :max-rating="k.pt"
-                                              :star-points="cRoom.customstarShape"
-                                              @rating-selected="goEvalUpTarget"
-                                              @current-rating="
-                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                            "
-                                            ></star-rating>
-                                          </span>
-                                          <template v-if="!k.p1ptshow">
-                                            <div
-                                              class="level has-text-grey f20 has-text-centered"
-                                            >( tap left button to edit )</div>
-                                          </template>
-                                        </td>
-                                        <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{
-                                            indiRow[k.evl]
-                                            }}
-                                          </span>
-                                        </td>
-                                        <td v-show="cRoom.showEvalComp === 2">
-                                          <b-button
-                                            icon-left="comment"
-                                            size="is-middle"
-                                            @click="
-                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
-                                          "
-                                          >
-                                            <span
-                                              v-show="!cRoom.showComEv[k.comm]"
-                                              class="has-text-grey-light"
-                                            >{{ indiRow[k.comm] | description(6) }}</span>
-                                            <span v-show="cRoom.showComEv[k.comm]">Save</span>
-                                          </b-button>
-                                          <b-input
-                                            type="textarea"
-                                            size="is-medium"
-                                            v-show="cRoom.showComEv[k.comm]"
-                                            custom-class="is-hovered"
-                                            style="min-width: 200px;"
-                                            expanded
-                                            v-model="indiRow[k.comm]"
-                                          ></b-input>
-                                        </td>
-                                      </template>
-                                    </template>
-                                  </template>
-                                </tr>
-                                <tr>
-                                  <td></td>
-                                  <td></td>
-                                  <td></td>
-                                  <td colspan="2" style="text-align:right">
-                                    <span class="has-text-grey-light title is-4">Sub Total :</span>
-                                    <span
-                                      :class="[
-                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
-                                    ]"
-                                    >{{ " " + indiSc["subtotal" + index] }}</span>
-                                  </td>
-                                </tr>
-                              </table>
-                            </div>
-                          </section>
-
-                          <!-- indi ---------- [ view showEvalComp 1 ] -->
-                          <!--               indi eval left -->
-                          <section class="columns" v-show="cRoom.showEvalComp === 1">
-                            <table class="table is-fullwidth">
+                      <article v-show="!cRoom.showEvalSingle">
+                        <!-- indi ---------- [ view showEvalComp 0 ] -->
+                        <section class="columns" v-show="cRoom.showEvalComp === 0">
+                          <div class="column" v-for="(j, index) in cRoom.indirep" :key="index">
+                            <table class="table">
                               <tr v-for="(k, index) in cRoom.evalCriItems" :key="k.index">
-                                <template v-if="cRoom.indirep[0].includes(index)">
+                                <template v-if="j.includes(index)">
                                   <template v-if="k.title !== 'ALC Adademy NEXT'">
                                     <template v-if="k.title !== 'Homework'">
-                                      <td>
+                                      <td class="subtitle">
                                         <button
                                           class="button is-fullwidth"
                                           @click="manageEvalSingle(index)"
                                         >
-                                          <span class="subtitle is-3">{{ k.title }}</span>
+                                          <span class="subtitle is-6">{{ k.title }}</span>
                                         </button>
                                       </td>
                                     </template>
                                     <template v-else>
-                                      <td class="subtitle is-3" colspan="4" height="86">
+                                      <td class="subtitle" colspan="4" height="106">
                                         {{ k.title }}
                                         <span style="color:#ce1836;">
                                           ( incomplete
@@ -1616,7 +1464,7 @@
                                       </td>
                                     </template>
 
-                                    <!-- 欠、０ボタン２つめ -->
+                                    <!-- 欠、０ボタンいっこめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
                                         <a @click="minusEvalUpTarget(indiRow, k.evl)">
@@ -1629,7 +1477,7 @@
                                           />
                                         </a>
                                       </td>
-                                      <td style="padding-left:20px">
+                                      <td style="padding-left:15px">
                                         <a @click="zeroEvalUpTarget(indiRow, k.evl)">
                                           <b-icon
                                             pack="fas"
@@ -1642,41 +1490,44 @@
                                       </td>
                                       <td
                                         :class="[
-                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                      ]"
+                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
+                                        ]"
                                       >
                                         <span v-show="indiRow[k.evl] == -1">absent</span>
                                         <span v-show="indiRow[k.evl] !== -1">
                                           <star-rating
                                             v-model="indiRow[k.evl]"
+                                            v-show="k.p1ptshow"
                                             :show-rating="false"
                                             :star-size="k.ssize[cRoom.showEvalComp]"
                                             :max-rating="k.pt"
                                             :star-points="cRoom.customstarShape"
                                             @rating-selected="goEvalUpTarget"
                                             @current-rating="
-                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                          "
+                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                            "
                                           ></star-rating>
                                         </span>
+                                        <template v-if="!k.p1ptshow">
+                                          <div
+                                            class="level has-text-grey f20 has-text-centered"
+                                          >( tap left button to edit )</div>
+                                        </template>
                                       </td>
                                       <td class="title is-4">
-                                        <span
-                                          :class="[
-                                          indiRow[k.evl] === 0
-                                            ? 'has-pink-strong'
-                                            : 'has-text-black',
-                                        ]"
-                                          v-show="indiRow[k.evl] !== -1"
-                                        >{{ indiRow[k.evl] }}</span>
+                                        <span v-show="indiRow[k.evl] !== -1">
+                                          {{
+                                          indiRow[k.evl]
+                                          }}
+                                        </span>
                                       </td>
-                                      <td>
+                                      <td v-show="cRoom.showEvalComp === 2">
                                         <b-button
                                           icon-left="comment"
                                           size="is-middle"
                                           @click="
-                                          updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
-                                        "
+                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                          "
                                         >
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
@@ -1701,308 +1552,437 @@
                               <tr>
                                 <td></td>
                                 <td></td>
+                                <td></td>
                                 <td colspan="2" style="text-align:right">
                                   <span class="has-text-grey-light title is-4">Sub Total :</span>
                                   <span
-                                    :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
-                                  >{{ " " + indiSc.subtotal0 }}</span>
+                                    :class="[
+                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
+                                    ]"
+                                  >{{ " " + indiSc["subtotal" + index] }}</span>
                                 </td>
                               </tr>
                             </table>
-                          </section>
+                          </div>
+                        </section>
 
-                          <!-- indi ---------- [ view showEvalComp 2 ] -->
-                          <!--               indi eval right -->
-                          <!-- ※Presentation Finalだけ星が出ない-->
-                          <section class="columns" v-show="cRoom.showEvalComp === 2">
-                            <table class="table">
-                              <tr v-for="(k, index) in cRoom.evalCriItems" :key="k.index">
-                                <template v-if="cRoom.indirep[1].includes(index)">
-                                  <td>
-                                    <button
-                                      class="button is-fullwidth"
-                                      @click="manageEvalSingle(index)"
-                                    >
-                                      <template v-if="!cRoom.showAttnEval">
+                        <!-- indi ---------- [ view showEvalComp 1 ] -->
+                        <!--               indi eval left -->
+                        <section class="columns" v-show="cRoom.showEvalComp === 1">
+                          <table class="table is-fullwidth">
+                            <tr v-for="(k, index) in cRoom.evalCriItems" :key="k.index">
+                              <template v-if="cRoom.indirep[0].includes(index)">
+                                <template v-if="k.title !== 'ALC Adademy NEXT'">
+                                  <template v-if="k.title !== 'Homework'">
+                                    <td>
+                                      <button
+                                        class="button is-fullwidth"
+                                        @click="manageEvalSingle(index)"
+                                      >
                                         <span class="subtitle is-3">{{ k.title }}</span>
-                                      </template>
-                                      <template v-else>
-                                        <span class="subtitle is-4">
-                                          {{ k.title }}
-                                          <span
-                                            class="has-text-grey"
-                                            v-if="cRoom.showAttnEval"
-                                          >
-                                            - (
-                                            <span class="subtitle is-6">week</span>
-                                            {{ k.week }})
-                                          </span>
-                                        </span>
-                                      </template>
-                                    </button>
-                                  </td>
-                                  <td style="padding-left:30px">
-                                    <a @click="minusEvalUpTarget(indiRow, k.evl)">
-                                      <b-icon
-                                        pack="fas"
-                                        icon="user-slash"
-                                        size="is-medium"
-                                        type="is-danger"
-                                        @click="minusEvalUpTarget(indiRow, k.evl)"
-                                      />
-                                    </a>
-                                  </td>
-                                  <td style="padding-left:30px">
-                                    <a @click="zeroEvalUpTarget(indiRow, k.evl)">
-                                      <b-icon
-                                        pack="fas"
-                                        icon="ban"
-                                        size="is-medium"
-                                        type="is-bluedark"
-                                        @click="zeroEvalUpTarget(indiRow, k.evl)"
-                                      />
-                                    </a>
-                                  </td>
-                                  <template v-if="k.p1ptshow">
-                                    <template v-if="!checkifAbsent(indiRow[k.comm])">
-                                      <!-- 通常の場合 -->
-                                      <td
-                                        :class="[
+                                      </button>
+                                    </td>
+                                  </template>
+                                  <template v-else>
+                                    <td class="subtitle is-3" colspan="4" height="86">
+                                      {{ k.title }}
+                                      <span style="color:#ce1836;">
+                                        ( incomplete
+                                        {{
+                                        indiRow.homeworkincomplete20 +
+                                        (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
+                                        }})
+                                      </span>
+                                    </td>
+                                  </template>
+
+                                  <!-- 欠、０ボタン２つめ -->
+                                  <template v-if="k.title !== 'Homework'">
+                                    <td style="padding-left:30px">
+                                      <a @click="minusEvalUpTarget(indiRow, k.evl)">
+                                        <b-icon
+                                          pack="fas"
+                                          icon="user-slash"
+                                          size="is-medium"
+                                          type="is-danger"
+                                          @click="minusEvalUpTarget(indiRow, k.evl)"
+                                        />
+                                      </a>
+                                    </td>
+                                    <td style="padding-left:20px">
+                                      <a @click="zeroEvalUpTarget(indiRow, k.evl)">
+                                        <b-icon
+                                          pack="fas"
+                                          icon="ban"
+                                          size="is-medium"
+                                          type="is-bluedark"
+                                          @click="zeroEvalUpTarget(indiRow, k.evl)"
+                                        />
+                                      </a>
+                                    </td>
+                                    <td
+                                      :class="[
                                         indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
                                       ]"
-                                      >
-                                        <span v-show="indiRow[k.evl] == -1">absent</span>
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          <star-rating
-                                            v-model="indiRow[k.evl]"
-                                            :show-rating="false"
-                                            :star-size="k.ssize[cRoom.showEvalComp]"
-                                            :max-rating="k.pt"
-                                            :star-points="cRoom.customstarShape"
-                                            @rating-selected="goEvalUpTarget"
-                                            @current-rating="
+                                    >
+                                      <span v-show="indiRow[k.evl] == -1">absent</span>
+                                      <span v-show="indiRow[k.evl] !== -1">
+                                        <star-rating
+                                          v-model="indiRow[k.evl]"
+                                          :show-rating="false"
+                                          :star-size="k.ssize[cRoom.showEvalComp]"
+                                          :max-rating="k.pt"
+                                          :star-points="cRoom.customstarShape"
+                                          @rating-selected="goEvalUpTarget"
+                                          @current-rating="
                                             setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
                                           "
-                                          ></star-rating>
+                                        ></star-rating>
+                                      </span>
+                                    </td>
+                                    <td class="title is-4">
+                                      <span
+                                        :class="[
+                                          indiRow[k.evl] === 0
+                                            ? 'has-pink-strong'
+                                            : 'has-text-black',
+                                        ]"
+                                        v-show="indiRow[k.evl] !== -1"
+                                      >{{ indiRow[k.evl] }}</span>
+                                    </td>
+                                    <td>
+                                      <b-button
+                                        icon-left="comment"
+                                        size="is-middle"
+                                        @click="
+                                          updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                        "
+                                      >
+                                        <span
+                                          v-show="!cRoom.showComEv[k.comm]"
+                                          class="has-text-grey-light"
+                                        >{{ indiRow[k.comm] | description(6) }}</span>
+                                        <span v-show="cRoom.showComEv[k.comm]">Save</span>
+                                      </b-button>
+                                      <b-input
+                                        type="textarea"
+                                        size="is-medium"
+                                        v-show="cRoom.showComEv[k.comm]"
+                                        custom-class="is-hovered"
+                                        style="min-width: 200px;"
+                                        expanded
+                                        v-model="indiRow[k.comm]"
+                                      ></b-input>
+                                    </td>
+                                  </template>
+                                </template>
+                              </template>
+                            </tr>
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td colspan="2" style="text-align:right">
+                                <span class="has-text-grey-light title is-4">Sub Total :</span>
+                                <span
+                                  :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
+                                >{{ " " + indiSc.subtotal0 }}</span>
+                              </td>
+                            </tr>
+                          </table>
+                        </section>
+
+                        <!-- indi ---------- [ view showEvalComp 2 ] -->
+                        <!--               indi eval right -->
+                        <!-- ※Presentation Finalだけ星が出ない-->
+                        <section class="columns" v-show="cRoom.showEvalComp === 2">
+                          <table class="table">
+                            <tr v-for="(k, index) in cRoom.evalCriItems" :key="k.index">
+                              <template v-if="cRoom.indirep[1].includes(index)">
+                                <td>
+                                  <button
+                                    class="button is-fullwidth"
+                                    @click="manageEvalSingle(index)"
+                                  >
+                                    <template v-if="!cRoom.showAttnEval">
+                                      <span class="subtitle is-3">{{ k.title }}</span>
+                                    </template>
+                                    <template v-else>
+                                      <span class="subtitle is-4">
+                                        {{ k.title }}
+                                        <span
+                                          class="has-text-grey"
+                                          v-if="cRoom.showAttnEval"
+                                        >
+                                          - (
+                                          <span class="subtitle is-6">week</span>
+                                          {{ k.week }})
                                         </span>
-                                      </td>
-                                      <!-- <td
+                                      </span>
+                                    </template>
+                                  </button>
+                                </td>
+                                <td style="padding-left:30px">
+                                  <a @click="minusEvalUpTarget(indiRow, k.evl)">
+                                    <b-icon
+                                      pack="fas"
+                                      icon="user-slash"
+                                      size="is-medium"
+                                      type="is-danger"
+                                      @click="minusEvalUpTarget(indiRow, k.evl)"
+                                    />
+                                  </a>
+                                </td>
+                                <td style="padding-left:30px">
+                                  <a @click="zeroEvalUpTarget(indiRow, k.evl)">
+                                    <b-icon
+                                      pack="fas"
+                                      icon="ban"
+                                      size="is-medium"
+                                      type="is-bluedark"
+                                      @click="zeroEvalUpTarget(indiRow, k.evl)"
+                                    />
+                                  </a>
+                                </td>
+                                <template v-if="k.p1ptshow">
+                                  <template v-if="!checkifAbsent(indiRow[k.comm])">
+                                    <!-- 通常の場合 -->
+                                    <td
+                                      :class="[
+                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
+                                      ]"
+                                    >
+                                      <span v-show="indiRow[k.evl] == -1">absent</span>
+                                      <span v-show="indiRow[k.evl] !== -1">
+                                        <star-rating
+                                          v-model="indiRow[k.evl]"
+                                          :show-rating="false"
+                                          :star-size="k.ssize[cRoom.showEvalComp]"
+                                          :max-rating="k.pt"
+                                          :star-points="cRoom.customstarShape"
+                                          @rating-selected="goEvalUpTarget"
+                                          @current-rating="
+                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                          "
+                                        ></star-rating>
+                                      </span>
+                                    </td>
+                                    <!-- <td
                                       class="title is-4"
                                       :class="
                                         indiRow[k.evl] === null ? 'has-background-grey-light' : ''
                                       "
-                                      >{{ indiRow[k.evl] }}</td>-->
-                                      <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{
-                                          indiRow[k.evl]
-                                          }}
-                                        </span>
-                                      </td>
-                                      <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
-                                    </template>
-                                    <template v-else>
-                                      <!-- Absentの場合 -->
-                                      <td colspan="2">
-                                        <b-tag
-                                          rounded
-                                          class="is-pulled-right attend-hist-absent"
-                                          style="font-size:25px"
-                                        >Absent</b-tag>
-                                      </td>
-                                    </template>
+                                    >{{ indiRow[k.evl] }}</td>-->
+                                    <td class="title is-4">
+                                      <span v-show="indiRow[k.evl] !== -1">
+                                        {{
+                                        indiRow[k.evl]
+                                        }}
+                                      </span>
+                                    </td>
+                                    <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                   </template>
                                   <template v-else>
-                                    <!-- Presentation Finalの場合 -->
-                                    <td>
-                                      <span class="has-text-grey">( tap left button to edit )</span>
+                                    <!-- Absentの場合 -->
+                                    <td colspan="2">
+                                      <b-tag
+                                        rounded
+                                        class="is-pulled-right attend-hist-absent"
+                                        style="font-size:25px"
+                                      >Absent</b-tag>
                                     </td>
-                                    <!-- <td
+                                  </template>
+                                </template>
+                                <template v-else>
+                                  <!-- Presentation Finalの場合 -->
+                                  <td>
+                                    <span class="has-text-grey">( tap left button to edit )</span>
+                                  </td>
+                                  <!-- <td
                                     class="title is-4"
                                     :class="indiRow[k.evl] === null ? 'has-background-grey-light' : ''"
-                                    >{{ indiRow[k.evl] }}</td>-->
-                                    <!-- :class="indiRow[k.evl] === null ? 'has-background-orange' : ''" -->
-                                    <td class="title is-4">{{ indiRow[k.evl] }}</td>
-                                  </template>
-                                  <!-- </td>
+                                  >{{ indiRow[k.evl] }}</td>-->
+                                  <!-- :class="indiRow[k.evl] === null ? 'has-background-orange' : ''" -->
+                                  <td class="title is-4">{{ indiRow[k.evl] }}</td>
+                                </template>
+                                <!-- </td>
                                 <td
                                   class="title is-4"
                                   :class="indiRow[k.evl] === null ? 'has-background-orange' : ''"
-                                  >{{ indiRow[k.evl] }}</td>-->
-                                  <!-- 期末対応 -->
-                                  <td
-                                    class="title is-4"
-                                    :class="getAttendStatusClassHist(indiRow['attn' + k.week])"
-                                    v-if="cRoom.showAttnEval"
-                                  >{{ getAttendSymbol(indiRow["attn" + k.week]) }}</td>
-                                  <!-- 期末対応 -->
-                                  <td>
-                                    <b-button
-                                      icon-left="comment"
-                                      size="is-middle"
-                                      @click="updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])"
+                                >{{ indiRow[k.evl] }}</td>-->
+                                <!-- 期末対応 -->
+                                <td
+                                  class="title is-4"
+                                  :class="getAttendStatusClassHist(indiRow['attn' + k.week])"
+                                  v-if="cRoom.showAttnEval"
+                                >{{ getAttendSymbol(indiRow["attn" + k.week]) }}</td>
+                                <!-- 期末対応 -->
+                                <td>
+                                  <b-button
+                                    icon-left="comment"
+                                    size="is-middle"
+                                    @click="updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])"
+                                  >
+                                    <span
+                                      v-show="!cRoom.showComEv[k.comm]"
+                                      class="has-text-grey-light"
+                                    >{{ indiRow[k.comm] | description(6) }}</span>
+                                    <span v-show="cRoom.showComEv[k.comm]">Save</span>
+                                  </b-button>
+                                  <b-input
+                                    type="textarea"
+                                    size="is-medium"
+                                    v-show="cRoom.showComEv[k.comm]"
+                                    custom-class="is-hovered"
+                                    style="min-width: 200px;"
+                                    expanded
+                                    v-model="indiRow[k.comm]"
+                                  ></b-input>
+                                </td>
+                              </template>
+                            </tr>
+                            <!-- 期末対応 -->
+                            <tr v-if="cRoom.showAttnEval">
+                              <td></td>
+                              <td colspan="5">
+                                <table class="table f23">
+                                  <tr>
+                                    <td
+                                      v-for="(k, index) in manage.vforEdit"
+                                      :key="`endsemesterhead-${index}`"
+                                      style="padding:5px 5px 0px 15px;"
                                     >
-                                      <span
-                                        v-show="!cRoom.showComEv[k.comm]"
-                                        class="has-text-grey-light"
-                                      >{{ indiRow[k.comm] | description(6) }}</span>
-                                      <span v-show="cRoom.showComEv[k.comm]">Save</span>
-                                    </b-button>
-                                    <b-input
-                                      type="textarea"
-                                      size="is-medium"
-                                      v-show="cRoom.showComEv[k.comm]"
-                                      custom-class="is-hovered"
-                                      style="min-width: 200px;"
-                                      expanded
-                                      v-model="indiRow[k.comm]"
-                                    ></b-input>
-                                  </td>
-                                </template>
-                              </tr>
-                              <!-- 期末対応 -->
-                              <tr v-if="cRoom.showAttnEval">
-                                <td></td>
-                                <td colspan="5">
-                                  <table class="table f23">
-                                    <tr>
-                                      <td
-                                        v-for="(k, index) in manage.vforEdit"
-                                        :key="`endsemesterhead-${index}`"
-                                        style="padding:5px 5px 0px 15px;"
-                                      >
-                                        <span class="f18">{{ k.md + 1 }}</span>
-                                      </td>
-                                    </tr>
-                                    <tr>
-                                      <td
-                                        v-for="(m, index) in manage.vforEdit"
-                                        :key="`endsemester-${index}`"
-                                        style="padding:0px 10px 0px 15px;"
-                                        :class="getAttendStatusClassHist(indiRow[m.at])"
-                                      >{{ getAttendSymbol(indiRow[m.at]) }}</td>
-                                    </tr>
-                                  </table>
-                                </td>
-                              </tr>
-                              <!-- 期末対応 -->
-                              <tr>
-                                <td></td>
-                                <td></td>
-                                <td colspan="2" style="text-align:right">
-                                  <span class="has-text-grey-light title is-4">Sub Total :</span>
-                                  <span
-                                    :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
-                                  >{{ " " + indiSc.subtotal1 }}</span>
-                                </td>
-                                <td v-if="cRoom.showAttnEval"></td>
-                                <td></td>
-                              </tr>
-                            </table>
-                          </section>
-                        </article>
+                                      <span class="f18">{{ k.md + 1 }}</span>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td
+                                      v-for="(m, index) in manage.vforEdit"
+                                      :key="`endsemester-${index}`"
+                                      style="padding:0px 10px 0px 15px;"
+                                      :class="getAttendStatusClassHist(indiRow[m.at])"
+                                    >{{ getAttendSymbol(indiRow[m.at]) }}</td>
+                                  </tr>
+                                </table>
+                              </td>
+                            </tr>
+                            <!-- 期末対応 -->
+                            <tr>
+                              <td></td>
+                              <td></td>
+                              <td colspan="2" style="text-align:right">
+                                <span class="has-text-grey-light title is-4">Sub Total :</span>
+                                <span
+                                  :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
+                                >{{ " " + indiSc.subtotal1 }}</span>
+                              </td>
+                              <td v-if="cRoom.showAttnEval"></td>
+                              <td></td>
+                            </tr>
+                          </table>
+                        </section>
+                      </article>
 
-                        <article v-show="cRoom.showEvalSingle">
-                          <!-- indi ---------- [ view showEvalSingle ] -->
-                          <section class="columns">
-                            <div class="colum">
-                              <b-button
-                                class="w40"
-                                icon-left="angle-left"
-                                size="is-large"
-                                style="height:65px"
-                                @click="manageIndiSingleCriteria(-1)"
-                              ></b-button>
-                              <b-button
-                                class="w40"
-                                icon-left="angle-right"
-                                size="is-large"
-                                style="height:65px"
-                                @click="manageIndiSingleCriteria(1)"
-                              ></b-button>
-                            </div>
-                            <div class="colum">
-                              <b-button
-                                @click="cRoom.showEvalSingle = !cRoom.showEvalSingle"
-                                class="title is-3 is-fullwidth"
-                                style="height:60px"
-                              >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button>
-                            </div>
-                            <div class="colum"></div>
-                          </section>
-                          <!-- rating -->
-                          <section class="columns">
-                            <div class="column is-pulled-right" style="width:70px;margin-left:20px">
-                              <a
-                                @click="
+                      <article v-show="cRoom.showEvalSingle">
+                        <!-- indi ---------- [ view showEvalSingle ] -->
+                        <section class="columns">
+                          <div class="colum">
+                            <b-button
+                              class="w40"
+                              icon-left="angle-left"
+                              size="is-large"
+                              style="height:65px"
+                              @click="manageIndiSingleCriteria(-1)"
+                            ></b-button>
+                            <b-button
+                              class="w40"
+                              icon-left="angle-right"
+                              size="is-large"
+                              style="height:65px"
+                              @click="manageIndiSingleCriteria(1)"
+                            ></b-button>
+                          </div>
+                          <div class="colum">
+                            <b-button
+                              @click="cRoom.showEvalSingle = !cRoom.showEvalSingle"
+                              class="title is-3 is-fullwidth"
+                              style="height:60px"
+                            >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button>
+                          </div>
+                          <div class="colum"></div>
+                        </section>
+                        <!-- rating -->
+                        <section class="columns">
+                          <div class="column is-pulled-right" style="width:70px;margin-left:20px">
+                            <a
+                              @click="
                                 minusEvalUpTarget(
                                   indiRow,
                                   cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
                                 )
                               "
-                              >
-                                <b-icon
-                                  pack="fas"
-                                  icon="user-slash"
-                                  size="is-medium"
-                                  type="is-danger"
-                                  @click="
+                            >
+                              <b-icon
+                                pack="fas"
+                                icon="user-slash"
+                                size="is-medium"
+                                type="is-danger"
+                                @click="
                                   minusEvalUpTarget(
                                     indiRow,
                                     cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
                                   )
                                 "
-                                />
-                              </a>
-                            </div>
-                            <div class="column">
-                              <a
-                                @click="
+                              />
+                            </a>
+                          </div>
+                          <div class="column">
+                            <a
+                              @click="
                                 zeroEvalUpTarget(
                                   indiRow,
                                   cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
                                 )
                               "
-                              >
-                                <b-icon
-                                  pack="fas"
-                                  icon="ban"
-                                  size="is-medium"
-                                  type="is-bluedark"
-                                  @click="
+                            >
+                              <b-icon
+                                pack="fas"
+                                icon="ban"
+                                size="is-medium"
+                                type="is-bluedark"
+                                @click="
                                   zeroEvalUpTarget(
                                     indiRow,
                                     cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
                                   )
                                 "
-                                />
-                              </a>
-                            </div>
-                            <!-- あとまわし★なぜか赤にならない -->
-                            <div
-                              class="column"
-                              :class="[
+                              />
+                            </a>
+                          </div>
+                          <!-- あとまわし★なぜか赤にならない -->
+                          <div
+                            class="column"
+                            :class="[
                               indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
                                 ? 'title is-3 is-pinkishalert'
                                 : '',
                             ]"
+                          >
+                            <div
+                              style="background-color:#ce1836;color:#fae3ec;padding:5px"
+                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1"
+                            >absent</div>
+                            <span
+                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
                             >
-                              <div
-                                style="background-color:#ce1836;color:#fae3ec;padding:5px"
-                                v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1"
-                              >absent</div>
-                              <span
-                                v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
-                              >
-                                <star-rating
-                                  class="level-item"
-                                  v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]"
-                                  :show-rating="false"
-                                  :star-size="cRoom.evalCriItems[cRoom.tgtEvalSingle].ssize[4]"
-                                  :max-rating="cRoom.evalCriItems[cRoom.tgtEvalSingle].pt"
-                                  :star-points="cRoom.customstarShape"
-                                  @rating-selected="goEvalUpTarget"
-                                  @current-rating="
+                              <star-rating
+                                class="level-item"
+                                v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl]"
+                                :show-rating="false"
+                                :star-size="cRoom.evalCriItems[cRoom.tgtEvalSingle].ssize[4]"
+                                :max-rating="cRoom.evalCriItems[cRoom.tgtEvalSingle].pt"
+                                :star-points="cRoom.customstarShape"
+                                @rating-selected="goEvalUpTarget"
+                                @current-rating="
                                   setEvalUpTarget(
                                     $event,
                                     indiRow,
@@ -2010,99 +1990,99 @@
                                     cRoom.indiNo
                                   )
                                 "
-                                ></star-rating>
-                              </span>
-                            </div>
-                            <div
-                              class="column title is-2"
-                              v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
-                            >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
-                          </section>
+                              ></star-rating>
+                            </span>
+                          </div>
+                          <div
+                            class="column title is-2"
+                            v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
+                          >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
+                        </section>
 
-                          <!-- indi comment -->
-                          <section class="columns">
-                            <div class="column">
-                              <b-button
-                                icon-left="comment"
-                                size="is-middle"
-                                style="min-width:200px"
-                                @click="
+                        <!-- indi comment -->
+                        <section class="columns">
+                          <div class="column">
+                            <b-button
+                              icon-left="comment"
+                              size="is-middle"
+                              style="min-width:200px"
+                              @click="
                                 updateClrmEvalsIndiAny(
                                   indiRow,
                                   cRoom.evalCriItems[cRoom.tgtEvalSingle].comm,
                                   indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
                                 )
                               "
-                              >
-                                <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
-                                  {{
-                                  indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
-                                  | description(50)
-                                  }}
-                                </span>
-                                <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5">Save</span>
-                              </b-button>
-                              <b-input
-                                type="textarea"
-                                size="is-medium"
-                                v-show="cRoom.showComEv.ecomAny"
-                                custom-class="is-hovered"
-                                style="min-width: 400px;"
-                                expanded
-                                v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]"
-                              ></b-input>
-                            </div>
-                          </section>
-                        </article>
+                            >
+                              <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
+                                {{
+                                indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
+                                | description(50)
+                                }}
+                              </span>
+                              <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5">Save</span>
+                            </b-button>
+                            <b-input
+                              type="textarea"
+                              size="is-medium"
+                              v-show="cRoom.showComEv.ecomAny"
+                              custom-class="is-hovered"
+                              style="min-width: 400px;"
+                              expanded
+                              v-model="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]"
+                            ></b-input>
+                          </div>
+                        </section>
+                      </article>
 
-                        <article>
-                          <footer>
-                            <div class="column">
-                              <div class="is-pulled-right">
-                                <span class="has-text-grey-light title is-4">Grand Total :</span>
-                                <span
-                                  :class="[cRoom.showEvalComp === 0 ? 'title is-1' : 'title is-4']"
-                                >{{ " " + indiSc.total }}</span>
-                              </div>
+                      <article>
+                        <footer>
+                          <div class="column">
+                            <div class="is-pulled-right">
+                              <span class="has-text-grey-light title is-4">Grand Total :</span>
+                              <span
+                                :class="[cRoom.showEvalComp === 0 ? 'title is-1' : 'title is-4']"
+                              >{{ " " + indiSc.total }}</span>
                             </div>
-                          </footer>
-                        </article>
-                      </div>
+                          </div>
+                        </footer>
+                      </article>
                     </div>
                   </div>
-
-                  <div :class="getIndiPaneClass('right')" v-show="cRoom.showIndiList">
-                    <article class="tile is-child">
-                      <b-tabs
-                        v-model="cRoom.indiNo"
-                        vertical
-                        class="is-marginless"
-                        @change="clearIndi()"
-                      >
-                        <b-tab-item v-for="st in classmembers" :key="st.index">
-                          <template slot="header">
-                            <!-- :label="st.classcount + ' ' + st.studentname" -->
-                            <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span
-                              :class="getIndiAttendClass(st[getTodayJSON.attendance])"
-                            >{{ st.classcount + " " + st.studentname }}</span>
-                          </template>
-                        </b-tab-item>
-                      </b-tabs>
-                    </article>
-                  </div>
                 </div>
-              </section>
-            </template>
-          </b-tab-item>
-          <!-- <b-tab-item :label="labelrighttext" disabled></b-tab-item> -->
 
-          <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
-          <b-tab-item label="Manage" :visible="showManagementView" icon="dove">
-            <template v-if="showManagementView">
-              <b-tabs position="is-right" v-model="manage.activeTab">
-                <section class="manageview3 p40" v-if="showManagementViewSuper">
-                  <!-- <b-tab-item label="Instructors" icon="user-astronaut">
+                <div :class="getIndiPaneClass('right')" v-show="cRoom.showIndiList">
+                  <article class="tile is-child">
+                    <b-tabs
+                      v-model="cRoom.indiNo"
+                      vertical
+                      class="is-marginless"
+                      @change="clearIndi()"
+                    >
+                      <b-tab-item v-for="st in classmembers" :key="st.index">
+                        <template slot="header">
+                          <!-- :label="st.classcount + ' ' + st.studentname" -->
+                          <!-- ><template slot="header" slot-scope="{ column }"> -->
+                          <span
+                            :class="getIndiAttendClass(st[getTodayJSON.attendance])"
+                          >{{ st.classcount + " " + st.studentname }}</span>
+                        </template>
+                      </b-tab-item>
+                    </b-tabs>
+                  </article>
+                </div>
+              </div>
+            </section>
+          </template>
+        </b-tab-item>
+        <!-- <b-tab-item :label="labelrighttext" disabled></b-tab-item> -->
+
+        <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
+        <b-tab-item label="Manage" :visible="showManagementView" icon="dove">
+          <template v-if="showManagementView">
+            <b-tabs position="is-right" v-model="manage.activeTab">
+              <section class="manageview3 p40" v-if="showManagementViewSuper">
+                <!-- <b-tab-item label="Instructors" icon="user-astronaut">
               <section class="manageview p40">
                 <a href="https://management.d36k1gty6yz9hg.amplifyapp.com/" target="_blank">
                   <span class="manageview">
@@ -2111,37 +2091,157 @@
                   </span>
                 </a>
               </section>
-                  </b-tab-item>-->
-                  <b-field label="StudentCode">
-                    <b-input v-model="manage.queryRowCrlm"></b-input>
+                </b-tab-item>-->
+                <b-field label="StudentCode">
+                  <b-input v-model="manage.queryRowCrlm"></b-input>
+                </b-field>
+                q:{{ manage.queryRowCrlm }}
+                <br />
+                length:{{ queryRowCrlmData.length }}
+                <br />
+                <template v-if="queryRowCrlmData.length < 5">
+                  <div v-html="queryRowCrlmData"></div>
+                </template>
+              </section>
+
+              <b-tab-item label="Instructors" :visible="showManagementViewSuper" icon="user-clock">
+                <section class="manageview3 p40">
+                  <p class="title manageview3">Clock in / Clock out</p>
+                  <b-field grouped>
+                    <b-radio-button
+                      v-for="(m, index) in monthChainUntilCurrentMonthJSON"
+                      :key="index"
+                      :native-value="m"
+                      v-model="instructor.attendvisiblemonth"
+                    >{{ m }}</b-radio-button>
+
+                    <b-select
+                      placeholder="Instructors.."
+                      v-model="manage.instinstname"
+                      size="is-medium"
+                    >
+                      <!-- @input="evalCriteriaSelectChange()" -->
+                      <option value="all">All</option>
+                      <option
+                        v-for="n in instructor.nameConv"
+                        :key="n.username"
+                        :value="n.username"
+                      >{{ n.name }}</option>
+                    </b-select>
                   </b-field>
-                  q:{{ manage.queryRowCrlm }}
-                  <br />
-                  length:{{ queryRowCrlmData.length }}
-                  <br />
-                  <template v-if="queryRowCrlmData.length < 5">
-                    <div v-html="queryRowCrlmData"></div>
-                  </template>
+                  <div class="notification">
+                    <div class="manageview2">
+                      <b-table
+                        :data="allattendancesMonth"
+                        :columns="manage.instCols"
+                        :paginated="true"
+                        :per-page="15"
+                        :pagination-simple="false"
+                        :checked-rows.sync="manage.checkedRowsInst"
+                        checkable
+                        checkbox-position="left"
+                      >
+                        <b-input
+                          slot="searchable"
+                          slot-scope="props"
+                          v-model="props.filters[props.column.field]"
+                          placeholder="Search..."
+                          icon="magnify"
+                          size="is-small"
+                        />
+                      </b-table>
+                    </div>
+                  </div>
+
+                  <!-- Edit view -->
+                  <section v-if="manage.checkedRowsInst.length > 0">
+                    <b-table
+                      :data="manage.checkedRowsInst"
+                      :mobile-cards="sett.hasMobileCards"
+                      :sticky-header="stickyHeaders"
+                    >
+                      <template slot-scope="props">
+                        <b-table-column field="id" label="Name" sticky>{{ props.row.id }}</b-table-column>
+                        <b-table-column field="date" label="Date" sticky>{{ props.row.date }}</b-table-column>
+
+                        <b-table-column field="clockin" label="In">{{ props.row.clockin }}</b-table-column>
+                        <b-table-column field="clockincorrect" label="In(Fixed)" sticky>
+                          <span>{{ props.row.clockincorrect }}</span>
+                        </b-table-column>
+
+                        <b-table-column field="clockout" label="Out">{{ props.row.clockout }}</b-table-column>
+                        <b-table-column field="clockoutcorrect" label="Out(Fixed)" sticky>
+                          <span>{{ props.row.clockoutcorrect }}</span>
+                        </b-table-column>
+
+                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
+
+                        <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
+                          <template slot="header">
+                            <b-button
+                              @click="manage.showSelAttn = !manage.showSelAttn"
+                              class="manageview-accent"
+                              style="margin-top:5px;"
+                              v-show="!manage.showSelAttn"
+                            >
+                              <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
+                            </b-button>
+                          </template>
+                          <div class="tile is-ancestor">
+                            <div class="tile is-parent">
+                              <div class="tile is-child">
+                                <b-field>
+                                  <b-radio-button
+                                    v-model="props.row[manage.selAttn]"
+                                    native-value="here"
+                                    type="attend-present"
+                                    size="is-medium"
+                                    @input="
+                                      updateClrmEdit(
+                                        props.row.id,
+                                        manage.selAttn,
+                                        'here',
+                                        props.row.note
+                                      )
+                                    "
+                                  >〇</b-radio-button>
+                                </b-field>
+                              </div>
+                            </div>
+                          </div>
+                        </b-table-column>
+                      </template>
+
+                      <template slot="footer" class="manageview">
+                        <b-button
+                          size="is-large"
+                          class="manageview-accent"
+                          @click="manage.checkedRowsInst = []"
+                        >Close</b-button>
+                      </template>
+                    </b-table>
+                  </section>
                 </section>
+              </b-tab-item>
 
-                <b-tab-item
-                  label="Instructors"
-                  :visible="showManagementViewSuper"
-                  icon="user-clock"
-                >
-                  <section class="manageview3 p40">
-                    <p class="title manageview3">Clock in / Clock out</p>
-                    <b-field grouped>
-                      <b-radio-button
-                        v-for="(m, index) in monthChainUntilCurrentMonthJSON"
-                        :key="index"
-                        :native-value="m"
-                        v-model="instructor.attendvisiblemonth"
-                      >{{ m }}</b-radio-button>
+              <b-tab-item label="Students" icon="child">
+                <section class="manageview p40">
+                  <b-field grouped>
+                    <b-field>
+                      <b-radio-button v-model="manage.dow" native-value="All" size="is-medium">
+                        <div style="padding:0px 25px; font-size:14px;">All</div>
+                      </b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Mon" size="is-medium">Mon</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Tue" size="is-medium">Tue</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Wed" size="is-medium">Wed</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Thu" size="is-medium">Thu</b-radio-button>
+                      <b-radio-button v-model="manage.dow" native-value="Fri" size="is-medium">Fri</b-radio-button>
+                    </b-field>
 
+                    <b-field>
                       <b-select
                         placeholder="Instructors.."
-                        v-model="manage.instinstname"
+                        v-model="manage.instname"
                         size="is-medium"
                       >
                         <!-- @input="evalCriteriaSelectChange()" -->
@@ -2149,235 +2249,111 @@
                         <option
                           v-for="n in instructor.nameConv"
                           :key="n.username"
-                          :value="n.username"
+                          :value="n.name"
                         >{{ n.name }}</option>
                       </b-select>
                     </b-field>
-                    <div class="notification">
-                      <div class="manageview2">
-                        <b-table
-                          :data="allattendancesMonth"
-                          :columns="manage.instCols"
-                          :paginated="true"
-                          :per-page="15"
-                          :pagination-simple="false"
-                          :checked-rows.sync="manage.checkedRowsInst"
-                          checkable
-                          checkbox-position="left"
-                        >
-                          <b-input
-                            slot="searchable"
-                            slot-scope="props"
-                            v-model="props.filters[props.column.field]"
-                            placeholder="Search..."
-                            icon="magnify"
-                            size="is-small"
-                          />
-                        </b-table>
-                      </div>
-                    </div>
-
-                    <!-- Edit view -->
-                    <section v-if="manage.checkedRowsInst.length > 0">
+                  </b-field>
+                  <div class="notification">
+                    <div class="manageview2">
                       <b-table
-                        :data="manage.checkedRowsInst"
-                        :mobile-cards="sett.hasMobileCards"
-                        :sticky-header="stickyHeaders"
+                        :data="allStudentsFiltered"
+                        :columns="manage.clrmCols"
+                        :paginated="true"
+                        :per-page="15"
+                        :pagination-simple="false"
+                        :checked-rows.sync="manage.checkedRows"
+                        checkable
+                        checkbox-position="left"
                       >
-                        <template slot-scope="props">
-                          <b-table-column field="id" label="Name" sticky>{{ props.row.id }}</b-table-column>
-                          <b-table-column field="date" label="Date" sticky>{{ props.row.date }}</b-table-column>
-
-                          <b-table-column field="clockin" label="In">{{ props.row.clockin }}</b-table-column>
-                          <b-table-column field="clockincorrect" label="In(Fixed)" sticky>
-                            <span>{{ props.row.clockincorrect }}</span>
-                          </b-table-column>
-
-                          <b-table-column field="clockout" label="Out">{{ props.row.clockout }}</b-table-column>
-                          <b-table-column field="clockoutcorrect" label="Out(Fixed)" sticky>
-                            <span>{{ props.row.clockoutcorrect }}</span>
-                          </b-table-column>
-
-                          <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
-
-                          <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
-                            <template slot="header">
-                              <b-button
-                                @click="manage.showSelAttn = !manage.showSelAttn"
-                                class="manageview-accent"
-                                style="margin-top:5px;"
-                                v-show="!manage.showSelAttn"
-                              >
-                                <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
-                              </b-button>
-                            </template>
-                            <div class="tile is-ancestor">
-                              <div class="tile is-parent">
-                                <div class="tile is-child">
-                                  <b-field>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="here"
-                                      type="attend-present"
-                                      size="is-medium"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'here',
-                                        props.row.note
-                                      )
-                                    "
-                                    >〇</b-radio-button>
-                                  </b-field>
-                                </div>
-                              </div>
-                            </div>
-                          </b-table-column>
-                        </template>
-
-                        <template slot="footer" class="manageview">
-                          <b-button
-                            size="is-large"
-                            class="manageview-accent"
-                            @click="manage.checkedRowsInst = []"
-                          >Close</b-button>
-                        </template>
+                        <b-input
+                          slot="searchable"
+                          slot-scope="props"
+                          v-model="props.filters[props.column.field]"
+                          placeholder="Search..."
+                          icon="magnify"
+                          size="is-small"
+                        />
                       </b-table>
-                    </section>
-                  </section>
-                </b-tab-item>
-
-                <b-tab-item label="Students" icon="child">
-                  <section class="manageview p40">
-                    <b-field grouped>
-                      <b-field>
-                        <b-radio-button v-model="manage.dow" native-value="All" size="is-medium">
-                          <div style="padding:0px 25px; font-size:14px;">All</div>
-                        </b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Mon" size="is-medium">Mon</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Tue" size="is-medium">Tue</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Wed" size="is-medium">Wed</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Thu" size="is-medium">Thu</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Fri" size="is-medium">Fri</b-radio-button>
-                      </b-field>
-
-                      <b-field>
-                        <b-select
-                          placeholder="Instructors.."
-                          v-model="manage.instname"
-                          size="is-medium"
-                        >
-                          <!-- @input="evalCriteriaSelectChange()" -->
-                          <option value="all">All</option>
-                          <option
-                            v-for="n in instructor.nameConv"
-                            :key="n.username"
-                            :value="n.name"
-                          >{{ n.name }}</option>
-                        </b-select>
-                      </b-field>
-                    </b-field>
-                    <div class="notification">
-                      <div class="manageview2">
-                        <b-table
-                          :data="allStudentsFiltered"
-                          :columns="manage.clrmCols"
-                          :paginated="true"
-                          :per-page="15"
-                          :pagination-simple="false"
-                          :checked-rows.sync="manage.checkedRows"
-                          checkable
-                          checkbox-position="left"
-                        >
-                          <b-input
-                            slot="searchable"
-                            slot-scope="props"
-                            v-model="props.filters[props.column.field]"
-                            placeholder="Search..."
-                            icon="magnify"
-                            size="is-small"
-                          />
-                        </b-table>
-                      </div>
                     </div>
+                  </div>
 
-                    <!-- Edit view -->
-                    <section v-if="manage.checkedRows.length > 0">
-                      <b-table
-                        :data="manage.checkedRows"
-                        :mobile-cards="sett.hasMobileCards"
-                        :sticky-header="stickyHeaders"
-                      >
-                        <template slot-scope="props">
-                          <b-table-column
-                            field="dayofweek"
-                            label="Day"
-                            sticky
-                          >{{ props.row.dayofweek }}</b-table-column>
-                          <b-table-column
-                            field="classcode"
-                            label="Class"
-                            sticky
-                          >{{ props.row.classcode }}</b-table-column>
+                  <!-- Edit view -->
+                  <section v-if="manage.checkedRows.length > 0">
+                    <b-table
+                      :data="manage.checkedRows"
+                      :mobile-cards="sett.hasMobileCards"
+                      :sticky-header="stickyHeaders"
+                    >
+                      <template slot-scope="props">
+                        <b-table-column
+                          field="dayofweek"
+                          label="Day"
+                          sticky
+                        >{{ props.row.dayofweek }}</b-table-column>
+                        <b-table-column
+                          field="classcode"
+                          label="Class"
+                          sticky
+                        >{{ props.row.classcode }}</b-table-column>
 
-                          <b-table-column
-                            field="studentcode"
-                            label="Code"
-                            sticky
-                          >{{ props.row.studentcode }}</b-table-column>
-                          <b-table-column field="studentname" label="Name" sticky>
-                            <span>{{ props.row.studentname }}</span>
-                          </b-table-column>
+                        <b-table-column
+                          field="studentcode"
+                          label="Code"
+                          sticky
+                        >{{ props.row.studentcode }}</b-table-column>
+                        <b-table-column field="studentname" label="Name" sticky>
+                          <span>{{ props.row.studentname }}</span>
+                        </b-table-column>
 
-                          <b-table-column
-                            v-for="(m, index) in manage.vforEdit"
-                            :key="index"
-                            :field="m.at"
-                            :label="String(index + 1)"
-                            :visible="clrmShowColEdit[index + 1]"
-                            :class="getAttendStatusClassHist(props.row[m.at])"
-                            style="padding:0px 0px 0px 15px;"
-                          >
-                            <template slot="header" slot-scope="{ column }" style="padding:0px;">
-                              {{ column.label }}
-                              <br />
-                              <template v-if="m.at == manage.selAttn ? true : manage.showSelAttn">
-                                <b-radio-button
-                                  v-model="manage.selAttn"
-                                  :native-value="m.at"
-                                  style="padding:0px;"
-                                  @input="manage.showSelAttn = false"
-                                >
-                                  <span class="f16">{{ getDateMDEdit(index) }}</span>
-                                </b-radio-button>
-                              </template>
-                            </template>
-                            {{ getAttendSymbol(props.row[m.at]) }}
-                          </b-table-column>
-
-                          <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
-                            <template slot="header">
-                              <b-button
-                                @click="manage.showSelAttn = !manage.showSelAttn"
-                                class="manageview-accent"
-                                style="margin-top:5px;"
-                                v-show="!manage.showSelAttn"
+                        <b-table-column
+                          v-for="(m, index) in manage.vforEdit"
+                          :key="index"
+                          :field="m.at"
+                          :label="String(index + 1)"
+                          :visible="clrmShowColEdit[index + 1]"
+                          :class="getAttendStatusClassHist(props.row[m.at])"
+                          style="padding:0px 0px 0px 15px;"
+                        >
+                          <template slot="header" slot-scope="{ column }" style="padding:0px;">
+                            {{ column.label }}
+                            <br />
+                            <template v-if="m.at == manage.selAttn ? true : manage.showSelAttn">
+                              <b-radio-button
+                                v-model="manage.selAttn"
+                                :native-value="m.at"
+                                style="padding:0px;"
+                                @input="manage.showSelAttn = false"
                               >
-                                <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
-                              </b-button>
-                              <!-- <span class="f18">{{ getDateMDEditTgt(13) }}</span> -->
+                                <span class="f16">{{ getDateMDEdit(index) }}</span>
+                              </b-radio-button>
                             </template>
-                            <div class="tile is-ancestor">
-                              <div class="tile is-parent">
-                                <div class="tile is-child">
-                                  <b-field>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="here"
-                                      type="attend-present"
-                                      size="is-medium"
-                                      @input="
+                          </template>
+                          {{ getAttendSymbol(props.row[m.at]) }}
+                        </b-table-column>
+
+                        <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
+                          <template slot="header">
+                            <b-button
+                              @click="manage.showSelAttn = !manage.showSelAttn"
+                              class="manageview-accent"
+                              style="margin-top:5px;"
+                              v-show="!manage.showSelAttn"
+                            >
+                              <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
+                            </b-button>
+                            <!-- <span class="f18">{{ getDateMDEditTgt(13) }}</span> -->
+                          </template>
+                          <div class="tile is-ancestor">
+                            <div class="tile is-parent">
+                              <div class="tile is-child">
+                                <b-field>
+                                  <b-radio-button
+                                    v-model="props.row[manage.selAttn]"
+                                    native-value="here"
+                                    type="attend-present"
+                                    size="is-medium"
+                                    @input="
                                       updateClrmEdit(
                                         props.row.id,
                                         manage.selAttn,
@@ -2385,13 +2361,13 @@
                                         props.row.note
                                       )
                                     "
-                                    >〇</b-radio-button>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="late"
-                                      type="attend-late"
-                                      size="is-medium"
-                                      @input="
+                                  >〇</b-radio-button>
+                                  <b-radio-button
+                                    v-model="props.row[manage.selAttn]"
+                                    native-value="late"
+                                    type="attend-late"
+                                    size="is-medium"
+                                    @input="
                                       updateClrmEdit(
                                         props.row.id,
                                         manage.selAttn,
@@ -2399,12 +2375,12 @@
                                         props.row.note
                                       )
                                     "
-                                    >LA</b-radio-button>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="early leave"
-                                      type="attend-eleave"
-                                      @input="
+                                  >LA</b-radio-button>
+                                  <b-radio-button
+                                    v-model="props.row[manage.selAttn]"
+                                    native-value="early leave"
+                                    type="attend-eleave"
+                                    @input="
                                       updateClrmEdit(
                                         props.row.id,
                                         manage.selAttn,
@@ -2412,14 +2388,14 @@
                                         props.row.note
                                       )
                                     "
-                                      size="is-medium"
-                                    >EL</b-radio-button>
+                                    size="is-medium"
+                                  >EL</b-radio-button>
 
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="not here"
-                                      type="attend-absent"
-                                      @input="
+                                  <b-radio-button
+                                    v-model="props.row[manage.selAttn]"
+                                    native-value="not here"
+                                    type="attend-absent"
+                                    @input="
                                       updateClrmEdit(
                                         props.row.id,
                                         manage.selAttn,
@@ -2427,35 +2403,34 @@
                                         props.row.note
                                       )
                                     "
-                                      size="is-medium"
-                                    >X</b-radio-button>
-                                  </b-field>
-                                </div>
+                                    size="is-medium"
+                                  >X</b-radio-button>
+                                </b-field>
                               </div>
                             </div>
-                          </b-table-column>
-                        </template>
+                          </div>
+                        </b-table-column>
+                      </template>
 
-                        <template slot="footer" class="manageview">
-                          <b-button
-                            size="is-large"
-                            class="manageview-accent"
-                            @click="manage.checkedRows = []"
-                          >Close</b-button>
-                        </template>
-                      </b-table>
-                    </section>
+                      <template slot="footer" class="manageview">
+                        <b-button
+                          size="is-large"
+                          class="manageview-accent"
+                          @click="manage.checkedRows = []"
+                        >Close</b-button>
+                      </template>
+                    </b-table>
                   </section>
-                </b-tab-item>
-              </b-tabs>
-            </template>
-          </b-tab-item>
-        </b-tabs>
-      </section>
-      <!-- <span style="visibility: hidden;">
+                </section>
+              </b-tab-item>
+            </b-tabs>
+          </template>
+        </b-tab-item>
+      </b-tabs>
+    </section>
+    <!-- <span style="visibility: hidden;">
       <v-idle @idle="periodicValidationFromIdol()" :duration="3" />
-      </span>-->
-    </template>
+    </span>-->
   </div>
 </template>
 
@@ -4350,13 +4325,13 @@ export default {
         this.setcurrentAcDate();
       }
     },
-    // reloadIfUndefinedName() {
-    //   // undefinedなら再読み込み
-    //   if (this.authdetail.name === undefined) {
-    //     // console.warn("name:" + this.authdetail.name);
-    //     // this.$router.go();
-    //   }
-    // },
+    reloadIfUndefinedName() {
+      console.warn("this.authdetail.name:" + this.authdetail.name);
+      // 文字列としてのundefinedなら再読み込み（文字列ならループはしない）
+      if (this.authdetail.name === "undefined") {
+        this.$router.go();
+      }
+    },
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
     },
@@ -5112,21 +5087,19 @@ export default {
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
-      return true; //とりあえず★
-      // return this.instructor.yourattendances.some(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
+      return this.instructor.yourattendances.some(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
     },
     ifYouClockInAndStillIn: function() {
-      return false; //とりあえず★
-      // const fnd = this.instructor.yourattendances.find(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
-      // if (fnd != undefined) {
-      //   return fnd.clockout == null ? true : false; //出社/退社
-      // } else {
-      //   return false; //出社前
-      // }
+      const fnd = this.instructor.yourattendances.find(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
+      if (fnd != undefined) {
+        return fnd.clockout == null ? true : false; //出社/退社
+      } else {
+        return false; //出社前
+      }
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
@@ -5309,7 +5282,6 @@ export default {
       function() {
         this.workdateValication();
         // this.getCurrentTime();
-        this.reloadIfUndefinedName();
       }.bind(this),
       1 * 1000
     );

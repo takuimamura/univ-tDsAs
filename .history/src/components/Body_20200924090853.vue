@@ -5112,7 +5112,7 @@ export default {
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
-      return true; //とりあえず★
+      return false; //とりあえず★
       // return this.instructor.yourattendances.some(
       //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
       // );

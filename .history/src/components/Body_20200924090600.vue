@@ -5112,21 +5112,19 @@ export default {
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
-      return true; //とりあえず★
-      // return this.instructor.yourattendances.some(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
+      return this.instructor.yourattendances.some(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
     },
     ifYouClockInAndStillIn: function() {
-      return false; //とりあえず★
-      // const fnd = this.instructor.yourattendances.find(
-      //   x => x.date === this.$dayjs().format("YYYY-MM-DD")
-      // );
-      // if (fnd != undefined) {
-      //   return fnd.clockout == null ? true : false; //出社/退社
-      // } else {
-      //   return false; //出社前
-      // }
+      const fnd = this.instructor.yourattendances.find(
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
+      );
+      if (fnd != undefined) {
+        return fnd.clockout == null ? true : false; //出社/退社
+      } else {
+        return false; //出社前
+      }
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
