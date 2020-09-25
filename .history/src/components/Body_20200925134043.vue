@@ -4206,7 +4206,7 @@ export default {
       this.workdateValication();
     },
     roleValidation() {
-      this.showManagementView = false;
+      this.showManagementView = true;
       //  switch (this.authdetail.role) {
       //   case "admin":
       //     this.showManagementViewSuper = true;

@@ -1,4 +1,28 @@
 {
+    "tmupro": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-datastore2020aug-tmupro-211737-authRole",
+            "UnauthRoleArn": "arn:aws:iam::992427337007:role/amplify-datastore2020aug-tmupro-211737-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::992427337007:role/amplify-datastore2020aug-tmupro-211737-authRole",
+            "Region": "ap-northeast-1",
+            "DeploymentBucketName": "amplify-datastore2020aug-tmupro-211737-deployment",
+            "UnauthRoleName": "amplify-datastore2020aug-tmupro-211737-unauthRole",
+            "StackName": "amplify-datastore2020aug-tmupro-211737",
+            "StackId": "arn:aws:cloudformation:ap-northeast-1:992427337007:stack/amplify-datastore2020aug-tmupro-211737/f0a42960-fe5f-11ea-974d-06df36989374",
+            "AmplifyAppId": "d28kzmtlq0m26j"
+        },
+        "categories": {
+            "auth": {
+                "datastore2020aug4aaa3801": {}
+            },
+            "hosting": {
+                "amplifyhosting": {
+                    "appId": "d28kzmtlq0m26j",
+                    "type": "cicd"
+                }
+            }
+        }
+    },
     "tmud": {
         "awscloudformation": {
             "AuthRoleName": "amplify-datastore2020aug-tmud-213746-authRole",
