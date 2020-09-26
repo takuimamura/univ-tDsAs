@@ -45,7 +45,7 @@
         <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
         <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
         <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-        <!-- app.log: {{app.log.nw}} -->
+
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -93,8 +93,7 @@
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
-        authdetail:: {{authdetail}}
-        <br />
+        <!-- authdetail:: {{authdetail}}      <br /> -->
         cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
         <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
@@ -2445,7 +2444,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" }
+        log: { nw: null, act: null }
       },
       ds: {
         clrms: null,
@@ -2454,7 +2453,7 @@ export default {
         clrmItems: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
+        typeMisc: { classSum: "classSummary" } //定数
       },
       setval1: null,
       setval2: null,
@@ -3290,7 +3289,7 @@ export default {
         listInsts: [],
         qInsts: []
       },
-      createdval: null
+      createdval: null,
       // periodicValidationFromIdolNum: 0
     };
   },
@@ -3510,15 +3509,6 @@ export default {
       await DataStore.save(new Misc(cr));
 
       this.fetchMiscs();
-    },
-    async applogSave() {
-      await DataStore.save(
-        new Misc({
-          type: this.ds.typeMisc.appNwLog,
-          name: this.authdetail.username,
-          detail: this.app.log.nw
-        })
-      );
     },
     //// クラス毎のサマリDB 取得
     // async queryMiscClassSummary(classcode) {
@@ -4274,7 +4264,7 @@ export default {
     //   if (this.periodicValidationFromIdolNum < 5) {
     //     this.workdateValication();
     //   }
-    // },
+    },
     workspaceValication(ifUp) {
       // this.sett.dummy2 += 1;
       //classroomに関係する諸々 日付が変わると必ず
@@ -4313,7 +4303,7 @@ export default {
       // ) {
       //   this.reloadApp("workdateValication");
       // } else {
-      this.setcurrentAcDate();
+        this.setcurrentAcDate();
       // }
     },
     reloadIfUndefinedName() {
@@ -5225,25 +5215,20 @@ export default {
       // if (event === "networkStatus") {
       //   .log(`User has a network connection? ${data.active}`);
       // }
-      const ctime = this.$dayjs().format("YYYY-MM-DD HH:mm:ss ");
       switch (event) {
         case "networkStatus":
           // .log(`HUB User has a network connection? ${data.active}`);
-          // this.$dayjs(this.sett.acdate).format("YYYY-MM-DD H:mm") +
           console.log(
-            `${ctime} HUBlog User has a network connection? ${data.active}`
+            this.$dayjs().format("YYYY-MM-DD HH:mm") +
+              `HUB User has a network connection? ${data.active}`
           );
-          this.app.network = data.active;
-          this.applogSave();
-          // if (data.active === false) {
-          //   this.app.network = false;
-          // }
-          this.app.log.nw += ctime + event + ": " + data.active + "\n";
+          if (data.active === false) {
+            this.app.network = false;
+          }
           break;
         case "syncQueriesReady":
-          console.log(ctime + "HUBlog syncQueriesReady");
+          // log("HUB syncQueriesReady");
           this.app.network = true;
-          this.app.log.nw += ctime + event + ": " + true + "\n";
           break;
         // case "storageSubscribed":
         //   log(`HUB storageSubscribed:${data}`);
@@ -5255,24 +5240,17 @@ export default {
         //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
         //   break;
         case "modelSynced":
-          console.log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
-          this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
+          // log(`HUB modelSynced:${JSON.stringify(data)}`);
           break;
-
-        case "outboxStatus": // 変更ごとに出る
+        case "outboxStatus":
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          console.log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
-          // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "ready":
-          console.log(ctime + " HUBlog ready");
+          // log("HUB ready");
           this.app.ready = true;
-          this.app.log.nw += ctime + event + "\n";
-          this.applogSave();
           break;
       }
-      // console.warn(this.app.log.nw);
     });
     //日付設定
     this.dateDevAddDate();

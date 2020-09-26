@@ -45,7 +45,7 @@
         <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
         <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
         <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-        <!-- app.log: {{app.log.nw}} -->
+
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -93,8 +93,7 @@
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
-        authdetail:: {{authdetail}}
-        <br />
+        <!-- authdetail:: {{authdetail}}      <br /> -->
         cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
         <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
@@ -2445,7 +2444,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" }
+        log: { nw: null, act: null }
       },
       ds: {
         clrms: null,
@@ -2454,7 +2453,7 @@ export default {
         clrmItems: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
+        typeMisc: { classSum: "classSummary" } //定数
       },
       setval1: null,
       setval2: null,
@@ -3290,8 +3289,8 @@ export default {
         listInsts: [],
         qInsts: []
       },
-      createdval: null
-      // periodicValidationFromIdolNum: 0
+      createdval: null,
+      periodicValidationFromIdolNum: 0
     };
   },
   methods: {
@@ -3510,15 +3509,6 @@ export default {
       await DataStore.save(new Misc(cr));
 
       this.fetchMiscs();
-    },
-    async applogSave() {
-      await DataStore.save(
-        new Misc({
-          type: this.ds.typeMisc.appNwLog,
-          name: this.authdetail.username,
-          detail: this.app.log.nw
-        })
-      );
     },
     //// クラス毎のサマリDB 取得
     // async queryMiscClassSummary(classcode) {
@@ -4210,27 +4200,28 @@ export default {
       // this.instructor.youactive = 0;
       // this.instructor.disableInBtn = false; //true;
       // this.instructor.disableOutBtn = true;
-      // this.roleValidation();
+      this.roleValidation();
       this.roleInitValidation();
     },
     initializeInstMounted() {
       this.workdateValication();
     },
-    // roleValidation() {
-    //   //  switch (this.authdetail.role) {
-    //   //   case "admin":
-    //   //     this.showManagementViewSuper = true;
-    //   //     this.showManagementView = true;
-    //   //     break;
-    //   //   case "headinstructor":
-    //   //   case "staff":
-    //   //     this.showManagementView = true;
-    //   //     break;
-    //   //   case "instructor":
-    //   //     this.showManagementView = false;
-    //   //     break;
-    //   // }
-    // },
+    roleValidation() {
+      this.showManagementView = false;
+      //  switch (this.authdetail.role) {
+      //   case "admin":
+      //     this.showManagementViewSuper = true;
+      //     this.showManagementView = true;
+      //     break;
+      //   case "headinstructor":
+      //   case "staff":
+      //     this.showManagementView = true;
+      //     break;
+      //   case "instructor":
+      //     this.showManagementView = false;
+      //     break;
+      // }
+    },
     roleInitValidation() {
       this.sett.activeTab = 0;
       // switch (this.authdetail.role) {
@@ -4245,7 +4236,7 @@ export default {
       // }
     },
     periodicValidation() {
-      // this.initAuthValidation();
+      this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
         //部屋から出たのか
@@ -4268,13 +4259,13 @@ export default {
 
       this.salvageFail();
     },
-    // periodicValidationFromIdol() {
-    //   this.initAuthValidation();
-    //   this.periodicValidationFromIdolNum += 1;
-    //   if (this.periodicValidationFromIdolNum < 5) {
-    //     this.workdateValication();
-    //   }
-    // },
+    periodicValidationFromIdol() {
+      this.initAuthValidation();
+      this.periodicValidationFromIdolNum += 1;
+      if (this.periodicValidationFromIdolNum < 5) {
+        this.workdateValication();
+      }
+    },
     workspaceValication(ifUp) {
       // this.sett.dummy2 += 1;
       //classroomに関係する諸々 日付が変わると必ず
@@ -4306,29 +4297,26 @@ export default {
     },
     workdateValication() {
       //日付またぐとリロードする
-      // if (
-      //   // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
-      //   this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
-      //   this.sett.env.isTestMode === false
-      // ) {
-      //   this.reloadApp("workdateValication");
-      // } else {
-      this.setcurrentAcDate();
-      // }
+      if (
+        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
+        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
+        this.sett.env.isTestMode === false
+      ) {
+        this.writeFail(
+          "workdateValication",
+          this.dayACjsdddMMMD, //this.sett.today,
+          this.$dayjs().format("YYYY/MM/DD")
+        );
+        this.$router.go();
+      } else {
+        this.setcurrentAcDate();
+      }
     },
     reloadIfUndefinedName() {
       // undefinedなら再読み込み
       if (this.authdetail.name === undefined) {
-        this.reloadApp("reloadIfUndefinedName");
+        this.$router.go();
       }
-    },
-    reloadApp(str) {
-      this.writeFail(
-        str,
-        this.dayACjsdddMMMD, //this.sett.today,
-        this.$dayjs().format("YYYY/MM/DD")
-      );
-      // this.$router.go();
     },
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
@@ -4342,27 +4330,27 @@ export default {
       //manage用
       this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
-    // async initAuthValidation() {
-    //   // await Auth.currentAuthenticatedUser().then(user => {
-    //   //   if (this.authdetail.username != user.username) {
-    //   //     this.sett.isModalActive = true; // 操作を遮る
+    async initAuthValidation() {
+      // await Auth.currentAuthenticatedUser().then(user => {
+      //   if (this.authdetail.username != user.username) {
+      //     this.sett.isModalActive = true; // 操作を遮る
 
-    //   //     this.sett.dummy =
-    //   //       "initAuthCheck FAIL!!!" + this.$dayjs().format("hh:mm:ss.sss");
-    //   //     this.writeFail(
-    //   //       "initAuthCheck",
-    //   //       user.username,
-    //   //       this.authdetail.username
-    //   //     );
-    //   //     this.$router.go();
-    //   //   } else {
-    //   //     this.sett.dummy =
-    //   //       this.$dayjs().format("hh:mm:ss.sss") + "initAuthCheck OK";
-    //   //   }
-    //   // });
-    //   this.roleValidation();
-    //   // .catch((err) => (   this.writeFail("initAuthCheck", "error", err);
-    // },
+      //     this.sett.dummy =
+      //       "initAuthCheck FAIL!!!" + this.$dayjs().format("hh:mm:ss.sss");
+      //     this.writeFail(
+      //       "initAuthCheck",
+      //       user.username,
+      //       this.authdetail.username
+      //     );
+      //     this.$router.go();
+      //   } else {
+      //     this.sett.dummy =
+      //       this.$dayjs().format("hh:mm:ss.sss") + "initAuthCheck OK";
+      //   }
+      // });
+      this.roleValidation();
+      // .catch((err) => (   this.writeFail("initAuthCheck", "error", err);
+    },
     //////////サマリー
     async manageSummary() {
       // if (this.showManagementView === true) {
@@ -5157,7 +5145,7 @@ export default {
       } else {
         if (this.manage.dow == "All") {
           filtered = this.dataset.ClrmsInstByday.filter(
-            x => x.uid !== "dummy instructor"
+            x => x.id !== "dummy instructor"
           );
         } else {
           filtered = this.dataset.ClrmsInstByday.filter(
@@ -5167,7 +5155,7 @@ export default {
 
         // 講師フィルタ
         if (this.manage.instname !== "all") {
-          filtered = filtered.filter(x => x.uid === this.manage.instname);
+          filtered = filtered.filter(x => x.id === this.manage.instname);
         }
       }
       return filtered;
@@ -5225,25 +5213,20 @@ export default {
       // if (event === "networkStatus") {
       //   .log(`User has a network connection? ${data.active}`);
       // }
-      const ctime = this.$dayjs().format("YYYY-MM-DD HH:mm:ss ");
       switch (event) {
         case "networkStatus":
           // .log(`HUB User has a network connection? ${data.active}`);
-          // this.$dayjs(this.sett.acdate).format("YYYY-MM-DD H:mm") +
           console.log(
-            `${ctime} HUBlog User has a network connection? ${data.active}`
+            $dayjs().format("YYYY-MM-DD HH:mm") +
+              `HUB User has a network connection? ${data.active}`
           );
-          this.app.network = data.active;
-          this.applogSave();
-          // if (data.active === false) {
-          //   this.app.network = false;
-          // }
-          this.app.log.nw += ctime + event + ": " + data.active + "\n";
+          if (data.active === false) {
+            this.app.network = false;
+          }
           break;
         case "syncQueriesReady":
-          console.log(ctime + "HUBlog syncQueriesReady");
+          // log("HUB syncQueriesReady");
           this.app.network = true;
-          this.app.log.nw += ctime + event + ": " + true + "\n";
           break;
         // case "storageSubscribed":
         //   log(`HUB storageSubscribed:${data}`);
@@ -5255,24 +5238,17 @@ export default {
         //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
         //   break;
         case "modelSynced":
-          console.log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
-          this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
+          // log(`HUB modelSynced:${JSON.stringify(data)}`);
           break;
-
-        case "outboxStatus": // 変更ごとに出る
+        case "outboxStatus":
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          console.log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
-          // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "ready":
-          console.log(ctime + " HUBlog ready");
+          // log("HUB ready");
           this.app.ready = true;
-          this.app.log.nw += ctime + event + "\n";
-          this.applogSave();
           break;
       }
-      // console.warn(this.app.log.nw);
     });
     //日付設定
     this.dateDevAddDate();

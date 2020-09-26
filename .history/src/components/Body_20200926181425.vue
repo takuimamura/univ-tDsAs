@@ -2454,7 +2454,7 @@ export default {
         clrmItems: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
+        typeMisc: { classSum: "classSummary" } //定数
       },
       setval1: null,
       setval2: null,
@@ -3514,8 +3514,8 @@ export default {
     async applogSave() {
       await DataStore.save(
         new Misc({
-          type: this.ds.typeMisc.appNwLog,
-          name: this.authdetail.username,
+          type: this.ds.typeMisc.classSum,
+          name: this.authdetail,
           detail: this.app.log.nw
         })
       );
@@ -5234,7 +5234,6 @@ export default {
             `${ctime} HUBlog User has a network connection? ${data.active}`
           );
           this.app.network = data.active;
-          this.applogSave();
           // if (data.active === false) {
           //   this.app.network = false;
           // }
@@ -5269,10 +5268,9 @@ export default {
           console.log(ctime + " HUBlog ready");
           this.app.ready = true;
           this.app.log.nw += ctime + event + "\n";
-          this.applogSave();
           break;
       }
-      // console.warn(this.app.log.nw);
+      console.warn(this.app.log.nw);
     });
     //日付設定
     this.dateDevAddDate();

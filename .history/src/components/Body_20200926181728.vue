@@ -5234,7 +5234,7 @@ export default {
             `${ctime} HUBlog User has a network connection? ${data.active}`
           );
           this.app.network = data.active;
-          this.applogSave();
+          applogSave();
           // if (data.active === false) {
           //   this.app.network = false;
           // }
@@ -5269,7 +5269,7 @@ export default {
           console.log(ctime + " HUBlog ready");
           this.app.ready = true;
           this.app.log.nw += ctime + event + "\n";
-          this.applogSave();
+          applogSave();
           break;
       }
       // console.warn(this.app.log.nw);
