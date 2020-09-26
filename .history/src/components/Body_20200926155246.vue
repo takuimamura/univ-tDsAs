@@ -214,14 +214,14 @@
       <section v-show="!cRoom.showABList">
         <nav class="level">
           <div class="level-left">
-            <div class="column upper-left-corner is-one-quater">
+            <div class="column DeliveringInspir8ionallessons is-one-quater">
               {{ dayACjsHmm }}
               <span style="font-size: 22px;">{{ dayACjsA }}</span>
               {{ dayACjsdddMMMD }}
             </div>
           </div>
           <div class="level-item">
-            <div class="column upper-top">
+            <div class="column f23 has-text-centered">
               <b-tag rounded v-show="!ifYouClockIn" class="is-pinkishclear">not clocked in</b-tag>
               {{ " " + authdetail.name }}
             </div>
