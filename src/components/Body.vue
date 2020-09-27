@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!-- Authバグ対応、初回のみ -->
+
     <template v-if="this.authdetail.name === undefined">
       <section class="hero is-fullheight">
         <div class="hero-body">
@@ -18,7 +19,9 @@
       <!-- 検証用 -->
       <div v-if="getStartingUrl === 'localhost'">
         <b-field>
+          <b-modal :active.sync="sett.isModalActive"></b-modal>
           <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button>
+          <!-- <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button> -->
           <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
           <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
           <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
@@ -30,22 +33,13 @@
         <b-field>
           <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
           <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
-          <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button>
+          <!-- <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button> -->
           <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-          <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button>
+          <!-- <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button> -->
         </b-field>
-        <b-input v-model="sett.dummy"></b-input>
+        <!-- <b-input v-model="sett.dummy"></b-input> -->
         {{ sett.dummy }}
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-dark-bluelighter" />
         <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="dark-blue" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-pink" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="orange" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-orange" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-pinkish" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-danger" />
-        <!-- app.log: {{app.log.nw}} -->
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -59,16 +53,15 @@
         </ul>-->
         <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
         <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
-        <div class="block">
-          <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-          <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
-          <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
-          app: {{ app }}
-          <br />
-        </div>
+        <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
+        <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
+        <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
+        <!-- app: {{ app }} -->
 
         <!--■■■開発用 ローカル限定表示■■■-->
-        sett {{ sett.alias }}
+        sett {{ sett.alias }} | authdetai {{authdetail}}
+        <br />
+        manage.dow {{manage.dow}}
         <br />
         <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
         <template v-if="sett.sw1">
@@ -87,40 +80,46 @@
 
         <b-modal :active.sync="sett.isModalActive"></b-modal>
 
-        <b-button @click="initallClassesDev">initallClassesDev</b-button>
+        <!-- <b-button @click="initallClassesDev">initallClassesDev</b-button> -->
         <b-button @click="initallClasses">initallClasses</b-button>
         <!-- <b-button @click="enterClassroomUp">enterClassroomUp</b-button> -->
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{authdetail}}
-        <br />
         cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
-        <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+        <b-numberinput v-model="sett.env.devAddDate" size="is-small" controls-position="compact"></b-numberinput>
         <b-button
-          @click="
-          dateDevAddDate();
-          dummytest();
-          workspaceValication(true);
-        "
+          @click="dateDevAddDate();dummytest();workspaceValication(true);"
         >reflect day change</b-button>
         <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
         <!-- sett.alias:: {{ sett.alias }} -->
-        <!-- dummy::::::{{ sett.dummy }}      <br /> -->
+        <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+        <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+        <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
         dummy1::::::{{ sett.dummy1 }}
         <br />
-        dummy2::::::{{ sett.dummy2 }} ::
-        dummy3::::::{{ sett.dummy3 }}
+        dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
         <br />
         allClasses; {{dataset.allClasses.length}} | yours | {{yourClasses.length}}
         InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{ dataset.Clrms.length }} |
         ClrmsChk::{{ dataset.ClrmsChk.length }} | insts: {{ dataset.Insts.length }} | class:
         {{ classmembers.length }} |
-        <br />
+        <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
         -- classroomIndex {{classroomIndex}} | selCrlm {{selCrlm}} |
-        dataset.allClasses {{dataset.allClasses[0]}}
+        <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
         <br />
+        getTodayJSON: {{getTodayJSON}} |
+        <br />
+        getTodayJSON今日: {{getTodayJSON.dayofweek + ':' + getThisWeekAttnJSON[getTodayJSON.dayofweek]}} |
+        <br />
+        getThisWeekAttnJSON: {{getThisWeekAttnJSON}} | {{getThisWeekAttnJSON.Mon}}
+        <br />
+        selCrlm {{selCrlm}}
+        <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
+        <!-- getDayChainUntilPrevJSON: {{getDayChainUntilPrevJSON}}|        <br /> -->
+        <!-- monthChainUntilCurrentMonthJSON: {{monthChainUntilCurrentMonthJSON}}        <br /> -->
         <!-- {{indiRow}} -->
         <!--
         <br />
@@ -134,7 +133,13 @@
         <!-- ::instructor.yourTodaysClasses{{ instructor.yourTodaysClasses.length }} ::{{instructor.yourTodaysClasses}}      <br /> -->
         <!-- dataset.Clrms:{{ dataset.Clrms.length }} {{ dataset.Clrms[0] }}<br /> -->
         <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-        <br />
+        <b-switch v-model="sett.devcheck">devcheck : {{sett.devcheck}}</b-switch>
+        <template v-if="sett.devcheck">
+          <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+          <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
+          <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+        </template>
+        x
       </div>
 
       <!-- 管理用 -->
@@ -387,38 +392,6 @@
                   </div>
                 </transition>
                 <div class="card-content">
-                  <!-- <p class="subtitle">Your record</p>
-                  <div class="content">
-                    <b-field>
-                      <b-radio-button
-                        v-for="(m, index) in monthChainUntilCurrentMonthJSON"
-                        :key="index"
-                        :native-value="m"
-                        v-model="instructor.yourattendvisiblemonth"
-                      >{{ m }}</b-radio-button>
-                    </b-field>
-                    <b-table :data="yourattendancesMonth">
-                      <template slot-scope="props">
-                        <b-table-column
-                          field="date"
-                          label="Date"
-                          width="150"
-                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
-
-                        <b-table-column field="clockin" label="In">
-                          {{ props.row.clockin
-                          }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
-                        </b-table-column>
-                        <b-table-column field="clockout" label="Out">
-                          {{ props.row.clockout
-                          }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
-                        </b-table-column>
-
-                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
-                      </template>
-                    </b-table>
-                  </div>-->
-
                   <div class="columns">
                     <div class="column">
                       <b-button
@@ -482,6 +455,7 @@
               </section>
             </template>
 
+            <!-- たぶん集計関連 -->
             <section
               v-if="false"
               class="columns is-centered"
@@ -530,6 +504,10 @@
                       <br />
                       <span style="font-size:20px;">{{ selCrlm.title }}</span>
                       <span style="font-size:20px;">{{ selCrlm.classtitle }}</span>
+                      <br />
+                      <span
+                        class="is-text-5 has-text-weight-bold"
+                      >Lesson No. {{ selCrlm.lssnthisweek }}</span>
                     </p>
                   </div>
                   <div class="column is-3">
@@ -722,15 +700,17 @@
               <table class="table f23">
                 <thead>
                   <tr>
-                    <th colspan="2" class="is-size-6 has-text-grey has-text-light">updates</th>
-                    <!-- <th class="is-size-7 has-text-light">new</th> -->
+                    <!-- <th colspan="2" class="is-size-6 has-text-grey has-text-light">updates</th> -->
                     <th></th>
+                    <!-- <th class="is-size-7 has-text-light">new</th> -->
+                    <th v-if="sett.devcheck"></th>
+                    <!-- <th></th> -->
                     <th></th>
                     <th>Day</th>
                     <th>Slot</th>
                     <th v-show="!cRoom.showClassesSum">Time</th>
                     <th v-show="!cRoom.showClassesSum">Room</th>
-                    <th v-show="cRoom.showClassesSum">
+                    <!-- <th v-show="cRoom.showClassesSum">
                       <b-icon icon="user" size="is-small"></b-icon>
                     </th>
 
@@ -750,24 +730,67 @@
                       v-show="cRoom.showClassesSum && manage.showNumClassesSum > 0"
                     >
                       <span class="f18">{{ l.cap }}</span>
-                    </th>
+                    </th>-->
                     <th>
                       <!--Consistency check-->
                     </th>
+                    <th></th>
+                    <th>Lesson No.</th>
                   </tr>
                 </thead>
                 <tbody class="cPointer">
                   <tr v-for="yitem in yourClasses" :key="yitem.id">
-                    <td
+                    <td v-if="sett.devcheck">
+                      {{ yitem.detail }}|
+                      <!-- {{ getTimeIfTodayOrDate(yitem.newest) }} -->
+                      {{yitem.syncdone}}
+                      <template v-if="yitem.syncdone">1</template>
+                      <template v-else-if="yitem.syncdone === false">2</template>
+                      <template v-else>3</template>
+                      |
+                      {{yitem.attndone}}
+                      <template
+                        v-if="yitem.attndone"
+                      >1</template>
+                      <template v-else-if="yitem.attndone === false">2</template>
+                      <template v-else>3</template>
+                    </td>
+                    <!-- <td
                       style="padding:10px 2px 0px 2px;width:10px"
                       class="has-text-centered is-size-6"
                       :class="getIsDoneToday(yitem.oldest)"
-                    >{{ getTimeIfTodayOrDate(yitem.oldest) }}</td>
+                    >{{ getTimeIfTodayOrDate(yitem.oldest) }}</td>-->
                     <td
                       style="padding:10px 2px 0px 2px;width:10px"
                       class="has-text-centered is-size-6"
-                      :class="getIsDoneToday(yitem.newest)"
-                    >{{ getTimeIfTodayOrDate(yitem.newest) }}</td>
+                    >
+                      <!-- :class="getIsDoneToday(yitem.newest)" -->
+                      <div class="columns is-gapless">
+                        <div class="column">
+                          <!-- Sync status -->
+                          <template v-if="yitem.syncdone">
+                            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+                          </template>
+                          <template v-else-if="yitem.syncdone === false">
+                            <b-icon
+                              pack="fas"
+                              icon="star-half-alt"
+                              size="is-large"
+                              type="is-syncsome"
+                            ></b-icon>
+                          </template>
+                          <template v-else></template>
+                        </div>
+                        <div class="column">
+                          <!-- Attendance record completion -->
+                          <template v-if="yitem.attndone">
+                            <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+                          </template>
+                          <template v-else-if="yitem.attndone === false"></template>
+                          <template v-else></template>
+                        </div>
+                      </div>
+                    </td>
 
                     <td
                       :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
@@ -804,7 +827,7 @@
                     >{{ yitem.classtitle | subStr }}</td>
 
                     <!-- summary-->
-                    <td
+                    <!-- <td
                       :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       v-show="cRoom.showClassesSum"
                       @click="selectClassroom(yitem)"
@@ -852,7 +875,13 @@
                         size="is-small"
                         type="is-danger"
                       ></b-icon>
-                    </td>
+                    </td>-->
+                    <td
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
+                      class="is-size-3 has-text-weight-bold"
+                      @click="selectClassroom(yitem)"
+                      v-show="!cRoom.showClassesSum"
+                    >{{ yitem.lssnthisweek }}</td>
                   </tr>
                 </tbody>
               </table>
@@ -879,7 +908,10 @@
                       {{ selCrlm.timeto }}
                       <!-- room:{{ selCrlm.room }} -->
                     </p>
-                    <p class="subtitle" style="line-height:0.8em;">{{ selCrlm.classtitle }}</p>
+                    <p class="subtitle" style="line-height:0.8em;">
+                      {{ selCrlm.classtitle }}
+                      <b>Lesson {{selCrlm.lssnthisweek}}</b>
+                    </p>
                   </div>
                   <!-- <div
                   style="margin-left:10px;"
@@ -1000,10 +1032,23 @@
                     label
                     style="padding:8px 0px 0px 0px;width:10px"
                     class="has-text-centered"
-                    :class="getIsDoneToday(props.row._lastChangedAt)"
                     width="10"
                     sticky
-                  >{{ getTimeIfTodayOrDate(props.row._lastChangedAt) }}</b-table-column>
+                  >
+                    <!-- :class="getIsDoneToday(props.row._lastChangedAt)" -->
+                    <!-- <span v-show="getIfAttnThisWeekNotNull(selCrlm.dayofweek,props.row[selCrlm.attnthisweek],props.row._lastChangedAt)"
+                    ><b-icon pack="fas" icon="star" size="is-small" /> </span>-->
+                    <!-- <template
+                      v-if="getIfAttnThisWeekNotNull(selCrlm.dayofweek,props.row[selCrlm.attnthisweek],props.row._lastChangedAt)"
+                    >
+                      <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+                    </template>
+                    <template v-else></template>-->
+
+                    <template
+                      v-if="sett.devcheck"
+                    >{{$dayjs(props.row._lastChangedAt).format("M/D H:mm")}}</template>
+                  </b-table-column>
                   <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
                   <b-table-column
@@ -1356,7 +1401,8 @@
                   <div :class="getIndiPaneClass('left')">
                     <div class="tile is-parent is-vertical">
                       <div class="tile is-child box">
-                        <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)">
+                        <nav class="level">
+                          <!-- <nav class="level" :class="getIsDoneToday(indiRow._lastChangedAt)"> -->
                           <div class="level-left title">
                             {{ indiRow.classcount + ". " }}
                             <div style="margin:0px 3px;"></div>
@@ -1364,11 +1410,11 @@
                             <div style="margin:0px 3px;"></div>
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
-                            <span class="is-size-5 has-text-grey-lighter">
+                            <!-- <span class="is-size-5 has-text-grey-lighter">
                               {{
                               getTimeIfTodayOrDate(indiRow._lastChangedAt)
                               }}
-                            </span>
+                            </span>-->
                           </div>
 
                           <div class="level-right title is-4">
@@ -2038,361 +2084,6 @@
               </section>
             </template>
           </b-tab-item>
-          <!-- <b-tab-item :label="labelrighttext" disabled></b-tab-item> -->
-
-          <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
-          <b-tab-item label="Manage" :visible="showManagementView" icon="dove">
-            <template v-if="showManagementView">
-              <b-tabs position="is-right" v-model="manage.activeTab">
-                <section class="manageview3 p40" v-if="showManagementViewSuper">
-                  <!-- <b-tab-item label="Instructors" icon="user-astronaut">
-              <section class="manageview p40">
-                <a href="https://management.d36k1gty6yz9hg.amplifyapp.com/" target="_blank">
-                  <span class="manageview">
-                    Management
-                    <b-icon icon="external-link-alt"></b-icon>
-                  </span>
-                </a>
-              </section>
-                  </b-tab-item>-->
-                  <b-field label="StudentCode">
-                    <b-input v-model="manage.queryRowCrlm"></b-input>
-                  </b-field>
-                  q:{{ manage.queryRowCrlm }}
-                  <br />
-                  length:{{ queryRowCrlmData.length }}
-                  <br />
-                  <template v-if="queryRowCrlmData.length < 5">
-                    <div v-html="queryRowCrlmData"></div>
-                  </template>
-                </section>
-
-                <b-tab-item
-                  label="Instructors"
-                  :visible="showManagementViewSuper"
-                  icon="user-clock"
-                >
-                  <section class="manageview3 p40">
-                    <p class="title manageview3">Clock in / Clock out</p>
-                    <b-field grouped>
-                      <b-radio-button
-                        v-for="(m, index) in monthChainUntilCurrentMonthJSON"
-                        :key="index"
-                        :native-value="m"
-                        v-model="instructor.attendvisiblemonth"
-                      >{{ m }}</b-radio-button>
-
-                      <b-select
-                        placeholder="Instructors.."
-                        v-model="manage.instinstname"
-                        size="is-medium"
-                      >
-                        <!-- @input="evalCriteriaSelectChange()" -->
-                        <option value="all">All</option>
-                        <option
-                          v-for="n in instructor.nameConv"
-                          :key="n.username"
-                          :value="n.username"
-                        >{{ n.name }}</option>
-                      </b-select>
-                    </b-field>
-                    <div class="notification">
-                      <div class="manageview2">
-                        <b-table
-                          :data="allattendancesMonth"
-                          :columns="manage.instCols"
-                          :paginated="true"
-                          :per-page="15"
-                          :pagination-simple="false"
-                          :checked-rows.sync="manage.checkedRowsInst"
-                          checkable
-                          checkbox-position="left"
-                        >
-                          <b-input
-                            slot="searchable"
-                            slot-scope="props"
-                            v-model="props.filters[props.column.field]"
-                            placeholder="Search..."
-                            icon="magnify"
-                            size="is-small"
-                          />
-                        </b-table>
-                      </div>
-                    </div>
-
-                    <!-- Edit view -->
-                    <section v-if="manage.checkedRowsInst.length > 0">
-                      <b-table
-                        :data="manage.checkedRowsInst"
-                        :mobile-cards="sett.hasMobileCards"
-                        :sticky-header="stickyHeaders"
-                      >
-                        <template slot-scope="props">
-                          <b-table-column field="id" label="Name" sticky>{{ props.row.id }}</b-table-column>
-                          <b-table-column field="date" label="Date" sticky>{{ props.row.date }}</b-table-column>
-
-                          <b-table-column field="clockin" label="In">{{ props.row.clockin }}</b-table-column>
-                          <b-table-column field="clockincorrect" label="In(Fixed)" sticky>
-                            <span>{{ props.row.clockincorrect }}</span>
-                          </b-table-column>
-
-                          <b-table-column field="clockout" label="Out">{{ props.row.clockout }}</b-table-column>
-                          <b-table-column field="clockoutcorrect" label="Out(Fixed)" sticky>
-                            <span>{{ props.row.clockoutcorrect }}</span>
-                          </b-table-column>
-
-                          <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
-
-                          <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
-                            <template slot="header">
-                              <b-button
-                                @click="manage.showSelAttn = !manage.showSelAttn"
-                                class="manageview-accent"
-                                style="margin-top:5px;"
-                                v-show="!manage.showSelAttn"
-                              >
-                                <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
-                              </b-button>
-                            </template>
-                            <div class="tile is-ancestor">
-                              <div class="tile is-parent">
-                                <div class="tile is-child">
-                                  <b-field>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="here"
-                                      type="attend-present"
-                                      size="is-medium"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'here',
-                                        props.row.note
-                                      )
-                                    "
-                                    >〇</b-radio-button>
-                                  </b-field>
-                                </div>
-                              </div>
-                            </div>
-                          </b-table-column>
-                        </template>
-
-                        <template slot="footer" class="manageview">
-                          <b-button
-                            size="is-large"
-                            class="manageview-accent"
-                            @click="manage.checkedRowsInst = []"
-                          >Close</b-button>
-                        </template>
-                      </b-table>
-                    </section>
-                  </section>
-                </b-tab-item>
-
-                <b-tab-item label="Students" icon="child">
-                  <section class="manageview p40">
-                    <b-field grouped>
-                      <b-field>
-                        <b-radio-button v-model="manage.dow" native-value="All" size="is-medium">
-                          <div style="padding:0px 25px; font-size:14px;">All</div>
-                        </b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Mon" size="is-medium">Mon</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Tue" size="is-medium">Tue</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Wed" size="is-medium">Wed</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Thu" size="is-medium">Thu</b-radio-button>
-                        <b-radio-button v-model="manage.dow" native-value="Fri" size="is-medium">Fri</b-radio-button>
-                      </b-field>
-
-                      <b-field>
-                        <b-select
-                          placeholder="Instructors.."
-                          v-model="manage.instname"
-                          size="is-medium"
-                        >
-                          <!-- @input="evalCriteriaSelectChange()" -->
-                          <option value="all">All</option>
-                          <option
-                            v-for="n in instructor.nameConv"
-                            :key="n.username"
-                            :value="n.name"
-                          >{{ n.name }}</option>
-                        </b-select>
-                      </b-field>
-                    </b-field>
-                    <div class="notification">
-                      <div class="manageview2">
-                        <b-table
-                          :data="allStudentsFiltered"
-                          :columns="manage.clrmCols"
-                          :paginated="true"
-                          :per-page="15"
-                          :pagination-simple="false"
-                          :checked-rows.sync="manage.checkedRows"
-                          checkable
-                          checkbox-position="left"
-                        >
-                          <b-input
-                            slot="searchable"
-                            slot-scope="props"
-                            v-model="props.filters[props.column.field]"
-                            placeholder="Search..."
-                            icon="magnify"
-                            size="is-small"
-                          />
-                        </b-table>
-                      </div>
-                    </div>
-
-                    <!-- Edit view -->
-                    <section v-if="manage.checkedRows.length > 0">
-                      <b-table
-                        :data="manage.checkedRows"
-                        :mobile-cards="sett.hasMobileCards"
-                        :sticky-header="stickyHeaders"
-                      >
-                        <template slot-scope="props">
-                          <b-table-column
-                            field="dayofweek"
-                            label="Day"
-                            sticky
-                          >{{ props.row.dayofweek }}</b-table-column>
-                          <b-table-column
-                            field="classcode"
-                            label="Class"
-                            sticky
-                          >{{ props.row.classcode }}</b-table-column>
-
-                          <b-table-column
-                            field="studentcode"
-                            label="Code"
-                            sticky
-                          >{{ props.row.studentcode }}</b-table-column>
-                          <b-table-column field="studentname" label="Name" sticky>
-                            <span>{{ props.row.studentname }}</span>
-                          </b-table-column>
-
-                          <b-table-column
-                            v-for="(m, index) in manage.vforEdit"
-                            :key="index"
-                            :field="m.at"
-                            :label="String(index + 1)"
-                            :visible="clrmShowColEdit[index + 1]"
-                            :class="getAttendStatusClassHist(props.row[m.at])"
-                            style="padding:0px 0px 0px 15px;"
-                          >
-                            <template slot="header" slot-scope="{ column }" style="padding:0px;">
-                              {{ column.label }}
-                              <br />
-                              <template v-if="m.at == manage.selAttn ? true : manage.showSelAttn">
-                                <b-radio-button
-                                  v-model="manage.selAttn"
-                                  :native-value="m.at"
-                                  style="padding:0px;"
-                                  @input="manage.showSelAttn = false"
-                                >
-                                  <span class="f16">{{ getDateMDEdit(index) }}</span>
-                                </b-radio-button>
-                              </template>
-                            </template>
-                            {{ getAttendSymbol(props.row[m.at]) }}
-                          </b-table-column>
-
-                          <b-table-column field="attendrec" :visible="manage.selAttn !== ''" label>
-                            <template slot="header">
-                              <b-button
-                                @click="manage.showSelAttn = !manage.showSelAttn"
-                                class="manageview-accent"
-                                style="margin-top:5px;"
-                                v-show="!manage.showSelAttn"
-                              >
-                                <b-icon pack="fas" icon="arrow-left" size="is-medium" />Show Selector
-                              </b-button>
-                              <!-- <span class="f18">{{ getDateMDEditTgt(13) }}</span> -->
-                            </template>
-                            <div class="tile is-ancestor">
-                              <div class="tile is-parent">
-                                <div class="tile is-child">
-                                  <b-field>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="here"
-                                      type="attend-present"
-                                      size="is-medium"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'here',
-                                        props.row.note
-                                      )
-                                    "
-                                    >〇</b-radio-button>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="late"
-                                      type="attend-late"
-                                      size="is-medium"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'late',
-                                        props.row.note
-                                      )
-                                    "
-                                    >LA</b-radio-button>
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="early leave"
-                                      type="attend-eleave"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'early leave',
-                                        props.row.note
-                                      )
-                                    "
-                                      size="is-medium"
-                                    >EL</b-radio-button>
-
-                                    <b-radio-button
-                                      v-model="props.row[manage.selAttn]"
-                                      native-value="not here"
-                                      type="attend-absent"
-                                      @input="
-                                      updateClrmEdit(
-                                        props.row.id,
-                                        manage.selAttn,
-                                        'not here',
-                                        props.row.note
-                                      )
-                                    "
-                                      size="is-medium"
-                                    >X</b-radio-button>
-                                  </b-field>
-                                </div>
-                              </div>
-                            </div>
-                          </b-table-column>
-                        </template>
-
-                        <template slot="footer" class="manageview">
-                          <b-button
-                            size="is-large"
-                            class="manageview-accent"
-                            @click="manage.checkedRows = []"
-                          >Close</b-button>
-                        </template>
-                      </b-table>
-                    </section>
-                  </section>
-                </b-tab-item>
-              </b-tabs>
-            </template>
-          </b-tab-item>
         </b-tabs>
       </section>
       <!-- <span style="visibility: hidden;">
@@ -2452,6 +2143,9 @@ export default {
         clrmUp: null,
         clrmDl: null,
         clrmItems: null,
+        dev1: null,
+        dev2: null,
+        dev3: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
         typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
@@ -2465,6 +2159,7 @@ export default {
       },
       sett: {
         env: EnvJSON,
+        devcheck: false,
         isModalActive: false,
         acdate: null, // 実際の日
         ddate: null, // 処理につかう日付
@@ -2998,7 +2693,7 @@ export default {
         checkedRowsInst: [],
         clrmCols: [
           {
-            field: "id",
+            field: "uid",
             label: "Instructor",
             sortable: true,
             searchable: false
@@ -3300,8 +2995,10 @@ export default {
     /////DataStore
     async fetchClrms() {
       this.ds.clrms = await DataStore.query(Clrm, Predicates.ALL);
-      this.dataset.Clrms = [];
-      this.dataset.Clrms = [...this.ds.clrms];
+      // this.dataset.Clrms = [];
+      // this.dataset.Clrms = [...this.ds.clrms];
+      this.dataset.Clrms = JSON.parse(JSON.stringify(this.ds.clrms));
+
       // this.dataset.Clrms.splice();
       // this.dataset.Clrms.push(...this.ds.clrms);
     },
@@ -3372,9 +3069,13 @@ export default {
       );
 
       await this.fetchClrms();
-      await this.enterClassroomUp();
-      setTimeout(this.enterClassroomUp, 3000); // 直後だとタイムスタンプ取れないので再実施させる
-      // await this.fetchClrms(clrmItem.clrm);
+      this.enterClassroomUp();
+      // setTimeout(this.enterClassroomUp, 1000 * 1); // 直後だとタイムスタンプ取れないので再実施させる
+      // setTimeout(this.enterClassroomUp, 1000 * 2); // 直後だとタイムスタンプ取れないので再実施させる
+      // setTimeout(this.enterClassroomUp, 1000 * 3); // 直後だとタイムスタンプ取れないので再実施させる
+      // setTimeout(this.enterClassroomUp, 1000 * 5); // 直後だとタイムスタンプ取れないので再実施させる
+      setTimeout(this.enterClassroomUp, 1000 * 20); // 直後だとタイムスタンプ取れないので再実施させる
+      // // await this.fetchClrms(clrmItem.clrm);
     },
     ///// Misc
     ///// Misc
@@ -3403,10 +3104,7 @@ export default {
       const outt = original.find(arr => {
         return arr.detail.length > 0;
       });
-      // console.warn(outt.detail);
       const dt = JSON.parse(outt.detail);
-      // console.warn(dt.oldest);
-      // console.warn(dt.newest);
       return dt;
     },
     async FIREQueryMiscCo() {
@@ -3418,7 +3116,6 @@ export default {
         c.type("eq", cr.type).name("eq", cr.name)
       );
       this.sett.dummy = original.length;
-      // console.warn(original);
     },
 
     async FIREcreateMisc() {
@@ -3451,8 +3148,9 @@ export default {
     //   // warn("createMiscClassSummary done");
     //   // this.fetchMiscs();
     // },
+
     //// クラス毎のサマリDB 更新
-    async reflectClassSummary(classcode) {
+    async reflectClassSummary(classcode, dow) {
       const ret = await DataStore.query(Clrm, c =>
         c.classcode("eq", classcode)
       );
@@ -3473,7 +3171,38 @@ export default {
       });
       tgt.newest = newest._lastChangedAt;
       tgt.oldest = oldest._lastChangedAt;
+      //this.getThisWeekAttnJSON[tgt.dayofweek]
       // this.dataset.allClasses.splice(); // いらない
+      //       const chk = ret.forEach(
+      // this.getIfAttnThisWeekNotNull(selCrlm.dayofweek,props.row[selCrlm.attnthisweek],props.row._lastChangedAt)
+
+      //       )
+      // const initialValue = 0;
+      const syncedsum = ret.reduce((accumulator, current) => {
+        return (
+          accumulator +
+          (this.getIfAttnThisWeekNotNull(
+            dow,
+            current[this.getThisWeekAttnJSON[dow]],
+            current._lastChangedAt
+          ) === true
+            ? 1
+            : 0)
+        );
+      }, 0);
+
+      const attnsum = ret.reduce((accumulator, current) => {
+        return (
+          accumulator +
+          (current[this.getThisWeekAttnJSON[dow]] !== null ? 1 : 0)
+        );
+      }, 0);
+
+      // 0:null >0:false ===length:true
+      tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
+      tgt.syncdone =
+        ret.length === syncedsum ? true : syncedsum > 0 ? false : null;
+      tgt.detail = ret.length + "," + syncedsum + "," + attnsum;
     },
 
     async devClassSummary(classcode) {
@@ -3530,8 +3259,6 @@ export default {
     //   const outt = original.find(arr => {
     //     return arr.detail.length > 0;
     //   });
-    //   // console.warn("outt");
-    //   // console.warn(outt);
     //   return outt !== undefined ? JSON.parse(outt.detail) : "";
     // },
 
@@ -3578,16 +3305,20 @@ export default {
 
     //初期処理
     // JSONからのallClassesを整える
-    initallClassesDev() {
-      this.yourClasses.forEach(m => {
-        // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
-      });
-    },
+    // initallClassesDev() {
+    //   this.yourClasses.forEach(m => {
+    //     // クラスのタイムスタンプを反映
+    //     this.reflectClassSummary(m.id, "m.dayofweek");
+    //   });
+    // },
     initallClasses() {
       this.yourClasses.forEach(m => {
+        // レッスン集と出欠が今週どこなのか
+        m.lssnthisweek = this.getThisWeekLssnJSON[m.dayofweek];
+        m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
         // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id);
+        this.reflectClassSummary(m.id, m.dayofweek);
+        this.yourClasses.splice();
       });
 
       // this.dataset.allClasses = [...allClassesUp];
@@ -3595,43 +3326,6 @@ export default {
       // this.dataset.allClasses.splice();
     },
 
-    //編集用
-    async updateClrmEdit(uid, fname, fval, logtx) {
-      const upArr = {
-        id: uid
-      };
-      upArr[fname] = fval;
-      //テスト時はログを記録しない
-      if (this.sett.env.isTestMode !== true) {
-        upArr.note =
-          (logtx === null ? "" : logtx) +
-          "_@[" +
-          this.$dayjs().format("YYYY-MM-DD HH:mm") +
-          "] " +
-          fname.replace("attn", "Week") +
-          " " +
-          this.authdetail.username;
-      }
-      try {
-        const callbk = null;
-        //$$$$$         const callbk = await API.graphql(
-        // console.warn("xx:updateClrmEdit");
-        //$$$$$ graphqlOperation(updateClrm, { input: upArr })
-        // );
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.writeFail("ClrmEdit", upArr, err);
-        return err; // returnの先に用途は実はない
-      }
-    },
-
-    // async manageUpdateClrmAll() {
-    //   //  this.classmembers.forEach((rowval, idx) => {
-    //   this.classmembers.forEach(rowval => {
-    //     this.updateClrmAll(rowval);
-    //     // this.dataset.up0514[num].result = this.$xxxdayjs();
-    //   });
-    // },
     async manageUpdateClrmDvAll() {
       // ★対象全てをひとづずつCopyOfしようか
       //念のためmiscに
@@ -4210,39 +3904,10 @@ export default {
       // this.instructor.youactive = 0;
       // this.instructor.disableInBtn = false; //true;
       // this.instructor.disableOutBtn = true;
-      // this.roleValidation();
-      this.roleInitValidation();
+      // this.roleInitValidation();
     },
     initializeInstMounted() {
       this.workdateValication();
-    },
-    // roleValidation() {
-    //   //  switch (this.authdetail.role) {
-    //   //   case "admin":
-    //   //     this.showManagementViewSuper = true;
-    //   //     this.showManagementView = true;
-    //   //     break;
-    //   //   case "headinstructor":
-    //   //   case "staff":
-    //   //     this.showManagementView = true;
-    //   //     break;
-    //   //   case "instructor":
-    //   //     this.showManagementView = false;
-    //   //     break;
-    //   // }
-    // },
-    roleInitValidation() {
-      this.sett.activeTab = 0;
-      // switch (this.authdetail.role) {
-      //   case "admin":
-      //   case "headinstructor":
-      //   case "staff":
-      //     this.sett.activeTab = 3;
-      //     break;
-      //   case "instructor":
-      //     this.sett.activeTab = 0;
-      //     break;
-      // }
     },
     periodicValidation() {
       // this.initAuthValidation();
@@ -4253,7 +3918,7 @@ export default {
           this.isEnteredselCrlm = false; // 部屋から出たことを記録
 
           // クラスのタイムスタンプを反映
-          this.reflectClassSummary(this.selCrlm.id);
+          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
 
           if (this.isOpenselCrlm) {
             //集計
@@ -4342,27 +4007,7 @@ export default {
       //manage用
       this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
-    // async initAuthValidation() {
-    //   // await Auth.currentAuthenticatedUser().then(user => {
-    //   //   if (this.authdetail.username != user.username) {
-    //   //     this.sett.isModalActive = true; // 操作を遮る
 
-    //   //     this.sett.dummy =
-    //   //       "initAuthCheck FAIL!!!" + this.$dayjs().format("hh:mm:ss.sss");
-    //   //     this.writeFail(
-    //   //       "initAuthCheck",
-    //   //       user.username,
-    //   //       this.authdetail.username
-    //   //     );
-    //   //     this.$router.go();
-    //   //   } else {
-    //   //     this.sett.dummy =
-    //   //       this.$dayjs().format("hh:mm:ss.sss") + "initAuthCheck OK";
-    //   //   }
-    //   // });
-    //   this.roleValidation();
-    //   // .catch((err) => (   this.writeFail("initAuthCheck", "error", err);
-    // },
     //////////サマリー
     async manageSummary() {
       // if (this.showManagementView === true) {
@@ -4764,9 +4409,6 @@ export default {
       this.manage.isOpenEdit = true;
     },
 
-    // pageReload() {
-    //   this.$router.go({ path: this.$router.currentRoute.path, force: true });
-    // },
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
         case "Group A":
@@ -4838,12 +4480,24 @@ export default {
         ? this.$dayjs(val).format("H:mm")
         : this.$dayjs(val).format("M/D");
     },
-    addParenthesisIfCorrectExists(str) {
-      if (str) {
-        return "(" + str + ")";
-      } else {
-        return null;
-      }
+    getIfAttnThisWeekNotNull(dow, attn, lastChan) {
+      //当日更新なら時刻、違えば日付
+      // getThisWeekDateJSON[dow]
+      // return false;
+      return attn === null
+        ? false
+        : this.$dayjs(lastChan).format("H:mm") == "Invalid Date"
+        ? false
+        : this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD") <=
+          this.$dayjs(lastChan).format("MMDD");
+
+      // : this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD") +
+      //     "|" +
+      //     this.$dayjs(lastChan).format("MMDD") +
+      //     "|" +
+      // : this.dayACjsYYYMMDD === this.$dayjs(lastChan).format("YYYYMMDD")
+      // ? this.$dayjs(lastChan).format("H:mm")
+      // : this.$dayjs(lastChan).format("M/D");
     },
     dateDevAddDate() {
       this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
@@ -5041,11 +4695,37 @@ export default {
     },
     getTodayJSON: function() {
       //本日の情報 // 5/25: 土日に不具合になるので、ピンポイントではなく最大値でだすようにした
+      // : { "id": "class", "date": "2020/09/25", "lessonnum": "3", "lessonstr": "Week3", "dayofweek": "Fri", "attendance": "attn03", "hwic": "homeworkincomplete03" } |
       return this.dataset.Cldrs.filter(
         x => x.date <= this.dayjsYYYYMMDDt
       ).reduce((a, b) => (a.date > b.date ? a : b));
     },
+    getThisWeekDateJSON: function() {
+      //今週の授業日を全曜日抽出、無い曜日は無しで
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, date: m.date }))
+        .reduce((obj, item) => ({ ...obj, [item.day]: item.date }), {});
+    },
+    getThisWeekLssnJSON: function() {
+      //今週の授業日を全曜日抽出、無い曜日は無しで
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, lssn: m.lessonnum }))
+        .reduce((obj, item) => ({ ...obj, [item.day]: item.lssn }), {});
+    },
+    getThisWeekAttnJSON: function() {
+      //今週の授業日を全曜日抽出、無い曜日は無しで
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, attn: m.attendance }))
+        .reduce((obj, item) => ({ ...obj, [item.day]: item.attn }), {});
+    },
     dayChainJSON: function() {
+      // 曜日の縦の並びで日程を取得
       const cMon = this.dataset.Cldrs.filter(x => x.dayofweek === "Mon");
       const cTue = this.dataset.Cldrs.filter(x => x.dayofweek === "Tue");
       const cWed = this.dataset.Cldrs.filter(x => x.dayofweek === "Wed");
@@ -5072,7 +4752,7 @@ export default {
       // ).filter(x => Number(x.lessonnum) < Number(this.getTodayJSON.lessonnum));
     },
     monthChainUntilCurrentMonthJSON: function() {
-      // YYYY-MMで当月まで（勤怠用）
+      // ClockIn/Out用・YYYY-MMで当月まで（勤怠用）  [ "2020-09" ]
       const arr = this.dataset.Cldrs.filter(
         x => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
       ).map(x => this.$dayjs(x.date).format("YYYY-MM"));
@@ -5136,66 +4816,9 @@ export default {
     },
     isClrmLoading: function() {
       return this.dataset.Clrms.length > 0 ? false : true;
-    },
-
-    // 生徒編集画面のフィルタ
-    allStudentsFiltered() {
-      let filtered;
-      // 曜日フィルタ
-      if (this.showManagementViewSuper) {
-        if (this.manage.dow == "All") {
-          filtered = this.dataset.ClrmsInstByday;
-        } else {
-          filtered = this.dataset.ClrmsInstByday.filter(
-            x => x.dayofweek === this.manage.dow
-          );
-        }
-
-        if (this.manage.instname !== "all") {
-          filtered = filtered.filter(x => x.id === this.manage.instname);
-        }
-      } else {
-        if (this.manage.dow == "All") {
-          filtered = this.dataset.ClrmsInstByday.filter(
-            x => x.uid !== "dummy instructor"
-          );
-        } else {
-          filtered = this.dataset.ClrmsInstByday.filter(
-            x => x.dayofweek === this.manage.dow && x.id !== "dummy instructor"
-          );
-        }
-
-        // 講師フィルタ
-        if (this.manage.instname !== "all") {
-          filtered = filtered.filter(x => x.uid === this.manage.instname);
-        }
-      }
-      return filtered;
-    },
-    queryRowCrlmData() {
-      let filtered;
-      filtered = this.dataset.ClrmsInstByday.filter(x =>
-        x.studentcode.includes(this.manage.queryRowCrlm)
-      ).map(function(item) {
-        let js = "";
-        for (var itm in item) {
-          js += itm + ": " + item[itm] + "<br />";
-        }
-        return js;
-      });
-
-      // replace(",", "\n")
-      return filtered;
     }
   },
-  // watch: {
-  //          cRoom.showComEv: function (newFlag, oldFlag) {
-  //                }
-  //           },
 
-  //   showInstAttendance: function(val) {
-  //   }
-  // },
   async created() {
     ///DataStore
     DataStore.observe(Clrm).subscribe(() => {
@@ -5242,6 +4865,11 @@ export default {
           // console.log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
           this.app.log.nw += ctime + event + ": " + true + "\n";
+
+          //復帰したときクラス外なら更新する
+          if (this.sett.activeTab !== 2) {
+            this.initallClasses();
+          }
           break;
         // case "storageSubscribed":
         //   log(`HUB storageSubscribed:${data}`);
@@ -5270,8 +4898,25 @@ export default {
           this.applogSave();
           break;
       }
-      // console.warn(this.app.log.nw);
     });
+
+    // const dv1 = await DataStore.query(Clrm, c => c.dayofweek("eq", "Mon"));
+    // DataStore.observe(dv1).subscribe(ssb => {
+    //   this.ds.dev1 = ssb;
+    // });
+
+    // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb => {
+    //   this.ds.dev2 = sb;
+    // });
+
+    // // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb3 => {
+    // //   this.ds.dev3 = sb3;
+    // // });
+    // DataStore.observe(Clrm).subscribe(sb3 => {
+    //   this.ds.dev3 = sb3;
+    //   console.warn(sb3);
+    // });
+
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
@@ -5295,16 +4940,13 @@ export default {
     this.manageSummary();
   },
   async mounted() {
-    // this.periodicValidation(); // 日付とユーザー検証
-    // this.initializeInstMounted(); // はよやりすぎるとリロード地獄
-
     setInterval(
       function() {
         this.workdateValication();
         // this.getCurrentTime();
         // this.reloadIfUndefinedName();
       }.bind(this),
-      1 * 1000
+      1 * 1000 * 10
     );
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
