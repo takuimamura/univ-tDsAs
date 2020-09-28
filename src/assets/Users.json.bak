@@ -21,6 +21,6 @@
   { "username": "a-otsuka", "name": "Akiko Otsuka", "role": "staff" },
   { "username": "m-yoshida", "name": "Mayumi Yoshida", "role": "staff" },
   { "username": "a-anjong", "name": "Arina Anjong", "role": "staff" },
-  { "username": "m-buckingham", "name": "Matthew Buckingham", "role": "staff" },  
-  { "username": "dummy", "name": "Dummy Instructor", "role": "instructor" }
+  { "username": "dummy", "name": "Dummy Instructor", "role": "instructor" },
+  { "username": "m-buckingham", "name": "Matthew Buckingham", "role": "staff" }  
 ]
