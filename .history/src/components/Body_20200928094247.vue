@@ -4477,9 +4477,10 @@ export default {
       //当日更新なら時刻、違えば日付
       return this.$dayjs(val).format("H:mm") == "Invalid Date"
         ? null
-        : this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
-        ? this.$dayjs(val).format("H:mm")
         : this.$dayjs(val).format("M/D");
+      // : this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
+      // ? this.$dayjs(val).format("H:mm")
+      // : this.$dayjs(val).format("M/D");
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付

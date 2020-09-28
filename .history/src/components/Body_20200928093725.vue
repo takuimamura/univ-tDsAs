@@ -1410,7 +1410,6 @@
                             <div style="margin:0px 3px;"></div>
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
-                            <span class="is-size-5 has-text-grey-light"></span>
                             <span class="is-size-5 has-text-grey">
                               {{
                               getTimeIfTodayOrDate(indiRow._lastChangedAt)
