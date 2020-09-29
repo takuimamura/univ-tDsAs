@@ -420,11 +420,8 @@
                 <footer class="card-footer"></footer>
               </b-collapse>
             </section>
-            <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
-              <div class="column">
-                <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
-              </div>
+            <div class="column">
+              <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
             </div>
           </b-tab-item>
 
@@ -2112,7 +2109,10 @@ import { DataStore, Predicates, Hub, Auth } from "aws-amplify";
 import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
+// import ClrmJSON from "../assets/Clrm.json";
 import EnvJSON from "../assets/env.json";
+
+// import { DataStore, Predicates } from "aws-amplify";
 import { Clrm, Inst, Misc } from "../models";
 
 import dayjs from "dayjs";
@@ -3003,10 +3003,7 @@ export default {
     /////DataStore
     /////DataStore
     async fetchClrms() {
-      this.ds.clrms = await DataStore.query(Clrm, c =>
-        c.uid("eq", this.sett.alias.name)
-      );
-
+      this.ds.clrms = await DataStore.query(Clrm, Predicates.ALL);
       // this.dataset.Clrms = [];
       // this.dataset.Clrms = [...this.ds.clrms];
       this.dataset.Clrms = JSON.parse(JSON.stringify(this.ds.clrms));
@@ -3035,18 +3032,13 @@ export default {
     },
     async fetchMiscs() {
       this.dataset.Miscs = [];
-      this.dataset.Miscs = await DataStore.query(Misc, c =>
-        c.name("eq", this.sett.alias.username)
-      );
-
+      this.dataset.Miscs = await DataStore.query(Misc, Predicates.ALL);
       // this.dataset.Miscs = [...this.ds.xxxxclrms];
       // this.dataset.Clrms.splice();
       // this.dataset.Clrms.push(...this.ds.clrms);
     },
     async fetchClrmsChk() {
-      this.dataset.ClrmsChk = await DataStore.query(Clrm, c =>
-        c.uid("eq", this.sett.alias.name)
-      );
+      this.dataset.ClrmsChk = await DataStore.query(Clrm, Predicates.ALL);
     },
     async fetchClrmsDatainstByday(dow) {
       this.dataset.ClrmsInstByday = await DataStore.query(Clrm, c =>
@@ -4499,14 +4491,14 @@ export default {
         attn !== null &&
         this.$dayjs(lastChan).format("H:mm") !== "Invalid Date"
       ) {
-        // console.warn(
-        //   "getIf " +
-        //     dow +
-        //     " " +
-        //     this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
-        //     "<=" +
-        //     this.$dayjs(lastChan).format("MMDD H:mm")
-        // );
+        console.warn(
+          "getIf " +
+            dow +
+            " " +
+            this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD") +
+            "<=" +
+            this.$dayjs(lastChan).format("MMDD")
+        );
       }
 
       return attn === null

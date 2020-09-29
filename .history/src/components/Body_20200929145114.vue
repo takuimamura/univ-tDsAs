@@ -420,11 +420,8 @@
                 <footer class="card-footer"></footer>
               </b-collapse>
             </section>
-            <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
-              <div class="column">
-                <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
-              </div>
+            <div class="column">
+              <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
             </div>
           </b-tab-item>
 
@@ -4499,14 +4496,14 @@ export default {
         attn !== null &&
         this.$dayjs(lastChan).format("H:mm") !== "Invalid Date"
       ) {
-        // console.warn(
-        //   "getIf " +
-        //     dow +
-        //     " " +
-        //     this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
-        //     "<=" +
-        //     this.$dayjs(lastChan).format("MMDD H:mm")
-        // );
+        console.warn(
+          "getIf " +
+            dow +
+            " " +
+            this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD") +
+            "<=" +
+            this.$dayjs(lastChan).format("MMDD")
+        );
       }
 
       return attn === null

@@ -59,9 +59,9 @@
         <!-- app: {{ app }} -->
 
         <!--■■■開発用 ローカル限定表示■■■-->
-        sett {{ sett.alias }} | authdetai {{ authdetail }}
+        sett {{ sett.alias }} | authdetai {{authdetail}}
         <br />
-        manage.dow {{ manage.dow }}
+        manage.dow {{manage.dow}}
         <br />
         <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
         <template v-if="sett.sw1">
@@ -86,15 +86,12 @@
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
-        authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
+        authdetail:: {{authdetail}}
+        cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
         <b-numberinput v-model="sett.env.devAddDate" size="is-small" controls-position="compact"></b-numberinput>
         <b-button
-          @click="
-            dateDevAddDate();
-            dummytest();
-            workspaceValication(true);
-          "
+          @click="dateDevAddDate();dummytest();workspaceValication(true);"
         >reflect day change</b-button>
         <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
         <!-- sett.alias:: {{ sett.alias }} -->
@@ -105,23 +102,21 @@
         <br />
         dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
         <br />
-        allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }} InstByday::{{
-        dataset.ClrmsInstByday.length
-        }}
-        | Clrms::{{ dataset.Clrms.length }} | ClrmsChk::{{ dataset.ClrmsChk.length }} | insts:
-        {{ dataset.Insts.length }} | class: {{ classmembers.length }} |
+        allClasses; {{dataset.allClasses.length}} | yours | {{yourClasses.length}}
+        InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{ dataset.Clrms.length }} |
+        ClrmsChk::{{ dataset.ClrmsChk.length }} | insts: {{ dataset.Insts.length }} | class:
+        {{ classmembers.length }} |
         <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-        -- classroomIndex {{ classroomIndex }} | selCrlm {{ selCrlm }} |
+        -- classroomIndex {{classroomIndex}} | selCrlm {{selCrlm}} |
         <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
         <br />
-        getTodayJSON: {{ getTodayJSON }} |
+        getTodayJSON: {{getTodayJSON}} |
         <br />
-        getTodayJSON今日:
-        {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+        getTodayJSON今日: {{getTodayJSON.dayofweek + ':' + getThisWeekAttnJSON[getTodayJSON.dayofweek]}} |
         <br />
-        getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+        getThisWeekAttnJSON: {{getThisWeekAttnJSON}} | {{getThisWeekAttnJSON.Mon}}
         <br />
-        selCrlm {{ selCrlm }}
+        selCrlm {{selCrlm}}
         <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
         <!-- getDayChainUntilPrevJSON: {{getDayChainUntilPrevJSON}}|        <br /> -->
         <!-- monthChainUntilCurrentMonthJSON: {{monthChainUntilCurrentMonthJSON}}        <br /> -->
@@ -138,7 +133,7 @@
         <!-- ::instructor.yourTodaysClasses{{ instructor.yourTodaysClasses.length }} ::{{instructor.yourTodaysClasses}}      <br /> -->
         <!-- dataset.Clrms:{{ dataset.Clrms.length }} {{ dataset.Clrms[0] }}<br /> -->
         <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-        <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+        <b-switch v-model="sett.devcheck">devcheck : {{sett.devcheck}}</b-switch>
         <template v-if="sett.devcheck">
           <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
           <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
@@ -420,11 +415,8 @@
                 <footer class="card-footer"></footer>
               </b-collapse>
             </section>
-            <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
-              <div class="column">
-                <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
-              </div>
+            <div class="column">
+              <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
             </div>
           </b-tab-item>
 
@@ -445,11 +437,11 @@
                     @input="selectClassroomClear()"
                   >
                     <!-- @input="evalCriteriaSelectChange()" -->
-                    <option
-                      v-for="n in instructor.nameConv"
-                      :key="n.username"
-                      :value="n.name"
-                    >{{ n.name }}</option>
+                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">
+                      {{
+                      n.name
+                      }}
+                    </option>
                   </b-select>
                   {{ yourClasses.length }} / {{ dataset.allClasses.length }}
                   <!-- <b-button
@@ -747,12 +739,12 @@
                     <td v-if="sett.devcheck">
                       {{ yitem.detail }}|
                       <!-- {{ getTimeIfTodayOrDate(yitem.newest) }} -->
-                      {{ yitem.syncdone }}
+                      {{yitem.syncdone}}
                       <template v-if="yitem.syncdone">1</template>
                       <template v-else-if="yitem.syncdone === false">2</template>
                       <template v-else>3</template>
                       |
-                      {{ yitem.attndone }}
+                      {{yitem.attndone}}
                       <template
                         v-if="yitem.attndone"
                       >1</template>
@@ -797,35 +789,35 @@
                     </td>
 
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.id }}</td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.grade }}({{ yitem.classnum }})</td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.dayofweek }}</td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                     >{{ yitem.slot }}</td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >
                       <div class="is-pulled-right">{{ yitem.timefrom }}-{{ yitem.timeto }}</div>
                     </td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >{{ yitem.roomnum }}</td>
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >{{ yitem.classtitle | subStr }}</td>
@@ -881,7 +873,7 @@
                       ></b-icon>
                     </td>-->
                     <td
-                      :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
+                      :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
                       class="is-size-3 has-text-weight-bold"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
@@ -914,7 +906,7 @@
                     </p>
                     <p class="subtitle" style="line-height:0.8em;">
                       {{ selCrlm.classtitle }}
-                      <b>Lesson {{ selCrlm.lssnthisweek }}</b>
+                      <b>Lesson {{selCrlm.lssnthisweek}}</b>
                     </p>
                   </div>
                   <!-- <div
@@ -970,11 +962,9 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">
-                        {{
-                        att.modeset[`${att.mode}`].barcaption
-                        }}
-                      </span>
+                      <span
+                        style="font-size: 28px; color: black;"
+                      >{{ att.modeset[`${att.mode}`].barcaption }}</span>
                     </b-progress>
                   </div>
                 </div>
@@ -1051,11 +1041,9 @@
                     </template>
                     <template v-else></template>-->
 
-                    <template v-if="sett.devcheck">
-                      {{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                      }}
-                    </template>
+                    <template
+                      v-if="sett.devcheck"
+                    >{{$dayjs(props.row._lastChangedAt).format("M/D H:mm")}}</template>
                   </b-table-column>
                   <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
@@ -1328,12 +1316,12 @@
                               :native-value="att.modeset[att.mode].title"
                               :type="att.modeset[att.mode].colortype"
                               @input="
-                                updateClrm(
-                                  props.row.id,
-                                  getTodayJSON.attendance,
-                                  att.modeset[att.mode].title
-                                )
-                              "
+                              updateClrm(
+                                props.row.id,
+                                getTodayJSON.attendance,
+                                att.modeset[att.mode].title
+                              )
+                            "
                               size="is-medium"
                             >
                               <div :class="att.modeset[att.mode].colortype">
@@ -1347,12 +1335,12 @@
                               :native-value="att.modeset[att.mode].title2"
                               type="is-danger"
                               @input="
-                                updateClrm(
-                                  props.row.id,
-                                  getTodayJSON.attendance,
-                                  att.modeset[att.mode].title2
-                                )
-                              "
+                              updateClrm(
+                                props.row.id,
+                                getTodayJSON.attendance,
+                                att.modeset[att.mode].title2
+                              )
+                            "
                               size="is-medium"
                             >
                               <b-icon icon="times"></b-icon>
@@ -1381,12 +1369,12 @@
                               rounded
                               :disabled="att.mode === 3"
                               @input="
-                                updateClrm(
-                                  props.row.id,
-                                  getTodayJSON.hwic,
-                                  props.row[getTodayJSON.hwic]
-                                )
-                              "
+                              updateClrm(
+                                props.row.id,
+                                getTodayJSON.hwic,
+                                props.row[getTodayJSON.hwic]
+                              )
+                            "
                             >
                               <b-icon icon="book-open"></b-icon>HW
                             </b-checkbox-button>
@@ -1419,9 +1407,11 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span
-                              class="is-size-5 has-text-grey"
-                            >{{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}</span>
+                            <span class="is-size-5 has-text-grey">
+                              {{
+                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                              }}
+                            </span>
                           </div>
 
                           <div class="level-right title is-4">
@@ -1506,10 +1496,8 @@
                                         </td>
                                         <td
                                           :class="[
-                                            indiRow[k.evl] == -1
-                                              ? 'title is-3 is-pinkishalert'
-                                              : '',
-                                          ]"
+                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
+                                        ]"
                                         >
                                           <span v-show="indiRow[k.evl] == -1">absent</span>
                                           <span v-show="indiRow[k.evl] !== -1">
@@ -1522,13 +1510,8 @@
                                               :star-points="cRoom.customstarShape"
                                               @rating-selected="goEvalUpTarget"
                                               @current-rating="
-                                                setEvalUpTarget(
-                                                  $event,
-                                                  indiRow,
-                                                  k.evl,
-                                                  cRoom.indiNo
-                                                )
-                                              "
+                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                            "
                                             ></star-rating>
                                           </span>
                                           <template v-if="!k.p1ptshow">
@@ -1538,15 +1521,19 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
+                                          <span v-show="indiRow[k.evl] !== -1">
+                                            {{
+                                            indiRow[k.evl]
+                                            }}
+                                          </span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
                                             icon-left="comment"
                                             size="is-middle"
                                             @click="
-                                              updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
-                                            "
+                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                          "
                                           >
                                             <span
                                               v-show="!cRoom.showComEv[k.comm]"
@@ -1576,8 +1563,8 @@
                                     <span class="has-text-grey-light title is-4">Sub Total :</span>
                                     <span
                                       :class="[
-                                        cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
-                                      ]"
+                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
+                                    ]"
                                     >{{ " " + indiSc["subtotal" + index] }}</span>
                                   </td>
                                 </tr>
@@ -1641,8 +1628,8 @@
                                       </td>
                                       <td
                                         :class="[
-                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                        ]"
+                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
+                                      ]"
                                       >
                                         <span v-show="indiRow[k.evl] == -1">absent</span>
                                         <span v-show="indiRow[k.evl] !== -1">
@@ -1654,18 +1641,18 @@
                                             :star-points="cRoom.customstarShape"
                                             @rating-selected="goEvalUpTarget"
                                             @current-rating="
-                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                            "
+                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                          "
                                           ></star-rating>
                                         </span>
                                       </td>
                                       <td class="title is-4">
                                         <span
                                           :class="[
-                                            indiRow[k.evl] === 0
-                                              ? 'has-pink-strong'
-                                              : 'has-text-black',
-                                          ]"
+                                          indiRow[k.evl] === 0
+                                            ? 'has-pink-strong'
+                                            : 'has-text-black',
+                                        ]"
                                           v-show="indiRow[k.evl] !== -1"
                                         >{{ indiRow[k.evl] }}</span>
                                       </td>
@@ -1674,8 +1661,8 @@
                                           icon-left="comment"
                                           size="is-middle"
                                           @click="
-                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
-                                          "
+                                          updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                        "
                                         >
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
@@ -1703,9 +1690,7 @@
                                 <td colspan="2" style="text-align:right">
                                   <span class="has-text-grey-light title is-4">Sub Total :</span>
                                   <span
-                                    :class="[
-                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
-                                    ]"
+                                    :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
                                   >{{ " " + indiSc.subtotal0 }}</span>
                                 </td>
                               </tr>
@@ -1769,8 +1754,8 @@
                                       <!-- 通常の場合 -->
                                       <td
                                         :class="[
-                                          indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
-                                        ]"
+                                        indiRow[k.evl] == -1 ? 'title is-3 is-pinkishalert' : '',
+                                      ]"
                                       >
                                         <span v-show="indiRow[k.evl] == -1">absent</span>
                                         <span v-show="indiRow[k.evl] !== -1">
@@ -1782,8 +1767,8 @@
                                             :star-points="cRoom.customstarShape"
                                             @rating-selected="goEvalUpTarget"
                                             @current-rating="
-                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
-                                            "
+                                            setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                          "
                                           ></star-rating>
                                         </span>
                                       </td>
@@ -1794,7 +1779,11 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
+                                        <span v-show="indiRow[k.evl] !== -1">
+                                          {{
+                                          indiRow[k.evl]
+                                          }}
+                                        </span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -1889,9 +1878,7 @@
                                 <td colspan="2" style="text-align:right">
                                   <span class="has-text-grey-light title is-4">Sub Total :</span>
                                   <span
-                                    :class="[
-                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
-                                    ]"
+                                    :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3']"
                                   >{{ " " + indiSc.subtotal1 }}</span>
                                 </td>
                                 <td v-if="cRoom.showAttnEval"></td>
@@ -1934,11 +1921,11 @@
                             <div class="column is-pulled-right" style="width:70px;margin-left:20px">
                               <a
                                 @click="
-                                  minusEvalUpTarget(
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                  )
-                                "
+                                minusEvalUpTarget(
+                                  indiRow,
+                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
+                                )
+                              "
                               >
                                 <b-icon
                                   pack="fas"
@@ -1946,22 +1933,22 @@
                                   size="is-medium"
                                   type="is-danger"
                                   @click="
-                                    minusEvalUpTarget(
-                                      indiRow,
-                                      cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                    )
-                                  "
+                                  minusEvalUpTarget(
+                                    indiRow,
+                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
+                                  )
+                                "
                                 />
                               </a>
                             </div>
                             <div class="column">
                               <a
                                 @click="
-                                  zeroEvalUpTarget(
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                  )
-                                "
+                                zeroEvalUpTarget(
+                                  indiRow,
+                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
+                                )
+                              "
                               >
                                 <b-icon
                                   pack="fas"
@@ -1969,11 +1956,11 @@
                                   size="is-medium"
                                   type="is-bluedark"
                                   @click="
-                                    zeroEvalUpTarget(
-                                      indiRow,
-                                      cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
-                                    )
-                                  "
+                                  zeroEvalUpTarget(
+                                    indiRow,
+                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl
+                                  )
+                                "
                                 />
                               </a>
                             </div>
@@ -1981,10 +1968,10 @@
                             <div
                               class="column"
                               :class="[
-                                indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
-                                  ? 'title is-3 is-pinkishalert'
-                                  : '',
-                              ]"
+                              indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
+                                ? 'title is-3 is-pinkishalert'
+                                : '',
+                            ]"
                             >
                               <div
                                 style="background-color:#ce1836;color:#fae3ec;padding:5px"
@@ -2002,13 +1989,13 @@
                                   :star-points="cRoom.customstarShape"
                                   @rating-selected="goEvalUpTarget"
                                   @current-rating="
-                                    setEvalUpTarget(
-                                      $event,
-                                      indiRow,
-                                      cRoom.evalCriItems[cRoom.tgtEvalSingle].evl,
-                                      cRoom.indiNo
-                                    )
-                                  "
+                                  setEvalUpTarget(
+                                    $event,
+                                    indiRow,
+                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].evl,
+                                    cRoom.indiNo
+                                  )
+                                "
                                 ></star-rating>
                               </span>
                             </div>
@@ -2026,12 +2013,12 @@
                                 size="is-middle"
                                 style="min-width:200px"
                                 @click="
-                                  updateClrmEvalsIndiAny(
-                                    indiRow,
-                                    cRoom.evalCriItems[cRoom.tgtEvalSingle].comm,
-                                    indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
-                                  )
-                                "
+                                updateClrmEvalsIndiAny(
+                                  indiRow,
+                                  cRoom.evalCriItems[cRoom.tgtEvalSingle].comm,
+                                  indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
+                                )
+                              "
                               >
                                 <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
                                   {{
@@ -2082,11 +2069,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">
-                              {{
-                              st.classcount + " " + st.studentname
-                              }}
-                            </span>
+                            <span
+                              :class="getIndiAttendClass(st[getTodayJSON.attendance])"
+                            >{{ st.classcount + " " + st.studentname }}</span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -2112,7 +2097,10 @@ import { DataStore, Predicates, Hub, Auth } from "aws-amplify";
 import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
+// import ClrmJSON from "../assets/Clrm.json";
 import EnvJSON from "../assets/env.json";
+
+// import { DataStore, Predicates } from "aws-amplify";
 import { Clrm, Inst, Misc } from "../models";
 
 import dayjs from "dayjs";
@@ -3003,10 +2991,7 @@ export default {
     /////DataStore
     /////DataStore
     async fetchClrms() {
-      this.ds.clrms = await DataStore.query(Clrm, c =>
-        c.uid("eq", this.sett.alias.name)
-      );
-
+      this.ds.clrms = await DataStore.query(Clrm, Predicates.ALL);
       // this.dataset.Clrms = [];
       // this.dataset.Clrms = [...this.ds.clrms];
       this.dataset.Clrms = JSON.parse(JSON.stringify(this.ds.clrms));
@@ -3035,18 +3020,13 @@ export default {
     },
     async fetchMiscs() {
       this.dataset.Miscs = [];
-      this.dataset.Miscs = await DataStore.query(Misc, c =>
-        c.name("eq", this.sett.alias.username)
-      );
-
+      this.dataset.Miscs = await DataStore.query(Misc, Predicates.ALL);
       // this.dataset.Miscs = [...this.ds.xxxxclrms];
       // this.dataset.Clrms.splice();
       // this.dataset.Clrms.push(...this.ds.clrms);
     },
     async fetchClrmsChk() {
-      this.dataset.ClrmsChk = await DataStore.query(Clrm, c =>
-        c.uid("eq", this.sett.alias.name)
-      );
+      this.dataset.ClrmsChk = await DataStore.query(Clrm, Predicates.ALL);
     },
     async fetchClrmsDatainstByday(dow) {
       this.dataset.ClrmsInstByday = await DataStore.query(Clrm, c =>
@@ -3091,7 +3071,7 @@ export default {
       // setTimeout(this.enterClassroomUp, 1000 * 2); // 直後だとタイムスタンプ取れないので再実施させる
       // setTimeout(this.enterClassroomUp, 1000 * 3); // 直後だとタイムスタンプ取れないので再実施させる
       // setTimeout(this.enterClassroomUp, 1000 * 5); // 直後だとタイムスタンプ取れないので再実施させる
-      setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
+      setTimeout(this.enterClassroomUp, 1000 * 20); // 直後だとタイムスタンプ取れないので再実施させる
       // // await this.fetchClrms(clrmItem.clrm);
     },
     ///// Misc
@@ -3208,7 +3188,6 @@ export default {
       }, 0);
 
       // 0:null >0:false ===length:true
-      // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
       tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
       tgt.syncdone =
         ret.length === syncedsum ? true : syncedsum > 0 ? false : null;
@@ -3980,31 +3959,29 @@ export default {
     },
     workdateValication() {
       //日付またぐとリロードする
-      if (
-        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
-        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
-        this.sett.env.isTestMode === false
-      ) {
-        this.reloadApp("workdateValication");
-      }
-      // else {
-      //なんで日付設定するの？強制リロードまではInitializeだけでいいのでは
-      // this.setcurrentAcDate();
+      // if (
+      //   // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
+      //   this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
+      //   this.sett.env.isTestMode === false
+      // ) {
+      //   this.reloadApp("workdateValication");
+      // } else {
+      this.setcurrentAcDate();
       // }
     },
-    // reloadIfUndefinedName() {
-    //   // undefinedなら再読み込み
-    //   if (this.authdetail.name === undefined) {
-    //     this.reloadApp("reloadIfUndefinedName");
-    //   }
-    // },
+    reloadIfUndefinedName() {
+      // undefinedなら再読み込み
+      if (this.authdetail.name === undefined) {
+        this.reloadApp("reloadIfUndefinedName");
+      }
+    },
     reloadApp(str) {
       this.writeFail(
         str,
         this.dayACjsdddMMMD, //this.sett.today,
         this.$dayjs().format("YYYY/MM/DD")
       );
-      this.$router.go();
+      // this.$router.go();
     },
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
@@ -4495,20 +4472,6 @@ export default {
       //当日更新なら時刻、違えば日付
       // getThisWeekDateJSON[dow]
       // return false;
-      if (
-        attn !== null &&
-        this.$dayjs(lastChan).format("H:mm") !== "Invalid Date"
-      ) {
-        // console.warn(
-        //   "getIf " +
-        //     dow +
-        //     " " +
-        //     this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
-        //     "<=" +
-        //     this.$dayjs(lastChan).format("MMDD H:mm")
-        // );
-      }
-
       return attn === null
         ? false
         : this.$dayjs(lastChan).format("H:mm") == "Invalid Date"
@@ -4846,9 +4809,9 @@ export default {
 
   async created() {
     ///DataStore
-    // DataStore.observe(Clrm).subscribe(() => {
-    //   this.fetchClrms();
-    // });
+    DataStore.observe(Clrm).subscribe(() => {
+      this.fetchClrms();
+    });
     await this.fetchClrms();
     await this.fetchInsts(); //今のところ全件とる
 
@@ -4971,7 +4934,7 @@ export default {
         // this.getCurrentTime();
         // this.reloadIfUndefinedName();
       }.bind(this),
-      1 * 1000 * 60
+      1 * 1000 * 10
     );
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);

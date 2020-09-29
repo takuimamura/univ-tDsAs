@@ -4499,14 +4499,14 @@ export default {
         attn !== null &&
         this.$dayjs(lastChan).format("H:mm") !== "Invalid Date"
       ) {
-        // console.warn(
-        //   "getIf " +
-        //     dow +
-        //     " " +
-        //     this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
-        //     "<=" +
-        //     this.$dayjs(lastChan).format("MMDD H:mm")
-        // );
+        console.warn(
+          "getIf " +
+            dow +
+            " " +
+            this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD") +
+            "<=" +
+            this.$dayjs(lastChan).format("MMDD")
+        );
       }
 
       return attn === null
