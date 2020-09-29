@@ -4323,7 +4323,7 @@ export default {
       //セット
       this.selCrlm = arr;
 
-      // 暫定 StagingでLoadingのままになる
+      // 暫定
       this.fetchClrms();
       // if (this.dataset.Clrms.length > 0 ? false : true)
       //デバイス側のデータを集計

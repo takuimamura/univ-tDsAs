@@ -4323,11 +4323,8 @@ export default {
       //セット
       this.selCrlm = arr;
 
-      // 暫定 StagingでLoadingのままになる
-      this.fetchClrms();
-      // if (this.dataset.Clrms.length > 0 ? false : true)
       //デバイス側のデータを集計
-      // this.sumClrmsChkDv();
+      this.sumClrmsChkDv();
 
       //表示
       this.isOpenselCrlm = true;
