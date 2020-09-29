@@ -425,7 +425,7 @@
               </b-collapse>
             </section>
             <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver {{app.version}}</div>
+              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
               <div class="column">
                 <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
               </div>
@@ -473,15 +473,12 @@
                 <div class="has-text-centered f40">Classes</div>
               </div>
               <!-- たぶん集計関連 -->
-              <div class="column f18 has-text-right" style="padding:40px 0px 0px 0px;">
+              <div class="column f18 has-text-right" style="padding:20px 0px 0px 0px;">
                 <!-- <b-field>
                   <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
                   <template v-if="cRoom.showClassesSum"></template>
                 </b-field>-->
-                <b-switch v-model="cRoom.showDummy">
-                  <span v-show="!cRoom.showDummy" style="color:#c5c5c5">Dummy</span>
-                  <span v-show="cRoom.showDummy" style="color:#a0e">Dummy</span>
-                </b-switch>
+                <b-switch v-model="cRoom.showDummy">Dummy</b-switch>
               </div>
             </section>
 
@@ -2160,8 +2157,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" },
-        version: 0.92
+        log: { nw: "", act: "" }
       },
       ds: {
         clrms: null,
@@ -4814,15 +4810,8 @@ export default {
     //   return this.dataset.Cldrs.filter(x => x.dayofweek === this.dayjsddd); //.map((m) => m.);
     // },
     yourClasses: function() {
-      return this.cRoom.showDummy
-        ? this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("X") !== -1
-          )
-        : this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("A") !== -1
-          );
+      const fname = this.sett.alias.name;
+      return this.dataset.allClasses.filter(x => x.instructor === fname);
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {

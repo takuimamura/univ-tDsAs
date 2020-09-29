@@ -425,7 +425,7 @@
               </b-collapse>
             </section>
             <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver {{app.version}}</div>
+              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
               <div class="column">
                 <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
               </div>
@@ -2160,8 +2160,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" },
-        version: 0.92
+        log: { nw: "", act: "" }
       },
       ds: {
         clrms: null,

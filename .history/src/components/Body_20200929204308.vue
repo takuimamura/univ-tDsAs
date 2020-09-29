@@ -40,10 +40,7 @@
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
         TESTarr0{{TESTarr0}}
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
-        <ul>
-          <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr2
+        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -425,7 +422,7 @@
               </b-collapse>
             </section>
             <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver {{app.version}}</div>
+              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
               <div class="column">
                 <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
               </div>
@@ -473,15 +470,11 @@
                 <div class="has-text-centered f40">Classes</div>
               </div>
               <!-- たぶん集計関連 -->
-              <div class="column f18 has-text-right" style="padding:40px 0px 0px 0px;">
+              <div class="column f18" style="padding:20px 0px 0px 0px;">
                 <!-- <b-field>
                   <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
                   <template v-if="cRoom.showClassesSum"></template>
                 </b-field>-->
-                <b-switch v-model="cRoom.showDummy">
-                  <span v-show="!cRoom.showDummy" style="color:#c5c5c5">Dummy</span>
-                  <span v-show="cRoom.showDummy" style="color:#a0e">Dummy</span>
-                </b-switch>
               </div>
             </section>
 
@@ -2160,8 +2153,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" },
-        version: 0.92
+        log: { nw: "", act: "" }
       },
       ds: {
         clrms: null,
@@ -2443,7 +2435,6 @@ export default {
         tabIndivitual: 0,
         showAttenNote: false,
         showAttenHist: 0, // 0 当日 1 履歴 2 非表示
-        showDummy: false, // false,
         showEval: false, // false,
         showEvalHist: true, // false,
         showEvalComp: 0, // Evaluationの画面切り替え
@@ -3226,18 +3217,9 @@ export default {
 
       // 0:null >0:false ===length:true
       // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
-      tgt.attndone =
-        ret.length === attnsum && ret.length !== 0
-          ? true
-          : attnsum > 0
-          ? false
-          : null;
+      tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
       tgt.syncdone =
-        ret.length === syncedsum && ret.length !== 0
-          ? true
-          : syncedsum > 0
-          ? false
-          : null;
+        ret.length === syncedsum ? true : syncedsum > 0 ? false : null;
       tgt.detail = ret.length + "," + syncedsum + "," + attnsum;
     },
 
@@ -4814,15 +4796,8 @@ export default {
     //   return this.dataset.Cldrs.filter(x => x.dayofweek === this.dayjsddd); //.map((m) => m.);
     // },
     yourClasses: function() {
-      return this.cRoom.showDummy
-        ? this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("X") !== -1
-          )
-        : this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("A") !== -1
-          );
+      const fname = this.sett.alias.name;
+      return this.dataset.allClasses.filter(x => x.instructor === fname);
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
@@ -4879,6 +4854,9 @@ export default {
 
   async created() {
     ///DataStore
+    // DataStore.observe(Clrm).subscribe(() => {
+    //   this.fetchClrms();
+    // });
     await this.fetchClrms();
     await this.fetchInsts(); //今のところ全件とる
 
@@ -4954,6 +4932,24 @@ export default {
           break;
       }
     });
+
+    // const dv1 = await DataStore.query(Clrm, c => c.dayofweek("eq", "Mon"));
+    // DataStore.observe(dv1).subscribe(ssb => {
+    //   this.ds.dev1 = ssb;
+    // });
+
+    // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb => {
+    //   this.ds.dev2 = sb;
+    // });
+
+    // // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb3 => {
+    // //   this.ds.dev3 = sb3;
+    // // });
+    // DataStore.observe(Clrm).subscribe(sb3 => {
+    //   this.ds.dev3 = sb3;
+    //   console.warn(sb3);
+    // });
+
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();

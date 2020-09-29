@@ -37,13 +37,9 @@
           <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
           <!-- <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button> -->
         </b-field>
-        <b-input v-model="sett.dummy"></b-input>
-        <!-- {{ sett.dummy }} -->
-        TESTarr0{{TESTarr0}}
-        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
-        <ul>
-          <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr2
+        <!-- <b-input v-model="sett.dummy"></b-input> -->
+        {{ sett.dummy }}
+        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -425,7 +421,7 @@
               </b-collapse>
             </section>
             <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver {{app.version}}</div>
+              <div class="column is-size-4 has-text-grey-light">Ver 0.91</div>
               <div class="column">
                 <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
               </div>
@@ -473,15 +469,11 @@
                 <div class="has-text-centered f40">Classes</div>
               </div>
               <!-- たぶん集計関連 -->
-              <div class="column f18 has-text-right" style="padding:40px 0px 0px 0px;">
+              <div class="column f18" style="padding:20px 0px 0px 0px;">
                 <!-- <b-field>
                   <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
                   <template v-if="cRoom.showClassesSum"></template>
                 </b-field>-->
-                <b-switch v-model="cRoom.showDummy">
-                  <span v-show="!cRoom.showDummy" style="color:#c5c5c5">Dummy</span>
-                  <span v-show="cRoom.showDummy" style="color:#a0e">Dummy</span>
-                </b-switch>
               </div>
             </section>
 
@@ -712,17 +704,15 @@
               <table class="table f23">
                 <thead>
                   <tr>
-                    <!-- <tr style="vertical-align:bottom"> -->
                     <!-- <th colspan="2" class="is-size-6 has-text-grey has-text-light">updates</th> -->
-                    <th v-if="sett.devcheck"></th>
-                    <th style="vertical-align:bottom">Code</th>
                     <th></th>
                     <!-- <th class="is-size-7 has-text-light">new</th> -->
+                    <th v-if="sett.devcheck"></th>
                     <!-- <th></th> -->
-                    <th style="vertical-align:bottom">Day</th>
-                    <th style="vertical-align:bottom">Slot</th>
-                    <th style="vertical-align:bottom" v-show="!cRoom.showClassesSum">Time</th>
-                    <th style="vertical-align:bottom" v-show="!cRoom.showClassesSum">Room</th>
+                    <th>Day</th>
+                    <th>Slot</th>
+                    <th v-show="!cRoom.showClassesSum">Time</th>
+                    <th v-show="!cRoom.showClassesSum">Room</th>
                     <!-- <th v-show="cRoom.showClassesSum">
                       <b-icon icon="user" size="is-small"></b-icon>
                     </th>
@@ -744,15 +734,16 @@
                     >
                       <span class="f18">{{ l.cap }}</span>
                     </th>-->
-                    <th style="vertical-align:bottom">Title</th>
-                    <th style="vertical-align:bottom">
-                      <span style="font-size:20px">Lesson</span>
+                    <th>
+                      <!--Consistency check-->
                     </th>
-                    <th style="vertical-align:bottom">
-                      <span style="font-size:18px;">
-                        <span style="color:rgb(203, 134, 212)">Sync</span> /
-                        <span style="color:#eb546d">Attendance</span>
-                      </span>
+                    <th></th>
+                    <th>
+                      <span class="is-text-6">Lesson</span>
+                    </th>
+                    <th>
+                      <span style="color:$syncdone">Sync</span> /
+                      <span style="color:is-attndone">Attendance</span>
                     </th>
                   </tr>
                 </thead>
@@ -2160,8 +2151,7 @@ export default {
         ready: false,
         network: false,
         syncing: false,
-        log: { nw: "", act: "" },
-        version: 0.92
+        log: { nw: "", act: "" }
       },
       ds: {
         clrms: null,
@@ -2443,7 +2433,6 @@ export default {
         tabIndivitual: 0,
         showAttenNote: false,
         showAttenHist: 0, // 0 当日 1 履歴 2 非表示
-        showDummy: false, // false,
         showEval: false, // false,
         showEvalHist: true, // false,
         showEvalComp: 0, // Evaluationの画面切り替え
@@ -3226,18 +3215,9 @@ export default {
 
       // 0:null >0:false ===length:true
       // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
-      tgt.attndone =
-        ret.length === attnsum && ret.length !== 0
-          ? true
-          : attnsum > 0
-          ? false
-          : null;
+      tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
       tgt.syncdone =
-        ret.length === syncedsum && ret.length !== 0
-          ? true
-          : syncedsum > 0
-          ? false
-          : null;
+        ret.length === syncedsum ? true : syncedsum > 0 ? false : null;
       tgt.detail = ret.length + "," + syncedsum + "," + attnsum;
     },
 
@@ -4567,16 +4547,22 @@ export default {
   },
   computed: {
     TESTarr0() {
-      if (this.dataset.Clrms.length > 0) {
-        return this.dataset.Clrms.find(itm => itm.id === this.sett.dummy);
-        // const tgt = this.dataset.ClrmsInstByday.find(itm => item.id === this.sett.dummy)
-
-        // this.sett.dummy1 = tgt
+      if (this.ds.clrms) {
+        return this.ds.clrms
+          .filter(x => x.classcode === "X0063")
+          .map(m => {
+            return {
+              c: m.classcode,
+              s: m.studentcode,
+              n: m.studentname,
+              e: m.eval01,
+              up: m._lastChangedAt
+            };
+          });
       } else {
         return null;
       }
     },
-
     TESTarr1() {
       if (this.dataset.Clrms) {
         return this.dataset.Clrms.filter(x => x.classcode === "X0063").map(
@@ -4814,15 +4800,8 @@ export default {
     //   return this.dataset.Cldrs.filter(x => x.dayofweek === this.dayjsddd); //.map((m) => m.);
     // },
     yourClasses: function() {
-      return this.cRoom.showDummy
-        ? this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("X") !== -1
-          )
-        : this.dataset.allClasses.filter(
-            x =>
-              x.instructor === this.sett.alias.name && x.id.indexOf("A") !== -1
-          );
+      const fname = this.sett.alias.name;
+      return this.dataset.allClasses.filter(x => x.instructor === fname);
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ifYouClockIn: function() {
@@ -4879,6 +4858,9 @@ export default {
 
   async created() {
     ///DataStore
+    // DataStore.observe(Clrm).subscribe(() => {
+    //   this.fetchClrms();
+    // });
     await this.fetchClrms();
     await this.fetchInsts(); //今のところ全件とる
 
@@ -4954,6 +4936,24 @@ export default {
           break;
       }
     });
+
+    // const dv1 = await DataStore.query(Clrm, c => c.dayofweek("eq", "Mon"));
+    // DataStore.observe(dv1).subscribe(ssb => {
+    //   this.ds.dev1 = ssb;
+    // });
+
+    // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb => {
+    //   this.ds.dev2 = sb;
+    // });
+
+    // // DataStore.query(Clrm, c => c.dayofweek("eq", "Mon")).subscribe(sb3 => {
+    // //   this.ds.dev3 = sb3;
+    // // });
+    // DataStore.observe(Clrm).subscribe(sb3 => {
+    //   this.ds.dev3 = sb3;
+    //   console.warn(sb3);
+    // });
+
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
