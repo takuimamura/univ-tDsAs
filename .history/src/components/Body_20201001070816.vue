@@ -4186,7 +4186,7 @@ export default {
                 clockoutdetail: ""
               })
             };
-            DataStore.save(new Misc(crr));
+            DataStore.save(new Misc(cr));
 
             this.createInst({
               uid: this.authdetail.username,
@@ -4234,7 +4234,7 @@ export default {
             const cinRecord = this.instructor.yourattendances.find(
               x => x.date === dt
             );
-            // console.warn(cinRecord);
+            console.warn(cinRecord);
             this.updateInstClockout(cinRecord.id, cout); // AppSyncを更新
 
             const cr = {

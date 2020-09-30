@@ -4165,28 +4165,28 @@ export default {
                 name: this.authdetail.name,
                 date: dt,
                 clockin: cin,
-                clockout: "",
-                clockincorrect: "",
-                clockoutcorrect: "",
-                clockoutdetail: ""
+                clockout: '',
+                clockincorrect: '',
+                clockoutcorrect: '',
+                clockoutdetail: '',
               })
             };
             DataStore.save(new Misc(cr));
             const crr = {
               type: "ClockInOut",
-              name: dt + "-" + this.authdetail.username,
+              name: dt + '-' + this.authdetail.username,
               detail: JSON.stringify({
                 uid: this.authdetail.username,
                 name: this.authdetail.name,
                 date: dt,
                 clockin: cin,
-                clockout: "",
-                clockincorrect: "",
-                clockoutcorrect: "",
-                clockoutdetail: ""
+                clockout: '',
+                clockincorrect: '',
+                clockoutcorrect: '',
+                clockoutdetail: '',
               })
             };
-            DataStore.save(new Misc(crr));
+            DataStore.save(new Misc(cr));
 
             this.createInst({
               uid: this.authdetail.username,
@@ -4234,7 +4234,7 @@ export default {
             const cinRecord = this.instructor.yourattendances.find(
               x => x.date === dt
             );
-            // console.warn(cinRecord);
+            console.warn(cinRecord);
             this.updateInstClockout(cinRecord.id, cout); // AppSyncを更新
 
             const cr = {
@@ -4246,25 +4246,32 @@ export default {
                 date: dt,
                 clockin: cinRecord.clockin,
                 clockout: cout,
-                clockincorrect: "",
-                clockoutcorrect: "",
-                clockoutdetail: ""
+                clockincorrect: '',
+                clockoutcorrect: '',
+                clockoutdetail: '',
               })
             };
             DataStore.save(new Misc(cr));
 
             const crr = JSON.stringify({
-              uid: this.authdetail.username,
-              name: this.authdetail.name,
-              date: dt,
-              clockin: cinRecord.clockin,
-              clockout: cout,
-              clockincorrect: "",
-              clockoutcorrect: "",
-              clockoutdetail: ""
-            });
+                uid: this.authdetail.username,
+                name: this.authdetail.name,
+                date: dt,
+                clockin: cinRecord.clockin,
+                clockout: cout,
+                clockincorrect: '',
+                clockoutcorrect: '',
+                clockoutdetail: '',
+              });
+            DataStore.save(new Misc(cr));
+        const original = await DataStore.query(Misc, c =>
+          c.type("eq", "ClockInOut").name("eq", dt + '-' + this.authdetail.username)
+        );
+        await DataStore.save(
+          Clrm.copyOf(original, updated => {
+            updated.detail = crr;
+          })
 
-            this.clockoutUpdateMisc(dt, crr);
           }
           // this.instructor.yourattendances.push(arr); // ローカルを更新
 
@@ -4287,18 +4294,7 @@ export default {
         }
       });
     },
-    async clockoutUpdateMisc(dt, crr) {
-      const original = await DataStore.query(Misc, c =>
-        c
-          .type("eq", "ClockInOut")
-          .name("eq", dt + "-" + this.authdetail.username)
-      );
-      await DataStore.save(
-        Clrm.copyOf(original, updated => {
-          updated.detail = crr;
-        })
-      );
-    },
+
     //////////クラスルーム
     //////////クラスルーム
     attnModeChangeConfirm() {
