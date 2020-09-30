@@ -2205,7 +2205,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.01"
+        version: "1.0"
       },
       ds: {
         clrms: null,
@@ -4207,25 +4207,15 @@ export default {
             const clockout = this.$dayjs(this.sett.ddate).format("HH:mm");
             this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
           } else {
-            const dt = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
-            const cout = this.$dayjs().format("HH:mm"); //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            const datestr = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
+            const clockout = this.$dayjs().format("HH:mm");
 
-            const cinRecord = this.instructor.yourattendances.find(
-              x => x.date === dt
+            const id = this.instructor.yourattendances.find(
+              x => x.date === datestr
             );
-            console.warn(cinRecord);
-            this.updateInstClockout(cinRecord.id, cout); // AppSyncを更新
+            // console.warn("instCO" + id);
 
-            const cr = {
-              type: "ClockOut",
-              name: dt,
-              detail: JSON.stringify({
-                name: this.authdetail.username,
-                clockIn: cinRecord.clockin,
-                clockOut: cout
-              })
-            };
-            DataStore.save(new Misc(cr));
+            this.updateInstClockout(id, clockout); // AppSyncを更新
           }
           // this.instructor.yourattendances.push(arr); // ローカルを更新
 
