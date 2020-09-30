@@ -757,7 +757,7 @@
                   </tr>
                 </thead>
                 <tbody class="cPointer">
-                  <tr v-for="yitem in yourClassesShow" :key="yitem.id">
+                  <tr v-for="yitem in yourClasses" :key="yitem.id">
                     <td v-if="sett.devcheck">
                       {{ yitem.detail }}|
                       <!-- {{ getTimeIfTodayOrDate(yitem.newest) }} -->
@@ -2161,7 +2161,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: 0.93
+        version: 0.92
       },
       ds: {
         clrms: null,
@@ -3456,7 +3456,7 @@ export default {
 
     //     try {
     //       //        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-    //       // .warn("xx:updateClrmAll");
+    //       // console.warn("xx:updateClrmAll");
     //       //$$$$$       await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
     //       this.hideComEv();
     //       return true;
@@ -3617,7 +3617,7 @@ export default {
     },
 
     updateClrmEvalsIndi(row, fname, fval) {
-      // .table(row, fname, fval);
+      // console.table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {
@@ -3945,14 +3945,6 @@ export default {
       this.workdateValication();
     },
     periodicValidation() {
-      // console.warn(
-      //   "periodical" +
-      //     this.sett.activeTab +
-      //     " " +
-      //     this.isEnteredselCrlm +
-      //     " " +
-      //     this.isOpenselCrlm
-      // );
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
@@ -4824,11 +4816,6 @@ export default {
     //   return this.dataset.Cldrs.filter(x => x.dayofweek === this.dayjsddd); //.map((m) => m.);
     // },
     yourClasses: function() {
-      return this.dataset.allClasses.filter(
-        x => x.instructor === this.sett.alias.name
-      );
-    },
-    yourClassesShow: function() {
       return this.cRoom.showDummy
         ? this.dataset.allClasses.filter(
             x =>
@@ -4957,12 +4944,12 @@ export default {
 
         case "outboxStatus": // 変更ごとに出る
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          //  .log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
+          // console.log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
           // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "ready":
-          // .log(ctime + " HUBlog ready");
+          // console.log(ctime + " HUBlog ready");
           this.app.ready = true;
           this.app.log.nw += ctime + event + "\n";
           this.applogSave();
@@ -4977,7 +4964,6 @@ export default {
     this.manageClrms();
 
     // JSONからのallClassesを整える
-
     await this.initallClasses();
     // this.getInstsData(this.authdetail.username);
     // this.getMiscsData("classmanagement", this.authdetail.name);

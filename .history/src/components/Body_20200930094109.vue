@@ -2161,7 +2161,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: 0.93
+        version: 0.92
       },
       ds: {
         clrms: null,
@@ -3353,6 +3353,7 @@ export default {
         m.lssnthisweek = this.getThisWeekLssnJSON[m.dayofweek];
         m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
         // クラスのタイムスタンプを反映
+        console.warn(m.id, m.dayofweek);
         this.reflectClassSummary(m.id, m.dayofweek);
         this.yourClasses.splice();
       });
@@ -3456,7 +3457,7 @@ export default {
 
     //     try {
     //       //        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-    //       // .warn("xx:updateClrmAll");
+    //       // console.warn("xx:updateClrmAll");
     //       //$$$$$       await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
     //       this.hideComEv();
     //       return true;
@@ -3617,7 +3618,7 @@ export default {
     },
 
     updateClrmEvalsIndi(row, fname, fval) {
-      // .table(row, fname, fval);
+      // console.table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
       this.cRoom.showComEv[fname] = !this.cRoom.showComEv[fname];
       if (!this.cRoom.showComEv[fname]) {
@@ -3945,14 +3946,7 @@ export default {
       this.workdateValication();
     },
     periodicValidation() {
-      // console.warn(
-      //   "periodical" +
-      //     this.sett.activeTab +
-      //     " " +
-      //     this.isEnteredselCrlm +
-      //     " " +
-      //     this.isOpenselCrlm
-      // );
+      console.warn("periodical" + this.sett.activeTab);
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
@@ -3972,6 +3966,7 @@ export default {
           }
         } else {
           // 全クラス
+          console.warn("call init");
           this.initallClasses();
         }
 
@@ -4957,12 +4952,12 @@ export default {
 
         case "outboxStatus": // 変更ごとに出る
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
-          //  .log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
+          // console.log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
           // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "ready":
-          // .log(ctime + " HUBlog ready");
+          // console.log(ctime + " HUBlog ready");
           this.app.ready = true;
           this.app.log.nw += ctime + event + "\n";
           this.applogSave();
@@ -4977,6 +4972,7 @@ export default {
     this.manageClrms();
 
     // JSONからのallClassesを整える
+    console.warn("call init initial");
 
     await this.initallClasses();
     // this.getInstsData(this.authdetail.username);
