@@ -481,7 +481,7 @@
               </b-collapse>
             </section>
             <div class="columns">
-              <div class="column is-size-4 has-text-grey-light">Ver. {{ app.version }}</div>
+              <div class="column is-size-4 has-text-grey-light">Ver {{ app.version }}</div>
               <div class="column">
                 <amplify-sign-out class="is-pulled-right"></amplify-sign-out>
               </div>
