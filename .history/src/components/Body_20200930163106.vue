@@ -38,9 +38,7 @@
         </b-field>
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
-        <b-button @click="fetchInsts">fetchInsts</b-button>
-
-        TESTarr0{{ TESTarr0 }} | instructor.yourattendances {{ instructor.yourattendances }}
+        TESTarr0{{ TESTarr0 }}
         <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
         <ul>
           <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
@@ -4129,20 +4127,15 @@ export default {
       await DataStore.save(new Inst(add));
       this.fetchInsts();
     },
-    async updateInstClockout(uid, datestr, cOut) {
-      const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
-      );
-      console.warn(cInItem);
-      const instItem = await DataStore.query(Inst, cInItem.id);
-      //  (c) => c.uid("eq", uid).date("eq", datestr));
+    async updateInstClockout(uid, datestr, clockout) {
+      const instItem = await DataStore.query(Inst, (c) => c.uid("eq", uid).date("eq", datestr));
       if (!instItem) {
         return;
       }
-      console.warn(instItem);
+
       await DataStore.save(
         Inst.copyOf(instItem, (updated) => {
-          updated.clockout = cOut;
+          updated.clockout = clockout;
         })
       );
       this.fetchInsts();
@@ -4939,6 +4932,8 @@ export default {
 
   async created() {
     ///DataStore
+    await this.fetchClrms();
+    await this.fetchInsts(); //今のところ全件とる
 
     await Auth.currentAuthenticatedUser()
       .then((user) => {
@@ -4956,8 +4951,6 @@ export default {
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    await this.fetchClrms();
-    await this.fetchInsts(); //今のところ全件とる
     Hub.listen("datastore", async (hubData) => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {

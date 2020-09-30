@@ -38,9 +38,7 @@
         </b-field>
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
-        <b-button @click="fetchInsts">fetchInsts</b-button>
-
-        TESTarr0{{ TESTarr0 }} | instructor.yourattendances {{ instructor.yourattendances }}
+        TESTarr0{{ TESTarr0 }}
         <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
         <ul>
           <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
@@ -422,20 +420,21 @@
                   <p class="subtitle">Your record</p>
                   <div class="content">
                     <b-field>
-                      <b-radio-button
+                      <!-- <b-radio-button
                         v-for="(m, index) in monthChainUntilCurrentMonthJSON"
                         :key="index"
                         :native-value="m"
                         v-model="instructor.yourattendvisiblemonth"
-                        >{{ m }}</b-radio-button
-                      >
+                      >{{m}}</b-radio-button>-->
                     </b-field>
-                    <b-table :data="yourattendancesMonth">
-                      <!-- <b-table :data="instructor.yourattendances"> -->
-                      <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">{{
-                          getDateMDddd(props.row.date)
-                        }}</b-table-column>
+                    <!-- <b-table :data="yourattendancesMonth"> -->
+                    <!-- <b-table :data="instructor.yourattendances"> -->
+                    <!-- <template slot-scope="props">
+                        <b-table-column
+                          field="date"
+                          label="Date"
+                          width="150"
+                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
 
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
@@ -446,11 +445,9 @@
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
 
-                        <b-table-column field="detail" label="Note">{{
-                          props.row.detail
-                        }}</b-table-column>
-                      </template>
-                    </b-table>
+                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
+                    </template>-->
+                    <!-- </b-table> -->
                   </div>
 
                   <div class="columns">
@@ -3116,27 +3113,10 @@ export default {
       // this.dataset.Clrms = [...this.ds.clrms];
     },
     async fetchInsts() {
-      // const insts = await DataStore.query(Inst, Predicates.ALL);
-      // this.dataset.Insts = [];
-
-      // this.dataset.Insts.push(...insts);
-      // this.instructor.attendances.push(...insts);
-      // },
-      // // async listInstsData() {
-      //   //初期だけ実施してるのかな
-      //   warn("xx:listInstsData");
-      //   this.instructor.attendances.push(
-      //     ...this.instructor.attendances,
-      //     ...InstsData.data.listInsts.items
-      //   );
       //自分の勤怠
-      this.instructor.yourattendances = await DataStore.query(Inst, (c) =>
-        c.uid("eq", this.authdetail.username)
+      this.instructor.attendances = await DataStore.query(Inst, (c) =>
+        c.id("eq", this.authdetail.username)
       );
-      // const instsNew = await DataStore.query(Inst, (c) => c.uid("eq", this.authdetail.username));
-      //自分の勤怠
-      // this.instructor.yourattendances = instsNew.filter((x) => x.uid === this.authdetail.username);
-      // this.instructor.yourattendances = instsNew.filter((x) => x.uid === this.authdetail.username);
     },
     async fetchMiscs() {
       this.dataset.Miscs = [];
@@ -4103,7 +4083,7 @@ export default {
       this.instructor.yourattendvisiblemonth = this.$dayjs(this.sett.acdate).format("YYYY-MM");
 
       //manage用
-      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
+      this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
 
     //////////サマリー
@@ -4126,26 +4106,13 @@ export default {
     //////////講師 勤怠
     //////////講師 勤怠
     async createInst(add) {
-      await DataStore.save(new Inst(add));
-      this.fetchInsts();
-    },
-    async updateInstClockout(uid, datestr, cOut) {
-      const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
-      );
-      console.warn(cInItem);
-      const instItem = await DataStore.query(Inst, cInItem.id);
-      //  (c) => c.uid("eq", uid).date("eq", datestr));
-      if (!instItem) {
-        return;
-      }
-      console.warn(instItem);
       await DataStore.save(
-        Inst.copyOf(instItem, (updated) => {
-          updated.clockout = cOut;
+        new Clrm({
+          add,
         })
       );
-      this.fetchInsts();
+
+      await this.fetchInsts();
     },
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
@@ -4182,12 +4149,10 @@ export default {
         message: "Clock Out?",
         size: "is-large",
         onConfirm: () => {
-          // const arr = this.instructor.yourattendances.pop();
-          const uid = this.authdetail.username;
-          const datestr = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
-          const clockout = this.$dayjs().format("HH:mm");
-          // this.instructor.yourattendances.push(arr); // ローカルを更新
-          this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
+          const arr = this.instructor.yourattendances.pop();
+          arr.clockout = this.$dayjs().format("HH:mm");
+          this.instructor.yourattendances.push(arr); // ローカルを更新
+          this.updateInst(arr); // AppSyncを更新
 
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
@@ -4907,18 +4872,18 @@ export default {
         (x) => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
       );
     },
-    // allattendancesMonth: function() {
-    //   let filtered;
-    //   filtered = this.instructor.attendances.filter(
-    //     (x) => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
-    //   );
+    allattendancesMonth: function() {
+      let filtered;
+      filtered = this.instructor.attendances.filter(
+        (x) => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
+      );
 
-    //   if (this.manage.instinstname !== "all") {
-    //     filtered = filtered.filter((x) => x.id === this.manage.instinstname);
-    //   }
+      if (this.manage.instinstname !== "all") {
+        filtered = filtered.filter((x) => x.id === this.manage.instinstname);
+      }
 
-    //   return filtered;
-    // },
+      return filtered;
+    },
     computedBlank: function() {
       // データ current が -1 ならすべて
       // それ以外なら current と state が一致するものだけに絞り込む
@@ -4938,7 +4903,10 @@ export default {
   },
 
   async created() {
+    console.warn("created");
     ///DataStore
+    await this.fetchClrms();
+    await this.fetchInsts(); //今のところ全件とる
 
     await Auth.currentAuthenticatedUser()
       .then((user) => {
@@ -4956,8 +4924,6 @@ export default {
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    await this.fetchClrms();
-    await this.fetchInsts(); //今のところ全件とる
     Hub.listen("datastore", async (hubData) => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
@@ -5038,6 +5004,7 @@ export default {
     this.manageSummary();
   },
   async mounted() {
+    console.warn("mounted");
     setInterval(
       function() {
         this.workdateValication();

@@ -4130,12 +4130,7 @@ export default {
       this.fetchInsts();
     },
     async updateInstClockout(uid, datestr, cOut) {
-      const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
-      );
-      console.warn(cInItem);
-      const instItem = await DataStore.query(Inst, cInItem.id);
-      //  (c) => c.uid("eq", uid).date("eq", datestr));
+      const instItem = await DataStore.query(Inst, (c) => c.uid("eq", uid).date("eq", datestr));
       if (!instItem) {
         return;
       }
@@ -4939,6 +4934,8 @@ export default {
 
   async created() {
     ///DataStore
+    await this.fetchClrms();
+    await this.fetchInsts(); //今のところ全件とる
 
     await Auth.currentAuthenticatedUser()
       .then((user) => {
@@ -4956,8 +4953,6 @@ export default {
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    await this.fetchClrms();
-    await this.fetchInsts(); //今のところ全件とる
     Hub.listen("datastore", async (hubData) => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {

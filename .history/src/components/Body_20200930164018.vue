@@ -4130,12 +4130,7 @@ export default {
       this.fetchInsts();
     },
     async updateInstClockout(uid, datestr, cOut) {
-      const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
-      );
-      console.warn(cInItem);
-      const instItem = await DataStore.query(Inst, cInItem.id);
-      //  (c) => c.uid("eq", uid).date("eq", datestr));
+      const instItem = await DataStore.query(Inst, (c) => c.uid("eq", uid).date("eq", datestr));
       if (!instItem) {
         return;
       }
