@@ -4107,13 +4107,13 @@ export default {
       const cInItem = this.instructor.yourattendances.find(
         (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
       );
-
+      console.warn(cInItem);
       const instItem = await DataStore.query(Inst, cInItem.id);
       //  (c) => c.uid("eq", uid).date("eq", datestr));
       if (!instItem) {
         return;
       }
-
+      console.warn(instItem);
       await DataStore.save(
         Inst.copyOf(instItem, (updated) => {
           updated.clockout = cOut;
@@ -4951,7 +4951,7 @@ export default {
           this.app.log.nw += ctime + event + ": " + data.active + "\n";
           break;
         case "syncQueriesReady":
-          // .log(ctime + "HUBlog syncQueriesReady");
+          // console.log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
           this.app.log.nw += ctime + event + ": " + true + "\n";
 
@@ -4970,7 +4970,7 @@ export default {
         //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
         //   break;
         case "modelSynced":
-          // .log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
+          // console.log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
           this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
 
