@@ -1484,13 +1484,13 @@
 
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
-                            <!-- <b-switch
+                            <b-switch
                               size="is-medium"
                               v-model="cRoom.showAttnEval"
                               v-show="cRoom.showEvalComp === 2"
                             >
                               <div style="margin-right:20px;">Attendance</div>
-                            </b-switch>-->
+                            </b-switch>
                             <!-- 期末対応 -->
 
                             <b-tag
@@ -2211,7 +2211,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: 1.0
+        version: 0.94
       },
       ds: {
         clrms: null,
