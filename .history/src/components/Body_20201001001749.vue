@@ -4192,8 +4192,9 @@ export default {
             const datestr = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
             const clockout = this.$dayjs().format("HH:mm");
 
-            const id = this.instructor.yourattendances.find((x) => x.date === datestr);
-            console.warn("instCO" + id);
+      const id = this.instructor.yourattendances.find(
+        (x) => x.date === datestr      );
+console.warn('instCO'+id;)
 
             this.updateInstClockout(id, clockout); // AppSyncを更新
           }

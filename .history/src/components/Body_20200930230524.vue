@@ -4110,9 +4110,9 @@ export default {
       await DataStore.save(new Inst(add));
       this.fetchInsts();
     },
-    async updateInstClockout(id, cOut) {
+    async updateInstClockout(uid, datestr, cOut) {
       const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date === this.$dayjs().format("YYYY-MM-DD")
+        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
       );
 
       const instItem = await DataStore.query(Inst, cInItem.id);
@@ -4191,11 +4191,7 @@ export default {
           } else {
             const datestr = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
             const clockout = this.$dayjs().format("HH:mm");
-
-            const id = this.instructor.yourattendances.find((x) => x.date === datestr);
-            console.warn("instCO" + id);
-
-            this.updateInstClockout(id, clockout); // AppSyncを更新
+            this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
           }
           // this.instructor.yourattendances.push(arr); // ローカルを更新
 

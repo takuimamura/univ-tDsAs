@@ -110,9 +110,6 @@
           "
           >reflect day change</b-button
         >
-        <b-button @click="instClockOut()">instClockOut()</b-button>
-        <b-button @click="instClockIn()">instClockIn</b-button>
-
         <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
         <!-- sett.alias:: {{ sett.alias }} -->
         <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
@@ -4110,9 +4107,9 @@ export default {
       await DataStore.save(new Inst(add));
       this.fetchInsts();
     },
-    async updateInstClockout(id, cOut) {
+    async updateInstClockout(uid, datestr, cOut) {
       const cInItem = this.instructor.yourattendances.find(
-        (c) => c.date === this.$dayjs().format("YYYY-MM-DD")
+        (c) => c.date == this.$dayjs().format("YYYY-MM-DD")
       );
 
       const instItem = await DataStore.query(Inst, cInItem.id);
@@ -4158,7 +4155,7 @@ export default {
             });
           }
 
-          // this.createInst(add);
+          this.createInst(add);
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
 
           // this.instructor.yourhistory.push(add);
@@ -4187,17 +4184,12 @@ export default {
             //開発モード
             const datestr = this.$dayjs(this.sett.ddate).format("YYYY-MM-DD"); //.format("M/D ddd"),
             const clockout = this.$dayjs(this.sett.ddate).format("HH:mm");
-            this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
           } else {
             const datestr = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
             const clockout = this.$dayjs().format("HH:mm");
-
-            const id = this.instructor.yourattendances.find((x) => x.date === datestr);
-            console.warn("instCO" + id);
-
-            this.updateInstClockout(id, clockout); // AppSyncを更新
           }
           // this.instructor.yourattendances.push(arr); // ローカルを更新
+          this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
 
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
