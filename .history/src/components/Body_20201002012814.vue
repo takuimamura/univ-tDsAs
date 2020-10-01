@@ -2391,7 +2391,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.03",
+        version: "1.02",
       },
       ds: {
         clrms: null,
