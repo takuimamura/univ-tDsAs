@@ -645,10 +645,10 @@
                                 <b-icon
                                   pack="fas"
                                   icon="times-circle"
-                                  size="is-large"
+                                  size="is-medium"
                                   type="is-danger"
                                 />
-                                <span class="is-text-2 has-text-weight-bold">
+                                <span class="is-text-2 has-text-weight-bold is-danger">
                                   Sync Failed. Please try again.</span
                                 >
                               </template>

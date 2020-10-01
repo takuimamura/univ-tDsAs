@@ -637,20 +637,15 @@
                                   icon="check-circle"
                                   size="is-large"
                                   type="is-success"
-                                /><span class="is-text-2 has-text-weight-bold is-syncdone">
-                                  Sync Success</span
-                                >
+                                />Sync Success
                               </template>
                               <template v-else>
                                 <b-icon
                                   pack="fas"
                                   icon="times-circle"
-                                  size="is-large"
+                                  size="is-medium"
                                   type="is-danger"
-                                />
-                                <span class="is-text-2 has-text-weight-bold">
-                                  Sync Failed. Please try again.</span
-                                >
+                                />Sync Failed. Please try again.
                               </template>
                             </template>
                           </template>
@@ -3267,8 +3262,7 @@ export default {
       }
       // 結果表示
       // this.ClrmAppSyncStateShow = true;
-      this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-      setTimeout(this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek), 3000);
+      setTimeout(this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek), 4000);
     },
     async updateClrmAll(rw) {
       // 出欠と宿題は該当週のみ、評価はすべて

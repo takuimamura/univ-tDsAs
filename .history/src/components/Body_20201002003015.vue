@@ -637,20 +637,18 @@
                                   icon="check-circle"
                                   size="is-large"
                                   type="is-success"
-                                /><span class="is-text-2 has-text-weight-bold is-syncdone">
-                                  Sync Success</span
-                                >
+                                /><span class="is-text-4 has-text-weight-bold">
+                                  Sync Success</span>
                               </template>
                               <template v-else>
                                 <b-icon
                                   pack="fas"
                                   icon="times-circle"
-                                  size="is-large"
+                                  size="is-medium"
                                   type="is-danger"
                                 />
-                                <span class="is-text-2 has-text-weight-bold">
-                                  Sync Failed. Please try again.</span
-                                >
+                                <span class="is-text-4 has-text-weight-bold is-danger">
+                                  Sync Failed. Please try again.</span>
                               </template>
                             </template>
                           </template>

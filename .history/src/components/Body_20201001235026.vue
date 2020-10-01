@@ -581,7 +581,6 @@
                     </p>
 
                     <div class="columns is-gapless">
-                      <!-- <div class="column"></div> -->
                       <div class="column">
                         <!-- Sync status -->
                         <template v-if="selCrlm.syncdone">
@@ -615,65 +614,61 @@
                         <template v-else-if="selCrlm.attndone === false"></template>
                         <template v-else></template>
                       </div>
-                      <div class="column">
-                        <!-- 手動アップロード -->
-
-                        <template v-if="isClrmNeedAppSync">
-                          <template v-if="!isClrmAppSyncUploading">
-                            <b-button
-                              pack="fas"
-                              icon-left="sync-alt"
-                              size="is-large"
-                              @click="manageupdateClrmAll"
-                              >Force Sync</b-button
-                            >
-                            <template
-                              v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
-                            >
-                              <!-- <template v-if="ClrmAppSyncStateShow"> -->
-                              <template v-if="ClrmAppSyncState">
-                                <b-icon
-                                  pack="fas"
-                                  icon="check-circle"
-                                  size="is-large"
-                                  type="is-success"
-                                /><span class="is-text-2 has-text-weight-bold is-syncdone">
-                                  Sync Success</span
-                                >
-                              </template>
-                              <template v-else>
-                                <b-icon
-                                  pack="fas"
-                                  icon="times-circle"
-                                  size="is-large"
-                                  type="is-danger"
-                                />
-                                <span class="is-text-2 has-text-weight-bold">
-                                  Sync Failed. Please try again.</span
-                                >
-                              </template>
-                            </template>
-                          </template>
-                          <template v-else>
-                            <span class="subtitle is-3 has-text-black">(Uploading...)</span>
-                            <b-loading
-                              :is-full-page="false"
-                              :active.sync="isClrmAppSyncUploading"
-                              :can-cancel="false"
-                            >
-                              <b-icon
-                                pack="fas"
-                                icon="sync-alt"
-                                size="is-large"
-                                custom-class="fa-spin"
-                              ></b-icon>
-                            </b-loading>
-                          </template>
-                        </template>
-                      </div>
                     </div>
 
-                    <div></div>
+                    <div>
+                      <!-- 手動アップロード -->
+                      <template v-if="isClrmNeedAppSync">
+                        <template v-if="!isClrmAppSyncUploading">
+                          <b-button
+                            pack="fas"
+                            icon-left="sync-alt"
+                            size="is-large"
+                            @click="manageupdateClrmAll"
+                            >Force Sync</b-button
+                          >
+                          <template
+                            v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
+                          >
+                            <!-- <template v-if="ClrmAppSyncStateShow"> -->
+
+                            ClrmAppSyncBegin : {{ ClrmAppSyncBegin }} | ClrmAppSyncEnd
+                            {{ ClrmAppSyncEnd }}
+                            <template v-if="ClrmAppSyncState">
+                              <b-icon
+                                pack="fas"
+                                icon="check-circle"
+                                size="is-large"
+                                type="is-success"
+                              />Sync Success
+                            </template>
+                            <template v-else>
+                              <b-icon
+                                pack="fas"
+                                icon="times-circle"
+                                size="is-medium"
+                                type="is-danger"
+                              />Sync Failed. Please try again.
+                            </template>
+                          </template>
+                        </template>
+                        <template v-else>
+                          <span class="subtitle is-3 has-text-black">(Uploading...)</span>
+                          <b-loading
+                            :is-full-page="false"
+                            :active.sync="isClrmAppSyncUploading"
+                            :can-cancel="false"
+                          >
+                            <b-icon
+                              pack="fas"
+                              icon="sync-alt"
+                              size="is-large"
+                              custom-class="fa-spin"
+                            ></b-icon>
+                          </b-loading>
+                        </template>
+                      </template>
+                    </div>
                   </div>
                   <div class="column is-3">
                     <template v-if="!isClrmLoading">
@@ -3257,7 +3252,6 @@ export default {
       const classmem = this.dataset.Clrms.filter(
         (x) => x.classcode === this.selCrlm.id && x.enable === true
       );
-      this.ClrmAppSyncStateShow = false;
       // let retmsg;
       this.ClrmAppSyncBegin = classmem.length;
       this.ClrmAppSyncEnd = 0;
@@ -3266,9 +3260,7 @@ export default {
         this.updateClrmAll(rw);
       }
       // 結果表示
-      // this.ClrmAppSyncStateShow = true;
-      this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-      setTimeout(this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek), 3000);
+      this.ClrmAppSyncStateShow = true;
     },
     async updateClrmAll(rw) {
       // 出欠と宿題は該当週のみ、評価はすべて
