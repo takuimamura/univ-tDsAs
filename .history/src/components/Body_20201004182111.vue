@@ -30,44 +30,31 @@
         <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
 
         <b-field>
-          <!-- <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button> -->
-          <!-- <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button> -->
+          <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button>
+          <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button>
           <!-- <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button> -->
           <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
           <!-- <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button> -->
         </b-field>
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
-        TESTarr0{{ TESTarr0 }} |
-        <!-- <b-button @click="fetchInsts()">fetchInsts</b-button> -->
-        <!-- instructor.yourattendances {{ instructor.yourattendances }} -->
+        
+        TESTarr0{{ TESTarr0 }} | 
+        <b-button @click="fetchInsts()">fetchInsts</b-button>
+        instructor.yourattendances {{ instructor.yourattendances }}
         <ul>
           <li v-for="ins in instructor.yourattendances" :key="ins.id">
-            {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clockout }}- {{ ins.detail }}
-          </li>
+           {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clokcout }}- {{ ins.detail }}</li>
         </ul>
-        --c2-- <br />
         <ul>
-          <li v-for="inss in sett.dummy2" :key="inss.id">
-            {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
-            <!-- {{ inss }} -->
-          </li>
-        </ul>
-        --c3-- <br />
-        <ul>
-          <li v-for="inss in sett.dummy3" :key="inss.id">
-            {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
-            <!-- {{ inss }} -->
-          </li>
-        </ul>
-
         <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
         <ul>
           <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
         </ul>
         <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
         <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
-        <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
+        <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
+        TESTarr2
         <!-- 上部表示 -->
         <!-- TESTarr0 -
         <ul>
@@ -116,8 +103,7 @@
         <b-button @click="initallClasses">initallClasses</b-button>
         <!-- <b-button @click="enterClassroomUp">enterClassroomUp</b-button> -->
         <b-button @click="dummytest">dummytest</b-button>
-        sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }}
-        <!-- ■sett.dummy3{{ sett.dummy3 }} -->
+        sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
@@ -462,9 +448,9 @@
                     <b-table :data="yourattendancesMonth">
                       <!-- <b-table :data="instructor.yourattendances"> -->
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">
-                          {{ getDateMDddd(props.row.date) }}
-                        </b-table-column>
+                        <b-table-column field="date" label="Date" width="150">{{
+                          getDateMDddd(props.row.date)
+                        }}</b-table-column>
 
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
@@ -475,9 +461,9 @@
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
 
-                        <b-table-column field="detail" label="Note">
-                          {{ props.row.detail }}
-                        </b-table-column>
+                        <b-table-column field="detail" label="Note">{{
+                          props.row.detail
+                        }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -487,7 +473,7 @@
                       <b-button
                         icon-left="user-check"
                         size="is-large"
-                        @click="instClockIn()"
+                        @click="instClockIn"
                         class="is-pulled-right"
                         :disabled="ifYouClockIn"
                         >Clock in</b-button
@@ -497,7 +483,7 @@
                       <b-button
                         icon-left="snowboarding"
                         size="is-large"
-                        @click="instClockOut()"
+                        @click="instClockOut"
                         :disabled="!ifYouClockInAndStillIn"
                         >Clock out</b-button
                       >
@@ -532,9 +518,9 @@
                     @input="selectClassroomClear()"
                   >
                     <!-- @input="evalCriteriaSelectChange()" -->
-                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">
-                      {{ n.name }}
-                    </option>
+                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">{{
+                      n.name
+                    }}</option>
                   </b-select>
                   {{ yourClasses.length }} / {{ dataset.allClasses.length }}
                   <!-- <b-button
@@ -658,9 +644,8 @@
                                   icon="check-circle"
                                   size="is-large"
                                   type="is-success"
-                                />
-                                <span class="is-text-2 has-text-weight-bold is-syncdone"
-                                  >Sync Success</span
+                                /><span class="is-text-2 has-text-weight-bold is-syncdone">
+                                  Sync Success</span
                                 >
                               </template>
                               <template v-else>
@@ -670,8 +655,8 @@
                                   size="is-large"
                                   type="is-danger"
                                 />
-                                <span class="is-text-2 has-text-weight-bold"
-                                  >Sync Failed. Please try again.</span
+                                <span class="is-text-2 has-text-weight-bold">
+                                  Sync Failed. Please try again.</span
                                 >
                               </template>
                             </template>
@@ -1188,9 +1173,9 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">{{
-                        att.modeset[`${att.mode}`].barcaption
-                      }}</span>
+                      <span style="font-size: 28px; color: black;">
+                        {{ att.modeset[`${att.mode}`].barcaption }}
+                      </span>
                     </b-progress>
                   </div>
                 </div>
@@ -1270,9 +1255,9 @@
                     </template>
                     <template v-else></template>-->
 
-                    <template v-if="sett.devcheck">{{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                    }}</template>
+                    <template v-if="sett.devcheck">
+                      {{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}
+                    </template>
                   </b-table-column>
                   <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
@@ -1641,9 +1626,9 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span class="is-size-5 has-text-grey">
-                              {{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}
-                            </span>
+                            <span class="is-size-5 has-text-grey">{{
+                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                            }}</span>
                           </div>
 
                           <div class="level-right title is-4">
@@ -1760,9 +1745,9 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{ indiRow[k.evl] }}
-                                          </span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{
+                                            indiRow[k.evl]
+                                          }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -2020,9 +2005,9 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{ indiRow[k.evl] }}
-                                        </span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{
+                                          indiRow[k.evl]
+                                        }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -2325,9 +2310,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">{{
-                              st.classcount + " " + st.studentname
-                            }}</span>
+                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">
+                              {{ st.classcount + " " + st.studentname }}
+                            </span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -2355,30 +2340,29 @@ import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
 import EnvJSON from "../assets/env.json";
-// import { Clrm, Inst, Misc } from "../models";
-import { Clrm, Misc } from "../models";
+import { Clrm, Inst, Misc } from "../models";
 
 import API, { graphqlOperation } from "@aws-amplify/api";
 // import { onCreateAttend } from "../graphql/subscriptions";
-import {
-  // listCinfs, // 謎の取得できないやつ
-  // listCldrs,
-  // listClrms,
-  // instByday,
-  listInsts,
-  // getInsts,
-  // listMiscs
-  // getMisc,
-} from "../graphql/queries";
+// import {
+// listCinfs, // 謎の取得できないやつ
+// listCldrs,
+// listClrms,
+// instByday,
+// listInsts,
+// getInsts,
+// listMiscs
+// getMisc,
+// } from "../graphql/queries";
 // // createCldr,
 // // createClrm,
 import {
-  createInst,
+  // createInst,
   // createMisc,
   // updateCinf,
   //   updateCldr,
   updateClrm,
-  updateInst,
+  // updateInst,
   // updateMisc
 } from "../graphql/mutations";
 // import { onCreateInst, onCreateMisc,  onUpdateInst, onUpdateMisc } from "../graphql/subscriptions";
@@ -2414,7 +2398,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.05",
+        version: "1.03",
       },
       ds: {
         clrms: null,
@@ -3258,135 +3242,8 @@ export default {
     };
   },
   methods: {
-    arrayCompare(a, b, desc = true) {
-      if (a !== a && b !== b) return 0;
-      if (a !== a) return 1;
-      if (b !== b) return -1;
-
-      if (a == null && b == null) return 0;
-      if (a == null) return 1;
-      if (b == null) return -1;
-
-      if (a === "" && b === "") return 0;
-      if (a === "") return 1;
-      if (b === "") return -1;
-
-      var sig = desc ? 1 : -1;
-      return a < b ? sig : a > b ? -sig : 0;
-    },
     /////API GraphQL
     /////API GraphQL
-    async listInstsDataAPI() {
-      const InstsData = await API.graphql(
-        graphqlOperation(listInsts, { limit: 5000 })
-        // graphqlOperation(listInsts, { input: uname })
-      );
-      this.instructor.attendances = [];
-      // this.instructor.attendances.push(
-      //   ...this.instructor.attendances,
-      //   ...InstsData.data.listInsts.items
-      // );
-      const allinst = InstsData.data.listInsts.items;
-      // .filter(
-      //   (x) => x.uid === this.authdetail.username
-      // );
-      // this.instructor.attendances = allinst;
-      const allclin = allinst
-        .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
-
-      // const allclin = allinst.sort(function(a, b) {
-      //   if (a.date < b.date) return -1;
-      //   if (a.date > b.date) return 1;
-      //   if (a.clockout < b.clockout) return -1;
-      //   if (a.clockout > b.clockout) return 1;
-      //   return 0;
-      // });
-
-      // .filter((x) => !x.clockout);
-      this.sett.dummy2 = allclin;
-      // const allclin = allinst.filter((x) => !x.clockout);
-      // this.sett.dummy2 = allclin;
-      // const allclinOut = allclin.reduce((a, v) => {
-      //   if (!a.some((e) => e.date === v.date)) {
-      //     a.push(v);
-      //   }
-      //   return a;
-      // }, []);
-
-      // const allclinOut = allinst.filter((x) => x.clockout);
-      // this.sett.dummy3 = allclinOut;
-
-      // this.instructor.attendances = allinst
-      //   .sort(function(a, b) {
-      //     if (a.date < b.date) return -1;
-      //     if (a.date > b.date) return 1;
-      //     return 0;
-      //   })
-      //   .sort(function(a, b) {
-      //     if (a.clockout < b.clockout) return -1;
-      //     if (a.clockout > b.clockout) return 1;
-      //     return 0;
-      //   })
-
-      //   .reduce((a, v) => {
-      //     if (!a.some((e) => e.date === v.date)) {
-      //       a.push(v);
-      //     }
-      //     return a;
-      //   }, []);
-
-      //自分の勤怠
-      this.instructor.yourattendances = allclin
-        .filter((x) => x.uid === this.authdetail.username)
-        .reduce((a, v) => {
-          if (!a.some((e) => e.date === v.date)) {
-            a.push(v);
-          }
-          return a;
-        }, [])
-        .sort(function(a, b) {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
-        });
-
-      this.sett.dummy3 = this.instructor.yourattendances;
-
-      ////2020Autumn clockinとoutの重複除去
-    },
-    async createInstAPI(crArr, msgg, typ, siz) {
-      crArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(createInst, { input: crArr }));
-        this.listInstsDataAPI();
-        this.$buefy.toast.open({
-          message: msgg,
-          type: typ,
-          size: siz,
-          duration: 3000,
-        });
-
-        return true;
-      } catch (err) {
-        this.writeFail("InstCreate", crArr, err);
-        this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Connection failed. please try again</span>",
-          type: "is-danger",
-          size: "is-large",
-          duration: 5000,
-        });
-        return err;
-      }
-    },
-    async updateInstAPI(upArr) {
-      upArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(updateInst, { input: upArr }));
-      } catch (err) {
-        this.writeFail("InstUpdate", upArr, err);
-      }
-    },
     async updateClrmAPI(uid, uidx, fname, fval) {
       const upArr = {
         id: uid,
@@ -3401,7 +3258,6 @@ export default {
         return err; // returnの先に用途は実はない
       }
     },
-    // Force Sync
     async manageupdateClrmAll() {
       const classmem = this.dataset.Clrms.filter(
         (x) => x.classcode === this.selCrlm.id && x.enable === true
@@ -3476,14 +3332,12 @@ export default {
       // this.dataset.Clrms = [];
       // this.dataset.Clrms = [...this.ds.clrms];
     },
-    // async fetchInsts()廃止⇒async listInstsDataAPI() {でとる
-    // async fetchInsts() {
-    //   //自分の勤怠
-    //   this.instructor.yourattendances = await DataStore.query(Inst, (c) =>
-    //     c.uid("eq", this.authdetail.username)
-    //   );
-    //   console.warn("fatchInsts:" + this.authdetail.username);
-    // },
+    async fetchInsts() {
+      //自分の勤怠
+      this.instructor.yourattendances = await DataStore.query(Inst, (c) =>
+        c.uid("eq", this.authdetail.username)
+      );
+    },
     async fetchMiscs() {
       this.dataset.Miscs = [];
       this.dataset.Miscs = await DataStore.query(Misc, (c) =>
@@ -3558,71 +3412,70 @@ export default {
     //     })
     //   };
     // },
-    async createMiscClockInOut(typ, arr, ou) {
+    async createMiscClockOut() {
       const cr = {
-        type: typ,
-        name: this.authdetail.username,
+        type: "ClockOut",
+        name: this.$dayjs().format("YYYY-MM-DD"),
         detail: JSON.stringify({
           name: this.authdetail.username,
-          date: arr.date,
-          clockin: arr.clockin,
-          clockout: ou,
+          clockIn: this.$dayjs(),
+          clockOut: this.$dayjs(),
         }),
       };
       await DataStore.save(new Misc(cr));
     },
 
-    // async DEVcreateMisc() {
-    //   const cr = {
-    //     type: "classRoom",
-    //     name: this.ds.crMisc.name,
-    //     detail: JSON.stringify({
-    //       oldest: this.$dayjs(),
-    //       newest: new Date()
-    //     })
-    //   };
-    //   try {
-    //     await DataStore.save(new Misc(cr));
-    //   } catch (err) {
-    //     this.writeFail("MiscCreate", cr, err);
-    //   }
+    async DEVcreateMisc() {
+      const cr = {
+        type: "classRoom",
+        name: this.ds.crMisc.name,
+        detail: JSON.stringify({
+          oldest: this.$dayjs(),
+          newest: new Date(),
+        }),
+      };
+      try {
+        await DataStore.save(new Misc(cr));
+      } catch (err) {
+        this.writeFail("MiscCreate", cr, err);
+      }
 
-    //   this.fetchMiscs();
-    // },
-    // async DEVcreateMisc2() {
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
-    //   );
-    //   // table(original);
-    //   const outt = original.find(arr => {
-    //     return arr.detail.length > 0;
-    //   });
-    //   const dt = JSON.parse(outt.detail);
-    //   return dt;
-    // },
-    // async FIREQueryMiscCo() {
-    //   const cr = {
-    //     type: "TEST",
-    //     name: "TEST"
-    //   };
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", cr.type).name("eq", cr.name)
-    //   );
-    //   this.sett.dummy = original.length;
-    // },
+      this.fetchMiscs();
+    },
+    async DEVcreateMisc2() {
+      const original = await DataStore.query(Misc, (c) =>
+        c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
+      );
+      // table(original);
+      const outt = original.find((arr) => {
+        return arr.detail.length > 0;
+      });
+      const dt = JSON.parse(outt.detail);
+      return dt;
+    },
+    async FIREQueryMiscCo() {
+      const cr = {
+        type: "TEST",
+        name: "TEST",
+      };
+      const original = await DataStore.query(Misc, (c) =>
+        c.type("eq", cr.type).name("eq", cr.name)
+      );
+      this.sett.dummy = original.length;
+    },
 
-    // async FIREcreateMisc() {
-    //   const cr = {
-    //     type: "TEST",
-    //     name: this.sett.dummy,
-    //     detail: this.$dayjs().format("H:mm:ss")
-    //   };
-    //   try {
-    //     await DataStore.save(new Misc(cr));
-    //   } catch (err) {
-    //     this.writeFail("MiscCreate", cr, err);
-    //   }
-    // },
+    async FIREcreateMisc() {
+      const cr = {
+        type: "TEST",
+        name: this.sett.dummy,
+        detail: this.$dayjs().format("H:mm:ss"),
+      };
+      try {
+        await DataStore.save(new Misc(cr));
+      } catch (err) {
+        this.writeFail("MiscCreate", cr, err);
+      }
+    },
     //// クラス毎のサマリDB 一括作成
 
     // <p class="subtitle">学期ごと、開講前の設定作業</p>
@@ -4495,28 +4348,28 @@ export default {
 
     //////////講師 勤怠
     //////////講師 勤怠
-    // async createInst(add) {
-    //   await DataStore.save(new Inst(add));
-    //   this.fetchInsts();
-    // },
-    // async updateInstClockout(id, cOut) {
-    //   const cInItem = this.instructor.yourattendances.find(
-    //     (c) => c.date === this.$dayjs().format("YYYY-MM-DD")
-    //   );
+    async createInst(add) {
+      await DataStore.save(new Inst(add));
+      this.fetchInsts();
+    },
+    async updateInstClockout(id, cOut) {
+      const cInItem = this.instructor.yourattendances.find(
+        (c) => c.date === this.$dayjs().format("YYYY-MM-DD")
+      );
 
-    //   const instItem = await DataStore.query(Inst, cInItem.id);
-    //   //  (c) => c.uid("eq", uid).date("eq", datestr));
-    //   if (!instItem) {
-    //     return;
-    //   }
+      const instItem = await DataStore.query(Inst, cInItem.id);
+      //  (c) => c.uid("eq", uid).date("eq", datestr));
+      if (!instItem) {
+        return;
+      }
 
-    //   await DataStore.save(
-    //     Inst.copyOf(instItem, (updated) => {
-    //       updated.clockout = cOut;
-    //     })
-    //   );
-    //   this.fetchInsts();
-    // },
+      await DataStore.save(
+        Inst.copyOf(instItem, (updated) => {
+          updated.clockout = cOut;
+        })
+      );
+      this.fetchInsts();
+    },
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
 
@@ -4524,56 +4377,75 @@ export default {
         message: "Clock In?",
         size: "is-large",
         onConfirm: () => {
-          ////////// DataStoreうまくいかん
-          // const dt = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
-          // const cin = this.$dayjs().format("HH:mm"); //.format("hh:mm:ss.sss"), //.format("h:mm"),
+          if (this.sett.env.isTestMode == true) {
+            //開発モード
+            // const add = {
+            //   uid: this.authdetail.username,
+            //   date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
+            //   clockin: this.$dayjs().format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            //   clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            // };
+            this.createInst({
+              uid: this.authdetail.username,
+              date: this.$dayjs(this.sett.ddate).format("YYYY-MM-DD"), //.format("M/D ddd"),
+              clockin: this.$dayjs(this.sett.ddate).format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
+              clockout: this.$dayjs(this.sett.ddate).format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
+              // clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            });
+          } else {
+            const dt = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
+            const cin = this.$dayjs().format("HH:mm"); //.format("hh:mm:ss.sss"), //.format("h:mm"),
 
-          // const cr = {
-          //   type: "ClockIn",
-          //   name: dt,
-          //   detail: JSON.stringify({
-          //     uid: this.authdetail.username,
-          //     name: this.authdetail.name,
-          //     date: dt,
-          //     clockin: cin,
-          //     clockout: "",
-          //     clockincorrect: "",
-          //     clockoutcorrect: "",
-          //     clockoutdetail: ""
-          //   })
-          // };
-          // this.createInst({
-          //   uid: this.authdetail.username,
-          //   date: dt, //.format("M/D ddd"),
-          //   clockin: cin //.format("hh:mm:ss.sss"), //.format("h:mm"),
-          // });
-          ////////// DataStoreうまくいかん
+            const cr = {
+              type: "ClockIn",
+              name: dt,
+              detail: JSON.stringify({
+                uid: this.authdetail.username,
+                name: this.authdetail.name,
+                date: dt,
+                clockin: cin,
+                clockout: "",
+                clockincorrect: "",
+                clockoutcorrect: "",
+                clockoutdetail: "",
+              }),
+            };
+            DataStore.save(new Misc(cr));
+            const crr = {
+              type: "ClockInOut",
+              name: dt + "-" + this.authdetail.username,
+              detail: JSON.stringify({
+                uid: this.authdetail.username,
+                name: this.authdetail.name,
+                date: dt,
+                clockin: cin,
+                clockout: "",
+                clockincorrect: "",
+                clockoutcorrect: "",
+                clockoutdetail: "",
+              }),
+            };
+            DataStore.save(new Misc(crr));
 
-          ////////// APIで
-          const add = {
-            date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
-            clockin: this.$dayjs().format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
-            // clockout: "", //.format("hh:mm:ss.sss"), //.format("h:mm"),
-            // clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
-          };
+            this.createInst({
+              uid: this.authdetail.username,
+              date: dt, //.format("M/D ddd"),
+              clockin: cin, //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            });
+          }
+
+          // this.createInst(add);
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
-          const msgg =
-            "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
-          ////////// APIで
-
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockIn", add, "");
 
           // this.instructor.yourhistory.push(add);
           this.instructor.peopleNow.push(this.instructor.you.firstName);
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
-          //   type: "is-success",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
+            type: "is-success",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },
@@ -4585,73 +4457,51 @@ export default {
         size: "is-large",
         onConfirm: () => {
           // const arr = this.instructor.yourattendances.pop();
-          ////////// DataStoreうまくいかん
-          // const uid = this.authdetail.username;
+          const uid = this.authdetail.username;
 
-          //   const dt = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
-          //   const cout = this.$dayjs().format("HH:mm"); //.format("hh:mm:ss.sss"), //.format("h:mm"),
+          if (this.sett.env.isTestMode == true) {
+            //開発モード
+            const datestr = this.$dayjs(this.sett.ddate).format("YYYY-MM-DD"); //.format("M/D ddd"),
+            const clockout = this.$dayjs(this.sett.ddate).format("HH:mm");
+            this.updateInstClockout(uid, datestr, clockout); // AppSyncを更新
+          } else {
+            const dt = this.$dayjs().format("YYYY-MM-DD"); //.format("M/D ddd"),
+            const cout = this.$dayjs().format("HH:mm"); //.format("hh:mm:ss.sss"), //.format("h:mm"),
 
-          //   const cinRecord = this.instructor.yourattendances.find(
-          //     x => x.date === dt
-          //   );
-          //   // console.warn(cinRecord);
-          //   this.updateInstClockout(cinRecord.id, cout); // AppSyncを更新
+            const cinRecord = this.instructor.yourattendances.find((x) => x.date === dt);
+            // console.warn(cinRecord);
+            this.updateInstClockout(cinRecord.id, cout); // AppSyncを更新
 
-          //   const cr = {
-          //     type: "ClockOut",
-          //     name: dt,
-          //     detail: JSON.stringify({
-          //       uid: this.authdetail.username,
-          //       name: this.authdetail.name,
-          //       date: dt,
-          //       clockin: cinRecord.clockin,
-          //       clockout: cout,
-          //       clockincorrect: "",
-          //       clockoutcorrect: "",
-          //       clockoutdetail: ""
-          //     })
-          //   };
-          //   DataStore.save(new Misc(cr));
+            const cr = {
+              type: "ClockOut",
+              name: dt,
+              detail: JSON.stringify({
+                uid: this.authdetail.username,
+                name: this.authdetail.name,
+                date: dt,
+                clockin: cinRecord.clockin,
+                clockout: cout,
+                clockincorrect: "",
+                clockoutcorrect: "",
+                clockoutdetail: "",
+              }),
+            };
+            DataStore.save(new Misc(cr));
 
-          //   const crr = JSON.stringify({
-          //     uid: this.authdetail.username,
-          //     name: this.authdetail.name,
-          //     date: dt,
-          //     clockin: cinRecord.clockin,
-          //     clockout: cout,
-          //     clockincorrect: "",
-          //     clockoutcorrect: "",
-          //     clockoutdetail: ""
-          //   });
-          ////////// DataStoreうまくいかん
+            const crr = JSON.stringify({
+              uid: this.authdetail.username,
+              name: this.authdetail.name,
+              date: dt,
+              clockin: cinRecord.clockin,
+              clockout: cout,
+              clockincorrect: "",
+              clockoutcorrect: "",
+              clockoutdetail: "",
+            });
 
-          ////////// APIで
-          const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
-          const arr = {
-            // id: arrr.id,
-            uid: arrr.uid,
-            // uid: arrr.uid + "-out",
-            date: arrr.date,
-            clockin: arrr.clockin,
-          };
-          arr.clockout = this.$dayjs().format("HH:mm");
-          // arr.strclockout = this.$dayjs().format("HH:mm");
+            this.clockoutUpdateMisc(dt, crr);
+          }
           // this.instructor.yourattendances.push(arr); // ローカルを更新
-          // console.warn("clockout" + JSON.stringify(arr));
-          const msgg =
-            "<span style='font-size:40px'>Thanks " +
-            this.authdetail.nickname +
-            ", have a good rest.</span>";
-          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
-
-          // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
-
-          ////////// APIで
-
-          ////////// 一応MiscにはDataStoreで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
 
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
@@ -4660,28 +4510,28 @@ export default {
           // this.instructor.peopleNow.splice(idx, 1);
           this.instructor.showPeople = false;
 
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Thanks " +
-          //     this.authdetail.nickname +
-          //     ", have a good rest.</span>",
-          //   type: "is-pinkish",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Thanks " +
+              this.authdetail.nickname +
+              ", have a good rest.</span>",
+            type: "is-pinkish",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },
-    // async clockoutUpdateMisc(dt, crr) {
-    //   const original = await DataStore.query(Misc, (c) =>
-    //     c.type("eq", "ClockInOut").name("eq", dt + "-" + this.authdetail.username)
-    //   );
-    //   await DataStore.save(
-    //     Clrm.copyOf(original, (updated) => {
-    //       updated.detail = crr;
-    //     })
-    //   );
-    // },
+    async clockoutUpdateMisc(dt, crr) {
+      const original = await DataStore.query(Misc, (c) =>
+        c.type("eq", "ClockInOut").name("eq", dt + "-" + this.authdetail.username)
+      );
+      await DataStore.save(
+        Clrm.copyOf(original, (updated) => {
+          updated.detail = crr;
+        })
+      );
+    },
     //////////クラスルーム
     //////////クラスルーム
     attnModeChangeConfirm() {
@@ -5440,9 +5290,7 @@ export default {
       .catch(() => (this.authdetail = "created auth error"));
 
     await this.fetchClrms();
-    this.listInstsDataAPI(); //今のところ全件とる
-
-    // await this.fetchInsts(); //今のところ全件とる
+    await this.fetchInsts(); //今のところ全件とる
     Hub.listen("datastore", async (hubData) => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {

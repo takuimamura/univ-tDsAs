@@ -2414,7 +2414,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.05",
+        version: "1.03",
       },
       ds: {
         clrms: null,
@@ -4627,7 +4627,6 @@ export default {
 
           ////////// APIで
           const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
           const arr = {
             // id: arrr.id,
             uid: arrr.uid,

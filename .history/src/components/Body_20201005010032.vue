@@ -50,14 +50,14 @@
         <ul>
           <li v-for="inss in sett.dummy2" :key="inss.id">
             {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
-            <!-- {{ inss }} -->
+            {{ inss.detail }}
           </li>
         </ul>
-        --c3-- <br />
+        --c2-- <br />
         <ul>
           <li v-for="inss in sett.dummy3" :key="inss.id">
             {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
-            <!-- {{ inss }} -->
+            {{ inss.detail }}
           </li>
         </ul>
 
@@ -2414,7 +2414,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.05",
+        version: "1.03",
       },
       ds: {
         clrms: null,
@@ -3258,22 +3258,6 @@ export default {
     };
   },
   methods: {
-    arrayCompare(a, b, desc = true) {
-      if (a !== a && b !== b) return 0;
-      if (a !== a) return 1;
-      if (b !== b) return -1;
-
-      if (a == null && b == null) return 0;
-      if (a == null) return 1;
-      if (b == null) return -1;
-
-      if (a === "" && b === "") return 0;
-      if (a === "") return 1;
-      if (b === "") return -1;
-
-      var sig = desc ? 1 : -1;
-      return a < b ? sig : a > b ? -sig : 0;
-    },
     /////API GraphQL
     /////API GraphQL
     async listInstsDataAPI() {
@@ -3291,10 +3275,61 @@ export default {
       //   (x) => x.uid === this.authdetail.username
       // );
       // this.instructor.attendances = allinst;
-      const allclin = allinst
-        .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
 
+      // .filter((x) => !x.clockout);
+      const allclin = allinst.filter((x) => !x.clockout);
+      this.sett.dummy2 = allclin;
+      const allclinOut = allinst.filter((x) => x.clockout);
+      this.sett.dummy3 = allclinOut;
+
+      let addcl = [];
+      allclinOut.forEach((v) => {
+        if (!allclin.includes(v)) {
+          addcl.push(v);
+        }
+      });
+
+      this.instructor.attendances = addcl.sort(function(a, b) {
+        if (a.date < b.date) return -1;
+        if (a.date > b.date) return 1;
+        return 0;
+      });
+
+      // const allclinOut = allclin.reduce((a, v) => {
+      //         if (!a.some((e) => e.date === v.date)) {
+      //           a.push(v);
+      //         }
+      //         return a;
+      //       }, []);
+
+      //       this.instructor.attendances = allinst
+      //         .sort(function(a, b) {
+      //           if (a.date < b.date) return -1;
+      //           if (a.date > b.date) return 1;
+      //           return 0;
+      //         })
+      //         .sort(function(a, b) {
+      //           if (a.clockout < b.clockout) return -1;
+      //           if (a.clockout > b.clockout) return 1;
+      //           return 0;
+      //         })
+
+      //         .reduce((a, v) => {
+      //           if (!a.some((e) => e.date === v.date)) {
+      //             a.push(v);
+      //           }
+      //           return a;
+      //         }, []);
+
+      //自分の勤怠
+      this.instructor.yourattendances = this.instructor.attendances.filter(
+        (x) => x.uid === this.authdetail.username
+      );
+      // .sort(function(a, b) {
+      //   if (a.date < b.date) return -1;
+      //   if (a.date > b.date) return 1;
+      //   return 0;
+      // // });
       // const allclin = allinst.sort(function(a, b) {
       //   if (a.date < b.date) return -1;
       //   if (a.date > b.date) return 1;
@@ -3303,80 +3338,15 @@ export default {
       //   return 0;
       // });
 
-      // .filter((x) => !x.clockout);
-      this.sett.dummy2 = allclin;
-      // const allclin = allinst.filter((x) => !x.clockout);
-      // this.sett.dummy2 = allclin;
-      // const allclinOut = allclin.reduce((a, v) => {
-      //   if (!a.some((e) => e.date === v.date)) {
-      //     a.push(v);
-      //   }
-      //   return a;
-      // }, []);
-
-      // const allclinOut = allinst.filter((x) => x.clockout);
-      // this.sett.dummy3 = allclinOut;
-
-      // this.instructor.attendances = allinst
-      //   .sort(function(a, b) {
-      //     if (a.date < b.date) return -1;
-      //     if (a.date > b.date) return 1;
-      //     return 0;
-      //   })
-      //   .sort(function(a, b) {
-      //     if (a.clockout < b.clockout) return -1;
-      //     if (a.clockout > b.clockout) return 1;
-      //     return 0;
-      //   })
-
-      //   .reduce((a, v) => {
-      //     if (!a.some((e) => e.date === v.date)) {
-      //       a.push(v);
-      //     }
-      //     return a;
-      //   }, []);
-
-      //自分の勤怠
-      this.instructor.yourattendances = allclin
-        .filter((x) => x.uid === this.authdetail.username)
-        .reduce((a, v) => {
-          if (!a.some((e) => e.date === v.date)) {
-            a.push(v);
-          }
-          return a;
-        }, [])
-        .sort(function(a, b) {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
-        });
-
-      this.sett.dummy3 = this.instructor.yourattendances;
-
       ////2020Autumn clockinとoutの重複除去
     },
-    async createInstAPI(crArr, msgg, typ, siz) {
+    async createInstAPI(crArr) {
       crArr.uid = this.authdetail.username;
       try {
         await API.graphql(graphqlOperation(createInst, { input: crArr }));
         this.listInstsDataAPI();
-        this.$buefy.toast.open({
-          message: msgg,
-          type: typ,
-          size: siz,
-          duration: 3000,
-        });
-
-        return true;
       } catch (err) {
         this.writeFail("InstCreate", crArr, err);
-        this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Connection failed. please try again</span>",
-          type: "is-danger",
-          size: "is-large",
-          duration: 5000,
-        });
-        return err;
       }
     },
     async updateInstAPI(upArr) {
@@ -4557,9 +4527,7 @@ export default {
             // clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
           };
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
-          const msgg =
-            "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+          this.createInstAPI(add); //DBに追加
           ////////// APIで
 
           ////////// Miscにも
@@ -4567,13 +4535,13 @@ export default {
 
           // this.instructor.yourhistory.push(add);
           this.instructor.peopleNow.push(this.instructor.you.firstName);
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
-          //   type: "is-success",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
+            type: "is-success",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },
@@ -4627,7 +4595,6 @@ export default {
 
           ////////// APIで
           const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
           const arr = {
             // id: arrr.id,
             uid: arrr.uid,
@@ -4639,12 +4606,7 @@ export default {
           // arr.strclockout = this.$dayjs().format("HH:mm");
           // this.instructor.yourattendances.push(arr); // ローカルを更新
           // console.warn("clockout" + JSON.stringify(arr));
-          const msgg =
-            "<span style='font-size:40px'>Thanks " +
-            this.authdetail.nickname +
-            ", have a good rest.</span>";
-          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
-
+          this.createInstAPI(arr); // AppSyncを更新
           // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
 
           ////////// APIで
@@ -4660,15 +4622,15 @@ export default {
           // this.instructor.peopleNow.splice(idx, 1);
           this.instructor.showPeople = false;
 
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Thanks " +
-          //     this.authdetail.nickname +
-          //     ", have a good rest.</span>",
-          //   type: "is-pinkish",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Thanks " +
+              this.authdetail.nickname +
+              ", have a good rest.</span>",
+            type: "is-pinkish",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },

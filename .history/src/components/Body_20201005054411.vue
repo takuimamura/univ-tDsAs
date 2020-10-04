@@ -2414,7 +2414,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.05",
+        version: "1.03",
       },
       ds: {
         clrms: null,
@@ -3337,46 +3337,25 @@ export default {
       //   }, []);
 
       //自分の勤怠
-      this.instructor.yourattendances = allclin
+      this.instructor.yourattendances = this.instructor.attendances
         .filter((x) => x.uid === this.authdetail.username)
         .reduce((a, v) => {
           if (!a.some((e) => e.date === v.date)) {
             a.push(v);
           }
           return a;
-        }, [])
-        .sort(function(a, b) {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
-        });
-
+        }, []);
       this.sett.dummy3 = this.instructor.yourattendances;
 
       ////2020Autumn clockinとoutの重複除去
     },
-    async createInstAPI(crArr, msgg, typ, siz) {
+    async createInstAPI(crArr) {
       crArr.uid = this.authdetail.username;
       try {
         await API.graphql(graphqlOperation(createInst, { input: crArr }));
         this.listInstsDataAPI();
-        this.$buefy.toast.open({
-          message: msgg,
-          type: typ,
-          size: siz,
-          duration: 3000,
-        });
-
-        return true;
       } catch (err) {
         this.writeFail("InstCreate", crArr, err);
-        this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Connection failed. please try again</span>",
-          type: "is-danger",
-          size: "is-large",
-          duration: 5000,
-        });
-        return err;
       }
     },
     async updateInstAPI(upArr) {
@@ -4557,9 +4536,7 @@ export default {
             // clockout: null, //.format("hh:mm:ss.sss"), //.format("h:mm"),
           };
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
-          const msgg =
-            "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+          this.createInstAPI(add); //DBに追加
           ////////// APIで
 
           ////////// Miscにも
@@ -4567,13 +4544,13 @@ export default {
 
           // this.instructor.yourhistory.push(add);
           this.instructor.peopleNow.push(this.instructor.you.firstName);
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
-          //   type: "is-success",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>",
+            type: "is-success",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },
@@ -4627,7 +4604,6 @@ export default {
 
           ////////// APIで
           const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
           const arr = {
             // id: arrr.id,
             uid: arrr.uid,
@@ -4639,12 +4615,7 @@ export default {
           // arr.strclockout = this.$dayjs().format("HH:mm");
           // this.instructor.yourattendances.push(arr); // ローカルを更新
           // console.warn("clockout" + JSON.stringify(arr));
-          const msgg =
-            "<span style='font-size:40px'>Thanks " +
-            this.authdetail.nickname +
-            ", have a good rest.</span>";
-          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
-
+          this.createInstAPI(arr); // AppSyncを更新
           // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
 
           ////////// APIで
@@ -4660,15 +4631,15 @@ export default {
           // this.instructor.peopleNow.splice(idx, 1);
           this.instructor.showPeople = false;
 
-          // this.$buefy.toast.open({
-          //   message:
-          //     "<span style='font-size:40px'>Thanks " +
-          //     this.authdetail.nickname +
-          //     ", have a good rest.</span>",
-          //   type: "is-pinkish",
-          //   size: "is-large",
-          //   duration: 3000,
-          // });
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>Thanks " +
+              this.authdetail.nickname +
+              ", have a good rest.</span>",
+            type: "is-pinkish",
+            size: "is-large",
+            duration: 3000,
+          });
         },
       });
     },

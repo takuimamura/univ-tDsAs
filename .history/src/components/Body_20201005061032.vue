@@ -2414,7 +2414,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.05",
+        version: "1.03",
       },
       ds: {
         clrms: null,
@@ -3371,10 +3371,10 @@ export default {
       } catch (err) {
         this.writeFail("InstCreate", crArr, err);
         this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Connection failed. please try again</span>",
+          message: "connection failed",
           type: "is-danger",
           size: "is-large",
-          duration: 5000,
+          duration: 3000,
         });
         return err;
       }
@@ -4627,7 +4627,6 @@ export default {
 
           ////////// APIで
           const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
           const arr = {
             // id: arrr.id,
             uid: arrr.uid,
