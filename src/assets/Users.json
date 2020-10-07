@@ -22,5 +22,6 @@
   { "username": "m-yoshida", "name": "Mayumi Yoshida", "role": "staff" },
   { "username": "a-anjong", "name": "Arina Anjong", "role": "staff" },
   { "username": "m-buckingham", "name": "Matthew Buckingham", "role": "staff" },  
+  { "username": "t-imamura", "name": "Taku Imamura", "role": "admin" },  
   { "username": "dummy", "name": "Dummy Instructor", "role": "instructor" }
 ]

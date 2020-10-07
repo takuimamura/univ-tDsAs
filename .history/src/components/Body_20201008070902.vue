@@ -519,7 +519,7 @@
                   style="width:500px;padding:0px 15px;"
                   v-if="isOpenselCrlm"
                 >
-                  <div class="content column is-9" style="margin-bottom:0px">
+                  <div class="content column is-9">
                     <h3>
                       {{ selCrlm.id }}
                       {{ selCrlm.grade }}({{ selCrlm.classnum }})
@@ -584,7 +584,10 @@
                         type="is-danger"
                       ></b-icon>
                       <span class="has-text-danger"
-                        ><b>[Absent - Homework] mismatch exists.</b></span
+                        ><b
+                          >[Absent - Homework]<br />
+                          mismatch exists.</b
+                        ></span
                       >
                     </div>
                   </div>
@@ -2384,7 +2387,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.06",
+        version: "1.05",
       },
       ds: {
         clrms: null,

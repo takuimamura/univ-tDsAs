@@ -27,7 +27,6 @@ $purple-dark: #5f1647;
 $pink: #fa7c91;
 $pink-strong: #ce1836;
 $pink-pure: #eb546d;
-$pink-purerrr: #cf5ea0;
 $pink-light: #ffb3d0;
 $pink-lighter: #fae3ec;
 $brown: #757763;
@@ -66,8 +65,8 @@ $colors: (
   "bluedark":($dark-blue,$dark-bluelighter),
   "syncdone":(rgb(203, 134, 212),$dark-bluelighter),
   "syncsome":(rgb(179, 175, 175),grey),
-  "attndone":($pink-purerrr,$pink-lighter)
-  // "attndone":(rgb(51, 187, 146),$pink-lighter)
+  "attndone":(rgb(51, 187, 146),$pink-lighter)
+  // "attndone":($pink-pure,$pink-lighter)
 
   // "white": (
     //   $white,

@@ -508,18 +508,14 @@
             <!-- /////////////// selCrlm -->
             <section class="columns is-centered" style="font-size: 16px; padding: 10px 10px;">
               <div class="column"></div>
-              <div
-                class="column"
-                :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
-                v-if="isOpenselCrlm"
-              >
+              <div class="column">
                 <div
                   class="columns"
                   :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
                   style="width:500px;padding:0px 15px;"
                   v-if="isOpenselCrlm"
                 >
-                  <div class="content column is-9" style="margin-bottom:0px">
+                  <div class="content column is-9">
                     <h3>
                       {{ selCrlm.id }}
                       {{ selCrlm.grade }}({{ selCrlm.classnum }})
@@ -544,6 +540,8 @@
                         >Lesson No. {{ selCrlm.lssnthisweek }}</span
                       >
                     </p>
+
+                    <div></div>
                   </div>
                   <div class="column is-3">
                     <template v-if="!isClrmLoading">
@@ -573,27 +571,32 @@
                   </div>
                 </div>
                 <!-- 追加情報 -->
-                <!-- HWIC警告 -->
-                <template v-if="chwckifHWIC(selCrlm.detail)">
-                  <div class="columns is-gapless">
-                    <div class="column">
-                      <b-icon
-                        pack="fas"
-                        icon="exclamation"
-                        size="is-large"
-                        type="is-danger"
-                      ></b-icon>
-                      <span class="has-text-danger"
-                        ><b>[Absent - Homework] mismatch exists.</b></span
-                      >
-                    </div>
-                  </div>
-                </template>
-
                 <div
                   class="columns is-gapless"
                   :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
                 >
+                  <!-- HWIC警告 -->
+                  <template v-if="chwckifHWIC(selCrlm.detail)">
+                    <div class="columns is-gapless">
+                      <div class="column">
+                        <b-icon
+                          pack="fas"
+                          icon="exclamation"
+                          size="is-large"
+                          type="is-danger"
+                        ></b-icon>
+                      </div>
+                      <div class="column">
+                        <span class="has-text-danger"
+                          ><b
+                            >[Absent - Homework]<br />
+                            mismatch exists.</b
+                          ></span
+                        >
+                      </div>
+                    </div>
+                  </template>
+
                   <!-- <div class="columns is-gapless"> -->
                   <!-- <div class="column"></div> -->
                   <div class="column">
@@ -2384,7 +2387,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.06",
+        version: "1.05",
       },
       ds: {
         clrms: null,

@@ -508,18 +508,14 @@
             <!-- /////////////// selCrlm -->
             <section class="columns is-centered" style="font-size: 16px; padding: 10px 10px;">
               <div class="column"></div>
-              <div
-                class="column"
-                :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
-                v-if="isOpenselCrlm"
-              >
+              <div class="column">
                 <div
                   class="columns"
                   :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
                   style="width:500px;padding:0px 15px;"
                   v-if="isOpenselCrlm"
                 >
-                  <div class="content column is-9" style="margin-bottom:0px">
+                  <div class="content column is-9">
                     <h3>
                       {{ selCrlm.id }}
                       {{ selCrlm.grade }}({{ selCrlm.classnum }})
@@ -544,6 +540,102 @@
                         >Lesson No. {{ selCrlm.lssnthisweek }}</span
                       >
                     </p>
+
+                    <div class="columns is-gapless">
+                      <!-- <div class="column"></div> -->
+                      <div class="column">
+                        <!-- Sync status -->
+                        <template v-if="selCrlm.syncdone">
+                          <b-icon
+                            pack="fas"
+                            icon="star"
+                            size="is-large"
+                            type="is-syncdone"
+                          ></b-icon>
+                        </template>
+                        <template v-else-if="selCrlm.syncdone === false">
+                          <b-icon
+                            pack="fas"
+                            icon="star-half-alt"
+                            size="is-large"
+                            type="is-syncsome"
+                          ></b-icon>
+                        </template>
+                        <template v-else></template>
+                      </div>
+                      <div class="column">
+                        <!-- Attendance record completion -->
+                        <template v-if="selCrlm.attndone">
+                          <b-icon
+                            pack="fas"
+                            icon="grin-stars"
+                            size="is-large"
+                            type="is-attndone"
+                          ></b-icon>
+                        </template>
+                        <template v-else-if="selCrlm.attndone === false"></template>
+                        <template v-else></template>
+                      </div>
+                      <div class="column">
+                        <!-- 手動アップロード -->
+
+                        <template v-if="isClrmNeedAppSync">
+                          <template v-if="!isClrmAppSyncUploading">
+                            <b-button
+                              pack="fas"
+                              icon-left="sync-alt"
+                              size="is-large"
+                              @click="manageupdateClrmAllAPI"
+                              >Force Sync</b-button
+                            >
+                            <template
+                              v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
+                            >
+                              <!-- <template v-if="ClrmAppSyncStateShow"> -->
+                              <template v-if="ClrmAppSyncState">
+                                <b-icon
+                                  pack="fas"
+                                  icon="check-circle"
+                                  size="is-large"
+                                  type="is-success"
+                                />
+                                <span class="is-text-2 has-text-weight-bold is-syncdone"
+                                  >Sync Success</span
+                                >
+                              </template>
+                              <template v-else>
+                                <b-icon
+                                  pack="fas"
+                                  icon="times-circle"
+                                  size="is-large"
+                                  type="is-danger"
+                                />
+                                <span class="is-text-2 has-text-weight-bold"
+                                  >Sync Failed. Please try again.</span
+                                >
+                              </template>
+                            </template>
+                          </template>
+                          <template v-else>
+                            <span class="subtitle is-3 has-text-black">(Uploading...)</span>
+                            <b-loading
+                              :is-full-page="false"
+                              :active.sync="isClrmAppSyncUploading"
+                              :can-cancel="false"
+                            >
+                              <b-icon
+                                pack="fas"
+                                icon="sync-alt"
+                                size="is-large"
+                                custom-class="fa-spin"
+                              ></b-icon>
+                            </b-loading>
+                          </template>
+                        </template>
+                      </div>
+                    </div>
+
+                    <div></div>
                   </div>
                   <div class="column is-3">
                     <template v-if="!isClrmLoading">
@@ -572,117 +664,6 @@
                     </template>
                   </div>
                 </div>
-                <!-- 追加情報 -->
-                <!-- HWIC警告 -->
-                <template v-if="chwckifHWIC(selCrlm.detail)">
-                  <div class="columns is-gapless">
-                    <div class="column">
-                      <b-icon
-                        pack="fas"
-                        icon="exclamation"
-                        size="is-large"
-                        type="is-danger"
-                      ></b-icon>
-                      <span class="has-text-danger"
-                        ><b>[Absent - Homework] mismatch exists.</b></span
-                      >
-                    </div>
-                  </div>
-                </template>
-
-                <div
-                  class="columns is-gapless"
-                  :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
-                >
-                  <!-- <div class="columns is-gapless"> -->
-                  <!-- <div class="column"></div> -->
-                  <div class="column">
-                    <!-- Sync status -->
-                    <template v-if="selCrlm.syncdone">
-                      <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
-                    </template>
-                    <template v-else-if="selCrlm.syncdone === false">
-                      <b-icon
-                        pack="fas"
-                        icon="star-half-alt"
-                        size="is-large"
-                        type="is-syncsome"
-                      ></b-icon>
-                    </template>
-                    <template v-else></template>
-                  </div>
-                  <div class="column">
-                    <!-- Attendance record completion -->
-                    <template v-if="selCrlm.attndone">
-                      <b-icon
-                        pack="fas"
-                        icon="grin-stars"
-                        size="is-large"
-                        type="is-attndone"
-                      ></b-icon>
-                    </template>
-                    <template v-else-if="selCrlm.attndone === false"></template>
-                    <template v-else></template>
-                  </div>
-                  <div class="column">
-                    <!-- 手動アップロード -->
-
-                    <template v-if="isClrmNeedAppSync">
-                      <template v-if="!isClrmAppSyncUploading">
-                        <b-button
-                          pack="fas"
-                          icon-left="sync-alt"
-                          size="is-large"
-                          @click="manageupdateClrmAllAPI"
-                          >Force Sync</b-button
-                        >
-                        <template
-                          v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
-                        >
-                          <!-- <template v-if="ClrmAppSyncStateShow"> -->
-                          <template v-if="ClrmAppSyncState">
-                            <b-icon
-                              pack="fas"
-                              icon="check-circle"
-                              size="is-large"
-                              type="is-success"
-                            />
-                            <span class="is-text-2 has-text-weight-bold is-syncdone"
-                              >Sync Success</span
-                            >
-                          </template>
-                          <template v-else>
-                            <b-icon
-                              pack="fas"
-                              icon="times-circle"
-                              size="is-large"
-                              type="is-danger"
-                            />
-                            <span class="is-text-2 has-text-weight-bold"
-                              >Sync Failed. Please try again.</span
-                            >
-                          </template>
-                        </template>
-                      </template>
-                      <template v-else>
-                        <span class="subtitle is-3 has-text-black">(Uploading...)</span>
-                        <b-loading
-                          :is-full-page="false"
-                          :active.sync="isClrmAppSyncUploading"
-                          :can-cancel="false"
-                        >
-                          <b-icon
-                            pack="fas"
-                            icon="sync-alt"
-                            size="is-large"
-                            custom-class="fa-spin"
-                          ></b-icon>
-                        </b-loading>
-                      </template>
-                    </template>
-                  </div>
-                </div>
-                <!-- </div> -->
               </div>
               <div class="column f18">
                 <!-- <b-notification :closable="false">
@@ -1028,8 +1009,8 @@
                     >
                       <!-- :class="getIsDoneToday(yitem.newest)" -->
                       <div class="columns is-gapless">
-                        <!-- Sync status -->
                         <div class="column">
+                          <!-- Sync status -->
                           <template v-if="yitem.syncdone">
                             <b-icon
                               pack="fas"
@@ -1048,8 +1029,8 @@
                           </template>
                           <template v-else></template>
                         </div>
-                        <!-- Attendance record completion -->
                         <div class="column">
+                          <!-- Attendance record completion -->
                           <template v-if="yitem.attndone">
                             <b-icon
                               pack="fas"
@@ -1060,17 +1041,6 @@
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
                           <template v-else></template>
-                        </div>
-                        <!-- Attendance record completion -->
-                        <div class="column">
-                          <template v-if="chwckifHWIC(yitem.detail)">
-                            <b-icon
-                              pack="fas"
-                              icon="exclamation"
-                              size="is-large"
-                              type="is-danger"
-                            ></b-icon>
-                          </template>
                         </div>
                       </div>
                     </td>
@@ -2384,7 +2354,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.06",
+        version: "1.05",
       },
       ds: {
         clrms: null,
@@ -3536,10 +3506,8 @@ export default {
       tgt.attndone = ret.length === attnsum && ret.length !== 0 ? true : attnsum > 0 ? false : null;
       tgt.syncdone =
         ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
-      tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
-      if (this.checkAttnHWConsistency() == true) {
-        tgt.detail += "hwic";
-      }
+      tgt.detail = ret.length + "," + syncedsum + "," + attnsum;
+      // if (this.checkAttnHWConsistency() == true) {
     },
 
     //   const newest = ret.reduce((a, b) =>
@@ -4024,7 +3992,7 @@ export default {
     //   // }
     // },
     // chkClassesSum() {
-    //   // if (this.dataset.ClrmsChk.length < 1) {
+    //   // if (this.dataset.ClrmsChk.length <span 1) {
     //   this.listClrmsDataIDCheck(this.sett.alias.name);
     //   // }
     // },
@@ -4241,8 +4209,8 @@ export default {
             this.$buefy.dialog.alert({
               title: "Error",
               message:
-                // "<span class='f23'>Absent - Homework  mismatch exixts.</span>" +
-                "Absent <-> Homework<br />  mismatch exixts." + "<br /><br />Please check.",
+                "<span class='f23'>Absent - Homework Incompletion mismatch exixts.</span>" +
+                "<br /><br />Please check.",
               type: "is-danger",
               hasIcon: true,
               icon: "times-circle",
@@ -4756,10 +4724,6 @@ export default {
         case 3:
           return "table is-striped";
       }
-    },
-    chwckifHWIC(val) {
-      // return val.includes("hwic");
-      return val == undefined || val == null ? false : val.includes("hwic");
     },
     checkifAbsent(comm) {
       if (comm === undefined || comm === null) {
