@@ -3537,11 +3537,9 @@ export default {
       tgt.syncdone =
         ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
       tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
-      // if (this.getThisWeekAttnJSON[tgt.dayofweek] !== "attn01") {
-      //   if (this.checkAttnHWConsistency() == true) {
-      //     tgt.detail += "hwic";
-      //   }
-      // }
+      if (this.checkAttnHWConsistency() == true) {
+        tgt.detail += "hwic";
+      }
     },
 
     //   const newest = ret.reduce((a, b) =>
