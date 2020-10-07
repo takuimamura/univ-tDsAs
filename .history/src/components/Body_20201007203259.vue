@@ -29,13 +29,7 @@
         </b-field>
         <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
 
-        <b-field>
-          <!-- <b-button @click="DEVcreateMisc">DEVcreateMisc</b-button> -->
-          <!-- <b-button @click="DEVcreateMisc2">DEVcreateMisc2</b-button> -->
-          <!-- <b-button @click="FIREcreateMisc">FIREcreateMisc</b-button> -->
-          <!-- <b-button @click="FIREcreateMiscCo">FIREcreateMiscCo</b-button> -->
-          <!-- <b-button @click="FIREQueryMiscCo">FIREQueryMiscCo</b-button> -->
-        </b-field>
+        <b-field></b-field>
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
         TESTarr0{{ TESTarr0 }} |
@@ -46,14 +40,16 @@
             {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clockout }}- {{ ins.detail }}
           </li>
         </ul>
-        --c2-- <br />
+        --c2--
+        <br />
         <ul>
           <li v-for="inss in sett.dummy2" :key="inss.id">
             {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
             <!-- {{ inss }} -->
           </li>
         </ul>
-        --c3-- <br />
+        --c3--
+        <br />
         <ul>
           <li v-for="inss in sett.dummy3" :key="inss.id">
             {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
@@ -69,18 +65,6 @@
         <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
         <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
         <!-- 上部表示 -->
-        <!-- TESTarr0 -
-        <ul>
-          <li v-for="r in TESTarr0" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr1
-        <ul>
-          <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>TESTarr2
-        <ul>
-          <li v-for="r in TESTarr2" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
-        </ul>-->
-        <!-- TESTarr1 - {{TESTarr1 }}      <br /> -->
-        <!-- TESTarr2 - {{TESTarr2 }}      <br /> -->
         <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
         <b-icon
           icon="exclamation-triangle"
@@ -462,9 +446,9 @@
                     <b-table :data="yourattendancesMonth">
                       <!-- <b-table :data="instructor.yourattendances"> -->
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">
-                          {{ getDateMDddd(props.row.date) }}
-                        </b-table-column>
+                        <b-table-column field="date" label="Date" width="150">{{
+                          getDateMDddd(props.row.date)
+                        }}</b-table-column>
 
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
@@ -475,9 +459,9 @@
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
 
-                        <b-table-column field="detail" label="Note">
-                          {{ props.row.detail }}
-                        </b-table-column>
+                        <b-table-column field="detail" label="Note">{{
+                          props.row.detail
+                        }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -532,9 +516,9 @@
                     @input="selectClassroomClear()"
                   >
                     <!-- @input="evalCriteriaSelectChange()" -->
-                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">
-                      {{ n.name }}
-                    </option>
+                    <option v-for="n in instructor.nameConv" :key="n.username" :value="n.name">{{
+                      n.name
+                    }}</option>
                   </b-select>
                   {{ yourClasses.length }} / {{ dataset.allClasses.length }}
                   <!-- <b-button
@@ -1188,9 +1172,9 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">{{
-                        att.modeset[`${att.mode}`].barcaption
-                      }}</span>
+                      <span style="font-size: 28px; color: black;">
+                        {{ att.modeset[`${att.mode}`].barcaption }}
+                      </span>
                     </b-progress>
                   </div>
                 </div>
@@ -1270,9 +1254,9 @@
                     </template>
                     <template v-else></template>-->
 
-                    <template v-if="sett.devcheck">{{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                    }}</template>
+                    <template v-if="sett.devcheck">
+                      {{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}
+                    </template>
                   </b-table-column>
                   <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
 
@@ -1641,9 +1625,9 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span class="is-size-5 has-text-grey">
-                              {{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}
-                            </span>
+                            <span class="is-size-5 has-text-grey">{{
+                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                            }}</span>
                           </div>
 
                           <div class="level-right title is-4">
@@ -1760,9 +1744,9 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{ indiRow[k.evl] }}
-                                          </span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{
+                                            indiRow[k.evl]
+                                          }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -2020,9 +2004,9 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{ indiRow[k.evl] }}
-                                        </span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{
+                                          indiRow[k.evl]
+                                        }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -2325,9 +2309,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">{{
-                              st.classcount + " " + st.studentname
-                            }}</span>
+                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">
+                              {{ st.classcount + " " + st.studentname }}
+                            </span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -3003,7 +2987,7 @@ export default {
         ],
         instCols: [
           {
-            field: "id",
+            field: "uid",
             label: "Name",
             sortable: true,
             searchable: true,
@@ -3258,6 +3242,7 @@ export default {
     };
   },
   methods: {
+    // null も評価するソート
     arrayCompare(a, b, desc = true) {
       if (a !== a && b !== b) return 0;
       if (a !== a) return 1;
@@ -3286,57 +3271,9 @@ export default {
       //   ...this.instructor.attendances,
       //   ...InstsData.data.listInsts.items
       // );
-      const allinst = InstsData.data.listInsts.items;
-      // .filter(
-      //   (x) => x.uid === this.authdetail.username
-      // );
-      // this.instructor.attendances = allinst;
-      const allclin = allinst
+      const allclin = InstsData.data.listInsts.items
         .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
-
-      // const allclin = allinst.sort(function(a, b) {
-      //   if (a.date < b.date) return -1;
-      //   if (a.date > b.date) return 1;
-      //   if (a.clockout < b.clockout) return -1;
-      //   if (a.clockout > b.clockout) return 1;
-      //   return 0;
-      // });
-
-      // .filter((x) => !x.clockout);
-      this.sett.dummy2 = allclin;
-      // const allclin = allinst.filter((x) => !x.clockout);
-      // this.sett.dummy2 = allclin;
-      // const allclinOut = allclin.reduce((a, v) => {
-      //   if (!a.some((e) => e.date === v.date)) {
-      //     a.push(v);
-      //   }
-      //   return a;
-      // }, []);
-
-      // const allclinOut = allinst.filter((x) => x.clockout);
-      // this.sett.dummy3 = allclinOut;
-
-      // this.instructor.attendances = allinst
-      //   .sort(function(a, b) {
-      //     if (a.date < b.date) return -1;
-      //     if (a.date > b.date) return 1;
-      //     return 0;
-      //   })
-      //   .sort(function(a, b) {
-      //     if (a.clockout < b.clockout) return -1;
-      //     if (a.clockout > b.clockout) return 1;
-      //     return 0;
-      //   })
-
-      //   .reduce((a, v) => {
-      //     if (!a.some((e) => e.date === v.date)) {
-      //       a.push(v);
-      //     }
-      //     return a;
-      //   }, []);
-
-      //自分の勤怠
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
       this.instructor.yourattendances = allclin
         .filter((x) => x.uid === this.authdetail.username)
         .reduce((a, v) => {
@@ -3350,8 +3287,6 @@ export default {
           if (a.date > b.date) return 1;
           return 0;
         });
-
-      this.sett.dummy3 = this.instructor.yourattendances;
 
       ////2020Autumn clockinとoutの重複除去
     },
@@ -3547,17 +3482,6 @@ export default {
     ///// inst
     ///// Misc
     ///// Misc
-    // async createMiscClockIn() {
-    //   const cr = {
-    //     type: "ClockIn",
-    //     name: this.$dayjs().format("YYYY-MM-DD"),
-    //     detail: JSON.stringify({
-    //       name: this.authdetail.username,
-    //       clockIn: this.$dayjs(),
-    //       clockOut: this.$dayjs()
-    //     })
-    //   };
-    // },
     async createMiscClockInOut(typ, arr, ou) {
       const cr = {
         type: typ,
@@ -3571,76 +3495,6 @@ export default {
       };
       await DataStore.save(new Misc(cr));
     },
-
-    // async DEVcreateMisc() {
-    //   const cr = {
-    //     type: "classRoom",
-    //     name: this.ds.crMisc.name,
-    //     detail: JSON.stringify({
-    //       oldest: this.$dayjs(),
-    //       newest: new Date()
-    //     })
-    //   };
-    //   try {
-    //     await DataStore.save(new Misc(cr));
-    //   } catch (err) {
-    //     this.writeFail("MiscCreate", cr, err);
-    //   }
-
-    //   this.fetchMiscs();
-    // },
-    // async DEVcreateMisc2() {
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", "classRoom").name("eq", this.ds.crMisc.name)
-    //   );
-    //   // table(original);
-    //   const outt = original.find(arr => {
-    //     return arr.detail.length > 0;
-    //   });
-    //   const dt = JSON.parse(outt.detail);
-    //   return dt;
-    // },
-    // async FIREQueryMiscCo() {
-    //   const cr = {
-    //     type: "TEST",
-    //     name: "TEST"
-    //   };
-    //   const original = await DataStore.query(Misc, c =>
-    //     c.type("eq", cr.type).name("eq", cr.name)
-    //   );
-    //   this.sett.dummy = original.length;
-    // },
-
-    // async FIREcreateMisc() {
-    //   const cr = {
-    //     type: "TEST",
-    //     name: this.sett.dummy,
-    //     detail: this.$dayjs().format("H:mm:ss")
-    //   };
-    //   try {
-    //     await DataStore.save(new Misc(cr));
-    //   } catch (err) {
-    //     this.writeFail("MiscCreate", cr, err);
-    //   }
-    // },
-    //// クラス毎のサマリDB 一括作成
-
-    // <p class="subtitle">学期ごと、開講前の設定作業</p>
-    // allClasses: ClssJSON の 全クラス分をMiscに構築。
-    // async createMiscClassSummary() {
-    //   await Promise.all(
-    //     this.dataset.allClasses.forEach((s) => {
-    //       DataStore.save(
-    //         new Misc({
-    //           type: this.ds.typeMisc.classSum,
-    //           name: s.id,
-    //         })
-    //       );
-    //     })
-    //   );
-    //   // warn("createMiscClassSummary done");
-    //   // this.fetchMiscs();
-    // },
 
     //// クラス毎のサマリDB 更新
     async reflectClassSummary(classcode, dow) {
@@ -4068,8 +3922,8 @@ export default {
     },
 
     ////////////Fail処理
-    writeFail(dest, arr, ret) {
-      localStorage["appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")] =
+    async writeFail(dest, arr, ret) {
+      const dtl =
         this.getStartingUrl +
         ", auth:" +
         this.authdetail.name +
@@ -4077,9 +3931,17 @@ export default {
         JSON.stringify(arr) +
         ", result:" +
         JSON.stringify(ret);
-      // const lc =localStorage.failUpdate == undefined ? "" : localStorage.failUpdate;
-      // localStorage.failUpdate = lc + "| input:" + JSON.stringify(arr) +
-      //   ", result:" + JSON.stringify(ret);
+      try {
+        const crArr = {
+          type: "writeFail",
+          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: dtl,
+        };
+        await DataStore.save(new Misc(dest));
+        // await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        localStorage["appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")] = dtl;
+      }
     },
     async salvageFail() {
       let arr = [];
@@ -4097,6 +3959,8 @@ export default {
         detail: arr,
       };
       try {
+        await DataStore.save(new Misc({ crArr }));
+
         for (var key2 in localStorage) {
           if (key2.match(/appFail/)) {
             localStorage.removeItem(key2);
@@ -4457,12 +4321,29 @@ export default {
     //     this.reloadApp("reloadIfUndefinedName");
     //   }
     // },
-    reloadApp(str) {
-      this.writeFail(
-        str,
-        this.dayACjsdddMMMD, //this.sett.today,
-        this.$dayjs().format("YYYY/MM/DD")
-      );
+    // reloadApp(str) {
+    //   this.writeFail(
+    //     str,
+    //     this.dayACjsdddMMMD, //this.sett.today,
+    //     this.$dayjs().format("YYYY/MM/DD")
+    //   );
+    //   this.$router.go();
+    // },
+    async reloadApp(str) {
+      try {
+        const crArr = {
+          type: "reloadApp",
+          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: str,
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        this.writeFail(
+          str,
+          this.dayACjsdddMMMD, //this.sett.today,
+          "Staff" + this.$dayjs().format("YYYY/MM/DD")
+        );
+      }
       this.$router.go();
     },
     setcurrentAcDate() {
