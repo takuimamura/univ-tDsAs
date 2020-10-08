@@ -1,5 +1,4 @@
 [
-  { "id": "class", "date": "2020/09/30", "lessonnum": "0", "lessonstr": "Week0", "dayofweek": "Wed", "weeknum": "40", "attendance":"attn01", "hwic":"" },
   { "id": "class", "date": "2020/10/01", "lessonnum": "1", "lessonstr": "Week1", "dayofweek": "Thu", "weeknum": "40", "attendance":"attn01", "hwic":"" },
   { "id": "class", "date": "2020/10/02", "lessonnum": "1", "lessonstr": "Week1", "dayofweek": "Fri", "weeknum": "40", "attendance":"attn01", "hwic":"" },
   { "id": "class", "date": "2020/10/05", "lessonnum": "1", "lessonstr": "Week1", "dayofweek": "Mon", "weeknum": "41", "attendance":"attn01", "hwic":"" },

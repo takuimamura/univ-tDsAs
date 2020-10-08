@@ -1474,8 +1474,6 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn14) }}
                   </b-table-column>
-
-                  <!-- 出欠入力欄 -->
                   <b-table-column
                     field="attendrec"
                     :visible="cRoom.showAttenHist === 0"
@@ -4836,15 +4834,14 @@ export default {
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
 
-        ////// 出欠記録の編集許可
-        //// 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        this.isdeadlinelenient = true;
+        if (
+          this.dayjslenient.includes(this.selCrlm.dayofweek)
+          // this.sett.dayofweekslenient.includes(this.selCrlm.dayofweek)
+        ) {
+          this.isdeadlinelenient = true;
+        } else {
+          this.isdeadlinelenient = false;
+        }
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
@@ -5126,10 +5123,10 @@ export default {
     },
     //////////////////// computed 日付関連 ////////////////////
     dayjslenient() {
-      // 出欠履歴許可する日の配列
+      // 出欠履歴許可
       return [
         this.$dayjs(this.sett.ddate)
-          .add(-1, "d") // 翻る日数
+          .add(-1, "d")
           .format("ddd"),
         this.$dayjs(this.sett.ddate)
           .add(-2, "d")

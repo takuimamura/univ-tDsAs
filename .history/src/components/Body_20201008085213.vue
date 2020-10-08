@@ -17,17 +17,45 @@
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
       <div v-if="getStartingUrl === 'localhost'">
-        <!-- <b-field>
+        <b-field>
           <b-modal :active.sync="sett.isModalActive"></b-modal>
+          <!-- <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button> -->
+          <!-- <b-button @click="devClassSummary(ds.crMisc.name)">devClassSummary</b-button> -->
           <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
           <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
           <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
           <b-button @click="createMisc(ds.crMisc)">Create Misc</b-button>
           <b-button @click="getMiscId">get Misc id</b-button>
-        </b-field> -->
-        <!-- <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article> -->
+        </b-field>
+        <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article>
+
+        <b-field></b-field>
         <b-input v-model="sett.dummy"></b-input>
         <!-- {{ sett.dummy }} -->
+        <!-- <b-button @click="fetchInsts()">fetchInsts</b-button> -->
+        <!-- instructor.yourattendances {{ instructor.yourattendances }} -->
+        <ul>
+          <li v-for="ins in instructor.yourattendances" :key="ins.id">
+            {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clockout }}- {{ ins.detail }}
+          </li>
+        </ul>
+        --c2--
+        <br />
+        <ul>
+          <li v-for="inss in sett.dummy2" :key="inss.id">
+            {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
+            <!-- {{ inss }} -->
+          </li>
+        </ul>
+        --c3--
+        <br />
+        <ul>
+          <li v-for="inss in sett.dummy3" :key="inss.id">
+            {{ inss.date }}- {{ inss.uid }}- {{ inss.clockin }}- {{ inss.clockout }}-
+            <!-- {{ inss }} -->
+          </li>
+        </ul>
+
         <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
         <ul>
           <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
@@ -43,7 +71,30 @@
         ></b-icon>
         <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
         <!-- app: {{ app }} -->
+
+        <!--■■■開発用 ローカル限定表示■■■-->
+        sett {{ sett.alias }} | authdetai {{ authdetail }}
+        <br />
+        manage.dow {{ manage.dow }}
+        <br />
+        <template v-if="classmembers.length > 0">{{ classmembers[0] }}</template>
+        <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
+        <template v-if="sett.sw1">
+          <div>
+            <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+            <!-- -- {{ isAuthenticated }}          <br /> -->
+            <!-- user: {{ authd }} -->
+            <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+            <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+            <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
+          </div>
+          <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+          <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+        </template>
+
         <b-modal :active.sync="sett.isModalActive"></b-modal>
+
+        <!-- <b-button @click="initallClassesDev">initallClassesDev</b-button> -->
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
         sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }}
@@ -66,69 +117,46 @@
         >
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
+
+        <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+        <!-- sett.alias:: {{ sett.alias }} -->
+        <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+        <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+        <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
+        dummy1::::::{{ sett.dummy1 }}
+        <br />
+        dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
+        <br />
+        allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }} InstByday::{{
+          dataset.ClrmsInstByday.length
+        }}
+        | Clrms::{{ dataset.Clrms.length }} | ClrmsChk::{{ dataset.ClrmsChk.length }} | class:
+        {{ classmembers.length }} |
+        <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
+        -- classroomIndex {{ classroomIndex }} | selCrlm {{ selCrlm }} |
+        <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
+        <br />
+        getTodayJSON: {{ getTodayJSON }} |
+        <br />
+        getTodayJSON今日:
+        {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+        <br />
+        getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+        <br />
+        getTodayJSON.hwic {{ getTodayJSON.hwic }} |
+        <br />
+        <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
+        <!-- getDayChainUntilPrevJSON: {{getDayChainUntilPrevJSON}}|        <br /> -->
+        <!-- monthChainUntilCurrentMonthJSON: {{monthChainUntilCurrentMonthJSON}}        <br /> -->
+        <!-- {{indiRow}} -->
+        <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
         <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
         <template v-if="sett.devcheck">
-          <!--■■■開発用 ローカル限定表示■■■-->
-          sett {{ sett.alias }} | authdetai {{ authdetail }}
-          <br />
-          manage.dow {{ manage.dow }}
-          <br />
-          <template v-if="classmembers.length > 0">{{ classmembers[0] }}</template>
-          <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
-          <template v-if="sett.sw1">
-            <div>
-              <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-              <!-- -- {{ isAuthenticated }}          <br /> -->
-              <!-- user: {{ authd }} -->
-              <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-              <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-              <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-            </div>
-            <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-            <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-          </template>
-          <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-          <!-- sett.alias:: {{ sett.alias }} -->
-          <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
-          <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
-          <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-          dummy1::::::{{ sett.dummy1 }}
-          <br />
-          dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
-          <br />
-          allClasses; {{ dataset.allClasses.length }} | yours |
-          {{ yourClasses.length }} InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{
-            dataset.Clrms.length
-          }}
-          | ClrmsChk::{{ dataset.ClrmsChk.length }} | class: {{ classmembers.length }} |
-          <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-          -- classroomIndex {{ classroomIndex }} | selCrlm {{ selCrlm }} |
-          <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
-          <br />
-          getTodayJSON: {{ getTodayJSON }} |
-          <br />
-          getTodayJSON今日:
-          {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
-          <br />
-          getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}<br />
-          getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}<br />
-          getTodayJSON.hwic {{ getTodayJSON.hwic }} |<br />
-          isEnteredselCrlm: {{ isEnteredselCrlm }}
-          <br />
-          <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
-          <!-- getDayChainUntilPrevJSON: {{getDayChainUntilPrevJSON}}|        <br /> -->
-          <!-- monthChainUntilCurrentMonthJSON: {{monthChainUntilCurrentMonthJSON}}        <br /> -->
-          <!-- {{indiRow}} -->
-          <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
           <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
           <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
           <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
-          <ul>
-            <li v-for="ins in instructor.yourattendances" :key="ins.id">
-              {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clockout }}- {{ ins.detail }}
-            </li>
-          </ul>
         </template>
+        x
       </div>
 
       <!-- 管理用 -->
@@ -546,7 +574,7 @@
                 </div>
                 <!-- 追加情報 -->
                 <!-- HWIC警告 -->
-                <template v-if="checkIfHwic(selCrlm.detail)">
+                <template v-if="chwckifHWIC(selCrlm.detail)">
                   <div class="columns is-gapless">
                     <div class="column">
                       <b-icon
@@ -555,7 +583,7 @@
                         size="is-large"
                         type="is-danger"
                       ></b-icon>
-                      <span class="has-text-danger f23"
+                      <span class="has-text-danger"
                         ><b>[Absent - Homework] mismatch exists.</b></span
                       >
                     </div>
@@ -1035,7 +1063,7 @@
                         </div>
                         <!-- Attendance record completion -->
                         <div class="column">
-                          <template v-if="checkIfHwic(yitem.detail)">
+                          <template v-if="chwckifHWIC(yitem.detail)">
                             <b-icon
                               pack="fas"
                               icon="exclamation"
@@ -1083,7 +1111,6 @@
                   >{{ selCrlm.classtitle }}</div>-->
                 </div>
               </div>
-              <!-- UI in evaluation view -->
               <div class="level-right">
                 <div class="level-item" v-show="cRoom.showIndividual">
                   <b-switch v-model="cRoom.showIndiList">
@@ -1182,8 +1209,8 @@
                 </div>
               </div>
             </nav>
-
             <section v-show="!cRoom.showIndividual">
+              <!-- ----------------------------------------------------table------------------------------ -->
               <!-- ----------------------------------------------------table------------------------------ -->
               <!-- --classroom--------------------------------------------table------------------------------ -->
               <!-- {{ classmembers }} -->
@@ -1474,8 +1501,6 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn14) }}
                   </b-table-column>
-
-                  <!-- 出欠入力欄 -->
                   <b-table-column
                     field="attendrec"
                     :visible="cRoom.showAttenHist === 0"
@@ -3327,15 +3352,13 @@ export default {
       );
     },
     async checkAttnHWConsistency(classcode, dow) {
-      ////Lesson 1 is exeption because no hw required yet
-      if (this.getThisWeekHwicJSON[dow] == "") {
-        return false;
-      }
       // 対象のLessonNo.のみをチェック
       let chk = false;
+      const tgtAttn = this.getThisWeekAttnJSON[dow];
+
       const classmems = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
       // let lg = "";
-      for (const rw of classmems) {
+      for (const rw of this.classmems) {
         // const str =
         //   rw.studentname +
         //   rw[this.getTodayJSON.attendance] +
@@ -3343,10 +3366,7 @@ export default {
         //   rw[this.getTodayJSON.hwic] +
         //   "\n";
 
-        if (
-          rw[this.getThisWeekAttnJSON[dow]] == "not here" &&
-          rw[this.getThisWeekHwicJSON[dow]] !== false
-        ) {
+        if (rw[tgtAttn] == "not here" && rw[this.getTodayJSON.hwic] !== false) {
           chk = true;
           // lg += "NG:" + str;
           // } else {
@@ -3489,7 +3509,9 @@ export default {
       });
       // tgt.newest = newest._lastChangedAt;
       // tgt.oldest = oldest._lastChangedAt;
+
       //       )
+      // const initialValue = 0;
       const syncedsum = ret.reduce((accumulator, current) => {
         return (
           accumulator +
@@ -3516,9 +3538,11 @@ export default {
       tgt.syncdone =
         ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
       tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
-      if ((await this.checkAttnHWConsistency(tgt.id, tgt.dayofweek)) == true) {
-        tgt.detail += "hwic";
-      }
+      // if (this.getThisWeekAttnJSON[tgt.dayofweek] !== "attn01") {
+      //   if (this.checkAttnHWConsistency() == true) {
+      //     tgt.detail += "hwic";
+      //   }
+      // }
     },
 
     //   const newest = ret.reduce((a, b) =>
@@ -4206,7 +4230,7 @@ export default {
     initializeInstMounted() {
       this.workdateValication();
     },
-    async periodicValidation() {
+    periodicValidation() {
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
@@ -4215,15 +4239,13 @@ export default {
         // 部屋から出たのか
         if (this.isEnteredselCrlm) {
           //欠席と宿題の齟齬チェック
-          if (
-            (await this.checkAttnHWConsistency(this.selCrlm.id, this.selCrlm.dayofweek)) == true
-          ) {
+          if (this.checkAttnHWConsistency(this.selCrlm.id, this.selCrlm.dayofweek) == true) {
             //警告
             this.$buefy.dialog.alert({
               title: "Error",
               message:
-                "<span class='f30'>Absent <-> Homework<br />  mismatch exixts." +
-                "<br /><br />Please check.</span>",
+                // "<span class='f23'>Absent - Homework  mismatch exixts.</span>" +
+                "Absent <-> Homework<br />  mismatch exixts." + "<br /><br />Please check.",
               type: "is-danger",
               hasIcon: true,
               icon: "times-circle",
@@ -4738,7 +4760,7 @@ export default {
           return "table is-striped";
       }
     },
-    checkIfHwic(val) {
+    chwckifHWIC(val) {
       // return val.includes("hwic");
       return val == undefined || val == null ? false : val.includes("hwic");
     },
@@ -4818,9 +4840,9 @@ export default {
       // this.classmembers.push(... classmem;
       // this.classmembers = classmem;
       this.classmembers = [...classmem];
-
+      // // HW の文字列BooleanをBooleanに変換
+      //当日実施クラスのみ（出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
       if (this.selCrlm.dayofweek === this.dayjsddd) {
-        ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
           (item) => item.id === this.selCrlm.id
@@ -4831,20 +4853,18 @@ export default {
         // status参照するためにインデックスを格納
         this.att.mode = this.instructor.yourTodaysClasses[this.classroomIndex].status;
       } else {
-        ////// 過去クラス
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
 
-        ////// 出欠記録の編集許可
-        //// 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        this.isdeadlinelenient = true;
+        if (
+          this.dayjslenient.includes(this.selCrlm.dayofweek)
+          // this.sett.dayofweekslenient.includes(this.selCrlm.dayofweek)
+        ) {
+          this.isdeadlinelenient = true;
+        } else {
+          this.isdeadlinelenient = false;
+        }
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
@@ -5126,10 +5146,10 @@ export default {
     },
     //////////////////// computed 日付関連 ////////////////////
     dayjslenient() {
-      // 出欠履歴許可する日の配列
+      // 出欠履歴許可
       return [
         this.$dayjs(this.sett.ddate)
-          .add(-1, "d") // 翻る日数
+          .add(-1, "d")
           .format("ddd"),
         this.$dayjs(this.sett.ddate)
           .add(-2, "d")
@@ -5186,12 +5206,6 @@ export default {
       return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
         .map((m) => ({ day: m.dayofweek, attn: m.attendance }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.attn }), {});
-    },
-    getThisWeekHwicJSON: function() {
-      //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, hwic: m.hwic }))
-        .reduce((obj, item) => ({ ...obj, [item.day]: item.hwic }), {});
     },
     dayChainJSON: function() {
       // 曜日の縦の並びで日程を取得
@@ -5420,4 +5434,5 @@ export default {
 
 <style lang="scss" src="./styles.scss"></style>
 <style lang="css" src="./styles.css"></style>
+
 <!-- <style scoped></style>-->

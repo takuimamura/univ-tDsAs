@@ -1474,8 +1474,6 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn14) }}
                   </b-table-column>
-
-                  <!-- 出欠入力欄 -->
                   <b-table-column
                     field="attendrec"
                     :visible="cRoom.showAttenHist === 0"
@@ -4844,7 +4842,7 @@ export default {
         //   this.isdeadlinelenient = false;
         // }
         //// 出欠記録の編集許可： 制限しない
-        this.isdeadlinelenient = true;
+        this.isdeadlinelenient = false;
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;

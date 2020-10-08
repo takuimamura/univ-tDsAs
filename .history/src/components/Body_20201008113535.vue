@@ -555,7 +555,7 @@
                         size="is-large"
                         type="is-danger"
                       ></b-icon>
-                      <span class="has-text-danger f23"
+                      <span class="has-text-danger"
                         ><b>[Absent - Homework] mismatch exists.</b></span
                       >
                     </div>
@@ -1474,8 +1474,6 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn14) }}
                   </b-table-column>
-
-                  <!-- 出欠入力欄 -->
                   <b-table-column
                     field="attendrec"
                     :visible="cRoom.showAttenHist === 0"
@@ -4818,9 +4816,9 @@ export default {
       // this.classmembers.push(... classmem;
       // this.classmembers = classmem;
       this.classmembers = [...classmem];
-
+      // // HW の文字列BooleanをBooleanに変換
+      //当日実施クラスのみ（出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
       if (this.selCrlm.dayofweek === this.dayjsddd) {
-        ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
           (item) => item.id === this.selCrlm.id
@@ -4831,20 +4829,18 @@ export default {
         // status参照するためにインデックスを格納
         this.att.mode = this.instructor.yourTodaysClasses[this.classroomIndex].status;
       } else {
-        ////// 過去クラス
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
 
-        ////// 出欠記録の編集許可
-        //// 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        this.isdeadlinelenient = true;
+        if (
+          this.dayjslenient.includes(this.selCrlm.dayofweek)
+          // this.sett.dayofweekslenient.includes(this.selCrlm.dayofweek)
+        ) {
+          this.isdeadlinelenient = true;
+        } else {
+          this.isdeadlinelenient = false;
+        }
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
@@ -5126,10 +5122,10 @@ export default {
     },
     //////////////////// computed 日付関連 ////////////////////
     dayjslenient() {
-      // 出欠履歴許可する日の配列
+      // 出欠履歴許可
       return [
         this.$dayjs(this.sett.ddate)
-          .add(-1, "d") // 翻る日数
+          .add(-1, "d")
           .format("ddd"),
         this.$dayjs(this.sett.ddate)
           .add(-2, "d")
