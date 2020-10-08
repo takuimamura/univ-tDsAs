@@ -1052,15 +1052,6 @@
             </section>
             <br />
             <br />
-
-            <!-- リセット -->
-            <div class="columns">
-              <div class="column">
-                <b-button size="is-small" @click="clearAllDataStoreConfirm()"
-                  >Clear all local cache data</b-button
-                >
-              </div>
-            </div>
           </b-tab-item>
 
           <!-- classroom --------------------------------------------------------------------classroom -->
@@ -2328,7 +2319,7 @@ import {
 // // createClrm,
 import {
   createInst,
-  createMisc,
+  // createMisc,
   // updateCinf,
   //   updateCldr,
   updateClrm,
@@ -2368,7 +2359,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.067",
+        version: "1.065",
       },
       ds: {
         clrms: null,
@@ -3213,38 +3204,6 @@ export default {
   },
   methods: {
     // null も評価するソート
-    clearAllDataStoreConfirm() {
-      this.$buefy.dialog.confirm({
-        message: "Are you sure this deletes all the data in your device?",
-        size: "is-large",
-        onConfirm: () => {
-          this.clearAllDataStore();
-        },
-      });
-    },
-    async clearAllDataStore() {
-      await DataStore.clear();
-      /////ログ
-      const cr = {
-        type: "DataStoreClear",
-        name: this.authdetail.username,
-        detail: this.$dayjs().format("YYYY-MM-DD HH:mm"),
-      };
-      this.$buefy.toast.open({
-        message: "<span style='font-size:60px'>Please wait...</span>",
-        type: "is-danger",
-        size: "is-large",
-        duration: 5000,
-      });
-      await this.createMiscAPI(cr);
-      await this.createMisc(cr);
-      this.writeFail(
-        "DataStoreClear",
-        this.authdetail.username, //this.sett.today,
-        this.$dayjs().format("YYYY-MM-DD HH:mm")
-      );
-      this.$router.go();
-    },
     arrayCompare(a, b, desc = true) {
       if (a !== a && b !== b) return 0;
       if (a !== a) return 1;
@@ -3324,23 +3283,6 @@ export default {
         this.writeFail("InstUpdate", upArr, err);
       }
     },
-    async createMiscAPI(crArr) {
-      try {
-        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
-        return true;
-      } catch (err) {
-        this.writeFail("MiscCreateAPI", crArr, err);
-        return err;
-      }
-    },
-    async createMisc(arr) {
-      try {
-        await DataStore.save(new Misc(arr));
-      } catch (err) {
-        this.writeFail("MiscCreate", arr, err);
-      }
-    },
-
     async updateClrmAPI(uid, uidx, fname, fval) {
       const upArr = {
         id: uid,
@@ -3631,6 +3573,13 @@ export default {
     //   return outt !== undefined ? JSON.parse(outt.detail) : "";
     // },
 
+    async createMisc(arr) {
+      try {
+        await DataStore.save(new Misc(arr));
+      } catch (err) {
+        this.writeFail("MiscCreate", arr, err);
+      }
+    },
     async getMiscId(cr) {
       if (!cr) {
         cr = this.ds.crMisc;

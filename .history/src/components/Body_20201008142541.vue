@@ -2368,7 +2368,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.067",
+        version: "1.065",
       },
       ds: {
         clrms: null,
@@ -3230,12 +3230,6 @@ export default {
         name: this.authdetail.username,
         detail: this.$dayjs().format("YYYY-MM-DD HH:mm"),
       };
-      this.$buefy.toast.open({
-        message: "<span style='font-size:60px'>Please wait...</span>",
-        type: "is-danger",
-        size: "is-large",
-        duration: 5000,
-      });
       await this.createMiscAPI(cr);
       await this.createMisc(cr);
       this.writeFail(
@@ -3243,7 +3237,6 @@ export default {
         this.authdetail.username, //this.sett.today,
         this.$dayjs().format("YYYY-MM-DD HH:mm")
       );
-      this.$router.go();
     },
     arrayCompare(a, b, desc = true) {
       if (a !== a && b !== b) return 0;
