@@ -114,8 +114,6 @@
           getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}<br />
           getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}<br />
           getTodayJSON.hwic {{ getTodayJSON.hwic }} |<br />
-          getThisWeekHwicJSON[this.selCrlm.dayofweek]
-          {{ getThisWeekHwicJSON[selCrlm.dayofweek] }}|<br />
           isEnteredselCrlm: {{ isEnteredselCrlm }}
           <br />
           <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
@@ -1057,7 +1055,7 @@
             <br />
 
             <!-- リセット -->
-            <!-- <div class="columns">
+            <div class="columns">
               <div class="column">
                 <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
                   <span style="color:#c5c5c5">Clear cache</span>
@@ -1070,7 +1068,7 @@
                   >Clear all local cache data</b-button
                 >
               </div>
-            </div> -->
+            </div>
           </b-tab-item>
 
           <!-- classroom --------------------------------------------------------------------classroom -->
@@ -1245,7 +1243,7 @@
                     numeric
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selCrlm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
                   >
                     <span class="f23">{{ props.row.classcount }}</span>
                   </b-table-column>
@@ -1255,7 +1253,7 @@
                     width="20"
                     sticky
                     sortable
-                    :class="getAttendStatusClass(props.row[selCrlm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
                   >
                     <div class="f30">
                       <b-tag
@@ -1273,7 +1271,7 @@
                     width="50"
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selCrlm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
                     >{{ props.row.studentcode }}</b-table-column
                   >
                   <b-table-column
@@ -1282,7 +1280,7 @@
                     sortable
                     width="220"
                     sticky
-                    :class="getAttendStatusClass(props.row[selCrlm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[getTodayJSON.attendance])"
                   >
                     <!-- <template slot="header" slot-scope="{ column }">
                     <b-button
@@ -1507,13 +1505,13 @@
                           <!-- <b-button @click="updateClrmAll(props.row)">updateClrmAll</b-button> -->
                           <b-field v-show="att.mode < 2">
                             <b-radio-button
-                              v-model="props.row[selCrlm.attnthisweek]"
+                              v-model="props.row[getTodayJSON.attendance]"
                               :native-value="att.modeset[att.mode].title"
                               :type="att.modeset[att.mode].colortype"
                               @input="
                                 updateClrm(
                                   props.row.id,
-                                  selCrlm.attnthisweek,
+                                  getTodayJSON.attendance,
                                   att.modeset[att.mode].title
                                 )
                               "
@@ -1526,13 +1524,13 @@
                             </b-radio-button>
                             <!-- :native-value="att.modeset[2].num" -->
                             <b-radio-button
-                              v-model="props.row[selCrlm.attnthisweek]"
+                              v-model="props.row[getTodayJSON.attendance]"
                               :native-value="att.modeset[att.mode].title2"
                               type="is-danger"
                               @input="
                                 updateClrm(
                                   props.row.id,
-                                  selCrlm.attnthisweek,
+                                  getTodayJSON.attendance,
                                   att.modeset[att.mode].title2
                                 )
                               "
@@ -1553,28 +1551,24 @@
                           <b-field>
                             <span
                               style="color:#ce1836; font-size:20px;"
-                              v-show="getThisWeekHwicJSON[selCrlm.dayofweek] !== ''"
+                              v-show="getTodayJSON.hwic !== ''"
                             >
                               {{
                                 props.row.homeworkincomplete20 +
-                                  (props.row[getThisWeekHwicJSON[selCrlm.dayofweek]] === false
-                                    ? 1
-                                    : 0)
+                                  (props.row[getTodayJSON.hwic] === false ? 1 : 0)
                               }}
                             </span>
                             <span style="color:#fff">-</span>
                             <b-checkbox-button
-                              v-model="props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]"
+                              v-model="props.row[getTodayJSON.hwic]"
                               type="is-danger"
                               rounded
-                              :disabled="
-                                att.mode === 3 || getThisWeekHwicJSON[selCrlm.dayofweek] == ''
-                              "
+                              :disabled="att.mode === 3 || getTodayJSON.hwic == ''"
                               @input="
                                 updateClrm(
                                   props.row.id,
-                                  getThisWeekHwicJSON[selCrlm.dayofweek],
-                                  props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]
+                                  getTodayJSON.hwic,
+                                  props.row[getTodayJSON.hwic]
                                 )
                               "
                             >
@@ -1627,13 +1621,13 @@
 
                             <b-tag
                               rounded
-                              :class="getAttendStatusClass(indiRow[selCrlm.attnthisweek])"
+                              :class="getAttendStatusClass(indiRow[getTodayJSON.attendance])"
                               style="font-size:25px"
                             >
                               {{
-                                indiRow[selCrlm.attnthisweek] === null
+                                indiRow[getTodayJSON.attendance] === null
                                   ? "(attendance unconfirmed)"
-                                  : indiRow[selCrlm.attnthisweek]
+                                  : indiRow[getTodayJSON.attendance]
                               }}
                             </b-tag>
                           </div>
@@ -1664,10 +1658,7 @@
                                             ( incomplete
                                             {{
                                               indiRow.homeworkincomplete20 +
-                                                (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
-                                                false
-                                                  ? 1
-                                                  : 0)
+                                                (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                             }})
                                           </span>
                                         </td>
@@ -1806,10 +1797,7 @@
                                           ( incomplete
                                           {{
                                             indiRow.homeworkincomplete20 +
-                                              (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
-                                              false
-                                                ? 1
-                                                : 0)
+                                              (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                           }})
                                         </span>
                                       </td>
@@ -2299,7 +2287,7 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[selCrlm.attnthisweek])">
+                            <span :class="getIndiAttendClass(st[getTodayJSON.attendance])">
                               {{ st.classcount + " " + st.studentname }}
                             </span>
                           </template>
@@ -2388,7 +2376,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.07",
+        version: "1.068",
         showClearCache: false,
       },
       ds: {
@@ -3434,9 +3422,8 @@ export default {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
-          (updated[this.selCrlm.attnthisweek] = row[this.selCrlm.attnthisweek]),
-            (updated[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]] =
-              row[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]]);
+          (updated[this.getTodayJSON.attendance] = row[this.getTodayJSON.attendance]),
+            (updated[this.getTodayJSON.hwic] = row[this.getTodayJSON.hwic]);
         })
       );
     },
@@ -3452,9 +3439,9 @@ export default {
       for (const rw of classmems) {
         // const str =
         //   rw.studentname +
-        //   rw[this.selCrlm.attnthisweek] +
+        //   rw[this.getTodayJSON.attendance] +
         //   "|" +
-        //   rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]] +
+        //   rw[this.getTodayJSON.hwic] +
         //   "\n";
 
         if (
@@ -3512,9 +3499,8 @@ export default {
       });
 
       // 出欠と宿題は該当週のみ
-      upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
-      upArr[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]] =
-        rw[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]];
+      upArr[this.getTodayJSON.attendance] = rw[this.getTodayJSON.attendance];
+      upArr[this.getTodayJSON.hwic] = rw[this.getTodayJSON.hwic];
 
       try {
         const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -3834,8 +3820,8 @@ export default {
     //       }
     //     });
 
-    //     upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
-    //     upArr[this.getThisWeekHwicJSON[selCrlm.dayofweek]] = rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]];
+    //     upArr[this.getTodayJSON.attendance] = rw[this.getTodayJSON.attendance];
+    //     upArr[this.getTodayJSON.hwic] = rw[this.getTodayJSON.hwic];
 
     //     try {
     //       //        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -4979,7 +4965,7 @@ export default {
     //     if (a.sortid > b.sortid) return 1;
     //     return 0;
     //   });
-    //   this.manage.selAttn = this.selCrlm.attnthisweek;
+    //   this.manage.selAttn = this.getTodayJSON.attendance;
     //   this.manage.classmembersEdit = classmem;
     //   this.manage.isOpenEdit = true;
     // },

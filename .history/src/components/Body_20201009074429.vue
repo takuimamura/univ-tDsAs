@@ -1057,7 +1057,7 @@
             <br />
 
             <!-- リセット -->
-            <!-- <div class="columns">
+            <div class="columns">
               <div class="column">
                 <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
                   <span style="color:#c5c5c5">Clear cache</span>
@@ -1070,7 +1070,7 @@
                   >Clear all local cache data</b-button
                 >
               </div>
-            </div> -->
+            </div>
           </b-tab-item>
 
           <!-- classroom --------------------------------------------------------------------classroom -->
@@ -2388,7 +2388,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.07",
+        version: "1.068",
         showClearCache: false,
       },
       ds: {

@@ -115,7 +115,7 @@
           getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}<br />
           getTodayJSON.hwic {{ getTodayJSON.hwic }} |<br />
           getThisWeekHwicJSON[this.selCrlm.dayofweek]
-          {{ getThisWeekHwicJSON[selCrlm.dayofweek] }}|<br />
+          {{ getThisWeekHwicJSON[this.selCrlm.dayofweek] }}|<br />
           isEnteredselCrlm: {{ isEnteredselCrlm }}
           <br />
           <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
@@ -1057,7 +1057,7 @@
             <br />
 
             <!-- リセット -->
-            <!-- <div class="columns">
+            <div class="columns">
               <div class="column">
                 <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
                   <span style="color:#c5c5c5">Clear cache</span>
@@ -1070,7 +1070,7 @@
                   >Clear all local cache data</b-button
                 >
               </div>
-            </div> -->
+            </div>
           </b-tab-item>
 
           <!-- classroom --------------------------------------------------------------------classroom -->
@@ -1553,28 +1553,24 @@
                           <b-field>
                             <span
                               style="color:#ce1836; font-size:20px;"
-                              v-show="getThisWeekHwicJSON[selCrlm.dayofweek] !== ''"
+                              v-show="getTodayJSON.hwic !== ''"
                             >
                               {{
                                 props.row.homeworkincomplete20 +
-                                  (props.row[getThisWeekHwicJSON[selCrlm.dayofweek]] === false
-                                    ? 1
-                                    : 0)
+                                  (props.row[getTodayJSON.hwic] === false ? 1 : 0)
                               }}
                             </span>
                             <span style="color:#fff">-</span>
                             <b-checkbox-button
-                              v-model="props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]"
+                              v-model="props.row[getTodayJSON.hwic]"
                               type="is-danger"
                               rounded
-                              :disabled="
-                                att.mode === 3 || getThisWeekHwicJSON[selCrlm.dayofweek] == ''
-                              "
+                              :disabled="att.mode === 3 || getTodayJSON.hwic == ''"
                               @input="
                                 updateClrm(
                                   props.row.id,
-                                  getThisWeekHwicJSON[selCrlm.dayofweek],
-                                  props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]
+                                  getTodayJSON.hwic,
+                                  props.row[getTodayJSON.hwic]
                                 )
                               "
                             >
@@ -1664,10 +1660,7 @@
                                             ( incomplete
                                             {{
                                               indiRow.homeworkincomplete20 +
-                                                (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
-                                                false
-                                                  ? 1
-                                                  : 0)
+                                                (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                             }})
                                           </span>
                                         </td>
@@ -1806,10 +1799,7 @@
                                           ( incomplete
                                           {{
                                             indiRow.homeworkincomplete20 +
-                                              (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
-                                              false
-                                                ? 1
-                                                : 0)
+                                              (indiRow[getTodayJSON.hwic] === false ? 1 : 0)
                                           }})
                                         </span>
                                       </td>
@@ -2388,7 +2378,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.07",
+        version: "1.068",
         showClearCache: false,
       },
       ds: {
@@ -3454,7 +3444,7 @@ export default {
         //   rw.studentname +
         //   rw[this.selCrlm.attnthisweek] +
         //   "|" +
-        //   rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]] +
+        //   rw[this.getTodayJSON.hwic] +
         //   "\n";
 
         if (
@@ -3513,8 +3503,7 @@ export default {
 
       // 出欠と宿題は該当週のみ
       upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
-      upArr[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]] =
-        rw[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]];
+      upArr[this.getTodayJSON.hwic] = rw[this.getTodayJSON.hwic];
 
       try {
         const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -3835,7 +3824,7 @@ export default {
     //     });
 
     //     upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
-    //     upArr[this.getThisWeekHwicJSON[selCrlm.dayofweek]] = rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]];
+    //     upArr[this.getTodayJSON.hwic] = rw[this.getTodayJSON.hwic];
 
     //     try {
     //       //        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
