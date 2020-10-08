@@ -5224,9 +5224,9 @@ export default {
         this.$dayjs(this.sett.ddate)
           .add(-1, "d") // 翻る日数
           .format("ddd"),
-        // this.$dayjs(this.sett.ddate)
-        //   .add(-2, "d")
-        //   .format("ddd"),
+        this.$dayjs(this.sett.ddate)
+          .add(-2, "d")
+          .format("ddd"),
       ];
     },
     dayACjsHmm() {

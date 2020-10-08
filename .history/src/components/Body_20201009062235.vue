@@ -1056,14 +1056,7 @@
             <!-- リセット -->
             <div class="columns">
               <div class="column">
-                <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
-                  <span style="color:#c5c5c5">Clear cache</span>
-                </b-switch>
-
-                <b-button
-                  size="is-small"
-                  @click="clearAllDataStoreConfirm()"
-                  v-if="app.showClearCache"
+                <b-button size="is-small" @click="clearAllDataStoreConfirm()"
                   >Clear all local cache data</b-button
                 >
               </div>
@@ -2376,7 +2369,6 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.068",
-        showClearCache: false,
       },
       ds: {
         clrms: null,
@@ -4931,13 +4923,13 @@ export default {
 
         ////// 出欠記録の編集許可
         //// 出欠記録の編集許可： 設定した日数だけ
-        if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-          this.isdeadlinelenient = true;
-        } else {
-          this.isdeadlinelenient = false;
-        }
-        // //// 出欠記録の編集許可： 制限しない
-        // this.isdeadlinelenient = true;
+        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
+        //   this.isdeadlinelenient = true;
+        // } else {
+        //   this.isdeadlinelenient = false;
+        // }
+        //// 出欠記録の編集許可： 制限しない
+        this.isdeadlinelenient = true;
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
@@ -5224,9 +5216,9 @@ export default {
         this.$dayjs(this.sett.ddate)
           .add(-1, "d") // 翻る日数
           .format("ddd"),
-        // this.$dayjs(this.sett.ddate)
-        //   .add(-2, "d")
-        //   .format("ddd"),
+        this.$dayjs(this.sett.ddate)
+          .add(-2, "d")
+          .format("ddd"),
       ];
     },
     dayACjsHmm() {

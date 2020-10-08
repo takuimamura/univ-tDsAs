@@ -1056,14 +1056,7 @@
             <!-- リセット -->
             <div class="columns">
               <div class="column">
-                <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
-                  <span style="color:#c5c5c5">Clear cache</span>
-                </b-switch>
-
-                <b-button
-                  size="is-small"
-                  @click="clearAllDataStoreConfirm()"
-                  v-if="app.showClearCache"
+                <b-button size="is-small" @click="clearAllDataStoreConfirm()"
                   >Clear all local cache data</b-button
                 >
               </div>
@@ -2375,8 +2368,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.068",
-        showClearCache: false,
+        version: "1.067",
       },
       ds: {
         clrms: null,
@@ -3223,18 +3215,8 @@ export default {
     // null も評価するソート
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
-        message:
-          "<b>Clear all local cache data</b>" +
-          "<br /><br />Are you sure to delete all the data in your device?" +
-          "<br /><br />* Be sure that you have synced everything to server or somewhere" +
-          "<br /><br />* This does not affect the data on the server",
-        type: "is-danger",
-        hasIcon: true,
-        icon: "exclamation-triangle",
-        iconPack: "fa",
+        message: "Are you sure to delete all the data in your device?",
         size: "is-large",
-        ariaRole: "alertdialog",
-        ariaModal: true,
         onConfirm: () => {
           this.clearAllDataStore();
         },
@@ -3358,29 +3340,28 @@ export default {
         this.writeFail("MiscCreate", arr, err);
       }
     },
-    async sendUserAgent() {
+sendUserAgent(){
       const crArr = {
         type: "userAgent",
         name: this.authdetail.username,
         detail: JSON.stringify({
-          app: this.app.version,
           name: this.authdetail.username,
           date: this.$dayjs().format("YYYY-MM-DD HH:mm"),
           appVersion: navigator.appVersion,
-          userAgent: navigator.userAgent,
-          platform: navigator.platform,
-          vendor: navigator.vendor,
-          appCodeName: navigator.appCodeName,
-          cookieEnabled: navigator.cookieEnabled,
-          language: navigator.language,
-          languages: navigator.languages,
+userAgent:              navigator.userAgent,
+platform:              navigator.platform,
+vendor:              navigator.vendor,
+appCodeName:              navigator.appCodeName,
+cookieEnabled:              navigator.cookieEnabled,
+language:              navigator.language,
+languages:              navigator.languages
         }),
       };
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
         this.writeFail("MiscCreateAPI", crArr, err);
-        await this.createMisc(crArr);
+      await this.createMisc(crArr);
       }
     },
     async updateClrmAPI(uid, uidx, fname, fval) {
@@ -4931,13 +4912,13 @@ export default {
 
         ////// 出欠記録の編集許可
         //// 出欠記録の編集許可： 設定した日数だけ
-        if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-          this.isdeadlinelenient = true;
-        } else {
-          this.isdeadlinelenient = false;
-        }
-        // //// 出欠記録の編集許可： 制限しない
-        // this.isdeadlinelenient = true;
+        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
+        //   this.isdeadlinelenient = true;
+        // } else {
+        //   this.isdeadlinelenient = false;
+        // }
+        //// 出欠記録の編集許可： 制限しない
+        this.isdeadlinelenient = true;
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
@@ -5224,9 +5205,9 @@ export default {
         this.$dayjs(this.sett.ddate)
           .add(-1, "d") // 翻る日数
           .format("ddd"),
-        // this.$dayjs(this.sett.ddate)
-        //   .add(-2, "d")
-        //   .format("ddd"),
+        this.$dayjs(this.sett.ddate)
+          .add(-2, "d")
+          .format("ddd"),
       ];
     },
     dayACjsHmm() {
@@ -5412,7 +5393,7 @@ export default {
       })
       .catch(() => (this.authdetail = "created auth error"));
 
-    this.sendUserAgent();
+    this.sendUserAgent():
     //// ClrmはDataStoreで
     await this.fetchClrms();
     //// InstはAPIで
