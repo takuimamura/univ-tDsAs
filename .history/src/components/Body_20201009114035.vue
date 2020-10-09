@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <!-- Authバグ対応、初回のみ -->
+
     <template v-if="this.authdetail.name === undefined">
       <section class="hero is-fullheight">
         <div class="hero-body">
@@ -13,6 +14,7 @@
         </div>
       </section>
     </template>
+
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
       <div v-if="getStartingUrl === 'localhost'">
@@ -49,9 +51,11 @@
         <br />
         <b-numberinput v-model="sett.env.devAddDate" size="is-small" controls-position="compact"></b-numberinput>
         <b-button
-          @click="dateDevAddDate();
+          @click="
+            dateDevAddDate();
             dummytest();
-            workspaceValication(true);"
+            workspaceValication(true);
+          "
         >reflect day change</b-button>
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
@@ -128,6 +132,7 @@
           </ul>
         </template>
       </div>
+
       <!-- 管理用 -->
       <section v-if="getStartingUrl === 'localhost'">
         <article>
@@ -136,6 +141,7 @@
           <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>-->
         </article>
       </section>
+
       <!-- ABリスト -->
       <section v-show="cRoom.showABList">
         <div class="columns">
@@ -195,9 +201,12 @@
           expanded
         >A / B</b-button>
         <!-- <b-tooltip label="Visibility change" size="is-large" always>
-        <b-switch size="is-large" v-model="cRoom.showABListStudentCode">Student Code</b-switch>
+        <b-switch size="is-large" v-model="cRoom.showABListStudentCode"
+          >Student Code</b-switch
+        >
         </b-tooltip>-->
       </section>
+
       <!-- 上部表示 -->
       <section v-show="!cRoom.showABList">
         <nav class="level">
@@ -247,6 +256,7 @@
         </div>
         </section>-->
       </section>
+
       <!-- ここから -->
       <section>
         <b-tabs
@@ -315,7 +325,7 @@
                 <!-- <b-collapse class="card" animation="slide"></b-collapse> -->
               </section>
             </template>
-            <!-- ----- information ----- -->
+
             <!-- ----- information ----- -->
             <section class="p40">
               <p class="title">Information</p>
@@ -338,6 +348,7 @@
                 </div>
               </b-collapse>
             </section>
+
             <!-- ----- Clock in / Clock out ----- -->
             <section class="p40">
               <p class="title">Attendance</p>
@@ -408,7 +419,7 @@
                       </template>
                     </b-table>
                   </div>
-                  <!-- Submit ClockInOut -->
+
                   <div class="columns">
                     <div class="column">
                       <b-button
@@ -439,8 +450,9 @@
               </div>
             </div>
           </b-tab-item>
+
           <!-- schedule --------------------------------------------------------------------schedule -->
-          <!-- schedule --------------------------------------------------------------------schedule -->
+          <!-- <b-tab-item> -->
           <b-tab-item label="Schedule" icon="calendar-alt">
             <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
               <div class="column"></div>
@@ -459,6 +471,7 @@
                 </b-switch>
               </div>
             </section>
+
             <!-- /////////////// selCrlm -->
             <section class="columns is-centered" style="font-size: 16px; padding: 10px 10px;">
               <div class="column"></div>
@@ -534,6 +547,7 @@
                     </div>
                   </div>
                 </template>
+
                 <div
                   class="columns is-gapless"
                   :class="selCrlm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
@@ -560,6 +574,7 @@
                   </div>
                   <div class="column">
                     <!-- 手動アップロード -->
+
                     <template v-if="isClrmNeedAppSync">
                       <template v-if="!isClrmAppSyncUploading">
                         <b-button
@@ -639,6 +654,7 @@
                 </b-notification>-->
               </div>
             </section>
+
             <section
               class="columns is-centered"
               style="font-size: 16px; padding: 0px 10px;"
@@ -770,6 +786,7 @@
                 </table>-->
               </template>
             </section>
+
             <!-- クラス一覧 -->
             <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
               <table class="table f23">
@@ -875,6 +892,7 @@
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >{{ yitem.classtitle | subStr }}</td>
+
                     <!-- summary-->
                     <!-- <td
                       :class="{dayofweekToday: yitem.dayofweek === dayjsddd,}"
@@ -975,12 +993,14 @@
             </section>
             <br />
             <br />
+
             <!-- リセット -->
             <!-- <div class="columns">
               <div class="column">
                 <b-switch size="is-small" v-model="app.showClearCache" style="margin:10px">
                   <span style="color:#c5c5c5">Clear cache</span>
                 </b-switch>
+
                 <b-button
                   size="is-small"
                   @click="clearAllDataStoreConfirm()"
@@ -990,6 +1010,7 @@
               </div>
             </div>-->
           </b-tab-item>
+
           <!-- classroom --------------------------------------------------------------------classroom -->
           <!-- <b-tab-item> -->
           <b-tab-item label disabled icon="chalkboard-teacher">
@@ -1115,11 +1136,13 @@
                 </div>
               </div>
             </nav>
-            <!-- --classroom--------------------------------------------table------------------------------ -->
-            <!-- --classroom--------------------------------------------table------------------------------ -->
+
             <section v-show="!cRoom.showIndividual">
+              <!-- ----------------------------------------------------table------------------------------ -->
+              <!-- --classroom--------------------------------------------table------------------------------ -->
               <!-- {{ classmembers }} -->
               <!-- <template v-if="classmembers[0] !== undefined">{{ classmembers[0] }}</template> -->
+
               <b-table
                 :data="classmembers"
                 :mobile-cards="sett.hasMobileCards"
@@ -1134,10 +1157,22 @@
                     width="10"
                     sticky
                   >
+                    <!-- :class="getIsDoneToday(props.row._lastChangedAt)" -->
+                    <!-- <span v-show="getIfAttnThisWeekNotNull(selCrlm.dayofweek,props.row[selCrlm.attnthisweek],props.row._lastChangedAt)"
+                    ><b-icon pack="fas" icon="star" size="is-small" /> </span>-->
+                    <!-- <template
+                      v-if="getIfAttnThisWeekNotNull(selCrlm.dayofweek,props.row[selCrlm.attnthisweek],props.row._lastChangedAt)"
+                    >
+                      <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+                    </template>
+                    <template v-else></template>-->
+
                     <template
                       v-if="sett.devcheck"
                     >{{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
                   </b-table-column>
+                  <!-- style="width: 12px; height: 100%; color: #f5f5f5;" -->
+
                   <b-table-column
                     field="sortid"
                     label="No."
@@ -1192,6 +1227,7 @@
                     >
                     {{ column.label }}
                     </template>-->
+
                     <span class="f23">{{ props.row.studentname }}</span>
                   </b-table-column>
                   <b-table-column
@@ -1292,6 +1328,7 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn07) }}
                   </b-table-column>
+
                   <b-table-column
                     field="attn08"
                     label="8"
@@ -1390,7 +1427,8 @@
                     </template>
                     {{ getAttendSymbol(props.row.attn14) }}
                   </b-table-column>
-                  <!-- UI for create Attendance record -->
+
+                  <!-- 出欠入力欄 -->
                   <b-table-column
                     field="attendrec"
                     :visible="cRoom.showAttenHist === 0"
@@ -1410,7 +1448,9 @@
                                 updateClrm(
                                   props.row.id,
                                   selCrlm.attnthisweek,
-                                  att.modeset[att.mode].title)"
+                                  att.modeset[att.mode].title
+                                )
+                              "
                               size="is-medium"
                             >
                               <div :class="att.modeset[att.mode].colortype">
@@ -1481,6 +1521,7 @@
                   </b-table-column>
                   <!-- --------------------------------------evaluation -->
                   <!-- --------------------------------------evaluation -->
+
                   <!-- --------------------------------------evaluation history-->
                 </template>
               </b-table>
@@ -1508,6 +1549,7 @@
                               }}
                             </span>
                           </div>
+
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
                             <!-- <b-switch
@@ -1518,6 +1560,7 @@
                               <div style="margin-right:20px;">Attendance</div>
                             </b-switch>-->
                             <!-- 期末対応 -->
+
                             <b-tag
                               rounded
                               :class="getAttendStatusClass(indiRow[selCrlm.attnthisweek])"
@@ -1531,6 +1574,7 @@
                             </b-tag>
                           </div>
                         </nav>
+
                         <article v-show="!cRoom.showEvalSingle">
                           <!-- indi ---------- [ view showEvalComp 0 ] -->
                           <section class="columns" v-show="cRoom.showEvalComp === 0">
@@ -1564,6 +1608,7 @@
                                           </span>
                                         </td>
                                       </template>
+
                                       <!-- 欠、０ボタンいっこめ -->
                                       <template v-if="k.title !== 'Homework'">
                                         <td style="padding-left:30px">
@@ -1672,6 +1717,7 @@
                               </table>
                             </div>
                           </section>
+
                           <!-- indi ---------- [ view showEvalComp 1 ] -->
                           <!--               indi eval left -->
                           <section class="columns" v-show="cRoom.showEvalComp === 1">
@@ -1704,6 +1750,7 @@
                                         </span>
                                       </td>
                                     </template>
+
                                     <!-- 欠、０ボタン２つめ -->
                                     <template v-if="k.title !== 'Homework'">
                                       <td style="padding-left:30px">
@@ -1743,7 +1790,8 @@
                                             :star-points="cRoom.customstarShape"
                                             @rating-selected="goEvalUpTarget"
                                             @current-rating="
-                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)"
+                                              setEvalUpTarget($event, indiRow, k.evl, cRoom.indiNo)
+                                            "
                                           ></star-rating>
                                         </span>
                                       </td>
@@ -1752,7 +1800,8 @@
                                           :class="[
                                             indiRow[k.evl] === 0
                                               ? 'has-pink-strong'
-                                              : 'has-text-black',]"
+                                              : 'has-text-black',
+                                          ]"
                                           v-show="indiRow[k.evl] !== -1"
                                         >{{ indiRow[k.evl] }}</span>
                                       </td>
@@ -1761,7 +1810,8 @@
                                           icon-left="comment"
                                           size="is-middle"
                                           @click="
-                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])"
+                                            updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                          "
                                         >
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
@@ -1789,12 +1839,15 @@
                                 <td colspan="2" style="text-align:right">
                                   <span class="has-text-grey-light title is-4">Sub Total :</span>
                                   <span
-                                    :class="[cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',]"
+                                    :class="[
+                                      cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
+                                    ]"
                                   >{{ " " + indiSc.subtotal0 }}</span>
                                 </td>
                               </tr>
                             </table>
                           </section>
+
                           <!-- indi ---------- [ view showEvalComp 2 ] -->
                           <!--               indi eval right -->
                           <!-- ※Presentation Finalだけ星が出ない-->
@@ -2140,6 +2193,7 @@
                             </div>
                           </section>
                         </article>
+
                         <article>
                           <footer>
                             <div class="column">
@@ -2155,6 +2209,7 @@
                       </div>
                     </div>
                   </div>
+
                   <div :class="getIndiPaneClass('right')" v-show="cRoom.showIndiList">
                     <article class="tile is-child">
                       <b-tabs
@@ -2252,6 +2307,7 @@ export default {
   data() {
     return {
       app: {
+        // application
         ready: false,
         network: false,
         syncing: false,
@@ -2423,6 +2479,7 @@ export default {
         attendvisiblemonth: null,
         nameConv: UsersJSON
       },
+
       lbls: {
         clCols: [
           {
@@ -2493,6 +2550,7 @@ export default {
       ClrmAppSyncState: true,
       ClrmAppSyncBegin: 0,
       ClrmAppSyncEnd: 0,
+
       attendMng: { status: ["ok", "maybe", "ng"], dummy: 2 },
       att: {
         mode: 0,
@@ -2772,6 +2830,7 @@ export default {
         evalCriteriaSubSelect: null,
         showEvalCriSubItemsCaption: true,
         shNmEvalCri: 0, //生徒一覧ページでのEvaluation項目レベル表示制御
+
         evalCriSubIRt: {
           // participation: [
           //   { c0: true, c1: false },
@@ -2889,6 +2948,7 @@ export default {
             searchable: true
           }
         ],
+
         vforEdit: [
           { at: "attn01", md: 0 },
           { at: "attn02", md: 1 },
@@ -2984,6 +3044,7 @@ export default {
             md: 11
           }
         ],
+
         convAttnToDateMDNum: {
           attn01: 0,
           attn02: 1,
@@ -3393,6 +3454,7 @@ export default {
           upArr["ecom" + x] = rw["ecom" + x];
         }
       });
+
       // 出欠と宿題は該当週のみ
       upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
       upArr[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]] =
@@ -3456,6 +3518,7 @@ export default {
       );
       this.dataset.ClrmsInstByday.push(...data);
     },
+
     ///// inst
     ///// Misc
     ///// Misc
@@ -3472,6 +3535,7 @@ export default {
       };
       await DataStore.save(new Misc(cr));
     },
+
     //// クラス毎のサマリDB 更新
     async reflectClassSummary(classcode, dow) {
       const ret = await DataStore.query(Clrm, c =>
@@ -3503,12 +3567,14 @@ export default {
             : 0)
         );
       }, 0);
+
       const attnsum = ret.reduce((accumulator, current) => {
         //        console.warn(current[this.getThisWeekAttnJSON[dow]]);
         return (
           accumulator + (current[this.getThisWeekAttnJSON[dow]] == null ? 0 : 1) // nullもundefinedも0
         );
       }, 0);
+
       // 0:null >0:false ===length:true
       // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
       tgt.attndone =
@@ -3528,6 +3594,7 @@ export default {
         tgt.detail += "hwic";
       }
     },
+
     //   const newest = ret.reduce((a, b) =>
     //     a._lastChangedAt > b._lastChangedAt ? a : b
     //   );
@@ -3536,11 +3603,14 @@ export default {
     //   );
     //   return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
     // },
+
     // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
     // const mx = ret.reduce((a, b) => (a > b ? a : b));
     // const mn = ret.reduce((a, b) => (a < b ? a : b));
+
     async updateMiscClassSummary(classcode) {
       //生徒単位でタイムスタンプの最大、最小を調べる
+
       //記録する
       const cr = {
         type: this.ds.typeMisc.classSum,
@@ -3550,7 +3620,9 @@ export default {
           newest: new Date()
         })
       };
+
       await DataStore.save(new Misc(cr));
+
       this.fetchMiscs();
     },
     async applogSave() {
@@ -3574,6 +3646,7 @@ export default {
     //   });
     //   return outt !== undefined ? JSON.parse(outt.detail) : "";
     // },
+
     async getMiscId(cr) {
       if (!cr) {
         cr = this.ds.crMisc;
@@ -3587,6 +3660,7 @@ export default {
         this.writeFail("MiscCreate", cr, err);
       }
     },
+
     // async updateMisc(id,upd) {
     async updateMisc(upd) {
       const id = "dummy★"; //あとまわし★
@@ -3603,8 +3677,10 @@ export default {
         this.writeFail("MiscUpdate", id + upd, err);
       }
     },
+
     //// graphql
     //// graphql
+
     //初期処理
     // JSONからのallClassesを整える
     // initallClassesDev() {
@@ -3622,10 +3698,12 @@ export default {
         this.reflectClassSummary(m.id, m.dayofweek);
         this.yourClasses.splice();
       });
+
       // this.dataset.allClasses = [...allClassesUp];
       //     // const timestamp = this.queryMiscClassSummary(m.classcode);
       // this.dataset.allClasses.splice();
     },
+
     // async manageUpdateClrmDvAll() {
     //   // ★対象全てをひとづずつCopyOfしようか
     //   //念のためmiscに
@@ -3642,6 +3720,7 @@ export default {
     //   } catch (err) {
     //     this.writeFail("appClrmDeviceUploadFail", crArr, err);
     //   }
+
     //   // いれる
     //   const classmem = this.dataset.Clrms.filter(
     //     x => x.classcode === this.selCrlm.id && x.enable === true
@@ -3657,6 +3736,7 @@ export default {
     //   //集計
     //   this.listClrmsDataIDCheck(this.sett.alias.name);
     // },
+
     // async updateClrmAll(rw) {
     //   // 管理者は一括Up対象外
     //   if (this.authdetail.name === this.sett.alias.name) {
@@ -3728,6 +3808,7 @@ export default {
     //     }
     //   }
     // },
+
     ///// 表示変更系
     ///// 表示変更系
     ///// 表示変更系
@@ -3753,11 +3834,13 @@ export default {
     showEvalCompChange() {
       // 行全体保存
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
+
       this.cRoom.showEvalSingle = false;
       this.cRoom.showComEv.ecomAny = false;
       let mde = this.cRoom.showEvalComp;
       mde += 1;
       this.cRoom.showEvalComp = mde > 2 ? 0 : mde;
+
       // 0か1 this.cRoom.showEvalComp = this.cRoom.showEvalComp === 1 ? 0 : 1;
     },
     indiLRVisiblity(idx) {
@@ -3772,8 +3855,10 @@ export default {
     },
     clearIndi() {
       //個人ページが切り替わりまたは離脱の際にリセットしとく
+
       // 行全体保存 ※直前の行
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNoPrev]);
+
       this.cRoom.indiNoPrev = this.cRoom.indiNo;
       // this.cRoom.showComEv.forEach(function(m) {
       // });
@@ -3785,6 +3870,7 @@ export default {
     manageIndiNo(num) {
       // 行全体保存
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
+
       const newval = this.cRoom.indiNo + num;
       this.cRoom.indiNo =
         this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
@@ -3806,8 +3892,10 @@ export default {
     },
     manageIndiSingleCriteria(num) {
       //単一項目評価画面で項目移動
+
       // 行全体保存
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
+
       const newval = this.cRoom.tgtEvalSingle + num;
       this.cRoom.tgtEvalSingle =
         this.cRoom.evalCriItems[newval] === undefined
@@ -3816,6 +3904,7 @@ export default {
           ? newval + num + num
           : newval;
     },
+
     updateClassModeChange() {
       const upArr = {
         type: "class" + this.dayjsYYYYMMDDh,
@@ -3824,6 +3913,7 @@ export default {
       };
       this.updateMisc(upArr);
     },
+
     hideComEv() {
       this.cRoom.showComEv.ecom01 = false;
       this.cRoom.showComEv.ecom02 = false;
@@ -3838,6 +3928,7 @@ export default {
       this.cRoom.showComEv.ecom11 = false;
       this.cRoom.showComEv.ecomAny = false;
     },
+
     setEvalUpTarget(evt, prow, fname, idx) {
       // this.cRoom.evalUpTarget = evt + "|" + fname + "|" + idx;
       this.cRoom.evalUpTargetRow = prow;
@@ -3857,6 +3948,7 @@ export default {
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
       // prow[fname] = 0;
+
       //0点にしてUpする
       this.updateClrm(prow.id, fname, 0);
     },
@@ -3864,6 +3956,7 @@ export default {
     minusEvalUpTarget(prow, fname) {
       this.updateClrm(prow.id, fname, -1);
     },
+
     updateClrmEvalsIndi(row, fname, fval) {
       // .table(row, fname, fval);
       // コメント欄入力閉じた時にUpする
@@ -3879,6 +3972,7 @@ export default {
         this.updateClrm(row.id, fname, fval);
       }
     },
+
     ////////////Fail処理
     async writeFail(dest, arr, ret) {
       const dtl =
@@ -3936,9 +4030,11 @@ export default {
       });
     },
     ////////////
+
     // async listClrmsDataID(idstr) {
     async listClrmsDataID() {
       await this.fetchClrms();
+
       // const ClrmsData = null;
       // //$$$$$
       // // const ClrmsData = await API.graphql(
@@ -3947,6 +4043,7 @@ export default {
       // // 既に保持していた場合除去
       // const fi = this.dataset.Clrms.filter(n => n.id !== idstr);
       // this.dataset.Clrms = fi;
+
       // this.dataset.Clrms.push(...ClrmsData.data.listClrms.items);
     },
     // async listClrmsDataIDCheck(idstr) {
@@ -3962,7 +4059,9 @@ export default {
     //   //   // 既に保持していた場合除去
     //   //   const fi = this.dataset.ClrmsChk.filter(n => n.id !== idstr);
     //   //   this.dataset.ClrmsChk = fi;
+
     //   //   this.dataset.ClrmsChk.push(...ClrmsData.data.listClrms.items);
+
     //   //   if (this.sumClrmsChk()) {
     //   //     this.sett.isLoadingClrmsChk = false;
 
@@ -4026,6 +4125,7 @@ export default {
         "ecom11",
         "ecom12"
       ];
+
       const groupsum = this.dataset.ClrmsChk.reduce(function(result, elm) {
         //数値化
         let sm = {};
@@ -4037,6 +4137,7 @@ export default {
               ? 1
               : 0;
         });
+
         var el = result.find(function(x) {
           return x.classcode === elm.classcode;
         });
@@ -4056,6 +4157,9 @@ export default {
         }
         return result;
       }, []);
+
+      // this.sett.dummy1 = groupsum;
+
       //統合
       groupsum.forEach(x => {
         //該当クラスを探してsplice
@@ -4069,13 +4173,18 @@ export default {
           this.dataset.allClasses.splice(idx, 1, spl);
         }
       });
+
+      // this.sett.dummy1 = groupsum;
+
       return true;
     },
+
     sumClrmsChkDv() {
       //デバイス側のデータを集計
       const classtemp = this.dataset.Clrms.filter(
         x => x.classcode === this.selCrlm.id && x.enable === true
       );
+
       const attnElChr = [
         "attn01",
         "attn02",
@@ -4117,6 +4226,7 @@ export default {
         "ecom11",
         "ecom12"
       ];
+
       const groupsum = classtemp.reduce(function(result, elm) {
         //数値化
         let sm = {};
@@ -4143,6 +4253,8 @@ export default {
         }
         return result;
       }, []);
+      // this.sett.dummy1 = groupsum;
+
       //統合
       groupsum.forEach(x => {
         attnElChr.forEach(s => {
@@ -4150,6 +4262,8 @@ export default {
         });
         this.manage.selCrlmDv.students = x.students;
       });
+      // this.sett.dummy1 = groupsum;
+
       return true;
     },
     manageClrms() {
@@ -4181,6 +4295,7 @@ export default {
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
         // クラスのタイムスタンプを反映
+
         // 部屋から出たのか
         if (this.isEnteredselCrlm) {
           //欠席と宿題の齟齬チェック
@@ -4207,11 +4322,13 @@ export default {
             //齟齬あれば部屋戻す ★動作不良
             // this.sett.activeTab = 2;
           }
+
           //全員、出欠とHWのみ保存
           this.manageupdateClrmAttnHW();
           this.isEnteredselCrlm = false; // 部屋から出たことを記録
           // クラスのタイムスタンプを反映
           this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
+
           // if (this.isOpenselCrlm) {
           //   //集計
           //   this.listClrmsDataIDCheck(this.sett.alias.name);
@@ -4221,9 +4338,11 @@ export default {
           // 全クラス
           this.initallClasses();
         }
+
         this.dateDevAddDate();
         this.workspaceValication(true);
       }
+
       this.salvageFail();
     },
     // periodicValidationFromIdol() {
@@ -4258,6 +4377,7 @@ export default {
         this.createMisc(crArr);
       }
       // if (this.instructor.yourTodaysClasses.length < 1) {
+
       // this.instructor.yourTodaysClasses = tdycls.map(id => )
       // }
     },
@@ -4314,9 +4434,11 @@ export default {
       this.instructor.yourattendvisiblemonth = this.$dayjs(
         this.sett.acdate
       ).format("YYYY-MM");
+
       //manage用
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
+
     //////////サマリー
     async manageSummary() {
       // if (this.showManagementView === true) {
@@ -4333,6 +4455,7 @@ export default {
       }
       this.sett.isLoadingClrmManage = false;
     },
+
     //////////講師 勤怠
     //////////講師 勤怠
     // async createInst(add) {
@@ -4343,11 +4466,13 @@ export default {
     //   const cInItem = this.instructor.yourattendances.find(
     //     (c) => c.date === this.$dayjs().format("YYYY-MM-DD")
     //   );
+
     //   const instItem = await DataStore.query(Inst, cInItem.id);
     //   //  (c) => c.uid("eq", uid).date("eq", datestr));
     //   if (!instItem) {
     //     return;
     //   }
+
     //   await DataStore.save(
     //     Inst.copyOf(instItem, (updated) => {
     //       updated.clockout = cOut;
@@ -4357,6 +4482,7 @@ export default {
     // },
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
+
       this.$buefy.dialog.confirm({
         message: "Clock In?",
         size: "is-large",
@@ -4385,6 +4511,7 @@ export default {
           //   clockin: cin //.format("hh:mm:ss.sss"), //.format("h:mm"),
           // });
           ////////// DataStoreうまくいかん
+
           ////////// APIで
           const add = {
             date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
@@ -4852,6 +4979,7 @@ export default {
     //   this.manage.classmembersEdit = classmem;
     //   this.manage.isOpenEdit = true;
     // },
+
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
         case "Group A":
