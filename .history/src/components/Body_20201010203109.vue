@@ -42,12 +42,19 @@
         <b-modal :active.sync="sett.isModalActive"></b-modal>
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
-        " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
+        sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }}
         <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
         <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
-        <b-button @click="dateDevAddDate()">reflect day change</b-button>
+        <b-button
+          @click="
+            dateDevAddDate();
+            dummytest();
+            workspaceValication(true);
+          "
+          >reflect day change</b-button
+        >
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
         <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
@@ -115,6 +122,11 @@
           <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
           <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
           <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+          <ul>
+            <li v-for="ins in instructor.yourattendances" :key="ins.id">
+              {{ ins.date }}- {{ ins.uid }}- {{ ins.clockin }}- {{ ins.clockout }}- {{ ins.detail }}
+            </li>
+          </ul>
         </template>
       </div>
       <!-- 管理用 -->
