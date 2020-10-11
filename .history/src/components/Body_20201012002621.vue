@@ -4407,11 +4407,10 @@ export default {
       this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
     },
     setcurrentAcTime() {
-      this.sett.actime = this.$dayjs().format("H:mm");
       //2. 一定間隔で
       this.sett.actimeIntId = setInterval(() => {
         this.sett.actime = this.$dayjs().format("H:mm");
-      }, 1000 * 60); //間隔
+      }.bind(this), 1000 * 60); //間隔
     },
     setInstMonth() {
       //勤怠用 createdのとき

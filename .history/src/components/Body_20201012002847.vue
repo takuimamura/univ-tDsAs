@@ -4842,6 +4842,7 @@ export default {
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
+    this.setcurrentAcTime();
     this.setInstMonth();
     // JSONからのallClassesを整える
     await this.initallClasses();
@@ -4863,7 +4864,6 @@ export default {
       }.bind(this),
       1 * 1000 * 60
     );
-    this.setcurrentAcTime();
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
   },

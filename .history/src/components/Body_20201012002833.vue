@@ -4842,6 +4842,7 @@ export default {
     //日付設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
+    this.setcurrentAcTime();
     this.setInstMonth();
     // JSONからのallClassesを整える
     await this.initallClasses();
