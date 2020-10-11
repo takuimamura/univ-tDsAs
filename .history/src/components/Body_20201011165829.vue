@@ -41,25 +41,15 @@
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
         " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
+        <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
-        <b-field>
-          <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
-          <b-button @click="dateDevAddDate()">Tgt day change</b-button>
-          <b-numberinput
-            v-model="sett.env.devAddAcDate"
-            controls-position="compact"
-            type="is-warning"
-          ></b-numberinput>
-          <b-button @click="setcurrentAcDate()">ACday change</b-button>
-          <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
-          <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
-        </b-field>
-
+        <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+        <b-button @click="dateDevAddDate()">reflect day change</b-button>
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
-        <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-        <template v-if="sett.devshow">
+        <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+        <template v-if="sett.devcheck">
           <!--■■■開発用 ローカル限定表示■■■-->
           sett {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
@@ -2188,7 +2178,6 @@ export default {
       sett: {
         env: EnvJSON,
         devcheck: false,
-        devshow: false,
         isModalActive: false,
         acdate: null, // 実際の日
         ddate: null, // 処理につかう日付
@@ -3011,9 +3000,6 @@ export default {
     };
   },
   methods: {
-    dummytest() {
-      this.sett.dummy1 = "val";
-    },
     // null も評価するソート
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
@@ -3196,6 +3182,7 @@ export default {
       }
       return chk;
     },
+
     // Force Sync
     // Force Sync
     // Force Sync
@@ -3243,10 +3230,13 @@ export default {
       upArr[this.selCrlm.attnthisweek] = rw[this.selCrlm.attnthisweek];
       upArr[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]] =
         rw[this.getThisWeekHwicJSON[this.selCrlm.dayofweek]];
+
       try {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
+        // console.warn(callbk);
+        // this.sett.dummy1 = callbk;
         this.ClrmAppSyncEnd += 1;
         return callbk; // returnの先に用途は実はない
       } catch (err) {
@@ -3255,6 +3245,8 @@ export default {
           name: this.authdetail.username,
           detail: this.$dayjs().format("H:mm:ss")
         };
+        // console.warn("NG:" + err);
+        // this.sett.dummy2 = err;
         //エラー
         this.ClrmAppSyncState = false;
 
@@ -3579,6 +3571,180 @@ export default {
       if (!this.cRoom.showComEv.ecomAny) {
         this.updateClrm(row.id, fname, fval);
       }
+    },
+    ////////////Fail処理
+    async writeFail(dest, arr, ret) {
+      const dtl =
+        this.getStartingUrl +
+        ", auth:" +
+        this.authdetail.name +
+        ", input:" +
+        JSON.stringify(arr) +
+        ", result:" +
+        JSON.stringify(ret);
+      try {
+        const crArr = {
+          type: "writeFail",
+          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: dtl
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        localStorage[
+          "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
+        ] = dtl;
+      }
+    },
+    async salvageFail() {
+      let arr = [];
+      for (var key in localStorage) {
+        if (key.match(/appFail/)) {
+          var tmp = {};
+          tmp.key = key;
+          tmp.val = localStorage.getItem(key);
+          arr.push(tmp);
+        }
+      }
+      const crArr = {
+        type: "appFailSalvage",
+        name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+        detail: arr
+      };
+      try {
+        await DataStore.save(new Misc({ crArr }));
+
+        for (var key2 in localStorage) {
+          if (key2.match(/appFail/)) {
+            localStorage.removeItem(key2);
+          }
+        }
+      } catch (err) {
+        this.writeFail("salvageFail", crArr, err);
+      }
+    },
+    scrollTop: function() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    },
+    ////////////
+    dummytest() {
+      this.sett.dummy1 = "val";
+    },
+    async periodicValidation() {
+      // this.initAuthValidation();
+      this.workdateValication();
+      if (this.sett.activeTab !== 2) {
+        // クラスのタイムスタンプを反映
+        // 部屋から出たのか
+        if (this.isEnteredselCrlm) {
+          //欠席と宿題の齟齬チェック
+          if (
+            (await this.checkAttnHWConsistency(
+              this.selCrlm.id,
+              this.selCrlm.dayofweek
+            )) == true
+          ) {
+            //警告
+            this.$buefy.dialog.alert({
+              title: "Error",
+              message:
+                "<span class='f30'>Absent <-> Homework<br />  mismatch exixts." +
+                "<br /><br />Please check.</span>",
+              type: "is-danger",
+              hasIcon: true,
+              icon: "times-circle",
+              iconPack: "fa",
+              size: "is-large",
+              ariaRole: "alertdialog",
+              ariaModal: true
+            });
+            //齟齬あれば部屋戻す ★動作不良
+            // this.sett.activeTab = 2;
+          }
+          //全員、出欠とHWのみ保存
+          this.manageupdateClrmAttnHW();
+          this.isEnteredselCrlm = false; // 部屋から出たことを記録
+          // クラスのタイムスタンプを反映
+          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
+        } else {
+          // 全クラス
+          this.initallClasses();
+        }
+        this.dateDevAddDate();
+        this.workspaceValication(true);
+      }
+      this.salvageFail();
+    },
+    workspaceValication(ifUp) {
+      // this.sett.dummy2 += 1;
+      //classroomに関係する諸々 日付が変わると必ず
+      const todayclass = this.yourClasses
+        // .filter((x) => x.dayofweek === this.sett.dayofweek)
+        .filter(x => x.dayofweek === this.dayjsddd)
+        .map(x => ({
+          id: x.id,
+          status: 0
+        }));
+      this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
+      const crArr = {
+        type: "class" + this.$dayjs().format("YYYY-MM-DD"),
+        name: this.authdetail.username,
+        detail: todayclass
+      };
+
+      if (ifUp) {
+        //出欠モード保持のレコード
+        this.updateMisc(crArr);
+      } else {
+        this.createMisc(crArr);
+      }
+      // if (this.instructor.yourTodaysClasses.length < 1) {
+      // this.instructor.yourTodaysClasses = tdycls.map(id => )
+      // }
+    },
+    workdateValication() {
+      //日付またぐとリロードする
+      if (
+        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
+        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
+        this.sett.env.isTestMode === false
+      ) {
+        this.reloadApp("workdateValication");
+      }
+      // else {
+      //なんで日付設定するの？強制リロードまではInitializeだけでいいのでは
+      // this.setcurrentAcDate();
+      // }
+    },
+    async reloadApp(str) {
+      try {
+        const crArr = {
+          type: "reloadApp",
+          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: str
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        this.writeFail(
+          str,
+          this.dayACjsdddMMMD, //this.sett.today,
+          "Staff" + this.$dayjs().format("YYYY/MM/DD")
+        );
+      }
+      this.$router.go();
+    },
+    setcurrentAcDate() {
+      this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
+    },
+    setInstMonth() {
+      //勤怠用 createdのとき
+      this.instructor.yourattendvisiblemonth = this.$dayjs(
+        this.sett.acdate
+      ).format("YYYY-MM");
+      //manage用
+      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     //////////サマリー
     async manageSummary() {
@@ -3953,8 +4119,7 @@ export default {
           return "-";
       }
     },
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
+
     ///// クラス選択、読み込み、
     selectClassroom(arr) {
       // 前回のテスト結果くりあ（非表示）
@@ -3962,20 +4127,19 @@ export default {
       this.ClrmAppSyncBegin = 0;
       this.ClrmAppSyncEnd = 0;
       this.ClrmAppSyncState = false;
+
       //セット
       this.selCrlm = arr;
+
       // たまにLoadingのままになるのどうしよう★
       this.fetchClrms();
       // if (this.dataset.Clrms.length > 0 ? false : true)
+      //デバイス側のデータを集計
+      // this.sumClrmsChkDv();
+
       //表示
       this.isOpenselCrlm = true;
       this.scrollTop();
-    },
-    scrollTop: function() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
     },
     enterClassroomPrevSeeIfAlter() {
       // 特別対応の権限があるか（ユーザ毎）。
@@ -3993,6 +4157,7 @@ export default {
     },
     enterClassroom() {
       this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
+
       this.cRoom.showIndividual = false;
       // && x.enable === trueはほんとはAppSyncの時点でやりたい
       // this.classmembers = this.dataset.Clrms.filter(
@@ -4012,7 +4177,9 @@ export default {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
           item => item.id === this.selCrlm.id
         );
+
         this.cRoom.showAttenHist = 0;
+
         // status参照するためにインデックスを格納
         this.att.mode = this.instructor.yourTodaysClasses[
           this.classroomIndex
@@ -4022,6 +4189,7 @@ export default {
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
+
         ////// 出欠記録の編集許可
         //// 出欠記録の編集許可： 設定した日数だけ
         if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
@@ -4084,6 +4252,7 @@ export default {
       const result = this.instructor.nameConv.find(x => x.username === val);
       return result;
     },
+
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
@@ -4169,179 +4338,8 @@ export default {
         return null;
       }
     },
-    ////////////Fail処理
-    ////////////Fail処理
-    ////////////Fail処理
-    async writeFail(dest, arr, ret) {
-      const dtl =
-        this.getStartingUrl +
-        ", auth:" +
-        this.authdetail.name +
-        ", input:" +
-        JSON.stringify(arr) +
-        ", result:" +
-        JSON.stringify(ret);
-      try {
-        const crArr = {
-          type: "writeFail",
-          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-          detail: dtl
-        };
-        await DataStore.save(new Misc(crArr));
-      } catch (err) {
-        localStorage[
-          "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
-        ] = dtl;
-      }
-    },
-    async salvageFail() {
-      let arr = [];
-      for (var key in localStorage) {
-        if (key.match(/appFail/)) {
-          var tmp = {};
-          tmp.key = key;
-          tmp.val = localStorage.getItem(key);
-          arr.push(tmp);
-        }
-      }
-      const crArr = {
-        type: "appFailSalvage",
-        name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-        detail: arr
-      };
-      try {
-        await DataStore.save(new Misc({ crArr }));
-
-        for (var key2 in localStorage) {
-          if (key2.match(/appFail/)) {
-            localStorage.removeItem(key2);
-          }
-        }
-      } catch (err) {
-        this.writeFail("salvageFail", crArr, err);
-      }
-    },
-    //////////// 設定、Validation
-    //////////// 設定、Validation
-    //////////// 設定、Validation
-    async periodicValidation() {
-      // this.initAuthValidation();
-      this.workdateValication();
-      if (this.sett.activeTab !== 2) {
-        // クラスのタイムスタンプを反映
-        // 部屋から出たのか
-        if (this.isEnteredselCrlm) {
-          //欠席と宿題の齟齬チェック
-          if (
-            (await this.checkAttnHWConsistency(
-              this.selCrlm.id,
-              this.selCrlm.dayofweek
-            )) == true
-          ) {
-            //警告
-            this.$buefy.dialog.alert({
-              title: "Error",
-              message:
-                "<span class='f30'>Absent <-> Homework<br />  mismatch exixts." +
-                "<br /><br />Please check.</span>",
-              type: "is-danger",
-              hasIcon: true,
-              icon: "times-circle",
-              iconPack: "fa",
-              size: "is-large",
-              ariaRole: "alertdialog",
-              ariaModal: true
-            });
-            //齟齬あれば部屋戻す ★動作不良
-            // this.sett.activeTab = 2;
-          }
-          //全員、出欠とHWのみ保存
-          this.manageupdateClrmAttnHW();
-          this.isEnteredselCrlm = false; // 部屋から出たことを記録
-          // クラスのタイムスタンプを反映
-          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-        } else {
-          // 全クラス
-          this.initallClasses();
-        }
-        this.dateDevAddDate();
-        this.workspaceValication(true);
-      }
-      this.salvageFail();
-    },
-    workspaceValication(ifUp) {
-      // this.sett.dummy2 += 1;
-      //classroomに関係する諸々 日付が変わると必ず
-      const todayclass = this.yourClasses
-        // .filter((x) => x.dayofweek === this.sett.dayofweek)
-        .filter(x => x.dayofweek === this.dayjsddd)
-        .map(x => ({
-          id: x.id,
-          status: 0
-        }));
-      this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
-      const crArr = {
-        type: "class" + this.$dayjs().format("YYYY-MM-DD"),
-        name: this.authdetail.username,
-        detail: todayclass
-      };
-
-      if (ifUp) {
-        //出欠モード保持のレコード
-        this.updateMisc(crArr);
-      } else {
-        this.createMisc(crArr);
-      }
-      // if (this.instructor.yourTodaysClasses.length < 1) {
-      // this.instructor.yourTodaysClasses = tdycls.map(id => )
-      // }
-    },
-    workdateValication() {
-      //日付またぐとリロードする
-      if (
-        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
-        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
-        this.sett.env.isTestMode === false
-      ) {
-        this.reloadApp("workdateValication");
-      }
-      // else {
-      //なんで日付設定するの？強制リロードまではInitializeだけでいいのでは
-      // this.setcurrentAcDate();
-      // }
-    },
-    async reloadApp(str) {
-      try {
-        const crArr = {
-          type: "reloadApp",
-          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-          detail: str
-        };
-        await DataStore.save(new Misc(crArr));
-      } catch (err) {
-        this.writeFail(
-          str,
-          this.dayACjsdddMMMD, //this.sett.today,
-          "Staff" + this.$dayjs().format("YYYY/MM/DD")
-        );
-      }
-      this.$router.go();
-    },
-    ////////// 日付設定
-    ////////// 日付設定
-    setcurrentAcDate() {
-      this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
-    },
     dateDevAddDate() {
       this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
-    },
-    setInstMonth() {
-      //勤怠用 createdのとき
-      this.instructor.yourattendvisiblemonth = this.$dayjs(
-        this.sett.acdate
-      ).format("YYYY-MM");
-      //manage用
-      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     async authManage() {
       await Auth.currentAuthenticatedUser()
@@ -4382,6 +4380,7 @@ export default {
         return null;
       }
     },
+
     TESTarr1() {
       if (this.dataset.Clrms) {
         return this.dataset.Clrms.filter(x => x.classcode === "X0063").map(
@@ -4416,6 +4415,7 @@ export default {
         return null;
       }
     },
+
     bBoardArticles() {
       if (this.authdetail.name === "dummy instructor") {
         return this.bBoard.collapsesSample;
@@ -4430,6 +4430,7 @@ export default {
         ? this.cRoom.evalCriSubIRt.participation
         : this.cRoom.evalCriSubIRt.others;
     },
+
     indiRow() {
       return this.classmembers.length > 0
         ? this.classmembers[this.cRoom.indiNo]
@@ -4550,6 +4551,7 @@ export default {
     dayjsddd() {
       return this.$dayjs(this.sett.ddate).format("ddd");
     },
+
     getStartingUrl: function() {
       //Localならlocalhostとなる
       return location.origin.split(":")[1].split("/")[2];
@@ -4602,6 +4604,7 @@ export default {
       const cFri = this.dataset.Cldrs.filter(x => x.dayofweek === "Fri");
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },
+
     getDayChainUntilPrevJSON: function() {
       //return this.dayChainJSON[this.dayjsddd];
       // return this.dayChainJSON.Tue; //[this.dayjsddd];
@@ -4651,6 +4654,7 @@ export default {
       return this.instructor.yourattendances.some(
         x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
+      // return true; //とりあえず無効化★
     },
     ifYouClockInAndStillIn: function() {
       const fnd = this.instructor.yourattendances.find(
@@ -4661,6 +4665,7 @@ export default {
       } else {
         return false; //出社前
       }
+      // return false; //とりあえず無効化★
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
@@ -4672,9 +4677,11 @@ export default {
     //   filtered = this.instructor.attendances.filter(
     //     (x) => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
     //   );
+
     //   if (this.manage.instinstname !== "all") {
     //     filtered = filtered.filter((x) => x.id === this.manage.instinstname);
     //   }
+
     //   return filtered;
     // },
     computedBlank: function() {
@@ -4751,6 +4758,7 @@ export default {
           // .log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
           this.app.log.nw += ctime + event + ": " + true + "\n";
+
           //復帰したときクラス外なら更新する
           if (this.sett.activeTab !== 2) {
             this.initallClasses();
@@ -4769,6 +4777,7 @@ export default {
           // .log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
           this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
+
         case "outboxStatus": // 変更ごとに出る
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
           //  .log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
@@ -4787,6 +4796,7 @@ export default {
     this.dateDevAddDate();
     this.setcurrentAcDate();
     this.setInstMonth();
+
     // JSONからのallClassesを整える
     await this.initallClasses();
     // this.getMiscsData("classmanagement", this.authdetail.name);

@@ -51,9 +51,9 @@
             controls-position="compact"
             type="is-warning"
           ></b-numberinput>
-          <b-button @click="setcurrentAcDate()">ACday change</b-button>
-          <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
+          <b-button @click="setcurrentAcDate()">AC day change</b-button>
           <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+          <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         </b-field>
 
         <b-button @click="instClockOut()">instClockOut()</b-button>

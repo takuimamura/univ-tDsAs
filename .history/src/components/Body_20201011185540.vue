@@ -41,25 +41,15 @@
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
         " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
+        <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
-        <b-field>
-          <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
-          <b-button @click="dateDevAddDate()">Tgt day change</b-button>
-          <b-numberinput
-            v-model="sett.env.devAddAcDate"
-            controls-position="compact"
-            type="is-warning"
-          ></b-numberinput>
-          <b-button @click="setcurrentAcDate()">ACday change</b-button>
-          <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
-          <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
-        </b-field>
-
+        <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+        <b-button @click="dateDevAddDate()">reflect day change</b-button>
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
-        <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-        <template v-if="sett.devshow">
+        <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+        <template v-if="sett.devcheck">
           <!--■■■開発用 ローカル限定表示■■■-->
           sett {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
@@ -2188,7 +2178,6 @@ export default {
       sett: {
         env: EnvJSON,
         devcheck: false,
-        devshow: false,
         isModalActive: false,
         acdate: null, // 実際の日
         ddate: null, // 処理につかう日付
@@ -3011,9 +3000,6 @@ export default {
     };
   },
   methods: {
-    dummytest() {
-      this.sett.dummy1 = "val";
-    },
     // null も評価するソート
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
@@ -3580,6 +3566,180 @@ export default {
         this.updateClrm(row.id, fname, fval);
       }
     },
+    ////////////Fail処理
+    async writeFail(dest, arr, ret) {
+      const dtl =
+        this.getStartingUrl +
+        ", auth:" +
+        this.authdetail.name +
+        ", input:" +
+        JSON.stringify(arr) +
+        ", result:" +
+        JSON.stringify(ret);
+      try {
+        const crArr = {
+          type: "writeFail",
+          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: dtl
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        localStorage[
+          "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
+        ] = dtl;
+      }
+    },
+    async salvageFail() {
+      let arr = [];
+      for (var key in localStorage) {
+        if (key.match(/appFail/)) {
+          var tmp = {};
+          tmp.key = key;
+          tmp.val = localStorage.getItem(key);
+          arr.push(tmp);
+        }
+      }
+      const crArr = {
+        type: "appFailSalvage",
+        name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+        detail: arr
+      };
+      try {
+        await DataStore.save(new Misc({ crArr }));
+
+        for (var key2 in localStorage) {
+          if (key2.match(/appFail/)) {
+            localStorage.removeItem(key2);
+          }
+        }
+      } catch (err) {
+        this.writeFail("salvageFail", crArr, err);
+      }
+    },
+    scrollTop: function() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    },
+    ////////////
+    dummytest() {
+      this.sett.dummy1 = "val";
+    },
+    async periodicValidation() {
+      // this.initAuthValidation();
+      this.workdateValication();
+      if (this.sett.activeTab !== 2) {
+        // クラスのタイムスタンプを反映
+        // 部屋から出たのか
+        if (this.isEnteredselCrlm) {
+          //欠席と宿題の齟齬チェック
+          if (
+            (await this.checkAttnHWConsistency(
+              this.selCrlm.id,
+              this.selCrlm.dayofweek
+            )) == true
+          ) {
+            //警告
+            this.$buefy.dialog.alert({
+              title: "Error",
+              message:
+                "<span class='f30'>Absent <-> Homework<br />  mismatch exixts." +
+                "<br /><br />Please check.</span>",
+              type: "is-danger",
+              hasIcon: true,
+              icon: "times-circle",
+              iconPack: "fa",
+              size: "is-large",
+              ariaRole: "alertdialog",
+              ariaModal: true
+            });
+            //齟齬あれば部屋戻す ★動作不良
+            // this.sett.activeTab = 2;
+          }
+          //全員、出欠とHWのみ保存
+          this.manageupdateClrmAttnHW();
+          this.isEnteredselCrlm = false; // 部屋から出たことを記録
+          // クラスのタイムスタンプを反映
+          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
+        } else {
+          // 全クラス
+          this.initallClasses();
+        }
+        this.dateDevAddDate();
+        this.workspaceValication(true);
+      }
+      this.salvageFail();
+    },
+    workspaceValication(ifUp) {
+      // this.sett.dummy2 += 1;
+      //classroomに関係する諸々 日付が変わると必ず
+      const todayclass = this.yourClasses
+        // .filter((x) => x.dayofweek === this.sett.dayofweek)
+        .filter(x => x.dayofweek === this.dayjsddd)
+        .map(x => ({
+          id: x.id,
+          status: 0
+        }));
+      this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
+      const crArr = {
+        type: "class" + this.$dayjs().format("YYYY-MM-DD"),
+        name: this.authdetail.username,
+        detail: todayclass
+      };
+
+      if (ifUp) {
+        //出欠モード保持のレコード
+        this.updateMisc(crArr);
+      } else {
+        this.createMisc(crArr);
+      }
+      // if (this.instructor.yourTodaysClasses.length < 1) {
+      // this.instructor.yourTodaysClasses = tdycls.map(id => )
+      // }
+    },
+    workdateValication() {
+      //日付またぐとリロードする
+      if (
+        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
+        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
+        this.sett.env.isTestMode === false
+      ) {
+        this.reloadApp("workdateValication");
+      }
+      // else {
+      //なんで日付設定するの？強制リロードまではInitializeだけでいいのでは
+      // this.setcurrentAcDate();
+      // }
+    },
+    async reloadApp(str) {
+      try {
+        const crArr = {
+          type: "reloadApp",
+          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: str
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        this.writeFail(
+          str,
+          this.dayACjsdddMMMD, //this.sett.today,
+          "Staff" + this.$dayjs().format("YYYY/MM/DD")
+        );
+      }
+      this.$router.go();
+    },
+    setcurrentAcDate() {
+      this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
+    },
+    setInstMonth() {
+      //勤怠用 createdのとき
+      this.instructor.yourattendvisiblemonth = this.$dayjs(
+        this.sett.acdate
+      ).format("YYYY-MM");
+      //manage用
+      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
+    },
     //////////サマリー
     async manageSummary() {
       // if (this.showManagementView === true) {
@@ -3954,8 +4114,6 @@ export default {
       }
     },
     ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
     selectClassroom(arr) {
       // 前回のテスト結果くりあ（非表示）
       this.ClrmAppSyncStateShow = false;
@@ -3970,12 +4128,6 @@ export default {
       //表示
       this.isOpenselCrlm = true;
       this.scrollTop();
-    },
-    scrollTop: function() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
     },
     enterClassroomPrevSeeIfAlter() {
       // 特別対応の権限があるか（ユーザ毎）。
@@ -4169,179 +4321,8 @@ export default {
         return null;
       }
     },
-    ////////////Fail処理
-    ////////////Fail処理
-    ////////////Fail処理
-    async writeFail(dest, arr, ret) {
-      const dtl =
-        this.getStartingUrl +
-        ", auth:" +
-        this.authdetail.name +
-        ", input:" +
-        JSON.stringify(arr) +
-        ", result:" +
-        JSON.stringify(ret);
-      try {
-        const crArr = {
-          type: "writeFail",
-          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-          detail: dtl
-        };
-        await DataStore.save(new Misc(crArr));
-      } catch (err) {
-        localStorage[
-          "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
-        ] = dtl;
-      }
-    },
-    async salvageFail() {
-      let arr = [];
-      for (var key in localStorage) {
-        if (key.match(/appFail/)) {
-          var tmp = {};
-          tmp.key = key;
-          tmp.val = localStorage.getItem(key);
-          arr.push(tmp);
-        }
-      }
-      const crArr = {
-        type: "appFailSalvage",
-        name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-        detail: arr
-      };
-      try {
-        await DataStore.save(new Misc({ crArr }));
-
-        for (var key2 in localStorage) {
-          if (key2.match(/appFail/)) {
-            localStorage.removeItem(key2);
-          }
-        }
-      } catch (err) {
-        this.writeFail("salvageFail", crArr, err);
-      }
-    },
-    //////////// 設定、Validation
-    //////////// 設定、Validation
-    //////////// 設定、Validation
-    async periodicValidation() {
-      // this.initAuthValidation();
-      this.workdateValication();
-      if (this.sett.activeTab !== 2) {
-        // クラスのタイムスタンプを反映
-        // 部屋から出たのか
-        if (this.isEnteredselCrlm) {
-          //欠席と宿題の齟齬チェック
-          if (
-            (await this.checkAttnHWConsistency(
-              this.selCrlm.id,
-              this.selCrlm.dayofweek
-            )) == true
-          ) {
-            //警告
-            this.$buefy.dialog.alert({
-              title: "Error",
-              message:
-                "<span class='f30'>Absent <-> Homework<br />  mismatch exixts." +
-                "<br /><br />Please check.</span>",
-              type: "is-danger",
-              hasIcon: true,
-              icon: "times-circle",
-              iconPack: "fa",
-              size: "is-large",
-              ariaRole: "alertdialog",
-              ariaModal: true
-            });
-            //齟齬あれば部屋戻す ★動作不良
-            // this.sett.activeTab = 2;
-          }
-          //全員、出欠とHWのみ保存
-          this.manageupdateClrmAttnHW();
-          this.isEnteredselCrlm = false; // 部屋から出たことを記録
-          // クラスのタイムスタンプを反映
-          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-        } else {
-          // 全クラス
-          this.initallClasses();
-        }
-        this.dateDevAddDate();
-        this.workspaceValication(true);
-      }
-      this.salvageFail();
-    },
-    workspaceValication(ifUp) {
-      // this.sett.dummy2 += 1;
-      //classroomに関係する諸々 日付が変わると必ず
-      const todayclass = this.yourClasses
-        // .filter((x) => x.dayofweek === this.sett.dayofweek)
-        .filter(x => x.dayofweek === this.dayjsddd)
-        .map(x => ({
-          id: x.id,
-          status: 0
-        }));
-      this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
-      const crArr = {
-        type: "class" + this.$dayjs().format("YYYY-MM-DD"),
-        name: this.authdetail.username,
-        detail: todayclass
-      };
-
-      if (ifUp) {
-        //出欠モード保持のレコード
-        this.updateMisc(crArr);
-      } else {
-        this.createMisc(crArr);
-      }
-      // if (this.instructor.yourTodaysClasses.length < 1) {
-      // this.instructor.yourTodaysClasses = tdycls.map(id => )
-      // }
-    },
-    workdateValication() {
-      //日付またぐとリロードする
-      if (
-        // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
-        this.dayACjsdddMMMD != this.$dayjs().format("ddd, MMM D") &&
-        this.sett.env.isTestMode === false
-      ) {
-        this.reloadApp("workdateValication");
-      }
-      // else {
-      //なんで日付設定するの？強制リロードまではInitializeだけでいいのでは
-      // this.setcurrentAcDate();
-      // }
-    },
-    async reloadApp(str) {
-      try {
-        const crArr = {
-          type: "reloadApp",
-          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
-          detail: str
-        };
-        await DataStore.save(new Misc(crArr));
-      } catch (err) {
-        this.writeFail(
-          str,
-          this.dayACjsdddMMMD, //this.sett.today,
-          "Staff" + this.$dayjs().format("YYYY/MM/DD")
-        );
-      }
-      this.$router.go();
-    },
-    ////////// 日付設定
-    ////////// 日付設定
-    setcurrentAcDate() {
-      this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
-    },
     dateDevAddDate() {
       this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
-    },
-    setInstMonth() {
-      //勤怠用 createdのとき
-      this.instructor.yourattendvisiblemonth = this.$dayjs(
-        this.sett.acdate
-      ).format("YYYY-MM");
-      //manage用
-      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     async authManage() {
       await Auth.currentAuthenticatedUser()

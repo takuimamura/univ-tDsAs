@@ -41,25 +41,15 @@
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
         " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{ sett.dummy3 }}
+        <b-checkbox v-model="sett.env.isTestMode">{{ sett.env.isTestMode }}</b-checkbox>
         authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
         <br />
-        <b-field>
-          <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
-          <b-button @click="dateDevAddDate()">Tgt day change</b-button>
-          <b-numberinput
-            v-model="sett.env.devAddAcDate"
-            controls-position="compact"
-            type="is-warning"
-          ></b-numberinput>
-          <b-button @click="setcurrentAcDate()">ACday change</b-button>
-          <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
-          <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
-        </b-field>
-
+        <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+        <b-button @click="dateDevAddDate()">reflect day change</b-button>
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
-        <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-        <template v-if="sett.devshow">
+        <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+        <template v-if="sett.devcheck">
           <!--■■■開発用 ローカル限定表示■■■-->
           sett {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
@@ -2188,7 +2178,6 @@ export default {
       sett: {
         env: EnvJSON,
         devcheck: false,
-        devshow: false,
         isModalActive: false,
         acdate: null, // 実際の日
         ddate: null, // 処理につかう日付
@@ -4327,13 +4316,8 @@ export default {
       }
       this.$router.go();
     },
-    ////////// 日付設定
-    ////////// 日付設定
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
-    },
-    dateDevAddDate() {
-      this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
     },
     setInstMonth() {
       //勤怠用 createdのとき
@@ -4342,6 +4326,9 @@ export default {
       ).format("YYYY-MM");
       //manage用
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
+    },
+    dateDevAddDate() {
+      this.sett.ddate = this.$dayjs().add(this.sett.env.devAddDate, "d");
     },
     async authManage() {
       await Auth.currentAuthenticatedUser()
