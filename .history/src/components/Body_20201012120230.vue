@@ -57,7 +57,7 @@
           <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
           <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
         </b-field>
-        <b-button @click="fetchClrms()">fetchClrms()</b-button>
+
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
         <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
@@ -86,7 +86,7 @@
           <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
           <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
           <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-          clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
+          dummy1::::::{{ sett.dummy1 }}
           <br />
           dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
           <br />
@@ -110,18 +110,16 @@
           <br />
           getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
           <br />
+          getTodayJSON.hwic {{ getTodayJSON.hwic }} |
+          <br />
           getThisWeekHwicJSON[this.selCrlm.dayofweek]
           {{ getThisWeekHwicJSON[selCrlm.dayofweek] }}|
           <br />
           isEnteredselCrlm: {{ isEnteredselCrlm }}
-          <br />dayChainJSON:
-          <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
-          <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
           <br />
-          getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
-          <br />
-          monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
-          <br />
+          <!-- dayChainJSON: {{dayChainJSON}}|        <br /> -->
+          <!-- getDayChainUntilPrevJSON: {{getDayChainUntilPrevJSON}}|        <br /> -->
+          <!-- monthChainUntilCurrentMonthJSON: {{monthChainUntilCurrentMonthJSON}}        <br /> -->
           <!-- {{indiRow}} -->
           <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
           <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
@@ -250,17 +248,15 @@
             </section>
             <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
             <!-- 管理用画面 --------------------------------------------------------- 管理用画面 ここまで-->
-            <!-- <p class="title">Students</p> -->
-            <!-- <template v-if="!showManagementView">
+            <template v-if="!showManagementView">
               <section class="p40">
+                <!-- <p class="title">Students</p> -->
                 <b-collapse :open="false" aria-id="contentIdForA11y1">
                   <button
                     class="button is-primary"
                     slot="trigger"
                     aria-controls="contentIdForA11y1"
-                  >
-                    Students search
-                  </button>
+                  >Students search</button>
                   <div class="notification">
                     <template v-if="!sett.isLoadingClrmManage">
                       <div class>
@@ -289,18 +285,15 @@
                         :active.sync="sett.isLoadingClrmManage"
                         :can-cancel="false"
                       >
-                        <b-icon
-                          pack="fas"
-                          icon="sync-alt"
-                          size="is-large"
-                          custom-class="fa-spin"
-                        ></b-icon>
+                        <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                       </b-loading>
                     </template>
                   </div>
                 </b-collapse>
+
+                <!-- <b-collapse class="card" animation="slide"></b-collapse> -->
               </section>
-            </template>-->
+            </template>
             <!-- ----- information ----- -->
             <!-- ----- information ----- -->
             <section class="p40">
@@ -373,11 +366,11 @@
                     </b-field>
                     <b-table :data="yourattendancesMonth">
                       <template slot-scope="props">
-                        <b-table-column
-                          field="date"
-                          label="Date"
-                          width="150"
-                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
+                        <b-table-column field="date" label="Date" width="150">
+                          {{
+                          getDateMDddd(props.row.date)
+                          }}
+                        </b-table-column>
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
                           }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
@@ -386,7 +379,11 @@
                           {{ props.row.clockout
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
-                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
+                        <b-table-column field="detail" label="Note">
+                          {{
+                          props.row.detail
+                          }}
+                        </b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -1048,30 +1045,28 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">
-                        {{
-                        att.modeset[`${att.mode}`].barcaption
-                        }}
-                      </span>
+                      <span
+                        style="font-size: 28px; color: black;"
+                      >{{ att.modeset[`${att.mode}`].barcaption }}</span>
                     </b-progress>
                   </div>
                 </div>
                 <div class="level-left" style="width: 200px; height: 80px;">
                   <button
                     v-show="att.mode < 2"
-                    class="button is-medium"
+                    class="button is-large"
                     @click="attnModeChangeConfirm"
                   >change</button>
                   <b-button
                     v-show="att.mode === 2"
-                    class="button is-medium"
+                    class="button is-large"
                     @click="attnModeRestartConfirm"
                     icon-left="undo-alt"
                   ></b-button>
                   <!-- 後日修正用 -->
                   <b-button
                     v-show="isdeadlinelenient"
-                    class="button is-medium is-beige"
+                    class="button is-large is-beige"
                     @click="attnModeChangeRegardlessOfTheDayConfirm"
                     icon-left="edit"
                   >
@@ -1080,7 +1075,7 @@
                 </div>
                 <b-button
                   icon-left="people-arrows"
-                  size="is-medium"
+                  size="is-large"
                   @click="cRoom.showABList = !cRoom.showABList"
                 >A / B</b-button>
               </div>
@@ -1117,11 +1112,9 @@
                     width="10"
                     sticky
                   >
-                    <template v-if="sett.devcheck">
-                      {{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                      }}
-                    </template>
+                    <template
+                      v-if="sett.devcheck"
+                    >{{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -1385,9 +1378,9 @@
                     <div class="tile is-ancestor" style="z-index: 1;">
                       <div class="tile is-parent">
                         <div class="tile is-child">
+                          <!-- <b-button @click="updateClrmAll(props.row)">updateClrmAll</b-button> -->
                           <b-field v-show="att.mode < 2">
                             <b-radio-button
-                              size="is-medium"
                               v-model="props.row[selCrlm.attnthisweek]"
                               :native-value="att.modeset[att.mode].title"
                               :type="att.modeset[att.mode].colortype"
@@ -1398,14 +1391,15 @@
                                   att.modeset[att.mode].title
                                 )
                               "
+                              size="is-medium"
                             >
                               <div :class="att.modeset[att.mode].colortype">
                                 <b-icon icon="check"></b-icon>
                                 <span>{{ att.modeset[att.mode].title }}</span>
                               </div>
                             </b-radio-button>
+                            <!-- :native-value="att.modeset[2].num" -->
                             <b-radio-button
-                              size="is-medium"
                               v-model="props.row[selCrlm.attnthisweek]"
                               :native-value="att.modeset[att.mode].title2"
                               type="is-danger"
@@ -1416,6 +1410,7 @@
                                   att.modeset[att.mode].title2
                                 )
                               "
+                              size="is-medium"
                             >
                               <b-icon icon="times"></b-icon>
                               <span>{{ att.modeset[att.mode].title2 }}</span>
@@ -1425,7 +1420,6 @@
                       </div>
                     </div>
                   </b-table-column>
-                  <!-- Homework Incomplete -->
                   <b-table-column field="homeworkincomplete" label="Homework Incomplete" width="30">
                     <div class="tile is-ancestor">
                       <div>
@@ -1488,9 +1482,11 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span
-                              class="is-size-5 has-text-grey"
-                            >{{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}</span>
+                            <span class="is-size-5 has-text-grey">
+                              {{
+                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                              }}
+                            </span>
                           </div>
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
@@ -1606,7 +1602,11 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
+                                          <span v-show="indiRow[k.evl] !== -1">
+                                            {{
+                                            indiRow[k.evl]
+                                            }}
+                                          </span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -1862,7 +1862,11 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
+                                        <span v-show="indiRow[k.evl] !== -1">
+                                          {{
+                                          indiRow[k.evl]
+                                          }}
+                                        </span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -2147,9 +2151,11 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span
-                              :class="getIndiAttendClass(st[selCrlm.attnthisweek])"
-                            >{{ st.classcount + " " + st.studentname }}</span>
+                            <span :class="getIndiAttendClass(st[selCrlm.attnthisweek])">
+                              {{
+                              st.classcount + " " + st.studentname
+                              }}
+                            </span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -2274,7 +2280,6 @@ export default {
         dummy2: null,
         dummy3: null,
         sw1: false,
-        sw2: false,
         activeTab: 0,
         activeTabManage: 0,
         isLoadingClrmManage: false,
@@ -3588,6 +3593,14 @@ export default {
           ? newval + num + num
           : newval;
     },
+    updateClassModeChange() {
+      const upArr = {
+        type: "class" + this.dayjsYYYYMMDDh,
+        name: this.authdetail.username,
+        detail: this.instructor.yourTodaysClasses
+      };
+      this.updateMisc(upArr);
+    },
     hideComEv() {
       this.cRoom.showComEv.ecom01 = false;
       this.cRoom.showComEv.ecom02 = false;
@@ -3644,21 +3657,21 @@ export default {
       }
     },
     //////////サマリー
-    // async manageSummary() {
-    //   // if (this.showManagementView === true) {
-    //   // }
-    //   this.sett.isLoadingClrmManage = true;
-    //   await this.getClrmsDatainstByday("Mon"); //★test
-    //   await this.getClrmsDatainstByday("Tue"); //★test
-    //   await this.getClrmsDatainstByday("Wed"); //★test
-    //   await this.getClrmsDatainstByday("Thu"); //★test
-    //   await this.getClrmsDatainstByday("Fri"); //★test
-    //   if (this.showManagementViewSuper === true) {
-    //     await this.getClrmsDatainstByday("Sat"); //★test
-    //     await this.getClrmsDatainstByday("Sun"); //★test
-    //   }
-    //   this.sett.isLoadingClrmManage = false;
-    // },
+    async manageSummary() {
+      // if (this.showManagementView === true) {
+      // }
+      this.sett.isLoadingClrmManage = true;
+      await this.getClrmsDatainstByday("Mon"); //★test
+      await this.getClrmsDatainstByday("Tue"); //★test
+      await this.getClrmsDatainstByday("Wed"); //★test
+      await this.getClrmsDatainstByday("Thu"); //★test
+      await this.getClrmsDatainstByday("Fri"); //★test
+      if (this.showManagementViewSuper === true) {
+        await this.getClrmsDatainstByday("Sat"); //★test
+        await this.getClrmsDatainstByday("Sun"); //★test
+      }
+      this.sett.isLoadingClrmManage = false;
+    },
     //////////講師 勤怠
     //////////講師 勤怠
     //////////講師 勤怠
@@ -3802,6 +3815,10 @@ export default {
       this.$buefy.dialog.confirm({
         title: "Attendance record mode change:",
         message: "mode change?",
+        // "mode change?<br><br>checked: " +
+        // this.computedBlank.length +
+        // "/" +
+        // this.classmembers.length,
         type: this.att.modeset[this.att.mode].colortype,
         size: "is-large",
         onConfirm: () => {
@@ -3825,6 +3842,18 @@ export default {
           });
         }
       });
+      // } else {
+      //   this.$buefy.dialog.alert({
+      //     message: this.computedBlank.length + " more check needed!",
+      //     size: "is-large",
+      //     title: "Error",
+      //     hasIcon: true,
+      //     icon: "times-circle",
+      //     type: "is-danger",
+      //     ariaRole: "alertdialog",
+      //     ariaModal: true
+      //   });
+      // }
     },
     attnModeRestartConfirm() {
       this.$buefy.dialog.confirm({
@@ -3856,20 +3885,23 @@ export default {
         }
       });
     },
-    //// switching edit mode
     attnModeChangeRegardlessOfTheDayConfirm() {
       if (this.att.mode === 3) {
-        //// enable
         this.$buefy.dialog.confirm({
           title: "Enable edit mode:",
           message:
-            "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
+            "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit?",
           size: "is-large",
           type: "is-beige",
           onConfirm: () => {
-            this.att.mode = 0;
+            const attMode = (this.att.mode = 0);
+            this.att.mode = attMode;
+            // this.instructor.yourTodaysClasses[
+            //   this.classroomIndex
+            // ].status = attMode;
             this.updateClassModeChange();
             this.cRoom.showAttenHist = 0;
+
             this.$buefy.toast.open({
               message:
                 "<span style='font-size:40px'>You can edit. " + "</span>",
@@ -3879,21 +3911,9 @@ export default {
           }
         });
       } else {
-        //// disable
         this.att.mode = 3;
       }
     },
-    updateClassModeChange() {
-      const upArr = {
-        type: "class" + this.dayjsYYYYMMDDh,
-        name: this.authdetail.username,
-        detail: this.instructor.yourTodaysClasses
-      };
-      this.updateMisc(upArr);
-    },
-    //// return class
-    //// return class
-    //// return class
     getAttendStatusClass(num) {
       switch (num) {
         case 0:
@@ -4021,7 +4041,7 @@ export default {
       //セット
       this.selCrlm = arr;
       // たまにLoadingのままになるのどうしよう★
-      // this.fetchClrms();
+      this.fetchClrms();
       // if (this.dataset.Clrms.length > 0 ? false : true)
       //表示
       this.isOpenselCrlm = true;
@@ -4060,9 +4080,8 @@ export default {
         return 0;
       });
       // this.classmembers.push(... classmem;
-      this.classmembers = classmem;
-      // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
+      // this.classmembers = classmem;
+      this.classmembers = [...classmem];
       if (this.selCrlm.dayofweek === this.dayjsddd) {
         ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
@@ -4081,17 +4100,43 @@ export default {
         this.cRoom.showAttenHist = 1;
         ////// 出欠記録の編集許可
         //// 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        this.isdeadlinelenient = true;
+        if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
+          this.isdeadlinelenient = true;
+        } else {
+          this.isdeadlinelenient = false;
+        }
+        // //// 出欠記録の編集許可： 制限しない
+        // this.isdeadlinelenient = true;
       }
       this.isEnteredselCrlm = true;
       this.sett.activeTab = 2;
     },
+    // 都度の書込みごとにView反映させる → ★しない
+    // enterClassroomUp() {
+    //   const classmem = this.dataset.Clrms.filter(
+    //     (x) => x.classcode === this.selCrlm.id && x.enable === true
+    //   ).sort(function(a, b) {
+    //     if (a.sortid < b.sortid) return -1;
+    //     if (a.sortid > b.sortid) return 1;
+    //     return 0;
+    //   });
+    //   this.classmembers = [...classmem];
+    // },
+    // enterClassroomEdit(arr) {
+    //   this.manage.selCrlm = arr;
+    //   this.manage.isOpenSummary = false;
+
+    //   const classmem = this.dataset.ClrmsInstByday.filter(
+    //     x => x.classcode === arr.classcode && x.enable === true
+    //   ).sort(function(a, b) {
+    //     if (a.sortid < b.sortid) return -1;
+    //     if (a.sortid > b.sortid) return 1;
+    //     return 0;
+    //   });
+    //   this.manage.selAttn = this.selCrlm.attnthisweek;
+    //   this.manage.classmembersEdit = classmem;
+    //   this.manage.isOpenEdit = true;
+    // },
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
         case "Group A":
@@ -4111,10 +4156,10 @@ export default {
           break;
       }
     },
-    // convertInstructorsInfo(val) {
-    //   const result = this.instructor.nameConv.find((x) => x.username === val);
-    //   return result;
-    // },
+    convertInstructorsInfo(val) {
+      const result = this.instructor.nameConv.find(x => x.username === val);
+      return result;
+    },
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
@@ -4245,6 +4290,7 @@ export default {
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
+        // クラスのタイムスタンプを反映
         // 部屋から出たのか
         if (this.isEnteredselCrlm) {
           //欠席と宿題の齟齬チェック
@@ -4268,6 +4314,8 @@ export default {
               ariaRole: "alertdialog",
               ariaModal: true
             });
+            //齟齬あれば部屋戻す ★動作不良
+            // this.sett.activeTab = 2;
           }
           //全員、出欠とHWのみ保存
           this.manageupdateClrmAttnHW();
@@ -4297,6 +4345,7 @@ export default {
         name: this.authdetail.username,
         detail: todayclass
       };
+
       if (ifUp) {
         //出欠モード保持のレコード
         this.updateMisc(crArr);
@@ -4390,6 +4439,7 @@ export default {
     TESTarr0() {
       if (this.dataset.Clrms.length > 0) {
         return this.dataset.Clrms.find(itm => itm.id === this.sett.dummy);
+
         // this.sett.dummy1 = tgt
       } else {
         return null;
@@ -4507,29 +4557,29 @@ export default {
       }
       return arr;
     },
-    // clrmShowColEdit() {
-    //   //週毎データの表示制御
-    //   const finalWeek = this.dataset.Cldrs.reduce((a, b) =>
-    //     Number(a.lessonnum) > Number(b.lessonnum) ? a : b
-    //   );
-    //   let arr = [];
-    //   for (var v = 0; v <= Number(finalWeek.lessonnum); v++) {
-    //     switch (this.manage.numAttenHist) {
-    //       case 0:
-    //         arr.push(v == Number(this.getTodayJSON.lessonnum) ? true : false);
-    //         break;
-    //       case 1:
-    //         arr.push(v <= Number(this.getTodayJSON.lessonnum) ? true : false);
-    //         break;
-    //       case 2:
-    //         arr.push(v == Number(this.getTodayJSON.lessonnum) ? true : false);
-    //         //            arr.push(false);
-    //         break;
-    //       //   default:
-    //     }
-    //   }
-    //   return arr;
-    // },
+    clrmShowColEdit() {
+      //週毎データの表示制御
+      const finalWeek = this.dataset.Cldrs.reduce((a, b) =>
+        Number(a.lessonnum) > Number(b.lessonnum) ? a : b
+      );
+      let arr = [];
+      for (var v = 0; v <= Number(finalWeek.lessonnum); v++) {
+        switch (this.manage.numAttenHist) {
+          case 0:
+            arr.push(v == Number(this.getTodayJSON.lessonnum) ? true : false);
+            break;
+          case 1:
+            arr.push(v <= Number(this.getTodayJSON.lessonnum) ? true : false);
+            break;
+          case 2:
+            arr.push(v == Number(this.getTodayJSON.lessonnum) ? true : false);
+            //            arr.push(false);
+            break;
+          //   default:
+        }
+      }
+      return arr;
+    },
     //////////////////// computed 日付関連 ////////////////////
     dayjslenient() {
       // 出欠履歴許可する日の配列
@@ -4660,8 +4710,6 @@ export default {
           );
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
-    ////////// Clock In / Out
-    ////////// Clock In / Out
     ifYouClockIn: function() {
       return this.instructor.yourattendances.some(
         x => x.date === this.$dayjs().format("YYYY-MM-DD")
@@ -4804,12 +4852,14 @@ export default {
     this.setInstMonth();
     // JSONからのallClassesを整える
     await this.initallClasses();
+    // this.getMiscsData("classmanagement", this.authdetail.name);
+    // this.listMiscsData();
     //これ特別対応だけのためのやつ
     // this.listMiscsDataID("alter", this.authdetail.username);
     this.workspaceValication();
     this.salvageFail();
     //管理用
-    // this.manageSummary();
+    this.manageSummary();
   },
   async mounted() {
     setInterval(

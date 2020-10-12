@@ -3588,6 +3588,14 @@ export default {
           ? newval + num + num
           : newval;
     },
+    updateClassModeChange() {
+      const upArr = {
+        type: "class" + this.dayjsYYYYMMDDh,
+        name: this.authdetail.username,
+        detail: this.instructor.yourTodaysClasses
+      };
+      this.updateMisc(upArr);
+    },
     hideComEv() {
       this.cRoom.showComEv.ecom01 = false;
       this.cRoom.showComEv.ecom02 = false;
@@ -3802,6 +3810,10 @@ export default {
       this.$buefy.dialog.confirm({
         title: "Attendance record mode change:",
         message: "mode change?",
+        // "mode change?<br><br>checked: " +
+        // this.computedBlank.length +
+        // "/" +
+        // this.classmembers.length,
         type: this.att.modeset[this.att.mode].colortype,
         size: "is-large",
         onConfirm: () => {
@@ -3825,6 +3837,18 @@ export default {
           });
         }
       });
+      // } else {
+      //   this.$buefy.dialog.alert({
+      //     message: this.computedBlank.length + " more check needed!",
+      //     size: "is-large",
+      //     title: "Error",
+      //     hasIcon: true,
+      //     icon: "times-circle",
+      //     type: "is-danger",
+      //     ariaRole: "alertdialog",
+      //     ariaModal: true
+      //   });
+      // }
     },
     attnModeRestartConfirm() {
       this.$buefy.dialog.confirm({
@@ -3856,18 +3880,20 @@ export default {
         }
       });
     },
-    //// switching edit mode
     attnModeChangeRegardlessOfTheDayConfirm() {
       if (this.att.mode === 3) {
-        //// enable
         this.$buefy.dialog.confirm({
           title: "Enable edit mode:",
           message:
-            "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
+            "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit?",
           size: "is-large",
           type: "is-beige",
           onConfirm: () => {
-            this.att.mode = 0;
+            const attMode = (this.att.mode = 0);
+            this.att.mode = attMode;
+            // this.instructor.yourTodaysClasses[
+            //   this.classroomIndex
+            // ].status = attMode;
             this.updateClassModeChange();
             this.cRoom.showAttenHist = 0;
             this.$buefy.toast.open({
@@ -3879,21 +3905,9 @@ export default {
           }
         });
       } else {
-        //// disable
         this.att.mode = 3;
       }
     },
-    updateClassModeChange() {
-      const upArr = {
-        type: "class" + this.dayjsYYYYMMDDh,
-        name: this.authdetail.username,
-        detail: this.instructor.yourTodaysClasses
-      };
-      this.updateMisc(upArr);
-    },
-    //// return class
-    //// return class
-    //// return class
     getAttendStatusClass(num) {
       switch (num) {
         case 0:

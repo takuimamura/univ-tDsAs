@@ -1,7 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 // import Home from "../views/Home.vue";
-import Header from "../components/Header.vue";
 import Body from "../components/Body.vue";
 
 Vue.use(VueRouter);
@@ -28,12 +27,6 @@ const routes = [
   //   component: () =>
   //     import(/* webpackChunkName: "about" */ "../views/About.vue"),
   // },
-  {
-    path: "/header",
-    name: "Header",
-    meta: { title: "header" },
-    component: Header,
-  },
   {
     path: "/body",
     name: "Body",
