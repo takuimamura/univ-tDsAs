@@ -1115,9 +1115,11 @@
                     width="10"
                     sticky
                   >
-                    <template
-                      v-if="sett.devcheck"
-                    >{{$dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
+                    <template v-if="sett.devcheck">
+                      {{
+                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
+                      }}
+                    </template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -3215,20 +3217,13 @@ export default {
       // this.enterClassroomUp();
       // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },
-    //Schedule画面切替時に作動。classmembers全員、本日の出欠とHWのみ全てUpload
+    //classmembers全員、本日の出欠とHWのみ全てUpload
     async manageupdateClrmAttnHW() {
       for await (const rw of this.classmembers) {
         this.updateClrmAttnHW(rw);
       }
       // クラスのタイムスタンプを反映
       this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-      //おまじない的な
-      setTimeout(
-        function() {
-          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-        }.bind(this),
-        5000
-      );
     },
     async updateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
@@ -3376,7 +3371,7 @@ export default {
         return arr.id == classcode;
       });
       //// 出欠もSyncも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
+      if (tgt.attndone !== true && tgt.syncdone !== true) {
         const ret = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );

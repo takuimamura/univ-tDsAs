@@ -3221,14 +3221,11 @@ export default {
         this.updateClrmAttnHW(rw);
       }
       // クラスのタイムスタンプを反映
-      this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-      //おまじない的な
-      setTimeout(
-        function() {
-          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-        }.bind(this),
-        5000
-      );
+      // this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
+      // setTimeout(
+      //   this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek),
+      //   5000
+      // );
     },
     async updateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
@@ -3376,7 +3373,7 @@ export default {
         return arr.id == classcode;
       });
       //// 出欠もSyncも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
+      if (tgt.attndone !== true && tgt.syncdone !== true) {
         const ret = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );

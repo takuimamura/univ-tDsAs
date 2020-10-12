@@ -3376,7 +3376,7 @@ export default {
         return arr.id == classcode;
       });
       //// 出欠もSyncも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
+      if (tgt.attndone !== true && tgt.syncdone !== true) {
         const ret = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );

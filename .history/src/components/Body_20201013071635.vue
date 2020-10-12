@@ -3221,12 +3221,9 @@ export default {
         this.updateClrmAttnHW(rw);
       }
       // クラスのタイムスタンプを反映
-      this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-      //おまじない的な
+      // this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
       setTimeout(
-        function() {
-          this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek);
-        }.bind(this),
+        this.reflectClassSummary(this.selCrlm.id, this.selCrlm.dayofweek),
         5000
       );
     },
@@ -3372,14 +3369,16 @@ export default {
     ///// Misc
     //// クラス毎のサマリDB 更新
     async reflectClassSummary(classcode, dow) {
+      console.warn(classcode);
       const tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
       //// 出欠もSyncも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
+      if (tgt.attndone !== true && tgt.syncdone !== true) {
         const ret = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );
+        console.warn(JSON.stringify(ret));
         // // クラスのタイムスタンプを取得
         // const newest = ret.reduce((a, b) =>
         //   a._lastChangedAt > b._lastChangedAt ? a : b
