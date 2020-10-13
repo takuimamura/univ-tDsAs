@@ -2255,7 +2255,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.08",
+        version: "1.0793",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore"
@@ -3313,18 +3313,27 @@ export default {
       }
       // 対象のLessonNo.のみをチェック
       let chk = false;
-      // const classmems = await DataStore.query(Clrm, c =>
-      //   c.classcode("eq", classcode)
-      // );
-      const classmems = this.dataset.Clrms.filter(
-        x => x.classcode === classcode
+      const classmems = await DataStore.query(Clrm, c =>
+        c.classcode("eq", classcode)
       );
+
+      // let lg = "";
       for (const rw of classmems) {
+        // const str =
+        //   rw.studentname +
+        //   rw[this.selCrlm.attnthisweek] +
+        //   "|" +
+        //   rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]] +
+        //   "\n";
+
         if (
           rw[this.getThisWeekAttnJSON[dow]] == "not here" &&
           rw[this.getThisWeekHwicJSON[dow]] !== false
         ) {
           chk = true;
+          // lg += "NG:" + str;
+          // } else {
+          // lg += "OK:" + str;
         }
       }
       return chk;
@@ -3400,6 +3409,28 @@ export default {
       // this.dataset.Clrms = [];
       // this.dataset.Clrms = [...fetch];
     },
+    // async fetchInsts()廃止⇒async listInstsDataAPI() {でとる
+    // async fetchInsts() {
+    //   //自分の勤怠
+    //   this.instructor.yourattendances = await DataStore.query(Inst, (c) =>
+    //     c.uid("eq", this.authdetail.username)
+    //   );
+    // },
+    // async fetchMiscs() {
+    //   this.dataset.Miscs = [];
+    //   this.dataset.Miscs = await DataStore.query(Misc, (c) =>
+    //     c.name("eq", this.sett.alias.username)
+    //   );
+    // this.dataset.Miscs = [...this.ds.xxxxclrms];
+    // this.dataset.Clrms.splice();
+    // this.dataset.Clrms.push(...this.ds.clrms);
+    // },
+    async getClrmsDatainstByday(dow) {
+      const data = await DataStore.query(Clrm, c =>
+        c.dayofweek("eq", dow).uid("eq", this.sett.alias.name)
+      );
+      this.dataset.ClrmsInstByday.push(...data);
+    },
     ///// inst
     ///// Misc
     ///// Misc
@@ -3413,10 +3444,39 @@ export default {
         const ret = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );
-        // const ret = this.dataset.Clrms.filter(x => x.classcode === classcode); // ←syncesはこれじゃlastChancedAtわからない
+
+        ////////////////////////////////////
+        const cTEST = this.dataset.Clrms.filter(x => x.classcode === classcode);
+        console.warn("reflectClassSummary");
+        console.table(ret);
+        console.table(cTEST);
+        const syncedsumTEST = cTEST.reduce((accumulator, current) => {
+          return (
+            accumulator +
+            (this.getIfAttnThisWeekNotNull(
+              dow,
+              current[this.getThisWeekAttnJSON[dow]],
+              current._lastChangedAt
+            ) === true
+              ? 1
+              : 0)
+          );
+        }, 0);
+        const attnsumTEST = cTEST.reduce((accumulator, current) => {
+          return (
+            accumulator +
+            (current[this.getThisWeekAttnJSON[dow]] == null ? 0 : 1) // nullもundefinedも0
+          );
+        }, 0);
+        /////////////////////////////////////
+
         // // クラスのタイムスタンプを取得
-        // const newest = ret.reduce((a, b) => a._lastChangedAt > b._lastChangedAt ? a : b);
-        // const oldest = ret.reduce((a, b) => a._lastChangedAt < b._lastChangedAt ? a : b);
+        // const newest = ret.reduce((a, b) =>
+        //   a._lastChangedAt > b._lastChangedAt ? a : b
+        // );
+        // const oldest = ret.reduce((a, b) =>
+        //   a._lastChangedAt < b._lastChangedAt ? a : b
+        // );
         // tgt.newest = newest._lastChangedAt;
         // tgt.oldest = oldest._lastChangedAt;
         //       )
@@ -3438,6 +3498,11 @@ export default {
             (current[this.getThisWeekAttnJSON[dow]] == null ? 0 : 1) // nullもundefinedも0
           );
         }, 0);
+
+        //////////////////////////////////////////////
+        console.warn("TEST1" + syncedsum, attnsum);
+        console.warn("TEST2" + syncedsumTEST, attnsumTEST);
+
         // 0:null >0:false ===length:true
         // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
         tgt.attndone =
@@ -4186,6 +4251,8 @@ export default {
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付
+      // getThisWeekDateJSON[dow]
+      // return false;
       // if (attn !== null &&
       //   this.$dayjs(lastChan).format("H:mm") !== "Invalid Date") {
       //   // console.warn("getIf " + dow +

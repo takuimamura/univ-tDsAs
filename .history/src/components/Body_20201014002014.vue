@@ -2255,7 +2255,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.08",
+        version: "1.0793",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore"
@@ -3313,18 +3313,47 @@ export default {
       }
       // 対象のLessonNo.のみをチェック
       let chk = false;
-      // const classmems = await DataStore.query(Clrm, c =>
-      //   c.classcode("eq", classcode)
-      // );
-      const classmems = this.dataset.Clrms.filter(
+      const classmems = await DataStore.query(Clrm, c =>
+        c.classcode("eq", classcode)
+      );
+      const classmemsTEST = this.dataset.Clrms.filter(
         x => x.classcode === classcode
       );
+
       for (const rw of classmems) {
+        console.warn(
+          "CCC" +
+            rw[this.getThisWeekAttnJSON[dow]] +
+            "|" +
+            rw[this.getThisWeekHwicJSON[dow]]
+        );
+      }
+      for (const rw of classmemsTEST) {
+        console.warn(
+          "TTT" +
+            rw[this.getThisWeekAttnJSON[dow]] +
+            "|" +
+            rw[this.getThisWeekHwicJSON[dow]]
+        );
+      }
+
+      // let lg = "";
+      for (const rw of classmems) {
+        // const str =
+        //   rw.studentname +
+        //   rw[this.selCrlm.attnthisweek] +
+        //   "|" +
+        //   rw[this.getThisWeekHwicJSON[selCrlm.dayofweek]] +
+        //   "\n";
+
         if (
           rw[this.getThisWeekAttnJSON[dow]] == "not here" &&
           rw[this.getThisWeekHwicJSON[dow]] !== false
         ) {
           chk = true;
+          // lg += "NG:" + str;
+          // } else {
+          // lg += "OK:" + str;
         }
       }
       return chk;
@@ -3410,10 +3439,10 @@ export default {
       });
       //// 出欠もSyncも出来ていたら処理しない
       if (tgt.attndone !== true || tgt.syncdone !== true) {
-        const ret = await DataStore.query(Clrm, c =>
-          c.classcode("eq", classcode)
-        );
-        // const ret = this.dataset.Clrms.filter(x => x.classcode === classcode); // ←syncesはこれじゃlastChancedAtわからない
+        // const ret = await DataStore.query(Clrm, c =>
+        //   c.classcode("eq", classcode)
+        // );
+        const ret = this.dataset.Clrms.filter(x => x.classcode === classcode);
         // // クラスのタイムスタンプを取得
         // const newest = ret.reduce((a, b) => a._lastChangedAt > b._lastChangedAt ? a : b);
         // const oldest = ret.reduce((a, b) => a._lastChangedAt < b._lastChangedAt ? a : b);
@@ -4186,6 +4215,8 @@ export default {
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付
+      // getThisWeekDateJSON[dow]
+      // return false;
       // if (attn !== null &&
       //   this.$dayjs(lastChan).format("H:mm") !== "Invalid Date") {
       //   // console.warn("getIf " + dow +

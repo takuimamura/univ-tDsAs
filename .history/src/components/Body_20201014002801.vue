@@ -2255,7 +2255,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.08",
+        version: "1.0793",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore"
@@ -4186,6 +4186,8 @@ export default {
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付
+      // getThisWeekDateJSON[dow]
+      // return false;
       // if (attn !== null &&
       //   this.$dayjs(lastChan).format("H:mm") !== "Invalid Date") {
       //   // console.warn("getIf " + dow +
