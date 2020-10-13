@@ -3222,16 +3222,10 @@ export default {
         name: this.authdetail.username
       };
       try {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrAPI },
-          ...detObj
-        });
+        crArr.detail = JSON.stringify({ ...{via: this.app.chrAPI}, ... detObj);
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrDS },
-          ...detObj
-        });
+        crArr.detail = JSON.stringify({ ...{via: this.app.chrDS}, ... detObj);
         this.writeFail("sendUserAgent-sendfail", crArr, err);
         await this.createMisc(crArr);
       }

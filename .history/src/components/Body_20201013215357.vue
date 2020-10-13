@@ -2255,10 +2255,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.0793",
-        showClearCache: false,
-        chrAPI: "API",
-        chrDS: "DataStore"
+        version: "1.0792",
+        showClearCache: false
       },
       ds: {
         clrms: null,
@@ -3204,34 +3202,26 @@ export default {
     //   }
     // },
     async sendUserAgent() {
-      const detObj = {
-        app: this.app.version,
-        name: this.authdetail.username,
-        date: this.getDateYYYYMMDDhHHMMSS(),
-        appVersion: navigator.appVersion,
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        vendor: navigator.vendor,
-        appCodeName: navigator.appCodeName,
-        cookieEnabled: navigator.cookieEnabled,
-        language: navigator.language,
-        languages: navigator.languages
-      };
-      let crArr = {
+      const crArr = {
         type: "userAgent",
-        name: this.authdetail.username
+        name: this.authdetail.username,
+        detail: JSON.stringify({
+          app: this.app.version,
+          name: this.authdetail.username,
+          date: this.getDateYYYYMMDDhHHMMSS(),
+          appVersion: navigator.appVersion,
+          userAgent: navigator.userAgent,
+          platform: navigator.platform,
+          vendor: navigator.vendor,
+          appCodeName: navigator.appCodeName,
+          cookieEnabled: navigator.cookieEnabled,
+          language: navigator.language,
+          languages: navigator.languages
+        })
       };
       try {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrAPI },
-          ...detObj
-        });
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrDS },
-          ...detObj
-        });
         this.writeFail("sendUserAgent-sendfail", crArr, err);
         await this.createMisc(crArr);
       }

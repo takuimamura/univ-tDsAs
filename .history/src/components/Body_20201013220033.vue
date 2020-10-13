@@ -2256,9 +2256,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.0793",
-        showClearCache: false,
-        chrAPI: "API",
-        chrDS: "DataStore"
+        showClearCache: false
       },
       ds: {
         clrms: null,
@@ -3204,7 +3202,7 @@ export default {
     //   }
     // },
     async sendUserAgent() {
-      const detObj = {
+      let detval = {
         app: this.app.version,
         name: this.authdetail.username,
         date: this.getDateYYYYMMDDhHHMMSS(),
@@ -3217,21 +3215,18 @@ export default {
         language: navigator.language,
         languages: navigator.languages
       };
+
       let crArr = {
         type: "userAgent",
         name: this.authdetail.username
       };
       try {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrAPI },
-          ...detObj
-        });
+        detval.from = "API";
+        crArr.detail = JSON.stringify(detval);
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrDS },
-          ...detObj
-        });
+        detval.from = "DataStore";
+        crArr.detail = JSON.stringify(detval);
         this.writeFail("sendUserAgent-sendfail", crArr, err);
         await this.createMisc(crArr);
       }
