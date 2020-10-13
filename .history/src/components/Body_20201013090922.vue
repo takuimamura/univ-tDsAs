@@ -60,12 +60,10 @@
         <b-button @click="fetchClrms()">fetchClrms()</b-button>
         <b-button @click="instClockOut()">instClockOut()</b-button>
         <b-button @click="instClockIn()">instClockIn</b-button>
-        <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-        <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button>
         <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
         <template v-if="sett.devshow">
           <!--■■■開発用 ローカル限定表示■■■-->
-          sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
+          sett {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
           manage.dow {{ manage.dow }}
           <br />
@@ -375,11 +373,11 @@
                     </b-field>
                     <b-table :data="yourattendancesMonth">
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">
-                          {{
-                          getDateMDddd(props.row.date)
-                          }}
-                        </b-table-column>
+                        <b-table-column
+                          field="date"
+                          label="Date"
+                          width="150"
+                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
                           }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
@@ -388,11 +386,7 @@
                           {{ props.row.clockout
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
-                        <b-table-column field="detail" label="Note">
-                          {{
-                          props.row.detail
-                          }}
-                        </b-table-column>
+                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -1054,11 +1048,9 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">
-                        {{
-                        att.modeset[`${att.mode}`].barcaption
-                        }}
-                      </span>
+                      <span
+                        style="font-size: 28px; color: black;"
+                      >{{att.modeset[`${att.mode}`].barcaption}}</span>
                     </b-progress>
                   </div>
                 </div>
@@ -1123,11 +1115,9 @@
                     width="10"
                     sticky
                   >
-                    <template v-if="sett.devcheck">
-                      {{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                      }}
-                    </template>
+                    <template
+                      v-if="sett.devcheck"
+                    >{{$dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -1391,7 +1381,6 @@
                     <div class="tile is-ancestor" style="z-index: 1;">
                       <div class="tile is-parent">
                         <div class="tile is-child">
-                          <!-- <b-button @click="updateClrmTEST(props.row.id)">updateClrmTEST</b-button> -->
                           <b-field v-show="att.mode < 2">
                             <b-radio-button
                               size="is-medium"
@@ -1495,11 +1484,9 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span class="is-size-5 has-text-grey">
-                              {{
-                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
-                              }}
-                            </span>
+                            <span
+                              class="is-size-5 has-text-grey"
+                            >{{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}</span>
                           </div>
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
@@ -1615,11 +1602,7 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{
-                                            indiRow[k.evl]
-                                            }}
-                                          </span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -1875,11 +1858,7 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{
-                                          indiRow[k.evl]
-                                          }}
-                                        </span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -2164,11 +2143,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[selCrlm.attnthisweek])">
-                              {{
-                              st.classcount + " " + st.studentname
-                              }}
-                            </span>
+                            <span
+                              :class="getIndiAttendClass(st[selCrlm.attnthisweek])"
+                            >{{ st.classcount + " " + st.studentname }}</span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -2255,7 +2232,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.0794",
+        version: "1.079",
         showClearCache: false
       },
       ds: {
@@ -3135,7 +3112,7 @@ export default {
       const cr = {
         type: "DataStoreClear",
         name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS()
+        detail: this.$dayjs().format("YYYY-MM-DD HH:mm")
       };
       this.$buefy.toast.open({
         message: "<span style='font-size:60px'>Please wait...</span>",
@@ -3148,7 +3125,7 @@ export default {
       this.writeFail(
         "DataStoreClear",
         this.authdetail.username, //this.sett.today,
-        this.getDateYYYYMMDDhHHMMSS()
+        this.$dayjs().format("YYYY-MM-DD HH:mm")
       );
       this.$router.go();
     },
@@ -3186,21 +3163,6 @@ export default {
         this.writeFail("MiscCreate", arr, err);
       }
     },
-    // async updateMisc(upd) {
-    //   // const id = "dummy★"; //あとまわし★
-    //   try {
-    //     const itm = await DataStore.query(Misc, id);
-    //     await DataStore.save(
-    //       Clrm.copyOf(itm, (updated) => {
-    //         updated.type = upd.type;
-    //         updated.name = upd.name;
-    //         updated.detail = upd.detail;
-    //       })
-    //     );
-    //   } catch (err) {
-    //     this.writeFail("updateMisc", upd, err);
-    //   }
-    // },
     async sendUserAgent() {
       const crArr = {
         type: "userAgent",
@@ -3208,7 +3170,7 @@ export default {
         detail: JSON.stringify({
           app: this.app.version,
           name: this.authdetail.username,
-          date: this.getDateYYYYMMDDhHHMMSS(),
+          date: this.$dayjs().format("YYYY-MM-DD HH:mm"),
           appVersion: navigator.appVersion,
           userAgent: navigator.userAgent,
           platform: navigator.platform,
@@ -3222,18 +3184,14 @@ export default {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
-        this.writeFail("sendUserAgent-sendfail", crArr, err);
+        this.writeFail("MiscCreateAPI", crArr, err);
         await this.createMisc(crArr);
       }
     },
-    async updateClrmTEST(id) {
-      // API,DataStore両方投げるテスト
-      this.updateClrm(id, "cust01", "DataStore");
-      this.updateClrmAPI(id, "cust01", "API");
-    },
-    async updateClrmAPI(uid, fname, fval) {
+    async updateClrmAPI(uid, uidx, fname, fval) {
       const upArr = {
-        id: uid
+        id: uid,
+        index: uidx
       };
       upArr[fname] = fval;
       try {
@@ -3254,12 +3212,19 @@ export default {
     async updateClrm(id, fname, fval) {
       const clrmItem = await DataStore.query(Clrm, id);
       try {
-        const callbk = await DataStore.save(
+        const retval = await DataStore.save(
           Clrm.copyOf(clrmItem, updated => {
-            updated[fname] = fval;
+            // updated[fname] = fval;
+            updated.hoge = fval;
           })
         );
-        return callbk; // returnの先に用途は実はない
+        console.warn("retval");
+        console.warn(retval);
+        this.writeFail(
+          "updateClrm",
+          this.authdetail.username,
+          JSON.stringify(retval)
+        );
       } catch (err) {
         this.writeFail(
           "updateClrm",
@@ -3268,6 +3233,7 @@ export default {
         );
         return err; // returnの先に用途は実はない
       }
+      // await this.fetchClrms();
       // this.enterClassroomUp();
       // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },
@@ -3377,11 +3343,13 @@ export default {
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         const crArr = {
-          type: "failAPIgraphql",
+          type: "failAPIgraphql-" + this.$dayjs().format("YYYY-MM-DD"),
           name: this.authdetail.username,
-          detail: this.getDateYYYYMMDDhHHMMSS()
+          detail: this.$dayjs().format("H:mm:ss")
         };
-        this.ClrmAppSyncState = false; // エラー
+        //エラー
+        this.ClrmAppSyncState = false;
+
         await DataStore.save(new Misc(crArr));
         this.ClrmAppSyncEnd += 1;
         return false;
@@ -3404,16 +3372,17 @@ export default {
     //   this.instructor.yourattendances = await DataStore.query(Inst, (c) =>
     //     c.uid("eq", this.authdetail.username)
     //   );
+    //   console.warn("fatchInsts:" + this.authdetail.username);
     // },
-    // async fetchMiscs() {
-    //   this.dataset.Miscs = [];
-    //   this.dataset.Miscs = await DataStore.query(Misc, (c) =>
-    //     c.name("eq", this.sett.alias.username)
-    //   );
-    // this.dataset.Miscs = [...this.ds.xxxxclrms];
-    // this.dataset.Clrms.splice();
-    // this.dataset.Clrms.push(...this.ds.clrms);
-    // },
+    async fetchMiscs() {
+      this.dataset.Miscs = [];
+      this.dataset.Miscs = await DataStore.query(Misc, c =>
+        c.name("eq", this.sett.alias.username)
+      );
+      // this.dataset.Miscs = [...this.ds.xxxxclrms];
+      // this.dataset.Clrms.splice();
+      // this.dataset.Clrms.push(...this.ds.clrms);
+    },
     async getClrmsDatainstByday(dow) {
       const data = await DataStore.query(Clrm, c =>
         c.dayofweek("eq", dow).uid("eq", this.sett.alias.name)
@@ -3494,20 +3463,20 @@ export default {
     // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
     // const mx = ret.reduce((a, b) => (a > b ? a : b));
     // const mn = ret.reduce((a, b) => (a < b ? a : b));
-    // async updateMiscClassSummary(classcode) {
-    //   //生徒単位でタイムスタンプの最大、最小を調べる
-    //   //記録する
-    //   const cr = {
-    //     type: this.ds.typeMisc.classSum,
-    //     name: classcode,
-    //     detail: JSON.stringify({
-    //       oldest: this.$dayjs(),
-    //       newest: new Date(),
-    //     }),
-    //   };
-    //   await DataStore.save(new Misc(cr));
-    //   this.fetchMiscs();
-    // },
+    async updateMiscClassSummary(classcode) {
+      //生徒単位でタイムスタンプの最大、最小を調べる
+      //記録する
+      const cr = {
+        type: this.ds.typeMisc.classSum,
+        name: classcode,
+        detail: JSON.stringify({
+          oldest: this.$dayjs(),
+          newest: new Date()
+        })
+      };
+      await DataStore.save(new Misc(cr));
+      this.fetchMiscs();
+    },
     async applogSave() {
       await DataStore.save(
         new Misc({
@@ -3516,6 +3485,21 @@ export default {
           detail: this.app.log.nw
         })
       );
+    },
+    async updateMisc(upd) {
+      const id = "dummy★"; //あとまわし★
+      try {
+        const itm = await DataStore.query(Misc, id);
+        await DataStore.save(
+          Clrm.copyOf(itm, updated => {
+            updated.type = upd.type;
+            updated.name = upd.name;
+            updated.detail = upd.detail;
+          })
+        );
+      } catch (err) {
+        this.writeFail("MiscUpdate", id + upd, err);
+      }
     },
     //// graphql
     //// graphql
@@ -3854,7 +3838,7 @@ export default {
             this.instructor.yourTodaysClasses[
               this.classroomIndex
             ].status = attMode;
-            // this.updateClassModeChange();
+            this.updateClassModeChange();
           }
           this.$buefy.toast.open({
             message:
@@ -3882,7 +3866,7 @@ export default {
             this.instructor.yourTodaysClasses[
               this.classroomIndex
             ].status = attMode;
-            // this.updateClassModeChange();
+            this.updateClassModeChange();
           }
           this.cRoom.showAttenHist = 0;
 
@@ -3909,7 +3893,7 @@ export default {
           type: "is-beige",
           onConfirm: () => {
             this.att.mode = 0;
-            // this.updateClassModeChange();
+            this.updateClassModeChange();
             this.cRoom.showAttenHist = 0;
             this.$buefy.toast.open({
               message:
@@ -3924,14 +3908,14 @@ export default {
         this.att.mode = 3;
       }
     },
-    // updateClassModeChange() {
-    //   const upArr = {
-    //     type: "class" + this.dayjsYYYYMMDDh,
-    //     name: this.authdetail.username,
-    //     detail: this.instructor.yourTodaysClasses
-    //   };
-    //   this.updateMisc(upArr);
-    // },
+    updateClassModeChange() {
+      const upArr = {
+        type: "class" + this.dayjsYYYYMMDDh,
+        name: this.authdetail.username,
+        detail: this.instructor.yourTodaysClasses
+      };
+      this.updateMisc(upArr);
+    },
     //// return class
     //// return class
     //// return class
@@ -4076,18 +4060,17 @@ export default {
     },
     enterClassroomPrevSeeIfAlter() {
       // 特別対応の権限があるか（ユーザ毎）。
-      // const dt = this.dataset.Miscs.find(el => {
-      //   return el.type === "alter";
-      // });
-      // // 設定があり曜日も合致するなら編集日付を変更する
-      // if (
-      //   dt !== undefined &&
-      //   this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")
-      // ) {
-      //   this.sett.ddate = this.$dayjs(dt.detail);
-      // }
-      // this.workspaceValication(true);
-      this.workspaceValication();
+      const dt = this.dataset.Miscs.find(el => {
+        return el.type === "alter";
+      });
+      // 設定があり曜日も合致するなら編集日付を変更する
+      if (
+        dt !== undefined &&
+        this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")
+      ) {
+        this.sett.ddate = this.$dayjs(dt.detail);
+      }
+      this.workspaceValication(true);
     },
     enterClassroom() {
       this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
@@ -4181,9 +4164,6 @@ export default {
     getDateMDddd(val) {
       return this.$dayjs(val).format("M/D ddd");
     },
-    getDateYYYYMMDDhHHMMSS() {
-      return this.$dayjs().format("YYYY-MM-DD HH:mm:ss");
-    },
     // getDateMDhmm(val) {
     //   return this.$dayjs(val).format("M/D H:mm");
     // },
@@ -4239,8 +4219,6 @@ export default {
         this.getStartingUrl +
         ", auth:" +
         this.authdetail.name +
-        ", dest:" +
-        dest +
         ", input:" +
         JSON.stringify(arr) +
         ", result:" +
@@ -4248,18 +4226,14 @@ export default {
       try {
         const crArr = {
           type: "writeFail",
-          name: this.authdetail.username,
-          detail:
-            "appFail:" +
-            dest +
-            ", date:" +
-            this.getDateYYYYMMDDhHHMMSS() +
-            "," +
-            dtl
+          name: "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: dtl
         };
         await DataStore.save(new Misc(crArr));
       } catch (err) {
-        localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
+        localStorage[
+          "appFail" + dest + this.$dayjs().format("YYYY-MM-DD HH:mm.X")
+        ] = dtl;
       }
     },
     async salvageFail() {
@@ -4274,8 +4248,8 @@ export default {
       }
       const crArr = {
         type: "appFailSalvage",
-        name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr
+        name: this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+        detail: arr
       };
       try {
         await DataStore.save(new Misc({ crArr }));
@@ -4328,13 +4302,11 @@ export default {
           this.initallClasses();
         }
         this.dateDevAddDate();
-        // this.workspaceValication(true);
-        this.workspaceValication();
+        this.workspaceValication(true);
       }
       this.salvageFail();
     },
-    // workspaceValication(ifUp) {
-    workspaceValication() {
+    workspaceValication(ifUp) {
       // this.sett.dummy2 += 1;
       //classroomに関係する諸々 日付が変わると必ず
       const todayclass = this.yourClasses
@@ -4345,17 +4317,17 @@ export default {
           status: 0
         }));
       this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
-      // const crArr = {
-      //   type: "class" + this.$dayjs().format("YYYY-MM-DD"),
-      //   name: this.authdetail.username,
-      //   detail: todayclass
-      // };
-      // if (ifUp) {
-      //   //出欠モード保持のレコード
-      //   this.updateMisc(crArr);
-      // } else {
-      //   this.createMisc(crArr);
-      // }
+      const crArr = {
+        type: "class" + this.$dayjs().format("YYYY-MM-DD"),
+        name: this.authdetail.username,
+        detail: todayclass
+      };
+      if (ifUp) {
+        //出欠モード保持のレコード
+        this.updateMisc(crArr);
+      } else {
+        this.createMisc(crArr);
+      }
       // if (this.instructor.yourTodaysClasses.length < 1) {
       // this.instructor.yourTodaysClasses = tdycls.map(id => )
       // }
@@ -4374,15 +4346,15 @@ export default {
       try {
         const crArr = {
           type: "reloadApp",
-          name: this.authdetail.username,
-          detail: "Staff" + this.getDateYYYYMMDDhHHMMSS() + ", " + str
+          name: "Staff" + this.$dayjs().format("YYYY-MM-DD HH:mm.X"),
+          detail: str
         };
         await DataStore.save(new Misc(crArr));
       } catch (err) {
         this.writeFail(
           str,
-          this.authdetail.username, //this.sett.today,
-          "Staff-" + this.getDateYYYYMMDDhHHMMSS()
+          this.dayACjsdddMMMD, //this.sett.today,
+          "Staff" + this.$dayjs().format("YYYY/MM/DD")
         );
       }
       this.$router.go();
@@ -4428,8 +4400,8 @@ export default {
           // this.authdetail = "created auth error"
           this.createMisc({
             type: "Auth",
-            name: this.authdetail.username,
-            detail: "ERROR: " + this.authdetail
+            name: "ERROR",
+            detail: this.authdetail
           })
         );
     }
