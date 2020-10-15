@@ -888,7 +888,7 @@
                   </b-button>
                   <!-- 編集モードでは見せない -->
                   <b-button
-                    v-show="!cRoom.attnEditable && selCrlm.dayofweek === getTodayJSON.dayofweek"
+                    v-show="!cRoom.attnEditable"
                     icon-left="hand-paper"
                     size="is-medium"
                     @click="showAttenChange"
@@ -3252,7 +3252,7 @@ export default {
         // if (this.att.mode === 3) {
         //// enable
         this.$buefy.dialog.confirm({
-          title: "Attendance: past data edit",
+          title: "Historical data edit",
           message: "Edit previous?",
           // "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
           size: "is-large",

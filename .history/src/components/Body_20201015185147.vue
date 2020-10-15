@@ -69,9 +69,7 @@
           <br />
           manage.dow {{ manage.dow }}
           <br />
-          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}} |
-          <br />
-          instructor.yourTodaysClasses {{instructor.yourTodaysClasses}}
+          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}}
           <b-switch v-model="sett.devshowMem">member</b-switch>
           <template v-if="classmembers.length > 0 && sett.devshowMem">{{ classmembers[0] }}</template>
           <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
@@ -114,10 +112,10 @@
           <br />
           getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
           <br />
-          getThisWeekHwicJSON[this.selCrlm.dayofweek]
-          {{ getThisWeekHwicJSON[selCrlm.dayofweek] }}| attnHWEditTgt {{attnHWEditTgt}}
-          <br />
           getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
+          <br />
+          getThisWeekHwicJSON[this.selCrlm.dayofweek]
+          {{ getThisWeekHwicJSON[selCrlm.dayofweek] }}|
           <br />
           isEnteredselCrlm: {{ isEnteredselCrlm }} |
           <br />
@@ -879,22 +877,22 @@
                   <b-button
                     v-show="isdeadlinelenient"
                     class="button is-medium is-beige"
-                    @click="attnModeChangeRegardlessOfTheDayConfirm()"
+                    @click="attnModeChangeRegardlessOfTheDayConfirm"
                     icon-left="edit"
                   >
                     <!-- <template v-if="att.mode === 3">previous</template> -->
-                    <template v-if="!cRoom.attnEditable">edit</template>
+                    <template v-if="!cRoom.attnEditable">previous</template>
                     <template v-else>exit</template>
                   </b-button>
                   <!-- 編集モードでは見せない -->
                   <b-button
-                    v-show="!cRoom.attnEditable && selCrlm.dayofweek === getTodayJSON.dayofweek"
+                    v-show="!cRoom.attnEditable"
                     icon-left="hand-paper"
                     size="is-medium"
                     @click="showAttenChange"
                     style="margin-right:20px;"
                   >
-                    History
+                    Attendance
                     <!-- / <b-icon icon="pen-nib" size="is-medium" /> Evaluation -->
                   </b-button>
                 </div>
@@ -1012,50 +1010,49 @@
                     label="Attendance"
                     width="200"
                   >
-                    <!-- 2020-10-15 tile削除。padding邪魔してた。全く不要 -->
-                    <!-- <div class="tile is-ancestor" style="z-index: 1;">
+                    <div class="tile is-ancestor" style="z-index: 1;">
                       <div class="tile is-parent">
-                    <div class="tile is-child">-->
-                    <!-- <b-button @click="updateClrmTEST(props.row.id)">updateClrmTEST</b-button> -->
-                    <b-field v-show="att.mode < 2">
-                      <b-radio-button
-                        size="is-medium"
-                        v-model="props.row[cRoom.attnEditTgt]"
-                        :native-value="att.modeset[att.mode].title"
-                        :type="att.modeset[att.mode].colortype"
-                        @input="
+                        <div class="tile is-child">
+                          <!-- <b-button @click="updateClrmTEST(props.row.id)">updateClrmTEST</b-button> -->
+                          <b-field v-show="att.mode < 2">
+                            <b-radio-button
+                              size="is-medium"
+                              v-model="props.row[cRoom.attnEditTgt]"
+                              :native-value="att.modeset[att.mode].title"
+                              :type="att.modeset[att.mode].colortype"
+                              @input="
                                 updateClrm(
                                   props.row.id,
                                   cRoom.attnEditTgt,
                                   att.modeset[att.mode].title
                                 )
                               "
-                      >
-                        <div :class="att.modeset[att.mode].colortype">
-                          <b-icon icon="check"></b-icon>
-                          <span>{{ att.modeset[att.mode].title }}</span>
-                        </div>
-                      </b-radio-button>
-                      <b-radio-button
-                        size="is-medium"
-                        v-model="props.row[cRoom.attnEditTgt]"
-                        :native-value="att.modeset[att.mode].title2"
-                        type="is-danger"
-                        @input="
+                            >
+                              <div :class="att.modeset[att.mode].colortype">
+                                <b-icon icon="check"></b-icon>
+                                <span>{{ att.modeset[att.mode].title }}</span>
+                              </div>
+                            </b-radio-button>
+                            <b-radio-button
+                              size="is-medium"
+                              v-model="props.row[cRoom.attnEditTgt]"
+                              :native-value="att.modeset[att.mode].title2"
+                              type="is-danger"
+                              @input="
                                 updateClrm(
                                   props.row.id,
                                   cRoom.attnEditTgt,
                                   att.modeset[att.mode].title2
                                 )
                               "
-                      >
-                        <b-icon icon="times"></b-icon>
-                        <span>{{ att.modeset[att.mode].title2 }}</span>
-                      </b-radio-button>
-                    </b-field>
-                    <!-- </div>
+                            >
+                              <b-icon icon="times"></b-icon>
+                              <span>{{ att.modeset[att.mode].title2 }}</span>
+                            </b-radio-button>
+                          </b-field>
+                        </div>
                       </div>
-                    </div>-->
+                    </div>
                   </b-table-column>
                   <!-- Homework Incomplete -->
                   <b-table-column field="homeworkincomplete" label="Homework Incomplete" width="30">
@@ -1064,25 +1061,30 @@
                         <div class="tile is-child">
                           <b-field>
                             <!--  第一回目は宿題が無い -->
-                            <!-- v-show="getThisWeekHwicJSON[selCrlm.dayofweek] !== ''" -->
-                            <!-- (props.row[getThisWeekHwicJSON[selCrlm.dayofweek]] === false -->
-                            <span class="hwtotal" v-show="attnHWEditTgt !== 'homeworkincomplete01'">
-                              <!-- {{ props.row.homeworkincomplete20 + (props.row[attnHWEditTgt] === false ? 1 : 0) }} -->
-                              {{getHWTotal(props.row)}}
+                            <span
+                              class="hwtotal"
+                              v-show="getThisWeekHwicJSON[selCrlm.dayofweek] !== ''"
+                            >
+                              {{
+                              props.row.homeworkincomplete20 +
+                              (props.row[getThisWeekHwicJSON[selCrlm.dayofweek]] === false
+                              ? 1
+                              : 0)
+                              }}
                             </span>
                             <span style="color:#fff">-</span>
-                            <!-- v-model="props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]" -->
-                            <!-- :disabled="att.mode === 3 || getThisWeekHwicJSON[selCrlm.dayofweek] == ''" -->
                             <b-checkbox-button
-                              v-model="props.row[attnHWEditTgt]"
+                              v-model="props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]"
                               type="is-danger"
                               rounded
-                              :disabled="att.mode === 3 || attnHWEditTgt == 'homeworkincomplete01'"
+                              :disabled="
+                                att.mode === 3 || getThisWeekHwicJSON[selCrlm.dayofweek] == ''
+                              "
                               @input="
                                 updateClrm(
                                   props.row.id,
-                                  attnHWEditTgt,
-                                  props.row[attnHWEditTgt]
+                                  getThisWeekHwicJSON[selCrlm.dayofweek],
+                                  props.row[getThisWeekHwicJSON[selCrlm.dayofweek]]
                                 )
                               "
                             >
@@ -1168,16 +1170,14 @@
                                           {{ k.title }}
                                           <span style="color:#ce1836;">
                                             ( incomplete
-                                            {{getHWTotal(indiRow)}}
-                                            )
+                                            {{
+                                            indiRow.homeworkincomplete20 +
+                                            (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
+                                            false
+                                            ? 1
+                                            : 0)
+                                            }})
                                           </span>
-                                          <!-- {{getHWTotal(indiRow) -->
-                                          <!-- {{getHWr(indiRow.homeworkincomplete02) +
-                                            getHWr(indiRow.homeworkincomplete03) +
-                                            getHWr(indiRow.homeworkincomplete04) +
-                                          getHWr(indiRow.homeworkincomplete05)}}-->
-
-                                          <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                         </td>
                                       </template>
                                       <!-- 欠、０ボタンいっこめ -->
@@ -1248,7 +1248,9 @@
                                           <b-button
                                             icon-left="comment"
                                             size="is-middle"
-                                            @click="updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])"
+                                            @click="
+                                              updateClrmEvalsIndi(indiRow, k.comm, indiRow[k.comm])
+                                            "
                                           >
                                             <span
                                               v-show="!cRoom.showComEv[k.comm]"
@@ -1306,10 +1308,16 @@
                                     <template v-else>
                                       <td class="subtitle is-3" colspan="4" height="86">
                                         {{ k.title }}
-                                        <span
-                                          style="color:#ce1836;"
-                                        >( incomplete {{getHWTotal(indiRow)}})</span>
-                                        <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
+                                        <span style="color:#ce1836;">
+                                          ( incomplete
+                                          {{
+                                          indiRow.homeworkincomplete20 +
+                                          (indiRow[getThisWeekHwicJSON[selCrlm.dayofweek]] ===
+                                          false
+                                          ? 1
+                                          : 0)
+                                          }})
+                                        </span>
                                       </td>
                                     </template>
                                     <!-- 欠、０ボタン２つめ -->
@@ -2939,352 +2947,6 @@ export default {
       // this.dataset.allClasses.splice();
     },
 
-    //////////講師 勤怠
-    //////////講師 勤怠
-    //////////講師 勤怠
-    instClockIn() {
-      this.periodicValidation(); // 日付とユーザー検証
-      this.$buefy.dialog.confirm({
-        message: "Clock In?",
-        size: "is-large",
-        onConfirm: () => {
-          ////////// APIで
-          const add = {
-            date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
-            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
-          };
-          // this.instructor.yourattendances.push(add); //ローカル配列に追加
-          const msgg =
-            "<span style='font-size:40px'>Good morning " +
-            this.authdetail.nickname +
-            "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
-          ////////// APIで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockIn", add, "");
-          // this.instructor.yourhistory.push(add);
-          // this.instructor.peopleNow.push(this.instructor.you.firstName);
-        }
-      });
-    },
-    instClockOut() {
-      this.periodicValidation(); // 日付とユーザー検証
-      this.$buefy.dialog.confirm({
-        message: "Clock Out?",
-        size: "is-large",
-        onConfirm: () => {
-          ////////// APIで
-          const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
-          const arr = {
-            uid: arrr.uid,
-            date: arrr.date,
-            clockin: arrr.clockin
-          };
-          arr.clockout = this.$dayjs().format("HH:mm");
-          const msgg =
-            "<span style='font-size:40px'>Thanks " +
-            this.authdetail.nickname +
-            ", have a good rest.</span>";
-          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
-          // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
-          ////////// APIで
-          ////////// 一応MiscにはDataStoreで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
-          // // People nowから削除
-          // const idx = this.instructor.peopleNow.findIndex(
-          //   v => v == this.instructor.you.firstName
-          // );
-          // this.instructor.peopleNow.splice(idx, 1);
-          // this.instructor.showPeople = false;
-        }
-      });
-    },
-    async listInstsDataAPI() {
-      const InstsData = await API.graphql(
-        graphqlOperation(listInsts, { limit: 5000 })
-        // graphqlOperation(listInsts, { input: uname })
-      );
-      this.instructor.attendances = [];
-      // this.instructor.attendances.push(
-      //   ...this.instructor.attendances,
-      //   ...InstsData.data.listInsts.items
-      // );
-      const allclin = InstsData.data.listInsts.items
-        .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
-      this.instructor.yourattendances = allclin
-        .filter(x => x.uid === this.authdetail.username)
-        .reduce((a, v) => {
-          if (!a.some(e => e.date === v.date)) {
-            a.push(v);
-          }
-          return a;
-        }, [])
-        .sort(function(a, b) {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
-        });
-      ////2020Autumn clockinとoutの重複除去
-    },
-    async createInstAPI(crArr, msgg, typ, siz) {
-      crArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(createInst, { input: crArr }));
-        this.listInstsDataAPI();
-        this.$buefy.toast.open({
-          message: msgg,
-          type: typ,
-          size: siz,
-          duration: 3000
-        });
-        return true;
-      } catch (err) {
-        this.writeFail("InstCreate", crArr, err);
-        this.$buefy.toast.open({
-          message:
-            "<span style='font-size:60px'>Failed. please try again</span>",
-          type: "is-danger",
-          size: "is-large",
-          duration: 5000
-        });
-        return err;
-      }
-    },
-    async updateInstAPI(upArr) {
-      upArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(updateInst, { input: upArr }));
-      } catch (err) {
-        this.writeFail("InstUpdate", upArr, err);
-      }
-    },
-    async createMiscClockInOut(typ, arr, ou) {
-      const cr = {
-        type: typ,
-        name: this.authdetail.username,
-        detail: JSON.stringify({
-          name: this.authdetail.username,
-          date: arr.date,
-          clockin: arr.clockin,
-          clockout: ou
-        })
-      };
-      await DataStore.save(new Misc(cr));
-    },
-    //////////クラスルーム
-    //////////クラスルーム
-    //////////クラスルーム
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
-    selectClassroom(arr) {
-      // 前回のテスト結果くりあ（非表示）
-      this.ClrmAppSyncStateShow = false;
-      this.ClrmAppSyncBegin = 0;
-      this.ClrmAppSyncEnd = 0;
-      this.ClrmAppSyncState = false;
-      //セット
-      this.selCrlm = arr;
-      //ここまで編集可能
-      // this.selCrlm.editableUntil = this.getEditableUntilJSON[
-      //   this.selCrlm.dayofweek
-      // ].lessonnum;
-      //表示
-      this.isOpenselCrlm = true;
-      this.scrollTop();
-    },
-    scrollTop: function() {
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-      });
-    },
-    enterClassroomPrevSeeIfAlter() {
-      // 特別対応の権限があるか（ユーザ毎）。
-      // const dt = this.dataset.Miscs.find(el => {
-      //   return el.type === "alter";
-      // });
-      // // 設定があり曜日も合致するなら編集日付を変更する
-      // if (
-      //   dt !== undefined &&
-      //   this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")
-      // ) {
-      //   this.sett.ddate = this.$dayjs(dt.detail);
-      // }
-      // this.workspaceValication(true);
-      this.workspaceValication();
-    },
-    enterClassroom() {
-      this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
-      this.cRoom.showIndividual = false;
-      // && x.enable === trueはほんとはAppSyncの時点でやりたい
-      // this.classmembers = this.dataset.Clrms.filter(
-      const classmem = this.dataset.Clrms.filter(
-        x => x.classcode === this.selCrlm.id && x.enable === true
-      ).sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      this.classmembers = classmem;
-      // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
-      this.enterClassroomInit();
-      this.sett.activeTab = 2; //いざタブを切替
-    },
-    // クラス画面切り替え時と編集終了時
-    enterClassroomInit() {
-      if (this.selCrlm.dayofweek === this.dayjsddd) {
-        ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
-        // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
-        this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
-          item => item.id === this.selCrlm.id
-        );
-        this.cRoom.showAttenHist = 0;
-        // status参照するためにインデックスを格納
-        this.att.mode = this.instructor.yourTodaysClasses[
-          this.classroomIndex
-        ].status;
-      } else {
-        ////// 過去クラス
-        this.att.mode = 3; //当日ではないので出席は取れないようにする
-        this.cRoom.showAttenNote = false;
-        this.cRoom.showAttenHist = 1;
-        ////// 出欠記録の編集許可
-        // // 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        // this.isdeadlinelenient = true; // ↓当日でも許可するので下に
-      }
-      this.isdeadlinelenient = true; //編集許可
-      this.isEnteredselCrlm = true; //状態保持
-      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
-      this.cRoom.attnEditable = false; //入った時点では編集モードにしない
-    },
-    showABListCaptionChange() {
-      switch (this.cRoom.showABListCaption) {
-        case "Group A":
-          this.cRoom.showABListCaption = "Group B";
-          this.cRoom.showABListShowA = false;
-          this.cRoom.showABListShowB = true;
-          break;
-        case "Group B":
-          this.cRoom.showABListCaption = "Group A - Group B";
-          this.cRoom.showABListShowA = true;
-          this.cRoom.showABListShowB = true;
-          break;
-        case "Group A - Group B":
-          this.cRoom.showABListCaption = "Group A";
-          this.cRoom.showABListShowA = true;
-          this.cRoom.showABListShowB = false;
-          break;
-      }
-    },
-    attnModeChangeConfirm() {
-      // if (this.computedBlank.length == 0) {
-      this.$buefy.dialog.confirm({
-        title: "Attendance record mode change:",
-        message: "mode change?",
-        type: this.att.modeset[this.att.mode].colortype,
-        size: "is-large",
-        onConfirm: () => {
-          const attMode = this.att.mode + 1;
-          this.att.mode = attMode;
-          //当日クラスの場合のみ
-          if (this.selCrlm.dayofweek === this.dayjsddd) {
-            // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[
-              this.classroomIndex
-            ].status = attMode;
-            // this.updateClassModeChange();
-          }
-          this.$buefy.toast.open({
-            message:
-              "<span style='font-size:40px'>mode: " +
-              this.att.modeset[attMode].transitmsg +
-              "</span>",
-            type: this.att.modeset[attMode].colortype,
-            size: "is-large"
-          });
-        }
-      });
-    },
-    attnModeRestartConfirm() {
-      this.$buefy.dialog.confirm({
-        title: "Attendance record mode change:",
-        message:
-          "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
-        size: "is-large",
-        onConfirm: () => {
-          const attMode = 0;
-          this.att.mode = attMode;
-          //当日クラスの場合のみ
-          if (this.selCrlm.dayofweek === this.dayjsddd) {
-            // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[
-              this.classroomIndex
-            ].status = attMode;
-            // this.updateClassModeChange();
-          }
-          this.cRoom.showAttenHist = 0;
-
-          this.$buefy.toast.open({
-            message:
-              "<span style='font-size:40px'>mode: " +
-              this.att.modeset[attMode].transitmsg +
-              "</span>",
-            type: this.att.modeset[attMode].colortype,
-            size: "is-large"
-          });
-        }
-      });
-    },
-    //// switching edit mode
-    attnModeChangeRegardlessOfTheDayConfirm() {
-      if (!this.cRoom.attnEditable) {
-        // if (this.att.mode === 3) {
-        //// enable
-        this.$buefy.dialog.confirm({
-          title: "Attendance: past data edit",
-          message: "Edit previous?",
-          // "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
-          size: "is-large",
-          type: "is-beige",
-          onConfirm: () => {
-            this.att.mode = 0;
-            // this.updateClassModeChange();
-            this.cRoom.showAttenHist = 0;
-            this.cRoom.attnEditable = true;
-            this.$buefy.toast.open({
-              message:
-                "<span style='font-size:40px'>Attendance data is now editable. " +
-                "</span>",
-              // "<span style='font-size:40px'>You can edit. " + "</span>",
-              type: "is-beige",
-              size: "is-large"
-            });
-          }
-        });
-      } else {
-        //// disable
-        this.enterClassroomInit();
-      }
-    },
-    // updateClassModeChange() {
-    //   const upArr = {
-    //     type: "class" + this.dayjsYYYYMMDDh,
-    //     name: this.authdetail.username,
-    //     detail: this.instructor.yourTodaysClasses
-    //   };
-    //   this.updateMisc(upArr);
-    // },
     ///// 表示変更系
     ///// 表示変更系
     ///// 表示変更系
@@ -3450,6 +3112,240 @@ export default {
     //   }
     //   this.sett.isLoadingClrmManage = false;
     // },
+    //////////講師 勤怠
+    //////////講師 勤怠
+    //////////講師 勤怠
+    instClockIn() {
+      this.periodicValidation(); // 日付とユーザー検証
+      this.$buefy.dialog.confirm({
+        message: "Clock In?",
+        size: "is-large",
+        onConfirm: () => {
+          ////////// APIで
+          const add = {
+            date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
+            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
+          };
+          // this.instructor.yourattendances.push(add); //ローカル配列に追加
+          const msgg =
+            "<span style='font-size:40px'>Good morning " +
+            this.authdetail.nickname +
+            "!</span>";
+          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+          ////////// APIで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockIn", add, "");
+          // this.instructor.yourhistory.push(add);
+          // this.instructor.peopleNow.push(this.instructor.you.firstName);
+        }
+      });
+    },
+    instClockOut() {
+      this.periodicValidation(); // 日付とユーザー検証
+      this.$buefy.dialog.confirm({
+        message: "Clock Out?",
+        size: "is-large",
+        onConfirm: () => {
+          ////////// APIで
+          const arrr = this.instructor.yourattendances.pop();
+          this.instructor.yourattendances.push(arrr);
+          const arr = {
+            uid: arrr.uid,
+            date: arrr.date,
+            clockin: arrr.clockin
+          };
+          arr.clockout = this.$dayjs().format("HH:mm");
+          const msgg =
+            "<span style='font-size:40px'>Thanks " +
+            this.authdetail.nickname +
+            ", have a good rest.</span>";
+          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
+          // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
+          ////////// APIで
+          ////////// 一応MiscにはDataStoreで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
+          // // People nowから削除
+          // const idx = this.instructor.peopleNow.findIndex(
+          //   v => v == this.instructor.you.firstName
+          // );
+          // this.instructor.peopleNow.splice(idx, 1);
+          // this.instructor.showPeople = false;
+        }
+      });
+    },
+    async listInstsDataAPI() {
+      const InstsData = await API.graphql(
+        graphqlOperation(listInsts, { limit: 5000 })
+        // graphqlOperation(listInsts, { input: uname })
+      );
+      this.instructor.attendances = [];
+      // this.instructor.attendances.push(
+      //   ...this.instructor.attendances,
+      //   ...InstsData.data.listInsts.items
+      // );
+      const allclin = InstsData.data.listInsts.items
+        .sort((a, b) => this.arrayCompare(a.date, b.date))
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
+      this.instructor.yourattendances = allclin
+        .filter(x => x.uid === this.authdetail.username)
+        .reduce((a, v) => {
+          if (!a.some(e => e.date === v.date)) {
+            a.push(v);
+          }
+          return a;
+        }, [])
+        .sort(function(a, b) {
+          if (a.date < b.date) return -1;
+          if (a.date > b.date) return 1;
+          return 0;
+        });
+      ////2020Autumn clockinとoutの重複除去
+    },
+    async createInstAPI(crArr, msgg, typ, siz) {
+      crArr.uid = this.authdetail.username;
+      try {
+        await API.graphql(graphqlOperation(createInst, { input: crArr }));
+        this.listInstsDataAPI();
+        this.$buefy.toast.open({
+          message: msgg,
+          type: typ,
+          size: siz,
+          duration: 3000
+        });
+        return true;
+      } catch (err) {
+        this.writeFail("InstCreate", crArr, err);
+        this.$buefy.toast.open({
+          message:
+            "<span style='font-size:60px'>Failed. please try again</span>",
+          type: "is-danger",
+          size: "is-large",
+          duration: 5000
+        });
+        return err;
+      }
+    },
+    async updateInstAPI(upArr) {
+      upArr.uid = this.authdetail.username;
+      try {
+        await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+      } catch (err) {
+        this.writeFail("InstUpdate", upArr, err);
+      }
+    },
+    async createMiscClockInOut(typ, arr, ou) {
+      const cr = {
+        type: typ,
+        name: this.authdetail.username,
+        detail: JSON.stringify({
+          name: this.authdetail.username,
+          date: arr.date,
+          clockin: arr.clockin,
+          clockout: ou
+        })
+      };
+      await DataStore.save(new Misc(cr));
+    },
+    //////////クラスルーム
+    //////////クラスルーム
+    //////////クラスルーム
+    attnModeChangeConfirm() {
+      // if (this.computedBlank.length == 0) {
+      this.$buefy.dialog.confirm({
+        title: "Attendance record mode change:",
+        message: "mode change?",
+        type: this.att.modeset[this.att.mode].colortype,
+        size: "is-large",
+        onConfirm: () => {
+          const attMode = this.att.mode + 1;
+          this.att.mode = attMode;
+          //当日クラスの場合のみ
+          if (this.selCrlm.dayofweek === this.dayjsddd) {
+            // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
+            // this.updateClassModeChange();
+          }
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>mode: " +
+              this.att.modeset[attMode].transitmsg +
+              "</span>",
+            type: this.att.modeset[attMode].colortype,
+            size: "is-large"
+          });
+        }
+      });
+    },
+    attnModeRestartConfirm() {
+      this.$buefy.dialog.confirm({
+        title: "Attendance record mode change:",
+        message:
+          "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
+        size: "is-large",
+        onConfirm: () => {
+          const attMode = 0;
+          this.att.mode = attMode;
+          //当日クラスの場合のみ
+          if (this.selCrlm.dayofweek === this.dayjsddd) {
+            // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
+            // this.updateClassModeChange();
+          }
+          this.cRoom.showAttenHist = 0;
+
+          this.$buefy.toast.open({
+            message:
+              "<span style='font-size:40px'>mode: " +
+              this.att.modeset[attMode].transitmsg +
+              "</span>",
+            type: this.att.modeset[attMode].colortype,
+            size: "is-large"
+          });
+        }
+      });
+    },
+    //// switching edit mode
+    attnModeChangeRegardlessOfTheDayConfirm() {
+      if (this.att.mode === 3) {
+        //// enable
+        this.$buefy.dialog.confirm({
+          title: "Enable edit mode:",
+          message:
+            "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
+          size: "is-large",
+          type: "is-beige",
+          onConfirm: () => {
+            this.att.mode = 0;
+            // this.updateClassModeChange();
+            this.cRoom.showAttenHist = 0;
+            this.cRoom.attnEditable = true;
+            this.$buefy.toast.open({
+              message:
+                "<span style='font-size:40px'>You can edit. " + "</span>",
+              type: "is-beige",
+              size: "is-large"
+            });
+          }
+        });
+      } else {
+        //// disable
+        this.att.mode = 3;
+        this.cRoom.attnEditable = false;
+      }
+    },
+    // updateClassModeChange() {
+    //   const upArr = {
+    //     type: "class" + this.dayjsYYYYMMDDh,
+    //     name: this.authdetail.username,
+    //     detail: this.instructor.yourTodaysClasses
+    //   };
+    //   this.updateMisc(upArr);
+    // },
     //// return class
     //// return class
     //// return class
@@ -3536,36 +3432,6 @@ export default {
           return "table is-striped";
       }
     },
-    // HW inomplete total
-    getHWr(val) {
-      return val === false ? 1 : 0;
-    },
-    getHWTotal(row) {
-      const chk = function(r, str) {
-        return r[str] === false ? 1 : 0;
-      };
-      return (
-        chk(row, "homeworkincomplete02") +
-        chk(row, "homeworkincomplete03") +
-        chk(row, "homeworkincomplete04") +
-        chk(row, "homeworkincomplete05") +
-        chk(row, "homeworkincomplete06") +
-        chk(row, "homeworkincomplete07") +
-        chk(row, "homeworkincomplete08") +
-        chk(row, "homeworkincomplete09") +
-        chk(row, "homeworkincomplete10") +
-        chk(row, "homeworkincomplete11") +
-        chk(row, "homeworkincomplete12") +
-        chk(row, "homeworkincomplete13") +
-        chk(row, "homeworkincomplete14") +
-        chk(row, "homeworkincomplete15") +
-        chk(row, "homeworkincomplete16") +
-        chk(row, "homeworkincomplete17") +
-        chk(row, "homeworkincomplete18") +
-        chk(row, "homeworkincomplete19") +
-        chk(row, "homeworkincomplete20")
-      );
-    },
     checkIfHwic(val) {
       // return val.includes("hwic");
       return val == undefined || val == null ? false : val.includes("hwic");
@@ -3598,7 +3464,114 @@ export default {
           return "-";
       }
     },
+    ///// クラス選択、読み込み、
+    ///// クラス選択、読み込み、
+    ///// クラス選択、読み込み、
+    selectClassroom(arr) {
+      // 前回のテスト結果くりあ（非表示）
+      this.ClrmAppSyncStateShow = false;
+      this.ClrmAppSyncBegin = 0;
+      this.ClrmAppSyncEnd = 0;
+      this.ClrmAppSyncState = false;
+      //セット
+      this.selCrlm = arr;
+      //ここまで編集可能
+      // this.selCrlm.editableUntil = this.getEditableUntilJSON[
+      //   this.selCrlm.dayofweek
+      // ].lessonnum;
+      //出欠ボタンと編集対象週ボタンの初期値
+      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek;
 
+      //表示
+      this.isOpenselCrlm = true;
+      this.scrollTop();
+    },
+    scrollTop: function() {
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+    },
+    enterClassroomPrevSeeIfAlter() {
+      // 特別対応の権限があるか（ユーザ毎）。
+      // const dt = this.dataset.Miscs.find(el => {
+      //   return el.type === "alter";
+      // });
+      // // 設定があり曜日も合致するなら編集日付を変更する
+      // if (
+      //   dt !== undefined &&
+      //   this.selCrlm.dayofweek == this.$dayjs(dt.detail).format("ddd")
+      // ) {
+      //   this.sett.ddate = this.$dayjs(dt.detail);
+      // }
+      // this.workspaceValication(true);
+      this.workspaceValication();
+    },
+    enterClassroom() {
+      this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
+      this.cRoom.showIndividual = false;
+      // && x.enable === trueはほんとはAppSyncの時点でやりたい
+      // this.classmembers = this.dataset.Clrms.filter(
+      const classmem = this.dataset.Clrms.filter(
+        x => x.classcode === this.selCrlm.id && x.enable === true
+      ).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+      this.classmembers = classmem;
+      // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
+      // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
+      if (this.selCrlm.dayofweek === this.dayjsddd) {
+        ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
+        // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
+        this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
+          item => item.id === this.selCrlm.id
+        );
+        this.cRoom.showAttenHist = 0;
+        // status参照するためにインデックスを格納
+        this.att.mode = this.instructor.yourTodaysClasses[
+          this.classroomIndex
+        ].status;
+      } else {
+        ////// 過去クラス
+        this.att.mode = 3; //当日ではないので出席は取れないようにする
+        this.cRoom.showAttenNote = false;
+        this.cRoom.showAttenHist = 1;
+        ////// 出欠記録の編集許可
+        // // 出欠記録の編集許可： 設定した日数だけ
+        // if (this.dayjslenient.includes(this.selCrlm.dayofweek)) {
+        //   this.isdeadlinelenient = true;
+        // } else {
+        //   this.isdeadlinelenient = false;
+        // }
+        //// 出欠記録の編集許可： 制限しない
+        // this.isdeadlinelenient = true; // ↓当日でも許可するので下に
+      }
+      this.isdeadlinelenient = true; //編集許可
+      this.isEnteredselCrlm = true; //状態保持
+      this.cRoom.attnEditable = false; //入った時点では編集モードにしない
+      this.sett.activeTab = 2; //いざタブを切替
+    },
+    showABListCaptionChange() {
+      switch (this.cRoom.showABListCaption) {
+        case "Group A":
+          this.cRoom.showABListCaption = "Group B";
+          this.cRoom.showABListShowA = false;
+          this.cRoom.showABListShowB = true;
+          break;
+        case "Group B":
+          this.cRoom.showABListCaption = "Group A - Group B";
+          this.cRoom.showABListShowA = true;
+          this.cRoom.showABListShowB = true;
+          break;
+        case "Group A - Group B":
+          this.cRoom.showABListCaption = "Group A";
+          this.cRoom.showABListShowA = true;
+          this.cRoom.showABListShowB = false;
+          break;
+      }
+    },
     // convertInstructorsInfo(val) {
     //   const result = this.instructor.nameConv.find((x) => x.username === val);
     //   return result;
@@ -4085,25 +4058,22 @@ export default {
         .map(m => ({ day: m.dayofweek, hwic: m.hwic }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.hwic }), {});
     },
-    attnHWEditTgt: function() {
-      return this.cRoom.attnEditTgt.replace("attn", "homeworkincomplete");
-    },
-    // 曜日ごとの直近のレッスン回 ※当日含まない
+    // 曜日ごとの直近のレッスン回 ※当日含む
     getEditableUntilJSON: function() {
       const cMon = this.dataset.Cldrs.filter(
-        x => x.dayofweek === "Mon" && x.date < this.getTodayJSON.date
+        x => x.dayofweek === "Mon" && x.date <= this.getTodayJSON.date
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cTue = this.dataset.Cldrs.filter(
-        x => x.dayofweek === "Tue" && x.date < this.getTodayJSON.date
+        x => x.dayofweek === "Tue" && x.date <= this.getTodayJSON.date
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cWed = this.dataset.Cldrs.filter(
-        x => x.dayofweek === "Wed" && x.date < this.getTodayJSON.date
+        x => x.dayofweek === "Wed" && x.date <= this.getTodayJSON.date
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cThu = this.dataset.Cldrs.filter(
-        x => x.dayofweek === "Thu" && x.date < this.getTodayJSON.date
+        x => x.dayofweek === "Thu" && x.date <= this.getTodayJSON.date
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cFri = this.dataset.Cldrs.filter(
-        x => x.dayofweek === "Fri" && x.date < this.getTodayJSON.date
+        x => x.dayofweek === "Fri" && x.date <= this.getTodayJSON.date
       ).reduce((a, b) => (a.date > b.date ? a : b));
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },

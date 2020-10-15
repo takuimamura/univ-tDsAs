@@ -69,9 +69,7 @@
           <br />
           manage.dow {{ manage.dow }}
           <br />
-          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}} |
-          <br />
-          instructor.yourTodaysClasses {{instructor.yourTodaysClasses}}
+          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}}
           <b-switch v-model="sett.devshowMem">member</b-switch>
           <template v-if="classmembers.length > 0 && sett.devshowMem">{{ classmembers[0] }}</template>
           <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
@@ -888,7 +886,7 @@
                   </b-button>
                   <!-- 編集モードでは見せない -->
                   <b-button
-                    v-show="!cRoom.attnEditable && selCrlm.dayofweek === getTodayJSON.dayofweek"
+                    v-show="!cRoom.attnEditable"
                     icon-left="hand-paper"
                     size="is-medium"
                     @click="showAttenChange"
@@ -1066,7 +1064,7 @@
                             <!--  第一回目は宿題が無い -->
                             <!-- v-show="getThisWeekHwicJSON[selCrlm.dayofweek] !== ''" -->
                             <!-- (props.row[getThisWeekHwicJSON[selCrlm.dayofweek]] === false -->
-                            <span class="hwtotal" v-show="attnHWEditTgt !== 'homeworkincomplete01'">
+                            <span class="hwtotal" v-show="attnHWEditTgt !== ''">
                               <!-- {{ props.row.homeworkincomplete20 + (props.row[attnHWEditTgt] === false ? 1 : 0) }} -->
                               {{getHWTotal(props.row)}}
                             </span>
@@ -1077,7 +1075,7 @@
                               v-model="props.row[attnHWEditTgt]"
                               type="is-danger"
                               rounded
-                              :disabled="att.mode === 3 || attnHWEditTgt == 'homeworkincomplete01'"
+                              :disabled="att.mode === 3 || attnHWEditTgt == ''"
                               @input="
                                 updateClrm(
                                   props.row.id,
@@ -1166,17 +1164,9 @@
                                       <template v-else>
                                         <td class="subtitle" colspan="4" height="106">
                                           {{ k.title }}
-                                          <span style="color:#ce1836;">
-                                            ( incomplete
-                                            {{getHWTotal(indiRow)}}
-                                            )
-                                          </span>
-                                          <!-- {{getHWTotal(indiRow) -->
-                                          <!-- {{getHWr(indiRow.homeworkincomplete02) +
-                                            getHWr(indiRow.homeworkincomplete03) +
-                                            getHWr(indiRow.homeworkincomplete04) +
-                                          getHWr(indiRow.homeworkincomplete05)}}-->
-
+                                          <span
+                                            style="color:#ce1836;"
+                                          >( incomplete {{getHWTotal(indiRow.row)}})</span>
                                           <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                         </td>
                                       </template>
@@ -1308,7 +1298,7 @@
                                         {{ k.title }}
                                         <span
                                           style="color:#ce1836;"
-                                        >( incomplete {{getHWTotal(indiRow)}})</span>
+                                        >( incomplete {{getHWTotal(indiRow.row)}})</span>
                                         <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                       </td>
                                     </template>
@@ -3092,6 +3082,9 @@ export default {
       // this.selCrlm.editableUntil = this.getEditableUntilJSON[
       //   this.selCrlm.dayofweek
       // ].lessonnum;
+      //出欠ボタンと編集対象週ボタンの初期値
+      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek;
+
       //表示
       this.isOpenselCrlm = true;
       this.scrollTop();
@@ -3132,11 +3125,6 @@ export default {
       this.classmembers = classmem;
       // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
-      this.enterClassroomInit();
-      this.sett.activeTab = 2; //いざタブを切替
-    },
-    // クラス画面切り替え時と編集終了時
-    enterClassroomInit() {
       if (this.selCrlm.dayofweek === this.dayjsddd) {
         ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
@@ -3165,8 +3153,8 @@ export default {
       }
       this.isdeadlinelenient = true; //編集許可
       this.isEnteredselCrlm = true; //状態保持
-      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
       this.cRoom.attnEditable = false; //入った時点では編集モードにしない
+      this.sett.activeTab = 2; //いざタブを切替
     },
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
@@ -3252,7 +3240,7 @@ export default {
         // if (this.att.mode === 3) {
         //// enable
         this.$buefy.dialog.confirm({
-          title: "Attendance: past data edit",
+          title: "Historical data edit",
           message: "Edit previous?",
           // "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
           size: "is-large",
@@ -3274,7 +3262,9 @@ export default {
         });
       } else {
         //// disable
-        this.enterClassroomInit();
+        this.att.mode = this.selCrlm.dayofweek === this.dayjsddd ? 3 : 0;
+        this.cRoom.attnEditTgt = this.selCrlm.attnthisweek; // 当該週に戻す（Eval側にも一部影響あり）
+        this.cRoom.attnEditable = false;
       }
     },
     // updateClassModeChange() {
@@ -3537,13 +3527,23 @@ export default {
       }
     },
     // HW inomplete total
-    getHWr(val) {
-      return val === false ? 1 : 0;
+    getHWTotaxl(row) {
+      if (row) {
+        return 1;
+      } else {
+        return 0;
+      }
     },
     getHWTotal(row) {
       const chk = function(r, str) {
-        return r[str] === false ? 1 : 0;
+        console.warn(Object.keys(r).indexOf(str));
+        if (Object.keys(r).indexOf(str) !== -1) {
+          return 1; //r[str] === null ? 0 : r[str] === false ? 1 : 0;
+        } else {
+          return 0;
+        }
       };
+
       return (
         chk(row, "homeworkincomplete02") +
         chk(row, "homeworkincomplete03") +

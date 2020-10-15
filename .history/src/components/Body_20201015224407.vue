@@ -69,9 +69,7 @@
           <br />
           manage.dow {{ manage.dow }}
           <br />
-          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}} |
-          <br />
-          instructor.yourTodaysClasses {{instructor.yourTodaysClasses}}
+          cRoom.showAttenHist {{cRoom.showAttenHist}} | att.mode {{att.mode}}
           <b-switch v-model="sett.devshowMem">member</b-switch>
           <template v-if="classmembers.length > 0 && sett.devshowMem">{{ classmembers[0] }}</template>
           <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
@@ -888,7 +886,7 @@
                   </b-button>
                   <!-- 編集モードでは見せない -->
                   <b-button
-                    v-show="!cRoom.attnEditable && selCrlm.dayofweek === getTodayJSON.dayofweek"
+                    v-show="!cRoom.attnEditable"
                     icon-left="hand-paper"
                     size="is-medium"
                     @click="showAttenChange"
@@ -3092,6 +3090,9 @@ export default {
       // this.selCrlm.editableUntil = this.getEditableUntilJSON[
       //   this.selCrlm.dayofweek
       // ].lessonnum;
+      //出欠ボタンと編集対象週ボタンの初期値
+      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek;
+
       //表示
       this.isOpenselCrlm = true;
       this.scrollTop();
@@ -3132,11 +3133,6 @@ export default {
       this.classmembers = classmem;
       // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
-      this.enterClassroomInit();
-      this.sett.activeTab = 2; //いざタブを切替
-    },
-    // クラス画面切り替え時と編集終了時
-    enterClassroomInit() {
       if (this.selCrlm.dayofweek === this.dayjsddd) {
         ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selCrlm.dayofweek === this.sett.dayofweek) {
@@ -3165,8 +3161,8 @@ export default {
       }
       this.isdeadlinelenient = true; //編集許可
       this.isEnteredselCrlm = true; //状態保持
-      this.cRoom.attnEditTgt = this.selCrlm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
       this.cRoom.attnEditable = false; //入った時点では編集モードにしない
+      this.sett.activeTab = 2; //いざタブを切替
     },
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
@@ -3252,7 +3248,7 @@ export default {
         // if (this.att.mode === 3) {
         //// enable
         this.$buefy.dialog.confirm({
-          title: "Attendance: past data edit",
+          title: "Historical data edit",
           message: "Edit previous?",
           // "<b>Not today's class.</b> <b-icon pack='fas' icon='dizzy' size='is-medium' /> Need edit previous?",
           size: "is-large",
@@ -3274,7 +3270,9 @@ export default {
         });
       } else {
         //// disable
-        this.enterClassroomInit();
+        this.att.mode = this.selCrlm.dayofweek === this.dayjsddd ? 3 : 0;
+        this.cRoom.attnEditTgt = this.selCrlm.attnthisweek; // 当該週に戻す（Eval側にも一部影響あり）
+        this.cRoom.attnEditable = false;
       }
     },
     // updateClassModeChange() {
