@@ -1205,6 +1205,203 @@
                     {{ getAttendSymbol(props.row[aa.at]) }}
                   </b-table-column>
 
+                  <!-- discon -->
+                  <b-table-column
+                    field="attn01"
+                    label="1"
+                    :visible="clrmShowCol[1]"
+                    :class="getAttendStatusClassHist(props.row.attn01)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(0) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn01) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn02"
+                    label="2"
+                    :visible="clrmShowCol[2]"
+                    :class="getAttendStatusClassHist(props.row.attn02)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(1) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn02) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn03"
+                    label="3"
+                    :visible="clrmShowCol[3]"
+                    :class="getAttendStatusClassHist(props.row.attn03)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(2) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn03) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn04"
+                    label="4"
+                    :visible="clrmShowCol[4]"
+                    :class="getAttendStatusClassHist(props.row.attn04)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(3) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn04) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn05"
+                    label="5"
+                    :visible="clrmShowCol[5]"
+                    :class="getAttendStatusClassHist(props.row.attn05)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(4) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn05) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn06"
+                    label="6"
+                    :visible="clrmShowCol[6]"
+                    :class="getAttendStatusClassHist(props.row.attn06)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(5) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn06) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn07"
+                    label="7"
+                    :visible="clrmShowCol[7]"
+                    :class="getAttendStatusClassHist(props.row.attn07)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(6) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn07) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn08"
+                    label="8"
+                    :visible="clrmShowCol[8]"
+                    :class="getAttendStatusClassHist(props.row.attn08)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(7) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn08) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn09"
+                    label="9"
+                    :visible="clrmShowCol[9]"
+                    :class="getAttendStatusClassHist(props.row.attn09)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(8) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn09) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn10"
+                    label="10"
+                    :visible="clrmShowCol[10]"
+                    :class="getAttendStatusClassHist(props.row.attn10)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(9) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn10) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn11"
+                    label="11"
+                    :visible="clrmShowCol[11]"
+                    :class="getAttendStatusClassHist(props.row.attn11)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(10) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn11) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn12"
+                    label="12"
+                    :visible="clrmShowCol[12]"
+                    :class="getAttendStatusClassHist(props.row.attn12)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(11) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn12) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn13"
+                    label="13"
+                    :visible="clrmShowCol[13]"
+                    :class="getAttendStatusClassHist(props.row.attn13)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(12) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn13) }}
+                  </b-table-column>
+                  <b-table-column
+                    field="attn14"
+                    label="14"
+                    :visible="clrmShowCol[14]"
+                    :class="getAttendStatusClassHist(props.row.attn14)"
+                    width="30"
+                  >
+                    <template slot="header" slot-scope="{ column }">
+                      {{ column.label }}
+                      <br />
+                      <span class="f18">{{ getDateMD(13) }}</span>
+                    </template>
+                    {{ getAttendSymbol(props.row.attn14) }}
+                  </b-table-column>
                   <!-- UI for create Attendance record -->
                   <b-table-column
                     field="attendrec"
