@@ -1931,7 +1931,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.09",
-        rev: "B_Logging",
+        rev: "A",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2696,7 +2696,7 @@ export default {
     async updateClrm(row, fname, fval) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       const logging =
-        (row.cust01 === null ? "" : row.cust01) +
+        row.cust01 +
         this.getDateYYYYMMDDhHHMMSS() +
         ",ver." +
         row._version +

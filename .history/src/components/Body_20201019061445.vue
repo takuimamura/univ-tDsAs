@@ -2696,7 +2696,7 @@ export default {
     async updateClrm(row, fname, fval) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       const logging =
-        (row.cust01 === null ? "" : row.cust01) +
+        row.cust01 +
         this.getDateYYYYMMDDhHHMMSS() +
         ",ver." +
         row._version +
