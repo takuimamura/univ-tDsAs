@@ -2741,9 +2741,11 @@ export default {
       }
       // 対象のLessonNo.のみをチェック
       let chk = false;
-      // const classmem = this.dataset.Clrms.filter((x) => x.classcode === classcode);
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-      for (const rw of classmem) {
+      // const classmems = await DataStore.query(Clrm, c =>
+      //   c.classcode("eq", classcode)
+      // );
+      const classmems = this.dataset.Clrms.filter((x) => x.classcode === classcode);
+      for (const rw of classmems) {
         if (
           rw[this.getThisWeekAttnJSON[dow]] == "not here" &&
           rw[this.getThisWeekHwicJSON[dow]] !== false
@@ -2757,10 +2759,9 @@ export default {
     // Force Sync
     // Force Sync
     async manageupdateClrmAllAPI() {
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-      // const classmem = this.dataset.Clrms.filter(
-      //   (x) => x.classcode === this.selClrm.id && x.enable === true
-      // );
+      const classmem = this.dataset.Clrms.filter(
+        (x) => x.classcode === this.selClrm.id && x.enable === true
+      );
       this.ClrmAppSyncStateShow = false;
       // let retmsg;
       this.ClrmAppSyncBegin = classmem.length;
@@ -2816,10 +2817,11 @@ export default {
     /////DataStore
     /////DataStore
     async fetchClrms() {
-      this.writeNoteLS("fetch start");
+      console.warn("fetch start:" + new Date());
       const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
+      console.warn("fetch " + fetch.length + ":" + new Date());
       this.dataset.Clrms = JSON.parse(JSON.stringify(fetch));
-      this.writeNoteLS("fetched: " + fetch.length);
+      console.warn("fetch JSON:" + new Date());
     },
     ///// Misc
     ///// Misc
@@ -3081,7 +3083,13 @@ export default {
       // && x.enable === trueはほんとはAppSyncの時点でやりたい
       // const classmems = await DataStore.query(Clrm, c =>
       //   c.classcode("eq", classcode)
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id)).sort(
+        function(a, b) {
+          if (a.sortid < b.sortid) return -1;
+          if (a.sortid > b.sortid) return 1;
+          return 0;
+        }
+      );
 
       // const classmem = this.dataset.Clrms.filter(
       //   (x) => x.classcode === this.selClrm.id && x.enable === true
@@ -3091,11 +3099,7 @@ export default {
       //   return 0;
       // });
       // this.classmembers = classmem;
-      this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
+      this.classmembers = JSON.parse(JSON.stringify(classmem));
       // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
@@ -3619,24 +3623,10 @@ export default {
       }
     },
     //////// クラスバックアップ
-    async classBackup() {
-      // クラス出たときに単一でバックアップ
-      const timestamp = this.getDateYYYYMMDDhHHMMSS();
-      const crArr = {
-        type: "classBackup " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(this.classmembers),
-      };
-      await this.createMisc(crArr);
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-      const crArrDS = {
-        type: "classBackupDS " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(classmem),
-      };
-      await this.createMisc(crArrDS);
-      this.writeNoteLS("classBackup " + this.selClrm.id, true);
-    },
+    //     classBackup(){
+    //       // クラス出たときに単一でバックアップ
+    // this.classmembers
+    //     },
     //     classBackupAll(){
     //       // きりのいいとこで全部
 
@@ -3740,8 +3730,6 @@ export default {
       if (this.sett.activeTab !== 2) {
         // 部屋から出たのか
         if (this.isEnteredselClrm) {
-          // バックアップ
-          this.classBackup();
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek)) == true

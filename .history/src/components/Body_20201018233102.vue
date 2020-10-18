@@ -3621,21 +3621,19 @@ export default {
     //////// クラスバックアップ
     async classBackup() {
       // クラス出たときに単一でバックアップ
-      const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
-        type: "classBackup " + timestamp,
+        type: "classBackup " + this.getDateYYYYMMDDhHHMMSS(),
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
       await this.createMisc(crArr);
       const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
       const crArrDS = {
-        type: "classBackupDS " + timestamp,
+        type: "classBackupDS " + this.getDateYYYYMMDDhHHMMSS(),
         name: this.authdetail.username,
         detail: JSON.stringify(classmem),
       };
       await this.createMisc(crArrDS);
-      this.writeNoteLS("classBackup " + this.selClrm.id, true);
     },
     //     classBackupAll(){
     //       // きりのいいとこで全部
@@ -3740,8 +3738,6 @@ export default {
       if (this.sett.activeTab !== 2) {
         // 部屋から出たのか
         if (this.isEnteredselClrm) {
-          // バックアップ
-          this.classBackup();
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek)) == true
