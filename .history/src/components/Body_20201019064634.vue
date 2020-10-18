@@ -1931,7 +1931,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.09",
-        rev: "D_RealtimeBackup",
+        rev: "B_Logging",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2694,7 +2694,6 @@ export default {
       }
     },
     async updateClrm(row, fname, fval) {
-      this.classRealtimeBackup();
       const clrmItem = await DataStore.query(Clrm, row.id);
       const logging =
         (row.cust01 === null ? "" : row.cust01) +
@@ -2940,9 +2939,6 @@ export default {
     },
     instClockOut() {
       this.periodicValidation(); // 日付とユーザー検証
-      //// localStorageからバックアップ引き揚げ
-      this.salvageclassRealtimeBackup();
-      this.salvageNote();
       this.$buefy.dialog.confirm({
         message: "Clock Out?",
         size: "is-large",
@@ -2966,6 +2962,8 @@ export default {
           ////////// 一応MiscにはDataStoreで
           ////////// Miscにも
           this.createMiscClockInOut("ClockOut", arr, arr.clockout);
+
+          this.salvageNote();
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
           //   v => v == this.instructor.you.firstName
@@ -3654,20 +3652,20 @@ export default {
     },
     async classRealtimeBackup() {
       // 入力の都度バックアップ
-      const type = "classBackupRealtime_" + this.selClrm.id;
+      const type = "classRealtimeBackup:" + this.selClrm.id;
       const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
     async salvageclassRealtimeBackup() {
       for (var key in localStorage) {
-        if (key.match(/classBackupRealtime/)) {
+        if (key.match(/classRealtimeBackup/)) {
           const crArr = {
             type: key,
             name: this.authdetail.username,
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPI(crArr);
+            await DataStore.save(new Misc({ crArr }));
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);

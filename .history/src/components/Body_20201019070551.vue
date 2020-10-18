@@ -1931,7 +1931,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.09",
-        rev: "D_RealtimeBackup",
+        rev: "C_RealtimeBackup",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",

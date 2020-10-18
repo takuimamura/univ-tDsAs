@@ -1931,7 +1931,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.09",
-        rev: "D_RealtimeBackup",
+        rev: "C_RealtimeBackup",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3654,20 +3654,20 @@ export default {
     },
     async classRealtimeBackup() {
       // 入力の都度バックアップ
-      const type = "classBackupRealtime_" + this.selClrm.id;
+      const type = "classRealtimeBackup_" + this.selClrm.id;
       const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
     async salvageclassRealtimeBackup() {
       for (var key in localStorage) {
-        if (key.match(/classBackupRealtime/)) {
+        if (key.match(/classRealtimeBackup/)) {
           const crArr = {
             type: key,
             name: this.authdetail.username,
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPI(crArr);
+            await DataStore.save(new Misc({ crArr }));
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
