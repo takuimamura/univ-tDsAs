@@ -2779,13 +2779,12 @@ export default {
     /////DataStore
     /////DataStore
     async fetchClrms() {
-      console.warn("fetch start:" + new Date());
       const fetch = await DataStore.query(Clrm, c =>
         c.uid("eq", this.sett.alias.name)
       );
-      console.warn("fetch " + fetch.length + ":" + new Date());
       this.dataset.Clrms = JSON.parse(JSON.stringify(fetch));
-      console.warn("fetch JSON:" + new Date());
+      // this.dataset.Clrms = [];
+      // this.dataset.Clrms = [...fetch];
     },
     ///// Misc
     ///// Misc

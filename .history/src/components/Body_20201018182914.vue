@@ -2783,7 +2783,7 @@ export default {
       const fetch = await DataStore.query(Clrm, c =>
         c.uid("eq", this.sett.alias.name)
       );
-      console.warn("fetch " + fetch.length + ":" + new Date());
+      console.warn("fetch done:" + new Date());
       this.dataset.Clrms = JSON.parse(JSON.stringify(fetch));
       console.warn("fetch JSON:" + new Date());
     },
