@@ -2530,6 +2530,9 @@ export default {
     };
   },
   methods: {
+    dummytest() {
+      this.sett.dummy1 = "val";
+    },
     // null も評価するソート
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
@@ -2622,6 +2625,40 @@ export default {
     //     this.writeFail("updateMisc", upd, err);
     //   }
     // },
+    async sendUserAgent() {
+      const detObj = {
+        app: this.app.version,
+        rev: this.app.rev,
+        name: this.authdetail.username,
+        date: this.getDateYYYYMMDDhHHMMSS(),
+        appVersion: navigator.appVersion,
+        userAgent: navigator.userAgent,
+        platform: navigator.platform,
+        vendor: navigator.vendor,
+        appCodeName: navigator.appCodeName,
+        cookieEnabled: navigator.cookieEnabled,
+        language: navigator.language,
+        languages: navigator.languages
+      };
+      let crArr = {
+        type: "userAgent",
+        name: this.authdetail.username
+      };
+      try {
+        crArr.detail = JSON.stringify({
+          ...{ via: this.app.chrAPI },
+          ...detObj
+        });
+        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
+      } catch (err) {
+        crArr.detail = JSON.stringify({
+          ...{ via: this.app.chrDS },
+          ...detObj
+        });
+        this.writeFail("sendUserAgent-sendfail", crArr, err);
+        await this.createMisc(crArr);
+      }
+    },
     async updateClrmTEST(id) {
       // API,DataStore両方投げるテスト
       this.updateClrm(id, "cust01", "DataStore");
@@ -2786,6 +2823,7 @@ export default {
       // this.dataset.Clrms = [];
       // this.dataset.Clrms = [...fetch];
     },
+    ///// inst
     ///// Misc
     ///// Misc
     //// クラス毎のサマリDB 更新
@@ -2845,6 +2883,31 @@ export default {
         }
       }
     },
+    //   const newest = ret.reduce((a, b) =>
+    //     a._lastChangedAt > b._lastChangedAt ? a : b
+    //   );
+    //   const oldest = ret.reduce((a, b) =>
+    //     a._lastChangedAt < b._lastChangedAt ? a : b
+    //   );
+    //   return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
+    // },
+    // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
+    // const mx = ret.reduce((a, b) => (a > b ? a : b));
+    // const mn = ret.reduce((a, b) => (a < b ? a : b));
+    // async updateMiscClassSummary(classcode) {
+    //   //生徒単位でタイムスタンプの最大、最小を調べる
+    //   //記録する
+    //   const cr = {
+    //     type: this.ds.typeMisc.classSum,
+    //     name: classcode,
+    //     detail: JSON.stringify({
+    //       oldest: this.$dayjs(),
+    //       newest: new Date(),
+    //     }),
+    //   };
+    //   await DataStore.save(new Misc(cr));
+    //   this.fetchMiscs();
+    // },
     async applogSave() {
       await DataStore.save(
         new Misc({
@@ -3216,6 +3279,14 @@ export default {
         this.enterClassroomInit();
       }
     },
+    // updateClassModeChange() {
+    //   const upArr = {
+    //     type: "class" + this.dayjsYYYYMMDDh,
+    //     name: this.authdetail.username,
+    //     detail: this.instructor.yourTodaysClasses
+    //   };
+    //   this.updateMisc(upArr);
+    // },
     ///// 表示変更系
     ///// 表示変更系
     ///// 表示変更系
@@ -3230,6 +3301,12 @@ export default {
 
       // this.cRoom.showEval = mde === 2 ? true : this.cRoom.showEval;
     },
+    // showEvalChange() {
+    //   let mde = this.cRoom.showAttenHist;
+    //   mde += 1;
+    //   this.cRoom.showAttenHist = mde > 2 ? 0 : mde;
+    //   this.cRoom.showEval = mde === 2 ? true : this.cRoom.showEval;
+    // },
     // 表示切替 binoculars 双眼鏡ボタンから
     showIndividualChange() {
       this.cRoom.showIndividual = !this.cRoom.showIndividual;
@@ -3359,8 +3436,25 @@ export default {
         this.updateClrm(row.id, fname, fval);
       }
     },
-    ////////// css class
-    ////////// css class
+    //////////サマリー
+    // async manageSummary() {
+    //   // if (this.showManagementView === true) {
+    //   // }
+    //   this.sett.isLoadingClrmManage = true;
+    //   await this.getClrmsDatainstByday("Mon"); //★test
+    //   await this.getClrmsDatainstByday("Tue"); //★test
+    //   await this.getClrmsDatainstByday("Wed"); //★test
+    //   await this.getClrmsDatainstByday("Thu"); //★test
+    //   await this.getClrmsDatainstByday("Fri"); //★test
+    //   if (this.showManagementViewSuper === true) {
+    //     await this.getClrmsDatainstByday("Sat"); //★test
+    //     await this.getClrmsDatainstByday("Sun"); //★test
+    //   }
+    //   this.sett.isLoadingClrmManage = false;
+    // },
+    //// return class
+    //// return class
+    //// return class
     getAttendStatusClass(num) {
       switch (num) {
         case 0:
@@ -3506,6 +3600,11 @@ export default {
           return "-";
       }
     },
+
+    // convertInstructorsInfo(val) {
+    //   const result = this.instructor.nameConv.find((x) => x.username === val);
+    //   return result;
+    // },
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
@@ -3578,43 +3677,8 @@ export default {
         return null;
       }
     },
-    ///////////////////////////////////// Basics
-    ///////////////////////////////////// Basics
-    //// userAgent
-    async sendUserAgent() {
-      const detObj = {
-        app: this.app.version,
-        rev: this.app.rev,
-        name: this.authdetail.username,
-        date: this.getDateYYYYMMDDhHHMMSS(),
-        appVersion: navigator.appVersion,
-        userAgent: navigator.userAgent,
-        platform: navigator.platform,
-        vendor: navigator.vendor,
-        appCodeName: navigator.appCodeName,
-        cookieEnabled: navigator.cookieEnabled,
-        language: navigator.language,
-        languages: navigator.languages
-      };
-      let crArr = {
-        type: "userAgent",
-        name: this.authdetail.username
-      };
-      try {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrAPI },
-          ...detObj
-        });
-        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
-      } catch (err) {
-        crArr.detail = JSON.stringify({
-          ...{ via: this.app.chrDS },
-          ...detObj
-        });
-        this.writeFail("sendUserAgent-sendfail", crArr, err);
-        await this.createMisc(crArr);
-      }
-    },
+    ////////////Fail処理
+    ////////////Fail処理
     ////////////Fail処理
     async writeFail(dest, arr, ret) {
       const dtl =
@@ -3671,6 +3735,8 @@ export default {
         this.writeFail("salvageFail", crArr, err);
       }
     },
+    //////////// 設定、Validation
+    //////////// 設定、Validation
     //////////// 設定、Validation
     async periodicValidation() {
       // this.initAuthValidation();
@@ -3750,29 +3816,6 @@ export default {
         this.reloadApp("workdateValication");
       }
     },
-    async authManage() {
-      await Auth.currentAuthenticatedUser()
-        .then(user => {
-          this.authdetail = {
-            username: user.username,
-            name: user.attributes.name,
-            nickname: user.attributes.nickname,
-            role: user.signInUserSession.idToken.payload["custom:role"]
-          };
-          this.sett.alias = {
-            username: user.username,
-            name: user.attributes.name
-          };
-        })
-        .catch(() =>
-          // this.authdetail = "created auth error"
-          this.createMisc({
-            type: "Auth",
-            name: this.authdetail.username,
-            detail: "ERROR: " + this.authdetail
-          })
-        );
-    },
     async reloadApp(str) {
       try {
         const crArr = {
@@ -3790,6 +3833,7 @@ export default {
       }
       this.$router.go();
     },
+    ////////// 日付設定
     ////////// 日付設定
     setcurrentAcDate() {
       this.sett.acdate = this.$dayjs().add(this.sett.env.devAddAcDate, "d");
@@ -3812,15 +3856,34 @@ export default {
       //manage用
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
-    ////////// for dev
     devHelper() {
       if (this.getStartingUrl === "localhost") {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }
     },
-    dummytest() {
-      this.sett.dummy1 = "val";
+    async authManage() {
+      await Auth.currentAuthenticatedUser()
+        .then(user => {
+          this.authdetail = {
+            username: user.username,
+            name: user.attributes.name,
+            nickname: user.attributes.nickname,
+            role: user.signInUserSession.idToken.payload["custom:role"]
+          };
+          this.sett.alias = {
+            username: user.username,
+            name: user.attributes.name
+          };
+        })
+        .catch(() =>
+          // this.authdetail = "created auth error"
+          this.createMisc({
+            type: "Auth",
+            name: this.authdetail.username,
+            detail: "ERROR: " + this.authdetail
+          })
+        );
     }
   },
   filters: {
@@ -4118,6 +4181,16 @@ export default {
         x => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
       );
     },
+    // allattendancesMonth: function() {
+    //   let filtered;
+    //   filtered = this.instructor.attendances.filter(
+    //     (x) => x.date.substr(0, 7) === this.instructor.attendvisiblemonth
+    //   );
+    //   if (this.manage.instinstname !== "all") {
+    //     filtered = filtered.filter((x) => x.id === this.manage.instinstname);
+    //   }
+    //   return filtered;
+    // },
     computedBlank: function() {
       // データ current が -1 ならすべて
       // それ以外なら current と state が一致するものだけに絞り込む

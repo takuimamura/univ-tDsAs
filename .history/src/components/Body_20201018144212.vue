@@ -2530,6 +2530,9 @@ export default {
     };
   },
   methods: {
+    dummytest() {
+      this.sett.dummy1 = "val";
+    },
     // null も評価するソート
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
@@ -2845,6 +2848,31 @@ export default {
         }
       }
     },
+    //   const newest = ret.reduce((a, b) =>
+    //     a._lastChangedAt > b._lastChangedAt ? a : b
+    //   );
+    //   const oldest = ret.reduce((a, b) =>
+    //     a._lastChangedAt < b._lastChangedAt ? a : b
+    //   );
+    //   return { newest: newest._lastChangedAt, oldest: oldest._lastChangedAt };
+    // },
+    // this.ds.nMisc.return = this.getDateMDhmm(mx) + "|" + this.getDateMDhmm(mn);
+    // const mx = ret.reduce((a, b) => (a > b ? a : b));
+    // const mn = ret.reduce((a, b) => (a < b ? a : b));
+    // async updateMiscClassSummary(classcode) {
+    //   //生徒単位でタイムスタンプの最大、最小を調べる
+    //   //記録する
+    //   const cr = {
+    //     type: this.ds.typeMisc.classSum,
+    //     name: classcode,
+    //     detail: JSON.stringify({
+    //       oldest: this.$dayjs(),
+    //       newest: new Date(),
+    //     }),
+    //   };
+    //   await DataStore.save(new Misc(cr));
+    //   this.fetchMiscs();
+    // },
     async applogSave() {
       await DataStore.save(
         new Misc({
@@ -3750,29 +3778,6 @@ export default {
         this.reloadApp("workdateValication");
       }
     },
-    async authManage() {
-      await Auth.currentAuthenticatedUser()
-        .then(user => {
-          this.authdetail = {
-            username: user.username,
-            name: user.attributes.name,
-            nickname: user.attributes.nickname,
-            role: user.signInUserSession.idToken.payload["custom:role"]
-          };
-          this.sett.alias = {
-            username: user.username,
-            name: user.attributes.name
-          };
-        })
-        .catch(() =>
-          // this.authdetail = "created auth error"
-          this.createMisc({
-            type: "Auth",
-            name: this.authdetail.username,
-            detail: "ERROR: " + this.authdetail
-          })
-        );
-    },
     async reloadApp(str) {
       try {
         const crArr = {
@@ -3819,8 +3824,28 @@ export default {
         this.sett.devcheck = true;
       }
     },
-    dummytest() {
-      this.sett.dummy1 = "val";
+    async authManage() {
+      await Auth.currentAuthenticatedUser()
+        .then(user => {
+          this.authdetail = {
+            username: user.username,
+            name: user.attributes.name,
+            nickname: user.attributes.nickname,
+            role: user.signInUserSession.idToken.payload["custom:role"]
+          };
+          this.sett.alias = {
+            username: user.username,
+            name: user.attributes.name
+          };
+        })
+        .catch(() =>
+          // this.authdetail = "created auth error"
+          this.createMisc({
+            type: "Auth",
+            name: this.authdetail.username,
+            detail: "ERROR: " + this.authdetail
+          })
+        );
     }
   },
   filters: {
