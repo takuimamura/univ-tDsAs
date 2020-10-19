@@ -43,7 +43,7 @@
         <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
         <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
         <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-        <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
+        <b-button @click="showLS()">showLS()</b-button>
         <b-button @click="fetchCheck()">fetchCheck()</b-button>
         <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
         <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
@@ -2671,18 +2671,16 @@ export default {
     ////IndexedDB
     datasetManage() {
       if (this.dataDS.Clrms.length === 0) {
-        if (this.dataset.Clrms.length === 0) {
-          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-          this.writeNoteLS("Clrms = localStorate");
-        } else {
-          this.dataset.Clrms = this.dataAPI.Clrms;
-          this.writeNoteLS("Clrms = API");
-        }
+      if (this.dataset.Clrms.length === 0) {
+        this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms))
+      }else{
+        this.dataset.Clrms = this.dataAPI.Clrms;
+      }
       } else {
         this.dataset.Clrms = this.dataDS.Clrms;
-        this.writeNoteLS("Clrms = DataStore");
       }
     },
+
     //////////// create Misc
     //////////// create Misc
     async createMiscAPI(crArr) {
@@ -3736,7 +3734,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPIDS(crArr);
+            await this.createMiscAPI(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -3814,19 +3812,6 @@ export default {
         await DataStore.save(new Misc(crArr));
       } catch (err) {
         localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
-      }
-    },
-    listLocalStorage() {
-      const crArr = {
-        type: "localStorageList",
-        name: this.authdetail.username,
-        detail: Object.keys(localStorage),
-      };
-      this.createMiscAPIDS(crArr);
-    },
-    salvageDev() {
-      if (this.sett.alias.name == "Damon Bizzell") {
-        this.salvageclassRealtimeBackup();
       }
     },
     async salvageFail() {
@@ -4430,8 +4415,6 @@ export default {
     this.setcurrentAcDate();
     this.setInstMonth();
     this.salvageFail();
-    this.salvageDev();
-    this.listLocalStorage();
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
@@ -4517,12 +4500,6 @@ export default {
         // this.reloadIfUndefinedName;
       }.bind(this),
       1 * 1000 * 60
-    );
-    setInterval(
-      function() {
-        this.salvageDev;
-      }.bind(this),
-      1 * 1000 * 60 * 60
     );
     this.setcurrentAcTime();
     // setTimeout(this.initAuthValidation, 3000);

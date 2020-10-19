@@ -3736,7 +3736,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPIDS(crArr);
+            await this.createMiscAPI(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -3817,17 +3817,20 @@ export default {
       }
     },
     listLocalStorage() {
-      const crArr = {
-        type: "localStorageList",
-        name: this.authdetail.username,
-        detail: Object.keys(localStorage),
-      };
-      this.createMiscAPIDS(crArr);
-    },
-    salvageDev() {
-      if (this.sett.alias.name == "Damon Bizzell") {
-        this.salvageclassRealtimeBackup();
-      }
+      console.warn(Object.keys(localStorage));
+      // for (var key in localStorage) {
+      //   if (key.match(/appFail/)) {
+      //     var tmp = {};
+      //     tmp.key = key;
+      //     tmp.val = localStorage.getItem(key);
+      //     arr.push(tmp);
+      //   }
+      // }
+      // const crArr = {
+      //   type: "appFailSalvage",
+      //   name: this.authdetail.username,
+      //   detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr,
+      // };
     },
     async salvageFail() {
       let arr = [];
@@ -4430,8 +4433,6 @@ export default {
     this.setcurrentAcDate();
     this.setInstMonth();
     this.salvageFail();
-    this.salvageDev();
-    this.listLocalStorage();
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
@@ -4517,12 +4518,6 @@ export default {
         // this.reloadIfUndefinedName;
       }.bind(this),
       1 * 1000 * 60
-    );
-    setInterval(
-      function() {
-        this.salvageDev;
-      }.bind(this),
-      1 * 1000 * 60 * 60
     );
     this.setcurrentAcTime();
     // setTimeout(this.initAuthValidation, 3000);

@@ -42,8 +42,7 @@
         <b-modal :active.sync="sett.isModalActive"></b-modal>
         <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
         <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
-        <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-        <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
+        <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button>
         <b-button @click="fetchCheck()">fetchCheck()</b-button>
         <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
         <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
@@ -1939,8 +1938,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.10",
-        rev: "A",
+        version: "1.09",
+        rev: "E_VERBOSE",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2595,7 +2594,6 @@ export default {
       },
       dataDS: {
         queryWait: false,
-        queryChk: 0,
         Clrms: [], // [], //学生データ
         // ClrmsInstByday: [],
         // Miscs: [], //その他便利に使う
@@ -2651,14 +2649,6 @@ export default {
       this.writeNoteLS("APIlistClrmsData: " + gql.data.listClrms.items.length);
     },
     /////DataStore
-    DSObserveClrms() {
-      this.writeNoteLS("DSObserveClrms");
-      DataStore.observe(Clrm).subscribe((msg) => {
-        if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms();
-        }
-      });
-    },
     async fetchClrms() {
       this.writeNoteLS("fetch start");
       this.dataDS.queryWait = true;
@@ -2671,18 +2661,12 @@ export default {
     ////IndexedDB
     datasetManage() {
       if (this.dataDS.Clrms.length === 0) {
-        if (this.dataset.Clrms.length === 0) {
-          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-          this.writeNoteLS("Clrms = localStorate");
-        } else {
-          this.dataset.Clrms = this.dataAPI.Clrms;
-          this.writeNoteLS("Clrms = API");
-        }
+        this.dataset.Clrms = this.dataAPI.Clrms;
       } else {
         this.dataset.Clrms = this.dataDS.Clrms;
-        this.writeNoteLS("Clrms = DataStore");
       }
     },
+
     //////////// create Misc
     //////////// create Misc
     async createMiscAPI(crArr) {
@@ -3121,21 +3105,21 @@ export default {
       // && x.enable === trueはほんとはAppSyncの時点でやりたい
       // const classmems = await DataStore.query(Clrm, c =>
       //   c.classcode("eq", classcode)
-      // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
 
-      const classmem = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selClrm.id && x.enable === true
-      ).sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      this.classmembers = classmem;
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
+      // const classmem = this.dataset.Clrms.filter(
+      //   (x) => x.classcode === this.selClrm.id && x.enable === true
+      // ).sort(function(a, b) {
       //   if (a.sortid < b.sortid) return -1;
       //   if (a.sortid > b.sortid) return 1;
       //   return 0;
       // });
+      // this.classmembers = classmem;
+      this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
       // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
@@ -3736,7 +3720,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPIDS(crArr);
+            await this.createMiscAPI(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -3814,19 +3798,6 @@ export default {
         await DataStore.save(new Misc(crArr));
       } catch (err) {
         localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
-      }
-    },
-    listLocalStorage() {
-      const crArr = {
-        type: "localStorageList",
-        name: this.authdetail.username,
-        detail: Object.keys(localStorage),
-      };
-      this.createMiscAPIDS(crArr);
-    },
-    salvageDev() {
-      if (this.sett.alias.name == "Damon Bizzell") {
-        this.salvageclassRealtimeBackup();
       }
     },
     async salvageFail() {
@@ -3996,13 +3967,6 @@ export default {
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     ////////// for dev
-    showLS() {
-      console.warn("this.dataLS.Clrms");
-      console.warn(this.dataLS.Clrms);
-      console.warn(this.dataLS.Clrms[1]);
-      console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms)));
-      console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms))[1]);
-    },
     async dataStoreClear() {
       console.warn("DataStore.c...");
       await DataStore.clear();
@@ -4043,24 +4007,6 @@ export default {
     },
     dummytest() {
       this.sett.dummy1 = "val";
-    },
-    startDScheck: function() {
-      this.stopDScheck();
-      this.dataDS.queryChk = setInterval(() => this.retryDSifYet(), 1000 * 3);
-    },
-    stopDScheck: function() {
-      if (this.dataDS.queryChk) {
-        clearInterval(this.dataDS.queryChk);
-        this.dataDS.queryChk = 0;
-      }
-    },
-    retryDSifYet() {
-      if (this.dataDS.Clrms.length === 0) {
-        this.fetchClrms();
-      }
-      if (this.dataset.Clrms.length === 0 || this.dataDS.Clrms.length > this.dataset.Clrms.length) {
-        this.datasetManage();
-      }
     },
     clearAllDataStoreConfirm() {
       this.$buefy.dialog.confirm({
@@ -4430,15 +4376,11 @@ export default {
     this.setcurrentAcDate();
     this.setInstMonth();
     this.salvageFail();
-    this.salvageDev();
-    this.listLocalStorage();
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
     await DataStore.start();
-    this.startDScheck();
     this.fetchClrms(); // DataStore
-    this.DSObserveClrms();
     this.APIgetClrmsinstBydayAll(); // API
     this.loadclassRealtimeBackup(); // LocalStorage
     this.datasetManage();
@@ -4518,19 +4460,12 @@ export default {
       }.bind(this),
       1 * 1000 * 60
     );
-    setInterval(
-      function() {
-        this.salvageDev;
-      }.bind(this),
-      1 * 1000 * 60 * 60
-    );
     this.setcurrentAcTime();
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
-    this.stopDScheck();
   },
 };
 </script>

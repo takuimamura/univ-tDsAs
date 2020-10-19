@@ -42,12 +42,7 @@
         <b-modal :active.sync="sett.isModalActive"></b-modal>
         <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
         <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
-        <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-        <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
-        <b-button @click="fetchCheck()">fetchCheck()</b-button>
-        <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
-        <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
-        <b-button @click="loadclassRealtimeBackup()">loadclassRealtimeBackup()</b-button>
+        <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button>
 
         <b-button @click="initallClasses">initallClasses</b-button>
         <b-button @click="dummytest">dummytest</b-button>
@@ -78,14 +73,9 @@
           <!--■■■開発用 ローカル限定表示■■■-->
           sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
-          dataAPI: {{ dataAPI.Clrms.length }} | dataDS: {{ dataDS.Clrms.length }} | dataLS:
-          {{ dataLS.Clrms.length }} | dataset: {{ dataset.Clrms.length }} |
+          manage.dow {{ manage.dow }}
           <br />
-          allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
-          <!-- InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{  dataset.Clrms.length}} | ClrmsChk::{{ dataset.ClrmsChk.length }} |-->
-          <br />
-          class: {{ classmembers.length }} | cRoom.showAttenHist {{ cRoom.showAttenHist }} |
-          att.mode {{ att.mode }} |
+          cRoom.showAttenHist {{ cRoom.showAttenHist }} | att.mode {{ att.mode }} |
           <br />
           instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
           <b-switch v-model="sett.devshowMem">member</b-switch>
@@ -114,6 +104,11 @@
           <br />
           dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
           <br />
+          allClasses; {{ dataset.allClasses.length }} | yours |
+          {{ yourClasses.length }} InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{
+            dataset.Clrms.length
+          }}
+          | ClrmsChk::{{ dataset.ClrmsChk.length }} | class: {{ classmembers.length }} |
           <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
           -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
           <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
@@ -1888,8 +1883,8 @@ import API, { graphqlOperation } from "@aws-amplify/api";
 import {
   // listCinfs, // 謎の取得できないやつ
   // listCldrs,
-  listClrms,
-  instByday,
+  // listClrms,
+  // instByday,
   listInsts,
   // getInsts,
   // listMiscs
@@ -1939,8 +1934,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.10",
-        rev: "A",
+        version: "1.09",
+        rev: "E_VERBOSE",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2588,103 +2583,70 @@ export default {
         Cldrs: SchdJSON, //[], //カレンダ
         Miscs: [], //その他便利に使う
       },
-      dataAPI: {
-        Clrms: [], // [], //学生データ
-        // ClrmsInstByday: [],
-        // Miscs: [], //その他便利に使う
-      },
-      dataDS: {
-        queryWait: false,
-        queryChk: 0,
-        Clrms: [], // [], //学生データ
-        // ClrmsInstByday: [],
-        // Miscs: [], //その他便利に使う
-      },
-      dataLS: {
-        Clrms: [], // [], //学生データ
-        // ClrmsInstByday: [],
-        // Miscs: [], //その他便利に使う
-      },
     };
   },
   methods: {
-    // いろいろログ用：this.writeNoteLS("fetch start");
-    /////API GraphQL
-    /////API GraphQL
-    //////////// fetch Clrm
-    async APIgetClrmsinstBydayAll() {
-      this.sett.isLoadingClrmManage = true;
-      await this.APIgetClrmsinstByday("Mon"); //★test
-      await this.APIgetClrmsinstByday("Tue"); //★test
-      await this.APIgetClrmsinstByday("Wed"); //★test
-      await this.APIgetClrmsinstByday("Thu"); //★test
-      await this.APIgetClrmsinstByday("Fri"); //★test
-      if (this.showManagementViewSuper === true) {
-        await this.APIgetClrmsinstByday("Sat"); //★test
-        await this.APIgetClrmsinstByday("Sun"); //★test
-      }
-      this.sett.isLoadingClrmManage = false;
-    },
-    async APIgetClrmsinstByday(dow) {
-      const gql = await API.graphql(
-        graphqlOperation(instByday, {
-          dayofweek: dow,
-          limit: 4000,
-          uid: { eq: this.sett.alias.name },
-        })
-      );
-      // 既に保持していた場合除去
-      const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
-      this.dataAPI.Clrms = fi;
-      this.dataAPI.Clrms.push(...gql.data.instByday.items);
-      this.writeNoteLS("APIgetClrmsinstByday: " + gql.data.instByday.items.length);
-    },
-    async APIlistClrmsData() {
-      const gql = await API.graphql(
-        // ★uidが効いてない
-        graphqlOperation(listClrms, { uid: this.sett.alias.name, limit: 5000 })
-      );
-      // 既に保持していた場合除去
-      const fi = this.dataset.Clrms.filter((n) => n.id !== this.sett.alias.name);
-      this.dataAPI.Clrms = fi;
-      this.dataAPI.Clrms.push(...gql.data.listClrms.items);
-      this.writeNoteLS("APIlistClrmsData: " + gql.data.listClrms.items.length);
-    },
-    /////DataStore
-    DSObserveClrms() {
-      this.writeNoteLS("DSObserveClrms");
-      DataStore.observe(Clrm).subscribe((msg) => {
-        if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms();
-        }
+    clearAllDataStoreConfirm() {
+      this.$buefy.dialog.confirm({
+        message:
+          "<b>Clear all local cache data</b>" +
+          "<br /><br />Are you sure to delete all the data in your device?" +
+          "<br /><br />* Be sure that you have synced everything to server or somewhere" +
+          "<br /><br />* This does not affect the data on the server",
+        type: "is-danger",
+        hasIcon: true,
+        icon: "exclamation-triangle",
+        iconPack: "fa",
+        size: "is-large",
+        ariaRole: "alertdialog",
+        ariaModal: true,
+        onConfirm: () => {
+          this.clearAllDataStore();
+        },
       });
     },
-    async fetchClrms() {
-      this.writeNoteLS("fetch start");
-      this.dataDS.queryWait = true;
-      const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
-      this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));
-      this.writeNoteLS("fetched: " + fetch.length);
-      this.dataDS.queryWait = false;
+    async clearAllDataStore() {
+      await DataStore.clear();
+      /////ログ
+      const cr = {
+        type: "DataStoreClear",
+        name: this.authdetail.username,
+        detail: this.getDateYYYYMMDDhHHMMSS(),
+      };
+      this.$buefy.toast.open({
+        message: "<span style='font-size:60px'>Please wait...</span>",
+        type: "is-danger",
+        size: "is-large",
+        duration: 5000,
+      });
+      await this.createMiscAPI(cr);
+      await this.createMisc(cr);
+      this.writeFail(
+        "DataStoreClear",
+        this.authdetail.username, //this.sett.today,
+        this.getDateYYYYMMDDhHHMMSS()
+      );
+      this.$router.go();
     },
-    ////LocalStorage
-    ////IndexedDB
-    datasetManage() {
-      if (this.dataDS.Clrms.length === 0) {
-        if (this.dataset.Clrms.length === 0) {
-          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-          this.writeNoteLS("Clrms = localStorate");
-        } else {
-          this.dataset.Clrms = this.dataAPI.Clrms;
-          this.writeNoteLS("Clrms = API");
-        }
-      } else {
-        this.dataset.Clrms = this.dataDS.Clrms;
-        this.writeNoteLS("Clrms = DataStore");
-      }
+    // null も評価するソート
+    arrayCompare(a, b, desc = true) {
+      if (a !== a && b !== b) return 0;
+      if (a !== a) return 1;
+      if (b !== b) return -1;
+
+      if (a == null && b == null) return 0;
+      if (a == null) return 1;
+      if (b == null) return -1;
+
+      if (a === "" && b === "") return 0;
+      if (a === "") return 1;
+      if (b === "") return -1;
+
+      var sig = desc ? 1 : -1;
+      return a < b ? sig : a > b ? -sig : 0;
     },
-    //////////// create Misc
-    //////////// create Misc
+    /////API GraphQL
+    /////API GraphQL
     async createMiscAPI(crArr) {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
@@ -2701,19 +2663,6 @@ export default {
         this.writeFail("MiscCreate", arr, err);
       }
     },
-    async createMiscAPIDS(crArr) {
-      try {
-        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
-        return true;
-      } catch (er) {
-        try {
-          await DataStore.save(new Misc(crArr));
-        } catch (err) {
-          this.writeFail("createMiscAPIDS", er + err, crArr);
-          return err;
-        }
-      }
-    },
     // async updateMisc(upd) {
     //   // const id = "dummy★"; //あとまわし★
     //   try {
@@ -2728,6 +2677,11 @@ export default {
     //   } catch (err) {
     //     this.writeFail("updateMisc", upd, err);
     //   }
+    // },
+    // async updateClrmTEST(row) {
+    //   // API,DataStore両方投げるテスト
+    //   this.updateClrm(row, "cust01", "DataStore");
+    //   this.updateClrmAPI(row, "cust01", "API");
     // },
     async updateClrmAPI(row, fname, fval) {
       const upArr = {
@@ -2779,13 +2733,11 @@ export default {
       // クラスのタイムスタンプを反映
       this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
       //おまじない的な
-      setInterval(
+      setTimeout(
         function() {
-          this.workdateValication;
-          // this.getCurrentTime;
-          // this.reloadIfUndefinedName;
+          this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
         }.bind(this),
-        1 * 1000 * 60
+        5000
       );
     },
     async updateClrmAttnHW(row) {
@@ -2798,7 +2750,6 @@ export default {
         })
       );
     },
-    //// check
     async checkAttnHWConsistency(classcode, dow) {
       ////Lesson 1 is exeption because no hw required yet
       if (this.getThisWeekHwicJSON[dow] == "") {
@@ -2879,6 +2830,15 @@ export default {
     },
     /////DataStore
     /////DataStore
+    /////DataStore
+    async fetchClrms() {
+      this.writeNoteLS("fetch start");
+      const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
+      this.dataset.Clrms = JSON.parse(JSON.stringify(fetch));
+      this.writeNoteLS("fetched: " + fetch.length);
+    },
+    ///// Misc
+    ///// Misc
     //// クラス毎のサマリDB 更新
     async reflectClassSummary(classcode, dow) {
       const tgt = this.yourClasses.find((arr) => {
@@ -2923,7 +2883,25 @@ export default {
         }
       }
     },
+    async applogSave() {
+      await DataStore.save(
+        new Misc({
+          type: this.ds.typeMisc.appNwLog,
+          name: this.authdetail.username,
+          detail: this.app.log.nw,
+        })
+      );
+    },
+    //// graphql
+    //// graphql
     //初期処理
+    // JSONからのallClassesを整える
+    // initallClassesDev() {
+    //   this.yourClasses.forEach(m => {
+    //     // クラスのタイムスタンプを反映
+    //     this.reflectClassSummary(m.id, "m.dayofweek");
+    //   });
+    // },
     initallClasses() {
       this.yourClasses.forEach((m) => {
         // レッスン集と出欠が今週どこなのか
@@ -2937,6 +2915,7 @@ export default {
       //     // const timestamp = this.queryMiscClassSummary(m.classcode);
       // this.dataset.allClasses.splice();
     },
+
     //////////講師 勤怠
     //////////講師 勤怠
     //////////講師 勤怠
@@ -3121,21 +3100,21 @@ export default {
       // && x.enable === trueはほんとはAppSyncの時点でやりたい
       // const classmems = await DataStore.query(Clrm, c =>
       //   c.classcode("eq", classcode)
-      // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
 
-      const classmem = this.dataset.Clrms.filter(
-        (x) => x.classcode === this.selClrm.id && x.enable === true
-      ).sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      this.classmembers = classmem;
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
+      // const classmem = this.dataset.Clrms.filter(
+      //   (x) => x.classcode === this.selClrm.id && x.enable === true
+      // ).sort(function(a, b) {
       //   if (a.sortid < b.sortid) return -1;
       //   if (a.sortid > b.sortid) return 1;
       //   return 0;
       // });
+      // this.classmembers = classmem;
+      this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
       // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
@@ -3621,26 +3600,9 @@ export default {
         return null;
       }
     },
-    // null も評価するソート
-    arrayCompare(a, b, desc = true) {
-      if (a !== a && b !== b) return 0;
-      if (a !== a) return 1;
-      if (b !== b) return -1;
-
-      if (a == null && b == null) return 0;
-      if (a == null) return 1;
-      if (b == null) return -1;
-
-      if (a === "" && b === "") return 0;
-      if (a === "") return 1;
-      if (b === "") return -1;
-
-      var sig = desc ? 1 : -1;
-      return a < b ? sig : a > b ? -sig : 0;
-    },
     ///////////////////////////////////// Basics
     ///////////////////////////////////// Basics
-    //// 記録系
+    //// userAgent
     async sendUserAgent() {
       const detObj = {
         app: this.app.version,
@@ -3675,21 +3637,6 @@ export default {
         await this.createMisc(crArr);
       }
     },
-    async applogSave() {
-      if (this.app.log.nw !== "") {
-        try {
-          const arr = {
-            type: this.ds.typeMisc.appNwLog,
-            name: this.authdetail.username,
-            detail: this.app.log.nw,
-          };
-          this.createMiscAPIDS(arr);
-          this.app.log.nw = "";
-        } catch (err) {
-          this.writeFail("applogSave", this.app.log.nw, err);
-        }
-      }
-    },
     //////// クラスバックアップ
     async classBackup() {
       // クラス出たときに単一でバックアップ
@@ -3715,18 +3662,6 @@ export default {
       const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
-    async loadclassRealtimeBackup() {
-      for (var key in localStorage) {
-        if (key.match(/classBackupRealtime/)) {
-          const ls = localStorage.getItem(key);
-          const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
-          const classcode = key.substr("classBackupRealtime_".length);
-          // console.warn(lsObj.length);
-          this.dataLS.Clrms.push(...lsObj);
-          this.writeNoteLS("load localStorage: " + classcode);
-        }
-      }
-    },
     async salvageclassRealtimeBackup() {
       for (var key in localStorage) {
         if (key.match(/classBackupRealtime/)) {
@@ -3736,7 +3671,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscAPIDS(crArr);
+            await this.createMiscAPI(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -3796,7 +3731,7 @@ export default {
     ////////////Fail処理
     async writeFail(dest, arr, ret) {
       const dtl =
-        (this.getStartingUrl == "localhost" ? this.getStartingUrl : "web") +
+        this.getStartingUrl +
         ", auth:" +
         this.authdetail.name +
         ", dest:" +
@@ -3814,19 +3749,6 @@ export default {
         await DataStore.save(new Misc(crArr));
       } catch (err) {
         localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
-      }
-    },
-    listLocalStorage() {
-      const crArr = {
-        type: "localStorageList",
-        name: this.authdetail.username,
-        detail: Object.keys(localStorage),
-      };
-      this.createMiscAPIDS(crArr);
-    },
-    salvageDev() {
-      if (this.sett.alias.name == "Damon Bizzell") {
-        this.salvageclassRealtimeBackup();
       }
     },
     async salvageFail() {
@@ -3925,7 +3847,6 @@ export default {
       // }
     },
     workdateValication() {
-      this.applogSave();
       //日付またぐとリロードする
       if (
         // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
@@ -3996,13 +3917,6 @@ export default {
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     ////////// for dev
-    showLS() {
-      console.warn("this.dataLS.Clrms");
-      console.warn(this.dataLS.Clrms);
-      console.warn(this.dataLS.Clrms[1]);
-      console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms)));
-      console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms))[1]);
-    },
     async dataStoreClear() {
       console.warn("DataStore.c...");
       await DataStore.clear();
@@ -4023,17 +3937,13 @@ export default {
     },
     async fetchTest() {
       try {
-        console.warn("fetchTest()" + this.sett.alias.name);
+        console.warn("fetchTest()");
         const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
         console.warn(fetch);
       } catch (e) {
         console.warn("fetch fail");
         console.warn(e);
       }
-    },
-    fetchCheck() {
-      console.warn("this.dataDS.queryWait:" + this.dataDS.queryWait);
-      console.warn(this.dataDS.Clrms.length === 0);
     },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
@@ -4043,66 +3953,6 @@ export default {
     },
     dummytest() {
       this.sett.dummy1 = "val";
-    },
-    startDScheck: function() {
-      this.stopDScheck();
-      this.dataDS.queryChk = setInterval(() => this.retryDSifYet(), 1000 * 3);
-    },
-    stopDScheck: function() {
-      if (this.dataDS.queryChk) {
-        clearInterval(this.dataDS.queryChk);
-        this.dataDS.queryChk = 0;
-      }
-    },
-    retryDSifYet() {
-      if (this.dataDS.Clrms.length === 0) {
-        this.fetchClrms();
-      }
-      if (this.dataset.Clrms.length === 0 || this.dataDS.Clrms.length > this.dataset.Clrms.length) {
-        this.datasetManage();
-      }
-    },
-    clearAllDataStoreConfirm() {
-      this.$buefy.dialog.confirm({
-        message:
-          "<b>Clear all local cache data</b>" +
-          "<br /><br />Are you sure to delete all the data in your device?" +
-          "<br /><br />* Be sure that you have synced everything to server or somewhere" +
-          "<br /><br />* This does not affect the data on the server",
-        type: "is-danger",
-        hasIcon: true,
-        icon: "exclamation-triangle",
-        iconPack: "fa",
-        size: "is-large",
-        ariaRole: "alertdialog",
-        ariaModal: true,
-        onConfirm: () => {
-          this.clearAllDataStore();
-        },
-      });
-    },
-    async clearAllDataStore() {
-      await DataStore.clear();
-      /////ログ
-      const cr = {
-        type: "DataStoreClear",
-        name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS(),
-      };
-      this.$buefy.toast.open({
-        message: "<span style='font-size:60px'>Please wait...</span>",
-        type: "is-danger",
-        size: "is-large",
-        duration: 5000,
-      });
-      await this.createMiscAPI(cr);
-      await this.createMisc(cr);
-      this.writeFail(
-        "DataStoreClear",
-        this.authdetail.username, //this.sett.today,
-        this.getDateYYYYMMDDhHHMMSS()
-      );
-      this.$router.go();
     },
   },
   filters: {
@@ -4430,18 +4280,10 @@ export default {
     this.setcurrentAcDate();
     this.setInstMonth();
     this.salvageFail();
-    this.salvageDev();
-    this.listLocalStorage();
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
-    await DataStore.start();
-    this.startDScheck();
-    this.fetchClrms(); // DataStore
-    this.DSObserveClrms();
-    this.APIgetClrmsinstBydayAll(); // API
-    this.loadclassRealtimeBackup(); // LocalStorage
-    this.datasetManage();
+    await this.fetchClrms();
     //// InstはAPIで
     this.listInstsDataAPI(); //今のところ全件とる
     // await this.fetchInsts(); //今のところ全件とる
@@ -4453,7 +4295,7 @@ export default {
       const ctime = this.$dayjs().format("YYYY-MM-DD HH:mm:ss ");
       switch (event) {
         case "networkStatus":
-          // .log(`HUB User has a network connection? ${data.active}`);
+          console.warn(`HUB User has a network connection? ${data.active}`);
           // this.$dayjs(this.sett.acdate).format("YYYY-MM-DD H:mm") +
           // .log(`${ctime} HUBlog User has a network connection? ${data.active}`          );
           this.app.network = data.active;
@@ -4464,7 +4306,7 @@ export default {
           this.app.log.nw += ctime + event + ": " + data.active + "\n";
           break;
         case "syncQueriesReady":
-          // .log(ctime + "HUBlog syncQueriesReady");
+          console.warn(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
           this.app.log.nw += ctime + event + ": " + true + "\n";
           //復帰したときクラス外なら更新する
@@ -4472,27 +4314,27 @@ export default {
             this.initallClasses();
           }
           break;
-        // case "storageSubscribed":
-        //   log(`HUB storageSubscribed:${data}`);
-        //   break;
-        // case "subscriptionsEstablished":
-        //   log(`HUB subscriptionsEstablished:${data}`);
-        //   break;
-        // case "syncQueriesStarted":
-        //   log(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
-        //   break;
+        case "storageSubscribed":
+          console.warn(`HUB storageSubscribed:${data}`);
+          break;
+        case "subscriptionsEstablished":
+          console.warn(`HUB subscriptionsEstablished:${data}`);
+          break;
+        case "syncQueriesStarted":
+          console.warn(`HUB syncQueriesStarted:${JSON.stringify(data)}`);
+          break;
         case "modelSynced":
-          // .log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
+          console.warn(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
           this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "outboxStatus": // 変更ごとに出る
-          // log(`HUB outboxStatus:${JSON.stringify(data)}`);
+          console.warn(`HUB outboxStatus:${JSON.stringify(data)}`);
           //  .log(`${ctime} HUBlog outboxStatus:${JSON.stringify(data)}`);
           this.app.syncing = data.isEmpty;
           // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "ready":
-          // .log(ctime + " HUBlog ready");
+          console.warn(ctime + " HUBlog ready");
           this.app.ready = true;
           this.app.log.nw += ctime + event + "\n";
           this.applogSave();
@@ -4509,7 +4351,6 @@ export default {
     this.devHelper();
   },
   async mounted() {
-    this.app.log.nw += this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
     setInterval(
       function() {
         this.workdateValication;
@@ -4518,19 +4359,12 @@ export default {
       }.bind(this),
       1 * 1000 * 60
     );
-    setInterval(
-      function() {
-        this.salvageDev;
-      }.bind(this),
-      1 * 1000 * 60 * 60
-    );
     this.setcurrentAcTime();
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
-    this.stopDScheck();
   },
 };
 </script>
