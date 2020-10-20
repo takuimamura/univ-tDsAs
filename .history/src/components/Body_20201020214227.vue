@@ -2765,8 +2765,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {

@@ -45,9 +45,9 @@
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>
           </ul>
-          ----<b-button @click="TESTarr3()">classroomDS</b-button>
+          ----
           <ul>
-            <li v-for="r in sett.dummyClrm" :key="r.s">
+            <li v-for="r in TESTarr3" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
               <!-- -{{  r.cust01 }} -->
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
@@ -2729,7 +2729,7 @@ export default {
         fval +
         "\n";
       //API
-      // this.updateClrmAPI(row, fname, fval, logging);
+      this.updateClrmAPI(row, fname, fval, logging);
       //DataStore
       const clrmItem = await DataStore.query(Clrm, row.id);
       try {
@@ -2765,8 +2765,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
@@ -4102,18 +4102,13 @@ export default {
       );
       this.$router.go();
     },
-    async TESTarr3() {
-      if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data.sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        this.sett.dummyClrm = [];
-      }
-    },
+  },
+  async TESTarr3() {
+    if (this.selClrm != []) {
+      this.sett.dummyClrm = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+    } else {
+      this.sett.dummyClrm = [];
+    }
   },
   filters: {
     subStr: function(string) {

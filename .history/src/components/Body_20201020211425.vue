@@ -2729,7 +2729,7 @@ export default {
         fval +
         "\n";
       //API
-      // this.updateClrmAPI(row, fname, fval, logging);
+      this.updateClrmAPI(row, fname, fval, logging);
       //DataStore
       const clrmItem = await DataStore.query(Clrm, row.id);
       try {
@@ -2765,8 +2765,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
@@ -4104,12 +4104,9 @@ export default {
     },
     async TESTarr3() {
       if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data.sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
+        this.sett.dummyClrm = await DataStore.query(Clrm, (c) =>
+          c.classcode("eq", this.selClrm.id)
+        );
       } else {
         this.sett.dummyClrm = [];
       }

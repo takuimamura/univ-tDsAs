@@ -33,24 +33,7 @@
           <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
           <ul>
             <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-            </li>
-          </ul>
-          ----
-          <ul>
-            <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-          </ul>
-          ----<b-button @click="TESTarr3()">classroomDS</b-button>
-          <ul>
-            <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+              {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}
             </li>
           </ul>
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
@@ -1051,8 +1034,7 @@
                     <!-- <div class="tile is-ancestor" style="z-index: 1;">
                       <div class="tile is-parent">
                     <div class="tile is-child">-->
-                    <!-- <b-button @click="updateClrmAPI(props.row, cRoom.attnEditTgt, att.modeset[att.mode].title)">present ClrmAPI</b-button>
-                    <b-button @click=" updateClrmAPI(props.row, cRoom.attnEditTgt, att.modeset[att.mode].title2)">absent API</b-button> -->
+                    <!-- <b-button @click="updateClrmTEST(props.row.id)">updateClrmTEST</b-button> -->
                     <b-field v-show="att.mode < 2">
                       <b-radio-button
                         size="is-medium"
@@ -1949,7 +1931,6 @@ export default {
         dummy1: null,
         dummy2: null,
         dummy3: null,
-        dummyClrm: [],
         sw1: false,
         sw2: false,
         activeTab: 0,
@@ -2698,12 +2679,11 @@ export default {
     //     this.writeFail("updateMisc", upd, err);
     //   }
     // },
-    async updateClrmAPI(row, fname, fval, logging) {
+    async updateClrmAPI(row, fname, fval) {
       const upArr = {
         id: row.id,
       };
       upArr[fname] = fval;
-      upArr.cust01 = logging;
       try {
         const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
         return callbk; // returnの先に用途は実はない
@@ -2714,10 +2694,10 @@ export default {
       }
     },
     async updateClrm(row, fname, fval) {
-      const thi = this.classmembers.filter((n) => n.id === row.id);
-      console.warn(row);
-      console.warn(thi);
+      console.warn(row, fname, fval);
       this.classRealtimeBackup();
+      const clrmItem = await DataStore.query(Clrm, row.id);
+      console.warn(clrmItem);
       const logging =
         (row.cust01 === null ? "" : row.cust01) +
         this.getDateYYYYMMDDhHHMMSS() +
@@ -2728,10 +2708,6 @@ export default {
         "," +
         fval +
         "\n";
-      //API
-      // this.updateClrmAPI(row, fname, fval, logging);
-      //DataStore
-      const clrmItem = await DataStore.query(Clrm, row.id);
       try {
         const callbk = await DataStore.save(
           Clrm.copyOf(clrmItem, (updated) => {
@@ -2765,8 +2741,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
@@ -3101,14 +3077,14 @@ export default {
       //   c.classcode("eq", classcode)
       // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
 
-      // const classmem = this.dataset.Clrms.filter(
-      //   (x) => x.classcode === this.selClrm.id && x.enable === true
-      // ).sort(function(a, b) {
-      //   if (a.sortid < b.sortid) return -1;
-      //   if (a.sortid > b.sortid) return 1;
-      //   return 0;
-      // });
-      this.classmembers = this.getClassmembers(this.selClrm.id);
+      const classmem = this.dataset.Clrms.filter(
+        (x) => x.classcode === this.selClrm.id && x.enable === true
+      ).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+      this.classmembers = classmem;
       // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
       //   if (a.sortid < b.sortid) return -1;
       //   if (a.sortid > b.sortid) return 1;
@@ -3118,15 +3094,6 @@ export default {
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
       this.sett.activeTab = 2; //いざタブを切替
-    },
-    getClassmembers(classcode) {
-      return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
-        function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        }
-      );
     },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
@@ -3685,21 +3652,14 @@ export default {
       // クラス出たときに単一でバックアップ
       const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
-        type: "classBackup_" + this.selClrm.id + " " + timestamp,
+        type: "classBackup " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
       await this.createMisc(crArr);
-      // dataset.Clrm
-      const crArrClrm = {
-        type: "classBackupClrm_" + this.selClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(this.classmembers),
-      };
-      await this.createMisc(crArrClrm);
       const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
       const crArrDS = {
-        type: "classBackupDS_" + this.selClrm.id + " " + timestamp,
+        type: "classBackupDS " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(classmem),
       };
@@ -4102,18 +4062,6 @@ export default {
       );
       this.$router.go();
     },
-    async TESTarr3() {
-      if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data.sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        this.sett.dummyClrm = [];
-      }
-    },
   },
   filters: {
     subStr: function(string) {
@@ -4123,58 +4071,44 @@ export default {
   computed: {
     TESTarr0() {
       if (this.dataset.Clrms.length > 0) {
-        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy).sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-
+        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy);
         // this.sett.dummy1 = tgt
       } else {
         return null;
       }
     },
     TESTarr1() {
-      if (this.selClrm != [] && this.dataset.Clrms) {
-        return this.dataset.Clrms.filter((x) => x.classcode === this.selClrm.id).sort(function(
-          a,
-          b
-        ) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
+      if (this.dataset.Clrms) {
+        return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
+          return {
+            c: m.classcode,
+            s: m.studentcode,
+            n: m.studentname,
+            e: m.eval01,
+            up: m._lastChangedAt,
+          };
         });
-        // return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
       } else {
         return null;
       }
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers;
-        // .filter((x) => x.classcode === "X0063")
-        // .map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
+        return this.classmembers
+          .filter((x) => x.classcode === "X0063")
+          .map((m) => {
+            return {
+              c: m.classcode,
+              s: m.studentcode,
+              n: m.studentname,
+              e: m.eval01,
+              up: m._lastChangedAt,
+            };
+          });
       } else {
         return null;
       }
     },
-
     bBoardArticles() {
       if (this.authdetail.name === "dummy instructor") {
         return this.bBoard.collapsesSample;

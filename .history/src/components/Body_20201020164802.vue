@@ -14,238 +14,212 @@
     </template>
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
-      <template v-if="getStartingUrl === 'localhost'">
-        <article class="media">
-          <div class="media-right">
-            <b-switch v-model="sett.devscreen">devscreen : {{ sett.devscreen }}</b-switch>
-          </div>
-        </article>
-        <dev v-if="sett.devscreen">
-          <!-- <b-field>
+      <div v-if="getStartingUrl === 'localhost'">
+        <!-- <b-field>
           <b-modal :active.sync="sett.isModalActive"></b-modal>
           <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
           <b-input v-model="ds.crMisc.name" placeholder="name.."></b-input>
           <b-input v-model="ds.crMisc.detail" placeholder="detail"></b-input>
         </b-field>-->
-          <!-- <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article> -->
-          <!-- <b-input v-model="sett.dummy"></b-input> -->
-          <!-- {{ sett.dummy }} -->
-          <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
-          <ul>
-            <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-            </li>
-          </ul>
-          ----
-          <ul>
-            <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-          </ul>
-          ----<b-button @click="TESTarr3()">classroomDS</b-button>
-          <ul>
-            <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-          </ul>
-          <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
-          <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
-          <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
-          <!-- 上部表示 -->
-          <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-          <b-icon
-            icon="exclamation-triangle"
-            :class="[!app.network ? 'is-network' : 'is-normal']"
-          ></b-icon>
-          <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
-          <!-- app: {{ app }} -->
-          <b-modal :active.sync="sett.isModalActive"></b-modal>
-          <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
-          <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
-          <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-          <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
-          <!-- <b-button @click="fetchCheck()">fetchCheck()</b-button> -->
-          <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
-          <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
-          <b-button @click="loadclassRealtimeBackup()">loadclassRealtimeBackup()</b-button>
+        <!-- <article>misc ret: {{ ds.nMisc.return }} - miscs {{ dataset.Miscs }}</article> -->
+        <!-- <b-input v-model="sett.dummy"></b-input> -->
+        <!-- {{ sett.dummy }} -->
+        <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
+        <ul>
+          <li v-for="r in TESTarr1" :key="r.s">{{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }}</li>
+        </ul>
+        <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
+        <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
+        <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
+        <!-- 上部表示 -->
+        <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
+        <b-icon
+          icon="exclamation-triangle"
+          :class="[!app.network ? 'is-network' : 'is-normal']"
+        ></b-icon>
+        <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
+        <!-- app: {{ app }} -->
+        <b-modal :active.sync="sett.isModalActive"></b-modal>
+        <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
+        <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
+        <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
+        <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
+        <!-- <b-button @click="fetchCheck()">fetchCheck()</b-button> -->
+        <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
+        <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
+        <b-button @click="loadclassRealtimeBackup()">loadclassRealtimeBackup()</b-button>
 
-          <b-button @click="initallClasses">initallClasses</b-button>
-          <b-button @click="dummytest">dummytest</b-button>
-          " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
-            sett.dummy3
-          }}
-          authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
+        <b-button @click="initallClasses">initallClasses</b-button>
+        <b-button @click="dummytest">dummytest</b-button>
+        " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
+          sett.dummy3
+        }}
+        authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
+        <br />
+        <b-field>
+          <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
+          <b-button @click="dateDevAddDate()">Tgt {{ getDateMDddd(sett.ddate) }} change</b-button>
+          <b-numberinput
+            v-model="sett.env.devAddAcDate"
+            controls-position="compact"
+            type="is-warning"
+          ></b-numberinput>
+          <b-button @click="setcurrentAcDate()">AC{{ getDateMDddd(sett.ddate) }} change</b-button>
+          <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
+          <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
+        </b-field>
+        <b-button @click="fetchClrms()">fetchClrms()</b-button>
+        <b-button @click="instClockOut()">instClockOut()</b-button>
+        <b-button @click="instClockIn()">instClockIn</b-button>
+        <b-button @click="sendUserAgent()">sendUserAgent</b-button>
+        <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button>
+        <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
+        <template v-if="sett.devshow">
+          <!--■■■開発用 ローカル限定表示■■■-->
+          sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
           <br />
-          <b-field>
-            <b-numberinput
-              v-model="sett.env.devAddDate"
-              controls-position="compact"
-            ></b-numberinput>
-            <b-button @click="dateDevAddDate()">Tgt {{ getDateMDddd(sett.ddate) }} change</b-button>
-            <b-numberinput
-              v-model="sett.env.devAddAcDate"
-              controls-position="compact"
-              type="is-warning"
-            ></b-numberinput>
-            <b-button @click="setcurrentAcDate()">AC{{ getDateMDddd(sett.ddate) }} change</b-button>
-            <b-checkbox v-model="sett.env.isTestMode"
-              >TestMode:{{ sett.env.isTestMode }}</b-checkbox
-            >
-            <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
-          </b-field>
-          <b-button @click="fetchClrms()">fetchClrms()</b-button>
-          <b-button @click="instClockOut()">instClockOut()</b-button>
-          <b-button @click="instClockIn()">instClockIn</b-button>
-          <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-          <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button>
-          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-          <template v-if="sett.devshow">
-            <!--■■■開発用 ローカル限定表示■■■-->
-            sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
-            <br />
-            dataAPI: {{ dataAPI.Clrms.length }} | dataDS: {{ dataDS.Clrms.length }} | dataLS:
-            {{ dataLS.Clrms.length }} | dataset: {{ dataset.Clrms.length }} |
-            <br />
-            allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
-            <!-- InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{  dataset.Clrms.length}} | ClrmsChk::{{ dataset.ClrmsChk.length }} |-->
-            <br />
-            class: {{ classmembers.length }} | cRoom.showAttenHist {{ cRoom.showAttenHist }} |
-            att.mode {{ att.mode }} |
-            <br />
-            instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
-            <b-switch v-model="sett.devshowMem">member</b-switch>
-            <template v-if="classmembers.length > 0 && sett.devshowMem">{{
-              classmembers[0]
-            }}</template>
-            <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
-            <template v-if="sett.sw1">
-              <div>
-                <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-                <!-- -- {{ isAuthenticated }}          <br /> -->
-                <!-- user: {{ authd }} -->
-                <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-                <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-                <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-              </div>
-              <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-              <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-            </template>
-            <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-            <!-- sett.alias:: {{ sett.alias }} -->
-            <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
-            <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
-            <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-            clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
-            <br />
-            dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
-            <br />
-            <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-            -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
-            <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
-            <br />
-            getTodayJSON: {{ getTodayJSON }} |
-            <br />
-            getTodayJSON今日:
-            {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
-            <br />
-            getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
-            <br />
-            getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
-            <br />
-            getThisWeekHwicJSON[this.selClrm.dayofweek]
-            {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
-            <br />
-            getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
-            <br />
-            isEnteredselClrm: {{ isEnteredselClrm }} |
-            <br />
-            getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
-            <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
-            <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
-            <br />
-            getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
-            <br />
-            monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
-            <br />
-            <!-- {{indiRow}} -->
-            <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
-            <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
-            <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
-          </template>
-        </dev>
-      </template>
-      <!-- 管理用 -->
-      <!-- ABリスト -->
-      <template v-if="cRoom.showABList">
-        <section v-if="cRoom.showABList">
-          <div class="columns">
-            <div class="column is-half" v-show="cRoom.showABListShowA">
-              <div class="has-text-centered f40">Group A</div>
-              <div class="f26" style="margin: 0px 40px;">
-                <table class="table is-fullwidth">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th v-show="cRoom.showABListStudentCode">Code</th>
-                      <th>Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="itemA in classmembersA" :key="itemA.classcount">
-                      <td>{{ itemA.classcount }}</td>
-                      <td v-show="cRoom.showABListStudentCode">({{ itemA.studentcode }})</td>
-                      <td>{{ itemA.studentname }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+          dataAPI: {{ dataAPI.Clrms.length }} | dataDS: {{ dataDS.Clrms.length }} | dataLS:
+          {{ dataLS.Clrms.length }} | dataset: {{ dataset.Clrms.length }} |
+          <br />
+          allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
+          <!-- InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{  dataset.Clrms.length}} | ClrmsChk::{{ dataset.ClrmsChk.length }} |-->
+          <br />
+          class: {{ classmembers.length }} | cRoom.showAttenHist {{ cRoom.showAttenHist }} |
+          att.mode {{ att.mode }} |
+          <br />
+          instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
+          <b-switch v-model="sett.devshowMem">member</b-switch>
+          <template v-if="classmembers.length > 0 && sett.devshowMem">{{
+            classmembers[0]
+          }}</template>
+          <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
+          <template v-if="sett.sw1">
+            <div>
+              <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+              <!-- -- {{ isAuthenticated }}          <br /> -->
+              <!-- user: {{ authd }} -->
+              <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+              <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+              <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
             </div>
-            <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
-              <div class="has-text-centered f40">Group B</div>
-              <div class="f26" style="margin: 0px 40px;">
-                <table class="table is-fullwidth">
-                  <thead>
-                    <tr>
-                      <th>No.</th>
-                      <th v-show="cRoom.showABListStudentCode">Code</th>
-                      <th>Name</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr v-for="itemB in classmembersB" :key="itemB.classcount">
-                      <td>{{ itemB.classcount }}</td>
-                      <td v-show="cRoom.showABListStudentCode">({{ itemB.studentcode }})</td>
-                      <td>{{ itemB.studentname }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+            <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+            <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+          </template>
+          <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+          <!-- sett.alias:: {{ sett.alias }} -->
+          <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+          <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+          <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
+          clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
+          <br />
+          dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
+          <br />
+          <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
+          -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
+          <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
+          <br />
+          getTodayJSON: {{ getTodayJSON }} |
+          <br />
+          getTodayJSON今日:
+          {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+          <br />
+          getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+          <br />
+          getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
+          <br />
+          getThisWeekHwicJSON[this.selClrm.dayofweek]
+          {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
+          <br />
+          getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
+          <br />
+          isEnteredselClrm: {{ isEnteredselClrm }} |
+          <br />
+          getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
+          <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
+          <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
+          <br />
+          getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
+          <br />
+          monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
+          <br />
+          <!-- {{indiRow}} -->
+          <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
+          <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+          <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
+          <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+        </template>
+      </div>
+      <!-- 管理用 -->
+      <section v-if="getStartingUrl === 'localhost'">
+        <article>
+          <!-- <p class="subtitle">学期ごと、開講前の設定作業</p>
+        allClasses: ClssJSON の 全クラス分をMiscに構築。
+          <b-button @click="createMiscClassSummary">createMiscClassSummary</b-button>-->
+        </article>
+      </section>
+      <!-- ABリスト -->
+      <section v-if="cRoom.showABList">
+        <div class="columns">
+          <div class="column is-half" v-show="cRoom.showABListShowA">
+            <div class="has-text-centered f40">Group A</div>
+            <div class="f26" style="margin: 0px 40px;">
+              <table class="table is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th v-show="cRoom.showABListStudentCode">Code</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="itemA in classmembersA" :key="itemA.classcount">
+                    <td>{{ itemA.classcount }}</td>
+                    <td v-show="cRoom.showABListStudentCode">({{ itemA.studentcode }})</td>
+                    <td>{{ itemA.studentname }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
-          <br />
-          <br />
-          <br />
-          <br />
-          <br />
-          <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
-          <b-button
-            icon-left="people-arrows"
-            size="is-medium"
-            @click="cRoom.showABList = !cRoom.showABList"
-            expanded
-            >A / B</b-button
-          >
-          <!-- <b-tooltip label="Visibility change" size="is-large" always>
+          <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
+            <div class="has-text-centered f40">Group B</div>
+            <div class="f26" style="margin: 0px 40px;">
+              <table class="table is-fullwidth">
+                <thead>
+                  <tr>
+                    <th>No.</th>
+                    <th v-show="cRoom.showABListStudentCode">Code</th>
+                    <th>Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="itemB in classmembersB" :key="itemB.classcount">
+                    <td>{{ itemB.classcount }}</td>
+                    <td v-show="cRoom.showABListStudentCode">({{ itemB.studentcode }})</td>
+                    <td>{{ itemB.studentname }}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
+        <b-button
+          icon-left="people-arrows"
+          size="is-medium"
+          @click="cRoom.showABList = !cRoom.showABList"
+          expanded
+          >A / B</b-button
+        >
+        <!-- <b-tooltip label="Visibility change" size="is-large" always>
         <b-switch size="is-large" v-model="cRoom.showABListStudentCode">Student Code</b-switch>
         </b-tooltip>-->
-        </section>
-      </template>
+      </section>
       <!-- 上部表示 -->
       <section v-show="!cRoom.showABList">
         <nav class="level">
@@ -263,6 +237,16 @@
               {{ " " + authdetail.name }}
             </div>
           </div>
+          <div class="level-right">
+            <div class="block">
+              <!-- <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon> -->
+              <!-- icon="exclamation-triangle" -->
+              <!-- <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon> -->
+              <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
+              <!-- <b-icon icon="wifi" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon> -->
+              <!-- <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon> -->
+            </div>
+          </div>
         </nav>
       </section>
       <!-- ここから -->
@@ -276,6 +260,57 @@
         >
           <!-- 管理用画面 !!!!!!管理者!!!!!--------------------------------- 管理用画面-->
           <b-tab-item label="Info" icon="info-circle">
+            <!-- <p class="title">Students</p> -->
+            <!-- <template v-if="!showManagementView">
+              <section class="p40">
+                <b-collapse :open="false" aria-id="contentIdForA11y1">
+                  <button
+                    class="button is-primary"
+                    slot="trigger"
+                    aria-controls="contentIdForA11y1"
+                  >
+                    Students search
+                  </button>
+                  <div class="notification">
+                    <template v-if="!sett.isLoadingClrmManage">
+                      <div class>
+                        <b-table
+                          :data="dataset.ClrmsInstByday"
+                          :columns="lbls.clrmCols"
+                          :paginated="true"
+                          :per-page="15"
+                          :pagination-simple="false"
+                        >
+                          <b-input
+                            slot="searchable"
+                            slot-scope="props"
+                            v-model="props.filters[props.column.field]"
+                            placeholder="Search..."
+                            icon="magnify"
+                            size="is-small"
+                          />
+                        </b-table>
+                      </div>
+                    </template>
+                    <template v-else>
+                      <span class="subtitlehas-text-black">(Loading...)</span>
+                      <b-loading
+                        :is-full-page="false"
+                        :active.sync="sett.isLoadingClrmManage"
+                        :can-cancel="false"
+                      >
+                        <b-icon
+                          pack="fas"
+                          icon="sync-alt"
+                          size="is-large"
+                          custom-class="fa-spin"
+                        ></b-icon>
+                      </b-loading>
+                    </template>
+                  </div>
+                </b-collapse>
+              </section>
+            </template>-->
             <!-- ----- information ----- -->
             <!-- ----- information ----- -->
             <section class="p40">
@@ -1051,8 +1086,7 @@
                     <!-- <div class="tile is-ancestor" style="z-index: 1;">
                       <div class="tile is-parent">
                     <div class="tile is-child">-->
-                    <!-- <b-button @click="updateClrmAPI(props.row, cRoom.attnEditTgt, att.modeset[att.mode].title)">present ClrmAPI</b-button>
-                    <b-button @click=" updateClrmAPI(props.row, cRoom.attnEditTgt, att.modeset[att.mode].title2)">absent API</b-button> -->
+                    <!-- <b-button @click="updateClrmTEST(props.row.id)">updateClrmTEST</b-button> -->
                     <b-field v-show="att.mode < 2">
                       <b-radio-button
                         size="is-medium"
@@ -1911,7 +1945,6 @@ export default {
         chrAPI: "API",
         chrDS: "DataStore",
         noteName: "appNoteTmu",
-        device: "deviceTmu",
       },
       ds: {
         clrms: null,
@@ -1934,7 +1967,6 @@ export default {
       },
       sett: {
         env: EnvJSON,
-        devscreen: false,
         devcheck: false,
         devshow: false,
         devshowMem: false,
@@ -1949,7 +1981,6 @@ export default {
         dummy1: null,
         dummy2: null,
         dummy3: null,
-        dummyClrm: [],
         sw1: false,
         sw2: false,
         activeTab: 0,
@@ -2698,12 +2729,11 @@ export default {
     //     this.writeFail("updateMisc", upd, err);
     //   }
     // },
-    async updateClrmAPI(row, fname, fval, logging) {
+    async updateClrmAPI(row, fname, fval) {
       const upArr = {
         id: row.id,
       };
       upArr[fname] = fval;
-      upArr.cust01 = logging;
       try {
         const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
         return callbk; // returnの先に用途は実はない
@@ -2714,10 +2744,10 @@ export default {
       }
     },
     async updateClrm(row, fname, fval) {
-      const thi = this.classmembers.filter((n) => n.id === row.id);
-      console.warn(row);
-      console.warn(thi);
+      console.warn(row, fname, fval);
       this.classRealtimeBackup();
+      const clrmItem = await DataStore.query(Clrm, row.id);
+      console.warn(clrmItem);
       const logging =
         (row.cust01 === null ? "" : row.cust01) +
         this.getDateYYYYMMDDhHHMMSS() +
@@ -2728,10 +2758,6 @@ export default {
         "," +
         fval +
         "\n";
-      //API
-      // this.updateClrmAPI(row, fname, fval, logging);
-      //DataStore
-      const clrmItem = await DataStore.query(Clrm, row.id);
       try {
         const callbk = await DataStore.save(
           Clrm.copyOf(clrmItem, (updated) => {
@@ -2765,8 +2791,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
@@ -3101,14 +3127,14 @@ export default {
       //   c.classcode("eq", classcode)
       // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
 
-      // const classmem = this.dataset.Clrms.filter(
-      //   (x) => x.classcode === this.selClrm.id && x.enable === true
-      // ).sort(function(a, b) {
-      //   if (a.sortid < b.sortid) return -1;
-      //   if (a.sortid > b.sortid) return 1;
-      //   return 0;
-      // });
-      this.classmembers = this.getClassmembers(this.selClrm.id);
+      const classmem = this.dataset.Clrms.filter(
+        (x) => x.classcode === this.selClrm.id && x.enable === true
+      ).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+      this.classmembers = classmem;
       // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
       //   if (a.sortid < b.sortid) return -1;
       //   if (a.sortid > b.sortid) return 1;
@@ -3118,15 +3144,6 @@ export default {
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
       this.sett.activeTab = 2; //いざタブを切替
-    },
-    getClassmembers(classcode) {
-      return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
-        function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        }
-      );
     },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
@@ -3628,9 +3645,6 @@ export default {
     ///////////////////////////////////// Basics
     ///////////////////////////////////// Basics
     //// 記録系
-    async writeDeviceUser() {
-      localStorage.setItem(this.app.device, this.sett.alias.name);
-    },
     async sendUserAgent() {
       const detObj = {
         app: this.app.version,
@@ -3685,21 +3699,14 @@ export default {
       // クラス出たときに単一でバックアップ
       const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
-        type: "classBackup_" + this.selClrm.id + " " + timestamp,
+        type: "classBackup " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
       await this.createMisc(crArr);
-      // dataset.Clrm
-      const crArrClrm = {
-        type: "classBackupClrm_" + this.selClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(this.classmembers),
-      };
-      await this.createMisc(crArrClrm);
       const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
       const crArrDS = {
-        type: "classBackupDS_" + this.selClrm.id + " " + timestamp,
+        type: "classBackupDS " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(classmem),
       };
@@ -3945,7 +3952,6 @@ export default {
             username: user.username,
             name: user.attributes.name,
           };
-          this.writeDeviceUser();
         })
         .catch(() =>
           // this.authdetail = "created auth error"
@@ -4102,18 +4108,6 @@ export default {
       );
       this.$router.go();
     },
-    async TESTarr3() {
-      if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data.sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        this.sett.dummyClrm = [];
-      }
-    },
   },
   filters: {
     subStr: function(string) {
@@ -4123,58 +4117,44 @@ export default {
   computed: {
     TESTarr0() {
       if (this.dataset.Clrms.length > 0) {
-        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy).sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-
+        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy);
         // this.sett.dummy1 = tgt
       } else {
         return null;
       }
     },
     TESTarr1() {
-      if (this.selClrm != [] && this.dataset.Clrms) {
-        return this.dataset.Clrms.filter((x) => x.classcode === this.selClrm.id).sort(function(
-          a,
-          b
-        ) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
+      if (this.dataset.Clrms) {
+        return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
+          return {
+            c: m.classcode,
+            s: m.studentcode,
+            n: m.studentname,
+            e: m.eval01,
+            up: m._lastChangedAt,
+          };
         });
-        // return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
       } else {
         return null;
       }
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers;
-        // .filter((x) => x.classcode === "X0063")
-        // .map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
+        return this.classmembers
+          .filter((x) => x.classcode === "X0063")
+          .map((m) => {
+            return {
+              c: m.classcode,
+              s: m.studentcode,
+              n: m.studentname,
+              e: m.eval01,
+              up: m._lastChangedAt,
+            };
+          });
       } else {
         return null;
       }
     },
-
     bBoardArticles() {
       if (this.authdetail.name === "dummy instructor") {
         return this.bBoard.collapsesSample;
@@ -4442,8 +4422,8 @@ export default {
           break;
       }
       this.createMisc({
-        type: "Auth: " + event,
-        name: localStorage.getItem(this.app.device),
+        type: "Auth",
+        name: event,
         detail: payload,
       });
     });

@@ -2729,22 +2729,22 @@ export default {
         fval +
         "\n";
       //API
-      // this.updateClrmAPI(row, fname, fval, logging);
+      this.updateClrmAPI(row, fname, fval, logging);
       //DataStore
-      const clrmItem = await DataStore.query(Clrm, row.id);
-      try {
-        const callbk = await DataStore.save(
-          Clrm.copyOf(clrmItem, (updated) => {
-            updated[fname] = fval;
-            updated.cust01 = logging;
-          })
-        );
-        console.warn(callbk);
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
-        return err; // returnの先に用途は実はない
-      }
+      // const clrmItem = await DataStore.query(Clrm, row.id);
+      // try {
+      //   const callbk = await DataStore.save(
+      //     Clrm.copyOf(clrmItem, (updated) => {
+      //       updated[fname] = fval;
+      //       updated.cust01 = logging;
+      //     })
+      //   );
+      //   console.warn(callbk);
+      //   return callbk; // returnの先に用途は実はない
+      // } catch (err) {
+      //   this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
+      //   return err; // returnの先に用途は実はない
+      // }
       // this.enterClassroomUp();
       // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },

@@ -33,23 +33,20 @@
           <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
           <ul>
             <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
+                r.cust01
+              }}
+              -
             </li>
           </ul>
           ----
           <ul>
             <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-          </ul>
-          ----<b-button @click="TESTarr3()">classroomDS</b-button>
-          <ul>
-            <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }}
-              <!-- -{{  r.cust01 }} -->
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
+                r.cust01
+              }}
+              -
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>
           </ul>
@@ -1949,7 +1946,6 @@ export default {
         dummy1: null,
         dummy2: null,
         dummy3: null,
-        dummyClrm: [],
         sw1: false,
         sw2: false,
         activeTab: 0,
@@ -2729,7 +2725,7 @@ export default {
         fval +
         "\n";
       //API
-      // this.updateClrmAPI(row, fname, fval, logging);
+      this.updateClrmAPI(row, fname, fval, logging);
       //DataStore
       const clrmItem = await DataStore.query(Clrm, row.id);
       try {
@@ -2765,8 +2761,8 @@ export default {
         1 * 1000 * 60
       );
     },
-    async updateClrmAttnHW(row) {
-      // async investigateClrmAttnHW(row) {
+    // async updateClrmAttnHW(row) {
+    async investigateClrmAttnHW(row) {
       const clrmItem = await DataStore.query(Clrm, row.id);
       await DataStore.save(
         Clrm.copyOf(clrmItem, (updated) => {
@@ -4102,18 +4098,6 @@ export default {
       );
       this.$router.go();
     },
-    async TESTarr3() {
-      if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data.sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        this.sett.dummyClrm = [];
-      }
-    },
   },
   filters: {
     subStr: function(string) {
@@ -4174,7 +4158,6 @@ export default {
         return null;
       }
     },
-
     bBoardArticles() {
       if (this.authdetail.name === "dummy instructor") {
         return this.bBoard.collapsesSample;
