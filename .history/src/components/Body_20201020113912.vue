@@ -2696,7 +2696,6 @@ export default {
       console.warn(row, fname, fval);
       this.classRealtimeBackup();
       const clrmItem = await DataStore.query(Clrm, row.id);
-      console.warn(clrmItem);
       const logging =
         (row.cust01 === null ? "" : row.cust01) +
         this.getDateYYYYMMDDhHHMMSS() +
@@ -2714,7 +2713,6 @@ export default {
             updated.cust01 = logging;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(
