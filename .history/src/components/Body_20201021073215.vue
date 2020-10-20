@@ -3097,7 +3097,7 @@ export default {
       this.isOpenselClrm = true;
       this.scrollTop();
 
-      // this.discrepancyDetectAndFix(this.selClrm, "select");
+      this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     scrollTop: function() {
       window.scrollTo({
@@ -3187,58 +3187,43 @@ export default {
             objLS[num][attnDest] == null || objLS[num][attnDest] == ""
               ? null
               : objLS[num][attnDest];
-          resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
+          resultStr += attnDest + "[" + atDS + ", " + atCL + ", " + atLS + "|";
 
           if (atLS == null) {
             if (atDS == null && atCL !== null) {
-              this.updateDS(
-                objCL[num].id,
-                attnDest,
-                atCL,
-                this.attnHWEditTgt,
-                objCL[num][this.attnHWEditTgt]
-              );
-              resultAddStr +=
-                num + " " + objCL[num].studentcode + " " + attnDest + " class -> DS\n";
+              updateDS(objCL[num].id, attnDest, atCL, attnHWEditTgt, objCL[num][attnHWEditTgt]);
+              resultAddStr += objCL[num].studentcode + " " + attnDest + " class -> DS\n";
             }
             if (atCL == null && atDS !== null) {
               this.classmembers[num][attnDest] = atCL;
-              this.classmembers[num][this.attnHWEditTgt] = objDS[num][this.attnHWEditTgt];
+              this.classmembers[num][attnHWEditTgt] = objDS[num][attnHWEditTgt];
               resultAddStr +=
-                num + " " + this.classmembers[num].studentcode + " " + attnDest + " DS -> class\n";
+                this.classmembers[num].studentcode + " " + attnDest + " DS -> class\n";
             }
           } else {
             if (atDS == null) {
-              this.updateDS(
-                objCL[num].id,
-                attnDest,
-                atLS,
-                this.attnHWEditTgt,
-                objLS[num][this.attnHWEditTgt]
-              );
-              resultAddStr +=
-                num + " " + objDS[num].studentcode + " " + attnDest + " local -> DS\n";
+              updateDS(objCL[num].id, attnDest, atLS, attnHWEditTgt, objLS[num][attnHWEditTgt]);
+              resultAddStr += objDS[num].studentcode + " " + attnDest + " local -> DS\n";
             }
             if (atCL == null) {
               this.classmembers[num][attnDest] = atLS;
-              this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
-              resultAddStr +=
-                num + " " + objDS[num].studentcode + " " + attnDest + " local -> class\n";
+              this.classmembers[num][attnHWEditTgt] = objLS[num][attnHWEditTgt];
+              resultAddStr += objDS[num].studentcode + " " + attnDest + " local -> class\n";
             }
           }
         }
         resultStr +=
           resultAddStr +
-          JSON.stringify(objDS) +
+          JSON.stringify(classmemDS) +
           "_@#@#" +
           JSON.stringify(this.classmembers) +
           "_@#@#" +
           JSON.stringify(objLS);
         ////// report
         const crArr = {
-          type: "discrepancyDetectAndFix " + selClrm.id,
+          type: "discrepancyDetectAndFix",
           name: this.authdetail.username,
-          detail: desc + " " + attnDest + "\n" + resultStr,
+          detail: desc + "\n" + resultStr,
         };
         this.createMiscAPIDS(crArr);
         console.warn(crArr);
@@ -4014,8 +3999,6 @@ export default {
         if (this.isEnteredselClrm) {
           // バックアップ
           this.classBackup();
-          // fix
-          // this.discrepancyDetectAndFix(this.selClrm, "exit");
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek)) == true

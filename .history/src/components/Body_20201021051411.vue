@@ -78,7 +78,7 @@
           <!-- <b-button @click="fetchCheck()">fetchCheck()</b-button> -->
           <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
           <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
-          <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button>
+          <b-button @click="loadclassRealtimeBackup()">loadclassRealtimeBackup()</b-button>
 
           <b-button @click="initallClasses">initallClasses</b-button>
           <b-button @click="dummytest">dummytest</b-button>
@@ -467,18 +467,13 @@
                   </div>
                   <div class="column is-3">
                     <template v-if="!isClrmLoading">
-                      <template v-if="!this.cRoom.fixAwait">
-                        <b-button
-                          pack="fas"
-                          icon-left="hand-point-right"
-                          size="is-large"
-                          @click="enterClassroom"
-                          >Go</b-button
-                        >
-                      </template>
-                      <template v-else>
-                        <b-button loading size="is-large"></b-button>
-                      </template>
+                      <b-button
+                        pack="fas"
+                        icon-left="hand-point-right"
+                        size="is-large"
+                        @click="enterClassroom"
+                        >Go</b-button
+                      >
                     </template>
                     <template v-else>
                       <span class="subtitle is-3 has-text-black">(Loading...)</span>
@@ -2183,7 +2178,6 @@ export default {
         ],
       },
       cRoom: {
-        fixAwait: false,
         showIndividual: false,
         indiNo: 0,
         indiNoPrev: 0,
@@ -2740,14 +2734,7 @@ export default {
       const thi = this.classmembers.filter((n) => n.id === row.id);
       thi.cust01 = logging;
       this.classRealtimeBackup();
-
-      // for (let num = 0; num < this.classmembers.length; num++) {
-      //   if (this.classmembers[num].id === row.id) {
-      //     console.warn("一歩西に歩く" + num);
-      //     this.classmembers[num].cust02 = "tetest";
-      //   }
-      // }
-      // this.classmembers.filter((n) => n.id === row.id).cust02 = "test";
+      this.classmembers.filter((n) => n.id === row.id).cust02 = "test";
       // console.warn(row);
       // console.warn(thi);
       // this.sett.dummy1 = row.cust01;
@@ -3088,7 +3075,6 @@ export default {
       this.ClrmAppSyncState = false;
       //セット
       this.selClrm = arr;
-      this.classmembers = this.getClassmembers(this.selClrm.id);
       //ここまで編集可能
       // this.selClrm.editableUntil = this.getEditableUntilJSON[
       //   this.selClrm.dayofweek
@@ -3096,8 +3082,6 @@ export default {
       //表示
       this.isOpenselClrm = true;
       this.scrollTop();
-
-      // this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     scrollTop: function() {
       window.scrollTo({
@@ -3135,7 +3119,7 @@ export default {
       //   if (a.sortid > b.sortid) return 1;
       //   return 0;
       // });
-      // this.classmembers = this.getClassmembers(this.selClrm.id);
+      this.classmembers = this.getClassmembers(this.selClrm.id);
       // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
       //   if (a.sortid < b.sortid) return -1;
       //   if (a.sortid > b.sortid) return 1;
@@ -3154,119 +3138,6 @@ export default {
           return 0;
         }
       );
-    },
-    async discrepancyDetectAndFix(selClrm, desc) {
-      this.cRoom.fixAwait = true;
-      // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
-      //localStorageとDSと配列比較して補正
-      // this.classmembers
-      const attnDest = selClrm.attnthisweek;
-      const objDS = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-      const objCL = this.classmembers;
-      const objLS = this.loadclassRealtimeBackup(selClrm.id);
-      let resultStr = "";
-      let resultAddStr = "";
-
-      //localStorageあるときだけ処理★厳密には対象attnがある状態、なおそう
-      if (objLS !== null) {
-        let atDS = "";
-        let atLS = "";
-        let atCL = "";
-        for (let num = 0; num < objCL.length; num++) {
-          //localStorage優先、文字アリ優先、判定は出欠、修正はHW含める
-          //処理前
-          atDS =
-            objDS[num][attnDest] == null || objDS[num][attnDest] == ""
-              ? null
-              : objDS[num][attnDest];
-          atCL =
-            objCL[num][attnDest] == null || objCL[num][attnDest] == ""
-              ? null
-              : objCL[num][attnDest];
-          atLS =
-            objLS[num][attnDest] == null || objLS[num][attnDest] == ""
-              ? null
-              : objLS[num][attnDest];
-          resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
-
-          if (atLS == null) {
-            if (atDS == null && atCL !== null) {
-              this.updateDS(
-                objCL[num].id,
-                attnDest,
-                atCL,
-                this.attnHWEditTgt,
-                objCL[num][this.attnHWEditTgt]
-              );
-              resultAddStr +=
-                num + " " + objCL[num].studentcode + " " + attnDest + " class -> DS\n";
-            }
-            if (atCL == null && atDS !== null) {
-              this.classmembers[num][attnDest] = atCL;
-              this.classmembers[num][this.attnHWEditTgt] = objDS[num][this.attnHWEditTgt];
-              resultAddStr +=
-                num + " " + this.classmembers[num].studentcode + " " + attnDest + " DS -> class\n";
-            }
-          } else {
-            if (atDS == null) {
-              this.updateDS(
-                objCL[num].id,
-                attnDest,
-                atLS,
-                this.attnHWEditTgt,
-                objLS[num][this.attnHWEditTgt]
-              );
-              resultAddStr +=
-                num + " " + objDS[num].studentcode + " " + attnDest + " local -> DS\n";
-            }
-            if (atCL == null) {
-              this.classmembers[num][attnDest] = atLS;
-              this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
-              resultAddStr +=
-                num + " " + objDS[num].studentcode + " " + attnDest + " local -> class\n";
-            }
-          }
-        }
-        resultStr +=
-          resultAddStr +
-          JSON.stringify(objDS) +
-          "_@#@#" +
-          JSON.stringify(this.classmembers) +
-          "_@#@#" +
-          JSON.stringify(objLS);
-        ////// report
-        const crArr = {
-          type: "discrepancyDetectAndFix " + selClrm.id,
-          name: this.authdetail.username,
-          detail: desc + " " + attnDest + "\n" + resultStr,
-        };
-        this.createMiscAPIDS(crArr);
-        console.warn(crArr);
-        // selClrm.attnthisweek
-        const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
-        this.writeNoteLS("discrepancyDetectAndFix " + selClrm.id + " " + desc + " " + sumr);
-      } else {
-        this.writeNoteLS("discrepancyDetectAndFix " + selClrm.id + " " + desc + " no local data");
-
-        console.warn("noLS");
-      }
-      this.cRoom.fixAwait = false;
-    },
-    async updateDS(id, fname, fval, fnameHW, fvalHW) {
-      const clrmItem = await DataStore.query(Clrm, id);
-      try {
-        const callbk = await DataStore.save(
-          Clrm.copyOf(clrmItem, (updated) => {
-            updated[fname] = fval;
-            updated[fnameHW] = fvalHW;
-          })
-        );
-        // console.warn(callbk);
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.writeFail("updateClrmFix", this.authdetail.username, err + JSON.stringify(clrmItem));
-        return err; // returnの先に用途は実はない
-      }
     },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
@@ -3852,7 +3723,7 @@ export default {
       const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
-    loadclassRealtimeBackupAll() {
+    async loadclassRealtimeBackup() {
       for (var key in localStorage) {
         if (key.match(/classBackupRealtime/)) {
           const ls = localStorage.getItem(key);
@@ -3862,18 +3733,6 @@ export default {
           this.dataLS.Clrms.push(...lsObj);
           this.writeNoteLS("load localStorage: " + classcode);
         }
-      }
-    },
-    loadclassRealtimeBackup(classcode) {
-      const ls = localStorage.getItem("classBackupRealtime_" + classcode);
-      if (ls !== null) {
-        // console.warn(classcode + ' exists');
-        const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
-        return lsObj;
-        // console.warn(lsObj.length);
-      } else {
-        // console.warn("noLS");
-        return null;
       }
     },
     async salvageclassRealtimeBackup() {
@@ -4014,8 +3873,6 @@ export default {
         if (this.isEnteredselClrm) {
           // バックアップ
           this.classBackup();
-          // fix
-          // this.discrepancyDetectAndFix(this.selClrm, "exit");
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek)) == true
@@ -4618,7 +4475,7 @@ export default {
     this.fetchClrms(); // DataStore
     this.DSObserveClrms();
     this.APIgetClrmsinstBydayAll(); // API
-    this.loadclassRealtimeBackupAll(); // LocalStorage
+    this.loadclassRealtimeBackup(); // LocalStorage
     this.datasetManage();
     //// InstはAPIで
     this.listInstsDataAPI(); //今のところ全件とる

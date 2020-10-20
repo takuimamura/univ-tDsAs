@@ -3097,7 +3097,7 @@ export default {
       this.isOpenselClrm = true;
       this.scrollTop();
 
-      // this.discrepancyDetectAndFix(this.selClrm, "select");
+      this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     scrollTop: function() {
       window.scrollTo({
@@ -4015,7 +4015,7 @@ export default {
           // バックアップ
           this.classBackup();
           // fix
-          // this.discrepancyDetectAndFix(this.selClrm, "exit");
+          this.discrepancyDetectAndFix(this.selClrm, "exit");
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek)) == true
