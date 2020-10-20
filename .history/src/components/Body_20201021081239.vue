@@ -3241,14 +3241,14 @@ export default {
           detail: desc + " " + attnDest + "\n" + resultStr,
         };
         this.createMiscAPIDS(crArr);
-        // console.warn(crArr);
+        console.warn(crArr);
         // selClrm.attnthisweek
         const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
         this.writeNoteLS("discrepancyDetectAndFix " + selClrm.id + " " + desc + " " + sumr);
       } else {
         this.writeNoteLS("discrepancyDetectAndFix " + selClrm.id + " " + desc + " no local data");
 
-        // console.warn("noLS");
+        console.warn("noLS");
       }
       this.cRoom.fixAwait = false;
     },
@@ -4148,6 +4148,13 @@ export default {
       // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     ////////// for dev
+    // showLS() {
+    //   console.warn("this.dataLS.Clrms");
+    //   console.warn(this.dataLS.Clrms);
+    //   console.warn(this.dataLS.Clrms[1]);
+    //   console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms)));
+    //   console.warn(JSON.parse(JSON.stringify(this.dataLS.Clrms))[1]);
+    // },
     async dataStoreClear() {
       // console.warn("DataStore.c...");
       await DataStore.clear();
