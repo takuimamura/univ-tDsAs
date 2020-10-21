@@ -78,7 +78,6 @@
           <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
           <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
           <b-button @click="spliceTEST()">spliceTEST()</b-button>
-          <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
 
           <b-button @click="initallClasses">initallClasses</b-button>
           <b-button @click="dummytest">dummytest</b-button>
@@ -4276,22 +4275,11 @@ export default {
     //   console.warn(this.dataDS.Clrms.length === 0);
     // },
     spliceTEST() {
-      this.classmembers[1].classcount += "TTT";
-      // this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
-      // this.yourClasses.splice();
-    },
-    spliceTESTKick() {
-      this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
+      this.yourClasses[1].detail += "TTTT";
       // this.yourClasses.splice();
     },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
-        this.cRoom.showDummy = true;
-        this.sett.devcheck = true;
-      }
-      if (this.authdetail.username === "t-imamura") {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }

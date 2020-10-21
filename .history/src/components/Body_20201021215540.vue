@@ -4277,7 +4277,7 @@ export default {
     // },
     spliceTEST() {
       this.classmembers[1].classcount += "TTT";
-      // this.classmembers.splice();
+      this.classmembers.splice();
       // this.yourClasses[1].detail += "TTTT";
       // this.yourClasses.splice();
     },
@@ -4288,10 +4288,6 @@ export default {
     },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
-        this.cRoom.showDummy = true;
-        this.sett.devcheck = true;
-      }
-      if (this.authdetail.username === "t-imamura") {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }

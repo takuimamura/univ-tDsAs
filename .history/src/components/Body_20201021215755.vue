@@ -4291,10 +4291,6 @@ export default {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }
-      if (this.authdetail.username === "t-imamura") {
-        this.cRoom.showDummy = true;
-        this.sett.devcheck = true;
-      }
     },
     dummytest() {
       this.sett.dummy1 = "val";

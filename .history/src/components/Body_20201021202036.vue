@@ -76,9 +76,7 @@
           <!-- <b-button @click="fetchCheck()">fetchCheck()</b-button> -->
           <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
           <!-- <b-button @click="listClrmsData('Mon')">listClrmsData()</b-button> -->
-          <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
-          <b-button @click="spliceTEST()">spliceTEST()</b-button>
-          <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
+          <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button>
 
           <b-button @click="initallClasses">initallClasses</b-button>
           <b-button @click="dummytest">dummytest</b-button>
@@ -2597,24 +2595,23 @@ export default {
     },
     //////////// create Misc
     //////////// create Misc
-    // async testCreateMisc() {
-    //   // dataset.Clrm
-    //   let crArr = {
-    //     type: "test-",
-    //     name: this.authdetail.username,
-    //     detail: "test"
-    //   };
-    //   console.warn("testcreateMiscAPI");
-    //   crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS();
-    //   await this.createMiscAPI(crArr);
-    //   // console.warn("testcreateMisc");
-    //   crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS();
-    //   this.createMisc(crArr);
-    //   // console.warn("testcreateMiscAPIDS");
-    //   crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS();
-    //   this.createMiscAPIDS(crArr);
-    //   // console.warn("test complete");
-    // },
+    testCreateMisc() {
+      // dataset.Clrm
+      let crArr = {
+        name: this.authdetail.username,
+        detail: "test"
+      };
+      // console.warn("testcreateMiscAPI");
+      (crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS()),
+        this.createMiscAPI(crArr);
+      // console.warn("testcreateMisc");
+      (crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS()),
+        this.createMisc(crArr);
+      // console.warn("testcreateMiscAPIDS");
+      (crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS()),
+        this.createMiscAPIDS(crArr);
+      // console.warn("test complete");
+    },
     async createMiscAPI(crArr) {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
@@ -2776,7 +2773,6 @@ export default {
       }
       // 対象のLessonNo.のみをチェック
       let chk = false;
-      ////////DataStore
       // const classmem = this.dataset.Clrms.filter((x) => x.classcode === classcode);
       const classmem = await DataStore.query(Clrm, c =>
         c.classcode("eq", classcode)
@@ -2789,10 +2785,6 @@ export default {
           chk = true;
         }
       }
-      ////////LocalStorage
-
-      ////////ログ
-
       return chk;
     },
     // Force Sync
@@ -3092,7 +3084,7 @@ export default {
       this.isOpenselClrm = true;
       this.scrollTop();
 
-      this.discrepancyDetectAndFix(this.selClrm, "select");
+      // this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     scrollTop: function() {
       window.scrollTo({
@@ -4083,7 +4075,7 @@ export default {
           // バックアップ
           this.classBackup();
           // fix
-          this.discrepancyDetectAndFix(this.selClrm, "exit");
+          // this.discrepancyDetectAndFix(this.selClrm, "exit");
           //欠席と宿題の齟齬チェック
           if (
             (await this.checkAttnHWConsistency(
@@ -4212,27 +4204,11 @@ export default {
         this.sett.actime = this.$dayjs().format("H:mm");
       }, 1000 * 60); //間隔
     },
-    // setTESTcreateMisc() {
-    //   //2. 一定間隔で
-    //   this.sett.actimeIntId10 = setInterval(() => {
-    //     this.testCreateMisc;
-    //   }, 1000 * 150); //間隔
-    // },
-    setTESTcreateMisc: function() {
-      setInterval(() => {
-        // this.testCreateMisc;
-        let crArr = {
-          type: "test-",
-          name: this.authdetail.username,
-          detail: "test"
-        };
-        crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS();
-        this.createMiscAPI(crArr);
-        crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS();
-        this.createMisc(crArr);
-        crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS();
-        this.createMiscAPIDS(crArr);
-      }, 1000 * 60 * 10);
+    setTESTcreateMisc() {
+      //2. 一定間隔で
+      this.sett.actimeIntId10 = setInterval(() => {
+        this.testCreateMisc;
+      }, 1000 * 150); //間隔
     },
     setInstMonth() {
       //勤怠用 createdのとき
@@ -4275,23 +4251,8 @@ export default {
     //   console.warn("this.dataDS.queryWait:" + this.dataDS.queryWait);
     //   console.warn(this.dataDS.Clrms.length === 0);
     // },
-    spliceTEST() {
-      this.classmembers[1].classcount += "TTT";
-      // this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
-      // this.yourClasses.splice();
-    },
-    spliceTESTKick() {
-      this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
-      // this.yourClasses.splice();
-    },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
-        this.cRoom.showDummy = true;
-        this.sett.devcheck = true;
-      }
-      if (this.authdetail.username === "t-imamura") {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }
@@ -4652,17 +4613,14 @@ export default {
     },
     yourClassesShow: function() {
       return this.cRoom.showDummy
-        ? this.yourClasses.filter(x => x.id.indexOf("X") !== -1)
-        : this.yourClasses.filter(x => x.id.indexOf("A") !== -1);
-      // return this.cRoom.showDummy
-      //   ? this.dataset.allClasses.filter(
-      //       x =>
-      //         x.instructor === this.sett.alias.name && x.id.indexOf("X") !== -1
-      //     )
-      //   : this.dataset.allClasses.filter(
-      //       x =>
-      //         x.instructor === this.sett.alias.name && x.id.indexOf("A") !== -1
-      //     );
+        ? this.dataset.allClasses.filter(
+            x =>
+              x.instructor === this.sett.alias.name && x.id.indexOf("X") !== -1
+          )
+        : this.dataset.allClasses.filter(
+            x =>
+              x.instructor === this.sett.alias.name && x.id.indexOf("A") !== -1
+          );
       // return this.dataset.allClasses.filter((x) => x.instructor === this.authdetail.name);
     },
     ////////// Clock In / Out
@@ -4814,7 +4772,10 @@ export default {
     //管理用
     // this.manageSummary();
     this.devHelper();
-    this.setTESTcreateMisc();
+  },
+  async mounted() {
+    this.app.log.nw +=
+      this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
     setInterval(
       function() {
         this.workdateValication;
@@ -4826,23 +4787,17 @@ export default {
     setInterval(
       function() {
         this.salvageDev;
-        // this.testCreateMisc;
       }.bind(this),
-      1 * 1000 * 40
+      1 * 1000 * 60 * 60
     );
-    // 1 * 1000 * 60 * 20
     this.setcurrentAcTime();
-    // this.setTESTcreateMisc()
-  },
-  async mounted() {
-    this.app.log.nw +=
-      this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
+    this.setTESTcreateMisc();
     // setTimeout(this.initAuthValidation, 3000);
     // setTimeout(this.reloadIfUndefinedName, 3000);
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
-    // clearInterval(this.sett.actimeIntId10);
+    clearInterval(this.sett.actimeIntId10);
     this.stopDScheck();
   }
 };
