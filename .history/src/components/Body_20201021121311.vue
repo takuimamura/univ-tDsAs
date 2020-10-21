@@ -16,7 +16,8 @@
       <!-- 検証用 -->
       <template v-if="getStartingUrl === 'localhost'">
         <article class="columns">
-          <div class="column is-four-fifths"></div>
+          <div class="column">
+            </div>
           <div class="column">
             <b-switch v-model="sett.devscreen" size="large"
               >devscreen : {{ sett.devscreen }}</b-switch

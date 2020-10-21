@@ -15,9 +15,8 @@
     <template v-if="this.authdetail.name !== undefined">
       <!-- 検証用 -->
       <template v-if="getStartingUrl === 'localhost'">
-        <article class="columns">
-          <div class="column is-four-fifths"></div>
-          <div class="column">
+        <article class="media">
+          <div class="media-right">
             <b-switch v-model="sett.devscreen" size="large"
               >devscreen : {{ sett.devscreen }}</b-switch
             >
