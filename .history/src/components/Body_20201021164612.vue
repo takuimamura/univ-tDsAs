@@ -1978,10 +1978,10 @@ export default {
         alias: { usename: null, name: "all" },
       },
       authdetail: {
-        username: "unknown",
-        nickname: "unknown",
-        name: "unknown",
-        role: "unknown",
+        username: null,
+        nickname: null,
+        name: null,
+        role: null,
       }, //ログインユーザー情報
       /////
       bBoard: {
@@ -2676,15 +2676,15 @@ export default {
         name: this.authdetail.username,
         detail: "test",
       };
-      // console.warn("testcreateMiscAPI");
+      console.warn("testcreateMiscAPI");
       (crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS()),
         await this.createMiscAPI(crArr);
-      // console.warn("testcreateMisc");
+      console.warn("testcreateMisc");
       (crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS()), await this.createMisc(crArr);
-      // console.warn("testcreateMiscAPIDS");
+      console.warn("testcreateMiscAPIDS");
       (crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS()),
         await this.createMiscAPIDS(crArr);
-      // console.warn("test complete");
+      console.warn("test complete");
     },
     async createMiscAPI(crArr) {
       try {
@@ -2820,9 +2820,9 @@ export default {
                 row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
           })
         );
-        // console.warn(row.studentname + "done");
+        console.warn(row.studentname + "done");
       } else {
-        // console.warn(row.studentname + "canceled");
+        console.warn(row.studentname + "canceled");
       }
     },
     //// check
@@ -4624,11 +4624,11 @@ export default {
     //日付、基本設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
-    await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.setInstMonth();
     this.salvageFail();
     this.salvageDev();
     this.listLocalStorage();
+    await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
     await DataStore.start();

@@ -39,7 +39,7 @@
               {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
                 r.cust01
               }}
-              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              -{{ r.cust02 }}
             </li>
           </ul>
           ----
@@ -111,8 +111,7 @@
           <b-button @click="instClockOut()">instClockOut()</b-button>
           <b-button @click="instClockIn()">instClockIn</b-button>
           <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-          <b-button @click="testCreateMisc()">testCreateMisc</b-button>
-          <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
+          <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button>
           <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <template v-if="sett.devshow">
             <!--■■■開発用 ローカル限定表示■■■-->
@@ -1978,10 +1977,10 @@ export default {
         alias: { usename: null, name: "all" },
       },
       authdetail: {
-        username: "unknown",
-        nickname: "unknown",
-        name: "unknown",
-        role: "unknown",
+        username: null,
+        nickname: null,
+        name: null,
+        role: null,
       }, //ログインユーザー情報
       /////
       bBoard: {
@@ -2670,22 +2669,6 @@ export default {
     },
     //////////// create Misc
     //////////// create Misc
-    async testCreateMisc() {
-      // dataset.Clrm
-      let crArr = {
-        name: this.authdetail.username,
-        detail: "test",
-      };
-      // console.warn("testcreateMiscAPI");
-      (crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS()),
-        await this.createMiscAPI(crArr);
-      // console.warn("testcreateMisc");
-      (crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS()), await this.createMisc(crArr);
-      // console.warn("testcreateMiscAPIDS");
-      (crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS()),
-        await this.createMiscAPIDS(crArr);
-      // console.warn("test complete");
-    },
     async createMiscAPI(crArr) {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
@@ -2811,19 +2794,16 @@ export default {
     },
     async updateClrmAttnHW(row) {
       // async investigateClrmAttnHW(row) {
-      if (row[this.selClrm.attnthisweek] !== null && row[this.selClrm.attnthisweek] !== "") {
-        const clrmItem = await DataStore.query(Clrm, row.id);
-        await DataStore.save(
-          Clrm.copyOf(clrmItem, (updated) => {
-            (updated[this.selClrm.attnthisweek] = row[this.selClrm.attnthisweek]),
-              (updated[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
-                row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
-          })
-        );
-        // console.warn(row.studentname + "done");
-      } else {
-        // console.warn(row.studentname + "canceled");
-      }
+        if(row[this.selClrm.attnthisweek]!==null && row[this.selClrm.attnthisweek]!==''){}
+      const clrmItem = await DataStore.query(Clrm, row.id);
+      await DataStore.save(
+        Clrm.copyOf(clrmItem, (updated) => {
+          (updated[this.selClrm.attnthisweek] = row[this.selClrm.attnthisweek]),
+            (updated[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
+              row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
+        })
+      );
+    }
     },
     //// check
     async checkAttnHWConsistency(classcode, dow) {
@@ -3854,21 +3834,21 @@ export default {
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
-      await this.createMiscAPIDS(crArr);
+      await this.createMisc(crArr);
       // dataset.Clrm
       const crArrClrm = {
         type: "classBackupClrm_" + this.selClrm.id + " " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
-      await this.createMiscAPIDS(crArrClrm);
+      await this.createMisc(crArrClrm);
       const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
       const crArrDS = {
         type: "classBackupDS_" + this.selClrm.id + " " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(classmem),
       };
-      await this.createMiscAPIDS(crArrDS);
+      await this.createMisc(crArrDS);
       this.writeNoteLS("classBackup " + this.selClrm.id, true);
     },
     async classRealtimeBackup() {
@@ -4624,11 +4604,11 @@ export default {
     //日付、基本設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
-    await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.setInstMonth();
     this.salvageFail();
     this.salvageDev();
     this.listLocalStorage();
+    await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.sendUserAgent();
     //// ClrmはDataStoreで
     await DataStore.start();

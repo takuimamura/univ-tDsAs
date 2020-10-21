@@ -2676,15 +2676,15 @@ export default {
         name: this.authdetail.username,
         detail: "test",
       };
-      // console.warn("testcreateMiscAPI");
+      console.warn("testcreateMiscAPI");
       (crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS()),
         await this.createMiscAPI(crArr);
-      // console.warn("testcreateMisc");
+      console.warn("testcreateMisc");
       (crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS()), await this.createMisc(crArr);
-      // console.warn("testcreateMiscAPIDS");
+      console.warn("testcreateMiscAPIDS");
       (crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS()),
         await this.createMiscAPIDS(crArr);
-      // console.warn("test complete");
+      console.warn("test complete");
     },
     async createMiscAPI(crArr) {
       try {
