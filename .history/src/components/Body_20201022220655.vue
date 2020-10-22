@@ -2900,9 +2900,13 @@ export default {
             this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS
         };
         this.createMiscAPIDS(crArr);
-        // console.warn(crArr);
+        console.warn(crArr);
       }
-      // console.warn(classcode, dow, retArr[1]);
+      console.warn(classcode, dow, retArr[1]);
+      if (retArr[1]) {
+        console.warn(retArr + "\n" + retArrDS);
+      }
+      // return retArr[1];
       // HWConsistency
       // if (this.checkIfHwic(tgt.detail) !== false) {
       let tgt = this.yourClasses.find(arr => {
@@ -2931,6 +2935,7 @@ export default {
         }
       } else {
         tgt.detail = tgt.detail.replace("hwic", "");
+        console.warn("reflectClassSummary done OK " + classcode, dow);
       }
       // }
     },

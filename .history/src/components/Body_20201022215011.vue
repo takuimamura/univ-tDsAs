@@ -103,7 +103,6 @@
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <template v-if="sett.devshow">
-            yourClasses | {{yourClasses}}
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
@@ -2900,24 +2899,30 @@ export default {
             this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS
         };
         this.createMiscAPIDS(crArr);
-        // console.warn(crArr);
+        console.warn(crArr);
       }
-      // console.warn(classcode, dow, retArr[1]);
+      console.warn(classcode, dow, retArr[1]);
+      if (retArr[1]) {
+        console.warn(retArr + "\n" + retArrDS);
+      }
+      // return retArr[1];
       // HWConsistency
       // if (this.checkIfHwic(tgt.detail) !== false) {
       let tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
       if (retArr[1] === true) {
-        //// 識別文字列を追加（既にあればそのまま）
-        tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
+        tgt.detail += "hwic";
         if (alrt) {
           //警告
           this.$buefy.dialog.alert({
             title: "Error",
             message:
               "<span class='f30'><b>" +
-              this.getCommonClassName(tgt) +
+              tgt.dayofweek +
+              " P" +
+              tgt.slot +
+              " " + tgt.grade + "(" + tgt.classnum + ")"
               "</b><br />Absent <-> Homework<br />  mismatch exists." +
               "<br /><br />Please check.</span>",
             type: "is-danger",
@@ -2931,9 +2936,17 @@ export default {
         }
       } else {
         tgt.detail = tgt.detail.replace("hwic", "");
+        console.warn("reflectClassSummary done OK " + classcode, dow);
       }
       // }
     },
+    getCommonClassName(tgtClrm){
+      return tgt.dayofweek +
+              " P" +
+              tgt.slot +
+              " " + tgt.grade + "(" + tgt.classnum + ")"
+
+    }
     // Force Sync
     // Force Sync
     // Force Sync
@@ -3604,18 +3617,6 @@ export default {
     },
     ////////// css class
     ////////// css class
-    getCommonClassName(tgtClrm) {
-      return (
-        tgtClrm.dayofweek +
-        " P" +
-        tgtClrm.slot +
-        " " +
-        tgtClrm.grade +
-        "(" +
-        tgtClrm.classnum +
-        ")"
-      );
-    },
     getAttendStatusClass(num) {
       switch (num) {
         case 0:

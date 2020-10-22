@@ -35,25 +35,28 @@
           <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
           <ul>
             <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }}
-              -{{r.homeworkincomplete04 }}
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
+              r.cust01
+              }}
               -{{ r.cust02 }} - {{ r._lastChangedAt }}
             </li>
           </ul>----
           <ul>
             <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }}
-              -{{r.homeworkincomplete04 }}
-              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
+              r.cust01
+              }}
+              -{{ r.cust02 }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>
           </ul>----
           <b-button @click="TESTarr3()">classroomDS</b-button>
           <ul>
             <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }}
-              -{{r.homeworkincomplete04 }}
-              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn02 }} - {{ r.attn03 }} -{{
+              r.cust01
+              }}
+              -{{ r.cust02 }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>
           </ul>
@@ -103,7 +106,6 @@
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <template v-if="sett.devshow">
-            yourClasses | {{yourClasses}}
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
@@ -1041,13 +1043,25 @@
                               <!-- {{ props.row.homeworkincomplete20 + (props.row[attnHWEditTgt] === false ? 1 : 0) }} -->
                               {{ getHWTotal(props.row) }}
                             </span>
+                            <b-checkbox-button
+                              v-model="props.row[attnHWEditTgt]"
+                              type="is-danger"
+                              native-value="true"
+                              @input="
+                                updateClrm(props.row, attnHWEditTgt, props.row[attnHWEditTgt])
+                              "
+                            >
+                              <b-icon icon="book-open"></b-icon>HW
+                            </b-checkbox-button>
                             <span style="color:#fff">-</span>
                             <b-checkbox-button
                               v-model="props.row[attnHWEditTgt]"
                               type="is-danger"
                               rounded
                               :disabled="att.mode === 3 || attnHWEditTgt == 'homeworkincomplete01'"
-                              @input="updateClrm(props.row, attnHWEditTgt, props.row[attnHWEditTgt])"
+                              @input="
+                                updateClrm(props.row, attnHWEditTgt, props.row[attnHWEditTgt])
+                              "
                             >
                               <b-icon icon="book-open"></b-icon>HW
                             </b-checkbox-button>
@@ -2518,144 +2532,6 @@ export default {
     };
   },
   methods: {
-    //////////講師 勤怠
-    //////////講師 勤怠
-    //////////講師 勤怠
-    instClockIn() {
-      this.periodicValidation(); // 日付とユーザー検証
-      this.$buefy.dialog.confirm({
-        message: "Clock In?",
-        size: "is-large",
-        onConfirm: () => {
-          ////////// APIで
-          const add = {
-            date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
-            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
-          };
-          // this.instructor.yourattendances.push(add); //ローカル配列に追加
-          const msgg =
-            "<span style='font-size:40px'>Good morning " +
-            this.authdetail.nickname +
-            "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
-          ////////// APIで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockIn", add, "");
-          // this.instructor.yourhistory.push(add);
-          // this.instructor.peopleNow.push(this.instructor.you.firstName);
-        }
-      });
-    },
-    instClockOut() {
-      this.periodicValidation(); // 日付とユーザー検証
-      //// localStorageからバックアップ引き揚げ
-      this.salvageclassRealtimeBackup();
-      this.salvageNote();
-      this.$buefy.dialog.confirm({
-        message: "Clock Out?",
-        size: "is-large",
-        onConfirm: () => {
-          ////////// APIで
-          const arrr = this.instructor.yourattendances.pop();
-          this.instructor.yourattendances.push(arrr);
-          const arr = {
-            uid: arrr.uid,
-            date: arrr.date,
-            clockin: arrr.clockin
-          };
-          arr.clockout = this.$dayjs().format("HH:mm");
-          const msgg =
-            "<span style='font-size:40px'>Thanks " +
-            this.authdetail.nickname +
-            ", have a good rest.</span>";
-          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
-          // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
-          ////////// APIで
-          ////////// 一応MiscにはDataStoreで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
-          // // People nowから削除
-          // const idx = this.instructor.peopleNow.findIndex(
-          //   v => v == this.instructor.you.firstName
-          // );
-          // this.instructor.peopleNow.splice(idx, 1);
-          // this.instructor.showPeople = false;
-        }
-      });
-    },
-    async listInstsDataAPI() {
-      const InstsData = await API.graphql(
-        graphqlOperation(listInsts, { limit: 5000 })
-        // graphqlOperation(listInsts, { input: uname })
-      );
-      this.instructor.attendances = [];
-      // this.instructor.attendances.push(
-      //   ...this.instructor.attendances,
-      //   ...InstsData.data.listInsts.items
-      // );
-      const allclin = InstsData.data.listInsts.items
-        .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
-      this.instructor.yourattendances = allclin
-        .filter(x => x.uid === this.authdetail.username)
-        .reduce((a, v) => {
-          if (!a.some(e => e.date === v.date)) {
-            a.push(v);
-          }
-          return a;
-        }, [])
-        .sort(function(a, b) {
-          if (a.date < b.date) return -1;
-          if (a.date > b.date) return 1;
-          return 0;
-        });
-      ////2020Autumn clockinとoutの重複除去
-    },
-    async createInstAPI(crArr, msgg, typ, siz) {
-      crArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(createInst, { input: crArr }));
-        this.listInstsDataAPI();
-        this.$buefy.toast.open({
-          message: msgg,
-          type: typ,
-          size: siz,
-          duration: 3000
-        });
-        return true;
-      } catch (err) {
-        this.writeFail("InstCreate", crArr, err);
-        this.$buefy.toast.open({
-          message:
-            "<span style='font-size:60px'>Failed. please try again</span>",
-          type: "is-danger",
-          size: "is-large",
-          duration: 5000
-        });
-        return err;
-      }
-    },
-    async updateInstAPI(upArr) {
-      upArr.uid = this.authdetail.username;
-      try {
-        await API.graphql(graphqlOperation(updateInst, { input: upArr }));
-      } catch (err) {
-        this.writeFail("InstUpdate", upArr, err);
-      }
-    },
-    async createMiscClockInOut(typ, arr, ou) {
-      const cr = {
-        type: typ,
-        name: this.authdetail.username,
-        detail: JSON.stringify({
-          name: this.authdetail.username,
-          date: arr.date,
-          clockin: arr.clockin,
-          clockout: ou
-        })
-      };
-      await DataStore.save(new Misc(cr));
-    },
     // いろいろログ用：this.writeNoteLS("fetch start");
     /////API GraphQL
     /////API GraphQL
@@ -2804,6 +2680,7 @@ export default {
       const thi = this.classmembers.filter(n => n.id === row.id);
       thi.cust01 = logging;
       this.classRealtimeBackup();
+
       //出欠判
       if (this.getAttnDoneStateSelClrm() === true) {
         this.doAttnDone();
@@ -2837,6 +2714,17 @@ export default {
       for await (const rw of this.classmembers) {
         this.updateClrmAttnHW(rw);
       }
+      // クラスのタイムスタンプを反映
+      this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek, true);
+      //おまじない的な
+      setInterval(
+        function() {
+          this.workdateValication;
+          // this.getCurrentTime;
+          // this.reloadIfUndefinedName;
+        }.bind(this),
+        1 * 1000 * 60
+      );
     },
     async updateClrmAttnHW(row) {
       // async investigateClrmAttnHW(row) {
@@ -2858,12 +2746,15 @@ export default {
         // console.warn(row.studentname + "canceled");
       }
     },
-    //// check クラス全員チェック
-    async checkAttnHWConsistency(classcode, dow, alrt = false) {
+    //// check
+    async checkAttnHWConsistency(classcode, dow) {
       ////Lesson 1 is exeption because no hw required yet
       if (this.getThisWeekHwicJSON[dow] == "") {
         return false;
       }
+      // let chk = false;
+      // const classmem = this.dataset.Clrms.filter((x) => x.classcode === classcode);
+      // 対象のLessonNo.のみをチェック
       const atEl = this.getThisWeekAttnJSON[dow];
       const hwEl = this.getThisWeekHwicJSON[dow];
       const chkHW = function(obj, atEl, hwEl) {
@@ -2892,47 +2783,21 @@ export default {
       const retArr = chkHW(classmem, atEl, hwEl);
       ////////ログ
       if (retArr[1] !== retArrDS[1]) {
-        this.writeNoteLS("HWConsistency NG " + classcode + " " + dow);
+        this.writeNoteLS("checkAttnHWConsistency NG " + classcode + " " + dow);
         const crArr = {
-          type: "HWConsistency NG " + classcode + " " + dow,
+          type: "checkAttnHWConsistency NG " + classcode + " " + dow,
           name: this.authdetail.username,
           detail:
             this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS
         };
         this.createMiscAPIDS(crArr);
-        // console.warn(crArr);
+        console.warn(crArr);
       }
-      // console.warn(classcode, dow, retArr[1]);
-      // HWConsistency
-      // if (this.checkIfHwic(tgt.detail) !== false) {
-      let tgt = this.yourClasses.find(arr => {
-        return arr.id == classcode;
-      });
-      if (retArr[1] === true) {
-        //// 識別文字列を追加（既にあればそのまま）
-        tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
-        if (alrt) {
-          //警告
-          this.$buefy.dialog.alert({
-            title: "Error",
-            message:
-              "<span class='f30'><b>" +
-              this.getCommonClassName(tgt) +
-              "</b><br />Absent <-> Homework<br />  mismatch exists." +
-              "<br /><br />Please check.</span>",
-            type: "is-danger",
-            hasIcon: true,
-            icon: "times-circle",
-            iconPack: "fa",
-            size: "is-large",
-            ariaRole: "alertdialog",
-            ariaModal: true
-          });
-        }
-      } else {
-        tgt.detail = tgt.detail.replace("hwic", "");
+      console.warn(classcode, dow, retArr[1]);
+      if (retArr[1]) {
+        console.warn(retArr + "\n" + retArrDS);
       }
-      // }
+      return retArr[1];
     },
     // Force Sync
     // Force Sync
@@ -3007,14 +2872,150 @@ export default {
         m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
         // クラスのタイムスタンプを反映
         this.reflectClassSummary(m.id, m.dayofweek);
-        this.checkAttnHWConsistency(m.id, m.dayofweek);
       });
       this.yourClasses.splice();
       // this.dataset.allClasses = [...allClassesUp];
       //     // const timestamp = this.queryMiscClassSummary(m.classcode);
       // this.dataset.allClasses.splice();
     },
-
+    //////////講師 勤怠
+    //////////講師 勤怠
+    //////////講師 勤怠
+    instClockIn() {
+      this.periodicValidation(); // 日付とユーザー検証
+      this.$buefy.dialog.confirm({
+        message: "Clock In?",
+        size: "is-large",
+        onConfirm: () => {
+          ////////// APIで
+          const add = {
+            date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
+            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
+          };
+          // this.instructor.yourattendances.push(add); //ローカル配列に追加
+          const msgg =
+            "<span style='font-size:40px'>Good morning " +
+            this.authdetail.nickname +
+            "!</span>";
+          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+          ////////// APIで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockIn", add, "");
+          // this.instructor.yourhistory.push(add);
+          // this.instructor.peopleNow.push(this.instructor.you.firstName);
+        }
+      });
+    },
+    instClockOut() {
+      this.periodicValidation(); // 日付とユーザー検証
+      //// localStorageからバックアップ引き揚げ
+      this.salvageclassRealtimeBackup();
+      this.salvageNote();
+      this.$buefy.dialog.confirm({
+        message: "Clock Out?",
+        size: "is-large",
+        onConfirm: () => {
+          ////////// APIで
+          const arrr = this.instructor.yourattendances.pop();
+          this.instructor.yourattendances.push(arrr);
+          const arr = {
+            uid: arrr.uid,
+            date: arrr.date,
+            clockin: arrr.clockin
+          };
+          arr.clockout = this.$dayjs().format("HH:mm");
+          const msgg =
+            "<span style='font-size:40px'>Thanks " +
+            this.authdetail.nickname +
+            ", have a good rest.</span>";
+          this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
+          // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
+          ////////// APIで
+          ////////// 一応MiscにはDataStoreで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
+          // // People nowから削除
+          // const idx = this.instructor.peopleNow.findIndex(
+          //   v => v == this.instructor.you.firstName
+          // );
+          // this.instructor.peopleNow.splice(idx, 1);
+          // this.instructor.showPeople = false;
+        }
+      });
+    },
+    async listInstsDataAPI() {
+      const InstsData = await API.graphql(
+        graphqlOperation(listInsts, { limit: 5000 })
+        // graphqlOperation(listInsts, { input: uname })
+      );
+      this.instructor.attendances = [];
+      // this.instructor.attendances.push(
+      //   ...this.instructor.attendances,
+      //   ...InstsData.data.listInsts.items
+      // );
+      const allclin = InstsData.data.listInsts.items
+        .sort((a, b) => this.arrayCompare(a.date, b.date))
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
+      this.instructor.yourattendances = allclin
+        .filter(x => x.uid === this.authdetail.username)
+        .reduce((a, v) => {
+          if (!a.some(e => e.date === v.date)) {
+            a.push(v);
+          }
+          return a;
+        }, [])
+        .sort(function(a, b) {
+          if (a.date < b.date) return -1;
+          if (a.date > b.date) return 1;
+          return 0;
+        });
+      ////2020Autumn clockinとoutの重複除去
+    },
+    async createInstAPI(crArr, msgg, typ, siz) {
+      crArr.uid = this.authdetail.username;
+      try {
+        await API.graphql(graphqlOperation(createInst, { input: crArr }));
+        this.listInstsDataAPI();
+        this.$buefy.toast.open({
+          message: msgg,
+          type: typ,
+          size: siz,
+          duration: 3000
+        });
+        return true;
+      } catch (err) {
+        this.writeFail("InstCreate", crArr, err);
+        this.$buefy.toast.open({
+          message:
+            "<span style='font-size:60px'>Failed. please try again</span>",
+          type: "is-danger",
+          size: "is-large",
+          duration: 5000
+        });
+        return err;
+      }
+    },
+    async updateInstAPI(upArr) {
+      upArr.uid = this.authdetail.username;
+      try {
+        await API.graphql(graphqlOperation(updateInst, { input: upArr }));
+      } catch (err) {
+        this.writeFail("InstUpdate", upArr, err);
+      }
+    },
+    async createMiscClockInOut(typ, arr, ou) {
+      const cr = {
+        type: typ,
+        name: this.authdetail.username,
+        detail: JSON.stringify({
+          name: this.authdetail.username,
+          date: arr.date,
+          clockin: arr.clockin,
+          clockout: ou
+        })
+      };
+      await DataStore.save(new Misc(cr));
+    },
     //////////クラスルーム
     //////////クラスルーム
     //////////クラスルーム
@@ -3111,12 +3112,17 @@ export default {
     },
     // クラスサマリの更新
     //// クラス毎のサマリDB 更新
-    async reflectClassSummary(classcode, dow) {
-      let tgt = this.yourClasses.find(arr => {
+    async reflectClassSummary(classcode, dow, alrt = false) {
+      console.warn("reflectClassSummary(" + classcode, dow);
+      const tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
       //// 出欠もSyncもHWも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
+      if (
+        tgt.attndone !== true ||
+        tgt.syncdone !== true ||
+        this.checkIfHwic(tgt.detail) !== false
+      ) {
         const retDS = await DataStore.query(Clrm, c =>
           c.classcode("eq", classcode)
         );
@@ -3160,6 +3166,40 @@ export default {
             ? false
             : null;
         tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
+        // HWConsistency
+        if (this.checkIfHwic(tgt.detail) !== false) {
+          if (
+            (await this.checkAttnHWConsistency(tgt.id, tgt.dayofweek)) == true
+          ) {
+            tgt.detail += "hwic";
+            console.warn("reflectClassSummary done HW!! " + classcode, dow);
+            if (alrt) {
+              //警告
+              this.$buefy.dialog.alert({
+                title: "Error",
+                message:
+                  "<span class='f30'><b>" +
+                  classcode +
+                  " " +
+                  tgt.dayofweek +
+                  "P" +
+                  tgt.slot +
+                  "</b><br />Absent <-> Homework<br />  mismatch exists." +
+                  "<br /><br />Please check.</span>",
+                type: "is-danger",
+                hasIcon: true,
+                icon: "times-circle",
+                iconPack: "fa",
+                size: "is-large",
+                ariaRole: "alertdialog",
+                ariaModal: true
+              });
+            }
+          } else {
+            tgt.detail = tgt.detail.replace("hwic", "");
+            console.warn("reflectClassSummary done OK " + classcode, dow);
+          }
+        }
       }
     },
 
@@ -3604,18 +3644,6 @@ export default {
     },
     ////////// css class
     ////////// css class
-    getCommonClassName(tgtClrm) {
-      return (
-        tgtClrm.dayofweek +
-        " P" +
-        tgtClrm.slot +
-        " " +
-        tgtClrm.grade +
-        "(" +
-        tgtClrm.classnum +
-        ")"
-      );
-    },
     getAttendStatusClass(num) {
       switch (num) {
         case 0:
@@ -4114,16 +4142,16 @@ export default {
           this.classBackup();
           // fix
           // this.discrepancyDetectAndFix(this.selClrm, "exit");
+          //欠席と宿題の齟齬チェック
+          // if (
+          //   (await this.checkAttnHWConsistency(
+          //     this.selClrm.id,
+          //     this.selClrm.dayofweek
+          //   )) === true
+          // ) {
+          // }
           //全員、出欠とHWのみ保存
           this.manageupdateClrmAttnHW();
-          // クラスのタイムスタンプを反映(HWチェックはアラートあり)
-          this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
-          //欠席と宿題の齟齬チェック（アラートあり）
-          this.checkAttnHWConsistency(
-            this.selClrm.id,
-            this.selClrm.dayofweek,
-            true
-          );
           this.isEnteredselClrm = false; // 部屋から出たことを記録
         } else {
           // 全クラス
