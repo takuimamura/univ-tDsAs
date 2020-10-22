@@ -78,13 +78,7 @@
           <b-button @click="dataStoreClear()">dataStoreClear()</b-button>
           <b-button @click="dataStoreStart()">dataStoreStart()</b-button>
           <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-          <b-button
-            @click="
-              isClrmNeedAppSync == true;
-              isClrmAppSyncUploading == false;
-            "
-            >isClrmNeedAppSync</b-button
-          >
+          <b-button @click="listLocalStorage()">listLocalStorage()</b-button>
           <!-- <b-button @click="fetchCheck()">fetchCheck()</b-button> -->
           <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
           <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
@@ -121,8 +115,7 @@
           <b-button @click="sendUserAgent()">sendUserAgent</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
-          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch
-          >idle:{{ IdleVueStatus }}
+          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <template v-if="sett.devshow">
             yourClasses | {{ yourClasses }}
             <!--■■■開発用 ローカル限定表示■■■-->
@@ -287,6 +280,7 @@
       </section>
       <!-- ここから -->
       <section>
+        dddddddddddddddddddddddddddd{{ messageStr }}
         <b-tabs
           v-model="sett.activeTab"
           size="is-large"
@@ -451,6 +445,7 @@
                   class="columns"
                   :class="selClrm.dayofweek === dayjsddd ? 'dayofweekToday' : 'dayofweekTodayNot'"
                   style="width:500px;padding:0px 15px;"
+                  v-if="isOpenselClrm"
                 >
                   <div class="content column is-9" style="margin-bottom:0px">
                     <h3>
@@ -1912,7 +1907,7 @@ import IdleVue from "idle-vue";
 const eventsHub = new Vue();
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: 1000 * 60,
+  idleTime: 5000,
 });
 
 // 本文のトリミング
@@ -1927,34 +1922,14 @@ export default {
     // FullCalendar, // make the <FullCalendar> tag available
   },
   onIdle() {
-    this.IdleVueStatus = "ZZZ";
-    // 授業中で当日出欠OKなら再送信、バックアップ送信
-    // this.isEnteredselClrm
-    if (this.selClrm.length > 0) {
-      if (this.classmembers.length > 0) {
-        //何かしら出欠編集してて未送信なら
-        if (
-          this.selClrm.attnModified === true &&
-          this.selClrm.attnDoneReported === false &&
-          this.getAttnDoneStateSelClrm() === true
-        ) {
-          this.salvageclassRealtimeBackup(" attn done");
-          this.selClrm.attnDoneReported = true;
-        }
-        //  クラス毎のサマリDB 更新
-        this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
-      } else {
-        //異常
-        this.writeNoteLS("onIdle selClrm but no classmembers");
-      }
-    }
+    this.messageStr = "ZZZ";
   },
   onActive() {
-    this.IdleVueStatus = "Hello";
+    this.messageStr = "Hello";
   },
   data() {
     return {
-      IdleVueStatus: "",
+      messageStr: "",
       app: {
         ready: false,
         network: false,
@@ -2769,7 +2744,7 @@ export default {
       };
       await DataStore.save(new Misc(cr));
     },
-    // いろいろログ用： this.writeNoteLS("fetch start");
+    // いろいろログ用：this.writeNoteLS("fetch start");
     /////API GraphQL
     /////API GraphQL
     //////////// fetch Clrm
@@ -2787,31 +2762,21 @@ export default {
       this.sett.isLoadingClrmManage = false;
     },
     async APIgetClrmsinstByday(dow) {
-      try {
-        const gql = await API.graphql(
-          graphqlOperation(instByday, {
-            dayofweek: dow,
-            limit: 4000,
-            uid: { eq: this.sett.alias.name },
-          })
-        );
-        const gqld = gql.data.instByday.items.filter((n) => n._deleted !== true);
-        // 既に保持していた場合除去
-        const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
-        this.dataAPI.Clrms = fi;
-        this.dataAPI.Clrms.push(...gqld);
-        this.writeNoteLS("APIgetClrmsinstByday: " + gqld.length);
-        return true;
-      } catch (e) {
-        this.writeNoteLS("APIFail: " + JSON.stringify(e));
-        let crArr = {
-          type: "APIFail" + this.getDateYYYYMMDDhHHMMSS(),
-          name: this.authdetail.username,
-          detail: JSON.stringify(e),
-        };
-        this.createMiscAPI(crArr);
-        return false;
-      }
+      const gql = await API.graphql(
+        graphqlOperation(instByday, {
+          dayofweek: dow,
+          limit: 4000,
+          uid: { eq: this.sett.alias.name },
+        })
+      );
+      // console.warn("gql" + gql.data.instByday.items.length);
+      const gqld = gql.data.instByday.items.filter((n) => n._deleted !== true);
+      // console.warn("gql" + gqld.length);
+      // 既に保持していた場合除去
+      const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
+      this.dataAPI.Clrms = fi;
+      this.dataAPI.Clrms.push(...gqld);
+      this.writeNoteLS("APIgetClrmsinstByday: " + gqld.length);
     },
     async APIlistClrmsData() {
       const gql = await API.graphql(
@@ -2914,8 +2879,8 @@ export default {
       thi.cust02 = logg;
       this.classRealtimeBackup();
       //出欠判
-      if (fname.includes("attn") == true) {
-        this.selClrm.attnModified = true;
+      if (this.getAttnDoneStateSelClrm() === true) {
+        this.doAttnDone();
       }
       //API
       // this.updateClrmAPI(row, fname, fval, logging);
@@ -2929,6 +2894,7 @@ export default {
             updated.cust02 = logg;
           })
         );
+        // console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
@@ -2942,7 +2908,6 @@ export default {
       for await (const rw of this.classmembers) {
         this.updateClrmAttnHW(rw);
       }
-      this.writeNoteLS("manageupdateClrmAttnHW done");
     },
     async updateClrmAttnHW(row) {
       // async investigateClrmAttnHW(row) {
@@ -2955,6 +2920,9 @@ export default {
                 row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
           })
         );
+        // console.warn(row.studentname + "done");
+      } else {
+        // console.warn(row.studentname + "canceled");
       }
     },
     //// check クラス全員チェック
@@ -2995,8 +2963,11 @@ export default {
           detail: this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS,
         };
         this.createMiscAPIDS(crArr);
+        // console.warn(crArr);
       }
+      // console.warn(classcode, dow, retArr[1]);
       // HWConsistency
+      // if (this.checkIfHwic(tgt.detail) !== false) {
       let tgt = this.yourClasses.find((arr) => {
         return arr.id == classcode;
       });
@@ -3030,26 +3001,20 @@ export default {
     // Force Sync
     // Force Sync
     async manageupdateClrmAllAPI() {
-      //別系統で
-      this.salvageclassRealtimeBackup(" forceSync");
-      //APIで
-      let classmem;
-      if (this.classmembers.length == 0) {
-        classmem = this.getClassmembers(this.selClrm.id);
-      } else {
-        classmem = this.classmembers;
-      }
-      // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      // const classmem = this.dataset.Clrms.filter(
+      //   (x) => x.classcode === this.selClrm.id && x.enable === true
+      // );
       this.ClrmAppSyncStateShow = false;
       // let retmsg;
-      this.ClrmAppSyncBegin = this.classmembers.length;
+      this.ClrmAppSyncBegin = classmem.length;
       this.ClrmAppSyncEnd = 0;
       this.ClrmAppSyncState = true;
       for await (const rw of classmem) {
         this.updateClrmAllAPI(rw);
       }
-      // 結果表示(API)
-      this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek, true);
+      // 結果表示
+      this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
     },
     async updateClrmAllAPI(rw) {
       // 出欠と宿題は該当週のみ、評価はすべて
@@ -3128,14 +3093,12 @@ export default {
       // this.selClrm.editableUntil = this.getEditableUntilJSON[
       //   this.selClrm.dayofweek
       // ].lessonnum;
-      this.selClrm.attnModified = false;
-      this.selClrm.attnDoneReported = false;
 
       //表示
       this.isOpenselClrm = true;
       this.scrollTop();
 
-      this.discrepancyDetectAndFix(this.selClrm, "select");
+      // this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     scrollTop: function() {
       window.scrollTo({
@@ -3183,7 +3146,6 @@ export default {
       // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
       this.sett.activeTab = 2; //いざタブを切替
-      this.isOpenselClrm = false;
     },
     getClassmembers(classcode) {
       return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
@@ -3208,30 +3170,20 @@ export default {
     },
     // クラスサマリの更新
     //// クラス毎のサマリDB 更新
-    async reflectClassSummary(classcode, dow, getFromAPI = false) {
+    async reflectClassSummary(classcode, dow) {
       let tgt = this.yourClasses.find((arr) => {
         return arr.id == classcode;
       });
       //// 出欠もSyncもHWも出来ていたら処理しない
       if (tgt.attndone !== true || tgt.syncdone !== true) {
-        let retCloud;
-        if (getFromAPI === true) {
-          const apiRslt = await this.APIgetClrmsinstByday(dow);
-          if (apiRslt === true) {
-            retCloud = this.dataAPI.Clrms.filter((x) => x.classcode == classcode);
-          } else {
-            retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-          }
-        } else {
-          retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-        }
+        const retDS = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
         // // クラスのタイムスタンプを取得
         // const newest = ret.reduce((a, b) => a._lastChangedAt > b._lastChangedAt ? a : b);
         // const oldest = ret.reduce((a, b) => a._lastChangedAt < b._lastChangedAt ? a : b);
         // tgt.newest = newest._lastChangedAt;
         // tgt.oldest = oldest._lastChangedAt;
         //       )
-        const syncedsum = retCloud.reduce((accumulator, current) => {
+        const syncedsum = retDS.reduce((accumulator, current) => {
           return (
             accumulator +
             (this.getIfAttnThisWeekNotNull(
@@ -3257,6 +3209,12 @@ export default {
           ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
         tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
       }
+    },
+
+    doAttnDone() {
+      ///Miscのテーブルチェック新規ORUpdate
+      // console.warn("attndone");
+      this.salvageclassRealtimeBackup();
     },
     async discrepancyDetectAndFix(tgtClrm, desc) {
       this.cRoom.fixAwait = true;
@@ -3362,11 +3320,14 @@ export default {
           detail: desc + " " + attnDest + "\n" + resultStr,
         };
         this.createMiscAPIDS(crArr);
+        // console.warn(crArr);
         // tgtClrm.attnthisweek
         const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
-        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
+        this.writeNoteLS("discrepancyDetectAndFix " + tgtClrm.id + " " + desc + " " + sumr);
       } else {
-        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+        this.writeNoteLS("discrepancyDetectAndFix " + tgtClrm.id + " " + desc + " no local data");
+
+        // console.warn("noLS");
       }
       this.cRoom.fixAwait = false;
     },
@@ -3379,6 +3340,7 @@ export default {
             updated[fnameHW] = fvalHW;
           })
         );
+        // console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail("updateClrmFix", this.authdetail.username, err + JSON.stringify(clrmItem));
@@ -3850,6 +3812,12 @@ export default {
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付
+      // if (attn !== null &&
+      //   this.$dayjs(lastChan).format("H:mm") !== "Invalid Date") {
+      //   // console.warn("getIf " + dow +
+      //   //      " " + this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
+      //   //     "<=" + this.$dayjs(lastChan).format("MMDD H:mm"));
+      // }
       return attn === null
         ? false
         : this.$dayjs(lastChan).format("H:mm") == "Invalid Date"
@@ -3974,6 +3942,7 @@ export default {
           const ls = localStorage.getItem(key);
           const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
           const classcode = key.substr("classBackupRealtime_".length);
+          // console.warn(lsObj.length);
           this.dataLS.Clrms.push(...lsObj);
           this.writeNoteLS("load localStorage: " + classcode);
         }
@@ -3982,17 +3951,20 @@ export default {
     loadclassRealtimeBackup(classcode) {
       const ls = localStorage.getItem("classBackupRealtime_" + classcode);
       if (ls !== null) {
+        // console.warn(classcode + ' exists');
         const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
         return lsObj;
+        // console.warn(lsObj.length);
       } else {
+        // console.warn("noLS");
         return null;
       }
     },
-    async salvageclassRealtimeBackup(addStr = "") {
+    async salvageclassRealtimeBackup() {
       for (var key in localStorage) {
         if (key.match(/classBackupRealtime/)) {
           const crArr = {
-            type: key + addStr,
+            type: key,
             name: this.authdetail.username,
             detail: localStorage.getItem(key),
           };
@@ -4015,7 +3987,7 @@ export default {
     //////// 記録
     writeNoteLS(str, create = false) {
       let parsed = "";
-      if (create != false) {
+      if (create) {
         parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
       } else {
         const noteHist = this.fetchNoteLS();
@@ -4127,15 +4099,14 @@ export default {
           // バックアップ
           this.classBackup();
           // fix
-          this.discrepancyDetectAndFix(this.selClrm, "exit");
+          // this.discrepancyDetectAndFix(this.selClrm, "exit");
           //全員、出欠とHWのみ保存
           this.manageupdateClrmAttnHW();
-          //  クラス毎のサマリDB 更新
+          // クラスのタイムスタンプを反映(HWチェックはアラートあり)
           this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
           //欠席と宿題の齟齬チェック（アラートあり）
           this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek, true);
           this.isEnteredselClrm = false; // 部屋から出たことを記録
-          this.selClrm = [];
         } else {
           // 全クラス
           this.initallClasses();
@@ -4271,10 +4242,14 @@ export default {
     },
     ////////// for dev
     async dataStoreClear() {
+      // console.warn("DataStore.c...");
       await DataStore.clear();
+      // console.warn("DataStore.clear()");
     },
     async dataStoreStart() {
+      // console.warn("DataStore.s...");
       await DataStore.start();
+      // console.warn("DataStore.start()");
     },
     // async dataStoreObserve() {
     //   // console.warn("DataStore.oo...");
@@ -4331,6 +4306,9 @@ export default {
         clearInterval(this.dataDS.queryChk);
         this.dataDS.queryChk = 0;
       }
+    },
+    doTask() {
+      console.warn("task!!!!!");
     },
     retryDSifYet() {
       if (this.dataDS.Clrms.length === 0) {
@@ -4389,7 +4367,6 @@ export default {
           if (a.sortid > b.sortid) return 1;
           return 0;
         });
-        // console.warn(this.sett.dummyClrm);
       } else {
         this.sett.dummyClrm = [];
       }

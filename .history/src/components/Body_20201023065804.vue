@@ -2929,6 +2929,7 @@ export default {
             updated.cust02 = logg;
           })
         );
+        // console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
@@ -2942,7 +2943,6 @@ export default {
       for await (const rw of this.classmembers) {
         this.updateClrmAttnHW(rw);
       }
-      this.writeNoteLS("manageupdateClrmAttnHW done");
     },
     async updateClrmAttnHW(row) {
       // async investigateClrmAttnHW(row) {
@@ -2955,6 +2955,9 @@ export default {
                 row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
           })
         );
+        // console.warn(row.studentname + "done");
+      } else {
+        // console.warn(row.studentname + "canceled");
       }
     },
     //// check クラス全員チェック
@@ -2995,8 +2998,11 @@ export default {
           detail: this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS,
         };
         this.createMiscAPIDS(crArr);
+        // console.warn(crArr);
       }
+      // console.warn(classcode, dow, retArr[1]);
       // HWConsistency
+      // if (this.checkIfHwic(tgt.detail) !== false) {
       let tgt = this.yourClasses.find((arr) => {
         return arr.id == classcode;
       });
@@ -3362,11 +3368,14 @@ export default {
           detail: desc + " " + attnDest + "\n" + resultStr,
         };
         this.createMiscAPIDS(crArr);
+        // console.warn(crArr);
         // tgtClrm.attnthisweek
         const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
         this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
       } else {
         this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+
+        // console.warn("noLS");
       }
       this.cRoom.fixAwait = false;
     },
@@ -3379,6 +3388,7 @@ export default {
             updated[fnameHW] = fvalHW;
           })
         );
+        // console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail("updateClrmFix", this.authdetail.username, err + JSON.stringify(clrmItem));
@@ -3850,6 +3860,12 @@ export default {
     },
     getIfAttnThisWeekNotNull(dow, attn, lastChan) {
       //当日更新なら時刻、違えば日付
+      // if (attn !== null &&
+      //   this.$dayjs(lastChan).format("H:mm") !== "Invalid Date") {
+      //   // console.warn("getIf " + dow +
+      //   //      " " + this.$dayjs(this.getThisWeekDateJSON[dow]).format("MMDD H:mm") +
+      //   //     "<=" + this.$dayjs(lastChan).format("MMDD H:mm"));
+      // }
       return attn === null
         ? false
         : this.$dayjs(lastChan).format("H:mm") == "Invalid Date"
@@ -3974,6 +3990,7 @@ export default {
           const ls = localStorage.getItem(key);
           const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
           const classcode = key.substr("classBackupRealtime_".length);
+          // console.warn(lsObj.length);
           this.dataLS.Clrms.push(...lsObj);
           this.writeNoteLS("load localStorage: " + classcode);
         }
@@ -3982,9 +3999,12 @@ export default {
     loadclassRealtimeBackup(classcode) {
       const ls = localStorage.getItem("classBackupRealtime_" + classcode);
       if (ls !== null) {
+        // console.warn(classcode + ' exists');
         const lsObj = JSON.parse(ls.substr(ls.indexOf("\n", 0) + 1));
         return lsObj;
+        // console.warn(lsObj.length);
       } else {
+        // console.warn("noLS");
         return null;
       }
     },
@@ -4015,7 +4035,7 @@ export default {
     //////// 記録
     writeNoteLS(str, create = false) {
       let parsed = "";
-      if (create != false) {
+      if (create) {
         parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
       } else {
         const noteHist = this.fetchNoteLS();
@@ -4271,10 +4291,14 @@ export default {
     },
     ////////// for dev
     async dataStoreClear() {
+      // console.warn("DataStore.c...");
       await DataStore.clear();
+      // console.warn("DataStore.clear()");
     },
     async dataStoreStart() {
+      // console.warn("DataStore.s...");
       await DataStore.start();
+      // console.warn("DataStore.start()");
     },
     // async dataStoreObserve() {
     //   // console.warn("DataStore.oo...");
@@ -4331,6 +4355,9 @@ export default {
         clearInterval(this.dataDS.queryChk);
         this.dataDS.queryChk = 0;
       }
+    },
+    doTask() {
+      console.warn("task!!!!!");
     },
     retryDSifYet() {
       if (this.dataDS.Clrms.length === 0) {
@@ -4389,7 +4416,7 @@ export default {
           if (a.sortid > b.sortid) return 1;
           return 0;
         });
-        // console.warn(this.sett.dummyClrm);
+        console.warn(this.sett.dummyClrm);
       } else {
         this.sett.dummyClrm = [];
       }
