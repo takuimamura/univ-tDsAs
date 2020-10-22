@@ -1940,7 +1940,6 @@ export default {
         ) {
           this.salvageclassRealtimeBackup(" attn done");
           this.selClrm.attnDoneReported = true;
-          this.selClrm.attnModified = false;
         }
         //  クラス毎のサマリDB 更新
         this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
@@ -1962,7 +1961,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "B_HWChk/HWpadding/Salvage/Discre",
+        rev: "A_HW/Salvage/Discre",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2830,19 +2829,12 @@ export default {
       this.writeNoteLS("DSObserveClrms");
       DataStore.observe(Clrm).subscribe((msg) => {
         if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms(
-            " sbsc:" +
-              msg.element.classcode +
-              " " +
-              msg.element.studentcode +
-              " " +
-              msg.element.cust02
-          );
+          this.fetchClrms();
         }
       });
     },
-    async fetchClrms(str = "") {
-      this.writeNoteLS("fetch start" + str);
+    async fetchClrms() {
+      this.writeNoteLS("fetch start");
       this.dataDS.queryWait = true;
       const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
       this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));

@@ -2830,19 +2830,12 @@ export default {
       this.writeNoteLS("DSObserveClrms");
       DataStore.observe(Clrm).subscribe((msg) => {
         if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms(
-            " sbsc:" +
-              msg.element.classcode +
-              " " +
-              msg.element.studentcode +
-              " " +
-              msg.element.cust02
-          );
+          this.fetchClrms(' sbsc:'+msg.element.classcode+' '+msg.element.studentcode)+' '+msg.element.cust02);
         }
       });
     },
-    async fetchClrms(str = "") {
-      this.writeNoteLS("fetch start" + str);
+    async fetchClrms(str='') {
+      this.writeNoteLS("fetch start"+str);
       this.dataDS.queryWait = true;
       const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
       this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));

@@ -1940,7 +1940,6 @@ export default {
         ) {
           this.salvageclassRealtimeBackup(" attn done");
           this.selClrm.attnDoneReported = true;
-          this.selClrm.attnModified = false;
         }
         //  クラス毎のサマリDB 更新
         this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
@@ -1962,7 +1961,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "B_HWChk/HWpadding/Salvage/Discre",
+        rev: "A_HW/Salvage/Discre",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2830,19 +2829,12 @@ export default {
       this.writeNoteLS("DSObserveClrms");
       DataStore.observe(Clrm).subscribe((msg) => {
         if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms(
-            " sbsc:" +
-              msg.element.classcode +
-              " " +
-              msg.element.studentcode +
-              " " +
-              msg.element.cust02
-          );
+          this.fetchClrms();
         }
       });
     },
-    async fetchClrms(str = "") {
-      this.writeNoteLS("fetch start" + str);
+    async fetchClrms() {
+      this.writeNoteLS("fetch start");
       this.dataDS.queryWait = true;
       const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
       this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));
@@ -3194,13 +3186,21 @@ export default {
       this.isOpenselClrm = false;
     },
     getClassmembers(classcode) {
-      return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
-        function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        }
+      const ret = this.dataset.Clrms.filter(
+        (x) => x.classcode === classcode && x.enable === true
+      ).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+      console.warn(ret);
+      ret.forEach(
+        (m) =>
+          (m.homeworkincomplete04 = m.homeworkincomplete04 == null ? "uu" : m.homeworkincomplete04)
       );
+      console.warn(ret);
+      return ret;
+      //HWのnullをTrueにかえたい
     },
     // 今週分の出欠完了判定
     getAttnDoneStateSelClrm() {
@@ -3423,12 +3423,6 @@ export default {
       this.isEnteredselClrm = true; //状態保持
       this.cRoom.attnEditTgt = this.selClrm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
       this.cRoom.attnEditable = false; //入った時点では編集モードにしない
-
-      //HWのnullをTrueにかえたい
-      this.classmembers.forEach(
-        (m) =>
-          (m[this.attnHWEditTgt] = m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
-      );
     },
     showABListCaptionChange() {
       switch (this.cRoom.showABListCaption) {
