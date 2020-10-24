@@ -174,32 +174,32 @@
           </b-field>
           <ul>
             <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
               r.homeworkincomplete04
               }}
               -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>----classmembers
             <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
               r.homeworkincomplete04
               }}
               -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>----DataStore
             <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
               r.homeworkincomplete04
               }}
               -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>----dataAPI
             <li v-for="r in TESTarr4" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
               r.homeworkincomplete04
               }}
               -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>----dataLS
             <li v-for="r in TESTarr5" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
               r.homeworkincomplete04
               }}
               -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
@@ -2854,11 +2854,8 @@ export default {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        console.warn("err");
-        console.warn(err);
         this.writeFail("updateClrmAPI", upArr, err);
         this.writeFail(
           "updateClrmAPI",
@@ -2899,7 +2896,6 @@ export default {
             updated.cust02 = logg;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(

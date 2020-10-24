@@ -33,6 +33,52 @@
           <!-- <b-input v-model="sett.dummy"></b-input> -->
           <!-- {{ sett.dummy }} -->
           <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
+          <b-numberinput v-model="dev.classCLimit" controls-position="compact" size="is-small"></b-numberinput>
+          <ul>
+            <li v-for="r in TESTarr1" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ r.attn02 }} 3 {{ r.attn03 }} 4 {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+            </li>
+          </ul>----
+          <ul>
+            <li v-for="r in TESTarr2" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ r.attn02 }} 3 {{ r.attn03 }} 4 {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>----
+          <b-button @click="TESTarr3()">classroomDS</b-button>
+          <ul>
+            <li v-for="r in sett.dummyClrm" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ r.attn02 }} 3 {{ r.attn03 }} 4 {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>----
+          <ul>
+            <li v-for="r in TESTarr4" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ r.attn02 }} 3 {{ r.attn03 }} 4 {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>----
+          <ul>
+            <li v-for="r in TESTarr5" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} 2 {{ r.attn02 }} 3 {{ r.attn03 }} 4 {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>----
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
@@ -168,43 +214,6 @@
             <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
             <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
           </template>
-          <b-field>
-            <b-numberinput v-model="dev.classCLimit" controls-position="compact" size="is-small"></b-numberinput>dataset.Clrms
-            <b-button @click="TESTarr3()" size="is-small">classroomDS</b-button>
-          </b-field>
-          <ul>
-            <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----classmembers
-            <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>----DataStore
-            <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----dataAPI
-            <li v-for="r in TESTarr4" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----dataLS
-            <li v-for="r in TESTarr5" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>
-          </ul>
         </div>
       </template>
       <!-- 管理用 -->
@@ -2854,11 +2863,8 @@ export default {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        console.warn("err");
-        console.warn(err);
         this.writeFail("updateClrmAPI", upArr, err);
         this.writeFail(
           "updateClrmAPI",
@@ -2899,7 +2905,6 @@ export default {
             updated.cust02 = logg;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(
@@ -3826,7 +3831,6 @@ export default {
       }
     },
     getAttendSymbol(num) {
-      // console.warn("gettingSymbol");
       switch (num) {
         case 0:
           return "has-background-danger";
@@ -3870,9 +3874,6 @@ export default {
     },
     getDateMDddd(val) {
       return this.$dayjs(val).format("M/D ddd");
-    },
-    getDateMDhmmss(val) {
-      return this.$dayjs(val).format("M/D h:mm:ss");
     },
     getDateYYYYMMDDhHHMMSS() {
       return this.$dayjs().format("YYYY-MM-DD HH:mm:ss");

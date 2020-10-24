@@ -2899,7 +2899,6 @@ export default {
             updated.cust02 = logg;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(

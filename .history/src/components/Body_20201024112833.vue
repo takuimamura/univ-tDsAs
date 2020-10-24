@@ -33,6 +33,33 @@
           <!-- <b-input v-model="sett.dummy"></b-input> -->
           <!-- {{ sett.dummy }} -->
           <b-icon pack="fas" icon="running" size="is-medium" type="is-bluedark" />TESTarr1
+          <ul>
+            <li v-for="r in TESTarr1" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+            </li>
+          </ul>----
+          <ul>
+            <li v-for="r in TESTarr2" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>----
+          <b-button @click="TESTarr3()">classroomDS</b-button>
+          <ul>
+            <li v-for="r in sett.dummyClrm" :key="r.s">
+              {{ r.classcode }} - {{ r.studentname }} - {{ r.attn03 }} - {{ r.attn04 }} -{{
+              r.homeworkincomplete04
+              }}
+              -{{ r.cust02 }} - {{ r._lastChangedAt }}
+              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
+            </li>
+          </ul>
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />TESTarr2
@@ -66,16 +93,11 @@
           authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
           <br />
           <b-field>
-            <b-numberinput
-              v-model="sett.env.devAddDate"
-              controls-position="compact"
-              size="is-small"
-            ></b-numberinput>
+            <b-numberinput v-model="sett.env.devAddDate" controls-position="compact"></b-numberinput>
             <b-button @click="dateDevAddDate()">Tgt {{ getDateMDddd(sett.ddate) }} change</b-button>
             <b-numberinput
               v-model="sett.env.devAddAcDate"
               controls-position="compact"
-              size="is-small"
               type="is-warning"
             ></b-numberinput>
             <b-button @click="setcurrentAcDate()">AC{{ getDateMDddd(sett.ddate) }} change</b-button>
@@ -168,43 +190,6 @@
             <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
             <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
           </template>
-          <b-field>
-            <b-numberinput v-model="dev.classCLimit" controls-position="compact" size="is-small"></b-numberinput>dataset.Clrms
-            <b-button @click="TESTarr3()" size="is-small">classroomDS</b-button>
-          </b-field>
-          <ul>
-            <li v-for="r in TESTarr1" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----classmembers
-            <li v-for="r in TESTarr2" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-              <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>----DataStore
-            <li v-for="r in sett.dummyClrm" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----dataAPI
-            <li v-for="r in TESTarr4" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>----dataLS
-            <li v-for="r in TESTarr5" :key="r.s">
-              {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2 {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4 {{ getAttendSymbol(r.attn04) }} -{{
-              r.homeworkincomplete04
-              }}
-              -{{ r.cust02 }} - {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>
-          </ul>
         </div>
       </template>
       <!-- 管理用 -->
@@ -1918,9 +1903,6 @@ export default {
         success: [],
         fail: []
       },
-      dev: {
-        classCLimit: 3
-      },
       sett: {
         env: EnvJSON,
         devscreen: false,
@@ -2854,11 +2836,8 @@ export default {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        console.warn("err");
-        console.warn(err);
         this.writeFail("updateClrmAPI", upArr, err);
         this.writeFail(
           "updateClrmAPI",
@@ -2899,7 +2878,6 @@ export default {
             updated.cust02 = logg;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(
@@ -3826,7 +3804,6 @@ export default {
       }
     },
     getAttendSymbol(num) {
-      // console.warn("gettingSymbol");
       switch (num) {
         case 0:
           return "has-background-danger";
@@ -3870,9 +3847,6 @@ export default {
     },
     getDateMDddd(val) {
       return this.$dayjs(val).format("M/D ddd");
-    },
-    getDateMDhmmss(val) {
-      return this.$dayjs(val).format("M/D h:mm:ss");
     },
     getDateYYYYMMDDhHHMMSS() {
       return this.$dayjs().format("YYYY-MM-DD HH:mm:ss");
@@ -4463,13 +4437,11 @@ export default {
         const data = await DataStore.query(Clrm, c =>
           c.classcode("eq", this.selClrm.id)
         );
-        this.sett.dummyClrm = data
-          .filter(x => x.classcount <= this.dev.classCLimit)
-          .sort(function(a, b) {
-            if (a.sortid < b.sortid) return -1;
-            if (a.sortid > b.sortid) return 1;
-            return 0;
-          });
+        this.sett.dummyClrm = data.sort(function(a, b) {
+          if (a.sortid < b.sortid) return -1;
+          if (a.sortid > b.sortid) return 1;
+          return 0;
+        });
         // console.warn(this.sett.dummyClrm);
       } else {
         this.sett.dummyClrm = [];
@@ -4500,9 +4472,7 @@ export default {
     TESTarr1() {
       if (this.selClrm != [] && this.dataset.Clrms) {
         return this.dataset.Clrms.filter(
-          x =>
-            x.classcode === this.selClrm.id &&
-            x.classcount <= this.dev.classCLimit
+          x => x.classcode === this.selClrm.id
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -4523,9 +4493,7 @@ export default {
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers.filter(
-          x => x.classcount <= this.dev.classCLimit
-        );
+        return this.classmembers;
         // .filter((x) => x.classcode === "X0063")
         // .map((m) => {
         //   return {
@@ -4540,38 +4508,6 @@ export default {
         return null;
       }
     },
-    TESTarr4() {
-      if (this.selClrm != [] && this.dataAPI.Clrms) {
-        return this.dataAPI.Clrms.filter(
-          x =>
-            x.classcode === this.selClrm.id &&
-            x.classcount <= this.dev.classCLimit
-        ).sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        return null;
-      }
-    },
-    TESTarr5() {
-      if (this.selClrm != [] && this.dataLS.Clrms) {
-        return this.dataLS.Clrms.filter(
-          x =>
-            x.classcode === this.selClrm.id &&
-            x.classcount <= this.dev.classCLimit
-        ).sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-      } else {
-        return null;
-      }
-    },
-
-    // JSON.parse(JSON.stringify(this.dataLS.Clrms))
 
     bBoardArticles() {
       if (this.authdetail.name === "dummy instructor") {

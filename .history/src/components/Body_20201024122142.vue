@@ -2854,11 +2854,8 @@ export default {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        console.warn("err");
-        console.warn(err);
         this.writeFail("updateClrmAPI", upArr, err);
         this.writeFail(
           "updateClrmAPI",
@@ -2899,7 +2896,6 @@ export default {
             updated.cust02 = logg;
           })
         );
-        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(
