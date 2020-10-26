@@ -108,7 +108,8 @@
             >devshow : {{ sett.devshow }}</b-switch
           >
           idle:{{ IdleVueStatus }}
-          <template v-if="sett.devsummary">
+          <template v-if="sett.devshow">
+            yourClasses | {{ yourClasses }}
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
@@ -125,14 +126,13 @@
           </template>
 
           <template v-if="sett.devshow">
-            <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
+            <b-switch v-model="sett.devshowMem">member</b-switch>
             <template v-if="classmembers.length > 0 && sett.devshowMem">{{
               classmembers[0]
             }}</template>
-            <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
+            <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
             <template v-if="sett.sw1">
               <div>
-                yourClasses | {{ yourClasses }}
                 <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
                 <!-- -- {{ isAuthenticated }}          <br /> -->
                 <!-- user: {{ authd }} -->
