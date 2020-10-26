@@ -2860,11 +2860,11 @@ export default {
         const callbk = await API.graphql(
           graphqlOperation(updateClrm, { input: upArr })
         );
-        // console.warn(callbk);
+        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        // console.warn("err");
-        // console.warn(err);
+        console.warn("err");
+        console.warn(err);
         this.writeFail("updateClrmAPI", upArr, err);
         this.writeFail(
           "updateClrmAPI",
@@ -2905,7 +2905,7 @@ export default {
             updated.cust02 = logg;
           })
         );
-        // console.warn(callbk);
+        console.warn(callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         this.writeFail(
@@ -3832,6 +3832,7 @@ export default {
       }
     },
     getAttendSymbol(num) {
+      // console.warn("gettingSymbol");
       switch (num) {
         case 0:
           return "has-background-danger";
@@ -4381,9 +4382,26 @@ export default {
       await DataStore.start();
     },
     // async dataStoreObserve() {
+    //   // console.warn("DataStore.oo...");
     //   DataStore.observe(Clrm).subscribe((msg) => {
+    //     // console.warn(msg);
     //   });
     //   await this.fetchClrms();
+    //   // console.warn("DataStore.observe()");
+    // },
+    // async fetchTest() {
+    //   try {
+    //     // console.warn("fetchTest()" + this.sett.alias.name);
+    //     const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
+    //     // console.warn(fetch);
+    //   } catch (e) {
+    //     // console.warn("fetch fail");
+    //     // console.warn(e);
+    //   }
+    // },
+    // fetchCheck() {
+    //   console.warn("this.dataDS.queryWait:" + this.dataDS.queryWait);
+    //   console.warn(this.dataDS.Clrms.length === 0);
     // },
     spliceTEST() {
       this.classmembers[1].classcount += "TTT";
@@ -4396,9 +4414,9 @@ export default {
       // this.yourClasses[1].detail += "TTTT";
       this.yourClasses.splice();
     },
-    // dosomething() {
-    //   console.warn(this.$route.query.id); // URLスキーマ
-    // },
+    dosomething() {
+      console.warn(this.$route.query.id);
+    },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
         this.cRoom.showDummy = true;
