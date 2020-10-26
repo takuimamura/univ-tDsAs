@@ -53,7 +53,7 @@
           <b-button size="is-small" @click="dataStoreClear()">dataStoreClear()</b-button>
           <b-button size="is-small" @click="dataStoreStart()">dataStoreStart()</b-button>
           <!-- <b-button @click="dataStoreObserve()">dataStoreObserve()</b-button> -->
-          <b-button size="is-small" @click="selcchk()">test()</b-button>
+          <b-button size="is-small" @click="dosomething()">test()</b-button>
           <b-button
             size="is-small"
             @click="
@@ -101,7 +101,6 @@
           <b-button @click="instClockOut()">instClockOut()</b-button>
           <b-button @click="instClockIn()">instClockIn</b-button>
           <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-          <b-button @click="classBackupTEST()">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
@@ -1997,7 +1996,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "D_getclassBackupAll",
+        rev: "C_SalvageLeann",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2680,7 +2679,6 @@ export default {
     //////////講師 勤怠
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
-      this.classBackupALLTypesAllClasses(); //全バックアップ吸い上げ
       this.$buefy.dialog.confirm({
         message: "Clock In?",
         size: "is-large",
@@ -2990,29 +2988,42 @@ export default {
       // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },
     //Schedule画面切替時に作動。classmembers全員、本日の出欠とHWのみ全てUpload
-    // async manageupdateClrmAttnHW() {
-    //   for await (const rw of this.classmembers) {
-    //     this.updateClrmAttnHW(rw);
-    //   }
-    //   this.writeNoteLS("manageupdateClrmAttnHW done");
-    // },
-    // async updateClrmAttnHW(row) {
-    //   console.warn(this.selClrm);
-    //   // async investigateClrmAttnHW(row) {
-    //   if (this.selClrm.length !== 0) {
-    //     console.warn(this.selClrm.length);
-    //     if (row[this.selClrm.attnthisweek] !== null && row[this.selClrm.attnthisweek] !== "") {
-    //       const clrmItem = await DataStore.query(Clrm, row.id);
-    //       await DataStore.save(
-    //         Clrm.copyOf(clrmItem, (updated) => {
-    //           (updated[this.selClrm.attnthisweek] = row[this.selClrm.attnthisweek]),
-    //             (updated[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
-    //               row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
-    //         })
-    //       );
-    //     }
-    //   }
-    // },
+    async manageupdateClrmAttnHW() {
+      for await (const rw of this.classmembers) {
+        this.updateClrmAttnHW(rw);
+      }
+      this.writeNoteLS("manageupdateClrmAttnHW done");
+    },
+    async updateClrmAttnHW(row) {
+      // async investigateClrmAttnHW(row) {
+      if (row[this.selClrm.attnthisweek] !== null && row[this.selClrm.attnthisweek] !== "") {
+        console.warn(
+          "yes:" +
+            row.studentname +
+            " " +
+            this.selClrm.attnthisweek +
+            " " +
+            row[this.selClrm.attnthisweek]
+        );
+        const clrmItem = await DataStore.query(Clrm, row.id);
+        await DataStore.save(
+          Clrm.copyOf(clrmItem, (updated) => {
+            (updated[this.selClrm.attnthisweek] = row[this.selClrm.attnthisweek]),
+              (updated[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
+                row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
+          })
+        );
+      } else {
+        console.warn(
+          "no:" +
+            row.studentname +
+            " " +
+            this.selClrm.attnthisweek +
+            " " +
+            row[this.selClrm.attnthisweek]
+        );
+      }
+    },
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet
@@ -4002,72 +4013,34 @@ export default {
       }
     },
     //////// クラスバックアップ
-    async classBackup(sClrm) {
+    async classBackup() {
       // クラス出たときに単一でバックアップ
       const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
-        type: "classBackupPoint_" + sClrm.id + " " + timestamp,
+        type: "classBackup_" + this.selClrm.id + " " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(this.classmembers),
       };
       await this.createMiscAPIDS(crArr);
       // dataset.Clrm
       const crArrClrm = {
-        type: "classBackupPointClrm_" + sClrm.id + " " + timestamp,
+        type: "classBackupClrm_" + this.selClrm.id + " " + timestamp,
         name: this.authdetail.username,
-        detail: JSON.stringify(this.getClassmembers(sClrm.id)),
+        detail: JSON.stringify(this.classmembers),
       };
       await this.createMiscAPIDS(crArrClrm);
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
+      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
       const crArrDS = {
-        type: "classBackupPointDS_" + sClrm.id + " " + timestamp,
+        type: "classBackupDS_" + this.selClrm.id + " " + timestamp,
         name: this.authdetail.username,
         detail: JSON.stringify(classmem),
       };
       await this.createMiscAPIDS(crArrDS);
-      this.writeNoteLS("classBackup " + sClrm.id, true);
-    },
-    //////// クラスバックアップ
-    async classBackupALLTypesAllClasses() {
-      this.yourClasses
-        .filter((x) => x.id.indexOf("X") !== -1)
-        .forEach((m) => this.classBackupALLTypes(m));
-      // re
-    },
-    //////// クラスバックアップ
-    async classBackupALLTypes(sClrm) {
-      // クラス出たときに単一でバックアップ
-      const classobj = await this.classmembers;
-      const clrmobj = await this.getClassmembers(sClrm.id);
-      const obj = await this.loadclassRealtimeBackup(sClrm.id);
-      const LSobj = obj === null ? {} : obj;
-      let DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
-      DSobj.sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      const header = [{ classcode: "classmembers" }];
-      const allobj = header.concat(
-        classobj,
-        { classcode: "clrm" },
-        clrmobj,
-        { classcode: "localStorage" },
-        LSobj,
-        { classcode: "DataStore" },
-        DSobj
-      );
-      const timestamp = this.getDateYYYYMMDDhHHMMSS();
-      const crArr = {
-        type: "classBackupALL_" + sClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(allobj),
-      };
-      await this.createMiscAPIDS(crArr);
+      this.writeNoteLS("classBackup " + this.selClrm.id, true);
     },
     async classRealtimeBackup() {
-      // 入力の都度バックアップ ※入力時しか呼び出さない
-      const type = "classBackupAct_" + this.selClrm.id;
+      // 入力の都度バックアップ
+      const type = "classBackupRealtime_" + this.selClrm.id;
       const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
@@ -4255,17 +4228,16 @@ export default {
       if (this.sett.activeTab !== 2) {
         // 部屋から出たのか
         if (this.isEnteredselClrm) {
-          const sClrm = this.selClrm;
           // バックアップ
-          this.classBackup(sClrm);
+          this.classBackup();
           // fix
-          this.discrepancyDetectAndFix(sClrm, "exit");
+          this.discrepancyDetectAndFix(this.selClrm, "exit");
           //全員、出欠とHWのみ保存
-          // this.manageupdateClrmAttnHW();
+          this.manageupdateClrmAttnHW();
           //  クラス毎のサマリDB 更新
-          this.reflectClassSummary(sClrm.id, sClrm.dayofweek);
+          this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
           //欠席と宿題の齟齬チェック（アラートあり）
-          this.checkAttnHWConsistency(sClrm.id, sClrm.dayofweek, true);
+          this.checkAttnHWConsistency(this.selClrm.id, this.selClrm.dayofweek, true);
           this.isEnteredselClrm = false; // 部屋から出たことを記録
           this.selClrm = [];
         } else {

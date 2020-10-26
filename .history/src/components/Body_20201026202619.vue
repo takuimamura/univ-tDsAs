@@ -101,7 +101,7 @@
           <b-button @click="instClockOut()">instClockOut()</b-button>
           <b-button @click="instClockIn()">instClockIn</b-button>
           <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-          <b-button @click="classBackupTEST()">classBackupTEST</b-button>
+          <b-button @click="classBackupTEST(selClrm)">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
@@ -1997,7 +1997,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "D_getclassBackupAll",
+        rev: "C_SalvageLeann",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2680,7 +2680,6 @@ export default {
     //////////講師 勤怠
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
-      this.classBackupALLTypesAllClasses(); //全バックアップ吸い上げ
       this.$buefy.dialog.confirm({
         message: "Clock In?",
         size: "is-large",
@@ -4028,35 +4027,13 @@ export default {
       this.writeNoteLS("classBackup " + sClrm.id, true);
     },
     //////// クラスバックアップ
-    async classBackupALLTypesAllClasses() {
-      this.yourClasses
-        .filter((x) => x.id.indexOf("X") !== -1)
-        .forEach((m) => this.classBackupALLTypes(m));
-      // re
-    },
-    //////// クラスバックアップ
-    async classBackupALLTypes(sClrm) {
+    async classBackupTEST(sClrm) {
       // クラス出たときに単一でバックアップ
-      const classobj = await this.classmembers;
-      const clrmobj = await this.getClassmembers(sClrm.id);
-      const obj = await this.loadclassRealtimeBackup(sClrm.id);
-      const LSobj = obj === null ? {} : obj;
-      let DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
-      DSobj.sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      const header = [{ classcode: "classmembers" }];
-      const allobj = header.concat(
-        classobj,
-        { classcode: "clrm" },
-        clrmobj,
-        { classcode: "localStorage" },
-        LSobj,
-        { classcode: "DataStore" },
-        DSobj
-      );
+      const classobj = this.classmembers;
+      const clrmobj = this.getClassmembers(sClrm.id);
+      const DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
+      const allobj = classobj.concat(clrmobj, DSobj);
+      console.warn(allobj);
       const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
         type: "classBackupALL_" + sClrm.id + " " + timestamp,

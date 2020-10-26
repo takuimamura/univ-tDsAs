@@ -1997,7 +1997,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "D_getclassBackupAll",
+        rev: "C_SalvageLeann",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2680,7 +2680,6 @@ export default {
     //////////講師 勤怠
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
-      this.classBackupALLTypesAllClasses(); //全バックアップ吸い上げ
       this.$buefy.dialog.confirm({
         message: "Clock In?",
         size: "is-large",
@@ -4028,14 +4027,14 @@ export default {
       this.writeNoteLS("classBackup " + sClrm.id, true);
     },
     //////// クラスバックアップ
-    async classBackupALLTypesAllClasses() {
-      this.yourClasses
-        .filter((x) => x.id.indexOf("X") !== -1)
-        .forEach((m) => this.classBackupALLTypes(m));
+    async classBackupTEST() {
+      const list = this.yourClasses.filter((x) => x.id.indexOf("A") !== -1);
+      console.warn(list.length)
+      list.forEach((m) => console.warn(m.id));
       // re
     },
     //////// クラスバックアップ
-    async classBackupALLTypes(sClrm) {
+    async classBackupxTEST(sClrm) {
       // クラス出たときに単一でバックアップ
       const classobj = await this.classmembers;
       const clrmobj = await this.getClassmembers(sClrm.id);

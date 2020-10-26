@@ -1997,7 +1997,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "1.11",
-        rev: "D_getclassBackupAll",
+        rev: "C_SalvageLeann",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
