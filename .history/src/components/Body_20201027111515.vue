@@ -2702,9 +2702,8 @@ export default {
         },
       });
     },
-    async instClockOut() {
+    instClockOut() {
       this.periodicValidation(); // 日付とユーザー検証
-      await this.listInstsDataAPI(); // 修正があった場合のたに最新にする
       //// localStorageからバックアップ引き揚げ
       this.salvageclassRealtimeBackup();
       this.salvageNote();
@@ -2720,13 +2719,6 @@ export default {
             date: arrr.date,
             clockin: arrr.clockin,
           };
-          // ClockOut前に修正があった場合それも拾う
-          if (arrr.clockincorrect !== null) {
-            arr.clockincorrect = arrr.clockincorrect;
-          }
-          if (arrr.detail !== null) {
-            arr.detail = arrr.detail;
-          }
           arr.clockout = this.$dayjs().format("HH:mm");
           const msgg =
             "<span style='font-size:40px'>Thanks " +
