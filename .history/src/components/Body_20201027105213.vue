@@ -2767,6 +2767,9 @@ export default {
           return 0;
         });
       ////2020Autumn clockinとoutの重複除去
+      const fil = allclin.filter((x) => x.uid === this.authdetail.username);
+      this.sett.dummy2 = fil;
+      this.sett.dummy3 = this.instructor.yourattendances;
     },
     async createInstAPI(crArr, msgg, typ, siz) {
       crArr.uid = this.authdetail.username;

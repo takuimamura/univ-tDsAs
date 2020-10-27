@@ -360,6 +360,19 @@
             <!-- ----- Clock in / Clock out ----- -->
             <section class="p40">
               <p class="title">Attendance</p>
+
+              <ul>
+                <li v-for="r in sett.dummy2" :key="r.s">
+                  {{ r.date }} - {{ r.clockin }} - {{ r.clockincorrect }} - {{ r.clockout }} -
+                  {{ r.clockoutcorrect }} - {{ r.detail }} - {{ r.updatedAt }}
+                </li>
+                ----xxx
+                <li v-for="r in sett.dummy3" :key="r.s">
+                  {{ r.date }} - {{ r.clockin }} - {{ r.clockincorrect }} - {{ r.clockout }} -
+                  {{ r.clockoutcorrect }} - {{ r.detail }} - {{ r.updatedAt }}
+                </li>
+              </ul>
+
               <b-collapse
                 class="card"
                 animation="slide"
@@ -2750,9 +2763,9 @@ export default {
       //   ...InstsData.data.listInsts.items
       // );
       const allclin = InstsData.data.listInsts.items
-        .sort((a, b) => this.arrayCompare(a.updatedAt, b.updatedAt))
         .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
+        .sort((a, b) => this.arrayCompare(a.detail, b.detail)); //自分の勤怠
       this.instructor.yourattendances = allclin
         .filter((x) => x.uid === this.authdetail.username)
         .reduce((a, v) => {
@@ -2767,6 +2780,9 @@ export default {
           return 0;
         });
       ////2020Autumn clockinとoutの重複除去
+      const fil = allclin.filter((x) => x.uid === this.authdetail.username);
+      this.sett.dummy2 = fil;
+      this.sett.dummy3 = this.instructor.yourattendances;
     },
     async createInstAPI(crArr, msgg, typ, siz) {
       crArr.uid = this.authdetail.username;

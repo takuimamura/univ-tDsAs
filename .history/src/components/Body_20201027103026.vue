@@ -2750,9 +2750,8 @@ export default {
       //   ...InstsData.data.listInsts.items
       // );
       const allclin = InstsData.data.listInsts.items
-        .sort((a, b) => this.arrayCompare(a.updatedAt, b.updatedAt))
         .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
       this.instructor.yourattendances = allclin
         .filter((x) => x.uid === this.authdetail.username)
         .reduce((a, v) => {
@@ -2767,6 +2766,8 @@ export default {
           return 0;
         });
       ////2020Autumn clockinとoutの重複除去
+      console.warn(allclin.filter((x) => x.uid === this.authdetail.username));
+      console.warn(this.instructor.yourattendances);
     },
     async createInstAPI(crArr, msgg, typ, siz) {
       crArr.uid = this.authdetail.username;
