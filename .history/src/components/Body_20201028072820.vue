@@ -29,8 +29,6 @@
         <div v-if="sett.devscreen">
           <b-switch size="is-small" v-model="sett.priorityLS">priorityLS : {{ sett.priorityLS }}</b-switch>
           <b-button size="is-small" @click="datasetManage()">datasetManage()</b-button>
-          <!-- <b-button size="is-small" @click="()" size="is-small"></b-button> -->
-          <!-- <b-switch size="is-small" v-model=""> : {{  }}</b-switch> -->
 
           <!-- <b-field>
           <b-modal :active.sync="sett.isModalActive"></b-modal>
@@ -323,6 +321,8 @@
             <!-- ----- information ----- -->
             <!-- ----- information ----- -->
             <section class="p40">
+              <b-button @click="testAllTypes()" size="is-small">testAllTypes</b-button>
+
               <p class="title">Information</p>
               <b-collapse
                 class="card"
@@ -4500,9 +4500,6 @@ export default {
         "stopDScheck:this.dataDS.queryChk=" + this.dataDS.queryChk
       );
       if (this.dataDS.queryChk) {
-        "stopDScheck:this.dataDS.queryChk=" +
-          this.dataDS.queryChk +
-          " clearInterval";
         clearInterval(this.dataDS.queryChk);
         this.dataDS.queryChk = 0;
       }
