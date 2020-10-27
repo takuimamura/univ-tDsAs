@@ -4037,10 +4037,18 @@ export default {
       await this.createMiscAPIDS(crArrDS);
       this.writeNoteLS("classBackup " + sClrm.id, true);
     },
+    testAllTypes() {
+      this.yourClasses
+        .filter(x => x.id.indexOf("A") !== -1)
+        .forEach(m => console.warn(m.id));
+      // re
+    },
+
     async classBackupALLTypesAllClasses() {
       this.yourClasses
         .filter(x => x.id.indexOf("A") !== -1)
         .forEach(m => this.classBackupALLTypes(m));
+      // re
     },
     async classBackupALLTypes(sClrm) {
       // クラス出たときに単一でバックアップ
