@@ -69,15 +69,13 @@
             "
             >isClrmNeedAppSync</b-button
           >
-          <b-button size="is-small" @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
-          <b-button size="is-small" @click="spliceTESTKick()">spliceTESTKick()</b-button>
+          <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
+          <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
           <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
-          <b-button size="is-small" @click="getAttnDoneStateSelClrm()"
-            >getAttnDoneStateSelClrm()</b-button
-          >
+          <b-button @click="getAttnDoneStateSelClrm()">getAttnDoneStateSelClrm()</b-button>
 
-          <b-button size="is-small" @click="chkfindtest()">chkfindtest</b-button>
-          <b-button size="is-small" @click="dummytest">dummytest</b-button>
+          <b-button @click="chkfindtest()">chkfindtest</b-button>
+          <b-button @click="dummytest">dummytest</b-button>
           " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
             sett.dummy3
           }}
@@ -114,12 +112,14 @@
             >
             <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
           </b-field>
-          <b-button size="is-small" @click="fetchClrms()">fetchClrms()</b-button>
-          <b-button size="is-small" @click="instClockOut()">instClockOut()</b-button>
-          <b-button size="is-small" @click="instClockIn()">instClockIn</b-button>
-          <b-button size="is-small" @click="classBackupTEST()">classBackupTEST</b-button>
+          <b-button @click="fetchClrms()">fetchClrms()</b-button>
+          <b-button @click="instClockOut()">instClockOut()</b-button>
+          <b-button @click="instClockIn()">instClockIn</b-button>
+          <b-button @click="sendUserAgent()">sendUserAgent</b-button>
+          <b-button @click="classBackupTEST()">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
+          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <b-switch size="is-small" v-model="sett.devsummary"
             >devshow : {{ sett.devshow }}</b-switch
           >
@@ -140,6 +140,73 @@
             instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
           </template>
 
+          <template v-if="sett.devshow">
+            <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
+            <template v-if="classmembers.length > 0 && sett.devshowMem">
+              {{ classmembers[0] }}
+            </template>
+            <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
+            <template v-if="sett.sw1">
+              <div>
+                yourClasses | {{ yourClasses }}
+                <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+                <!-- -- {{ isAuthenticated }}          <br /> -->
+                <!-- user: {{ authd }} -->
+                <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+                <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+                <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
+              </div>
+              <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+              <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+            </template>
+            <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+            <!-- sett.alias:: {{ sett.alias }} -->
+            <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+            <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+            <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
+            clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
+            <br />
+            dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
+            <br />
+            <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
+            -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
+            <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
+            <br />
+            getTodayJSON: {{ getTodayJSON }} |
+            <br />
+            getTodayJSON今日:
+            {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+            <br />
+            getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+            <br />
+            getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
+            <br />
+            getThisWeekHwicJSON[this.selClrm.dayofweek]
+            {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
+            <br />
+            getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
+            <br />
+            isEnteredselClrm: {{ isEnteredselClrm }} |
+            <br />
+            getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
+            <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
+            <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
+            <br />
+            getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
+            <br />
+            monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
+            <br />
+            <!-- {{indiRow}} -->
+            <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
+            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+            <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
+            <b-icon
+              pack="fas"
+              icon="grin-stars"
+              size="is-large"
+              type="is-attndone"
+            ></b-icon> </template
+          >A0042_19117001
           <div class="columns">
             <div class="column">
               <b-input v-model="ds.dev1" placeholder="classcode">A0238</b-input>
@@ -148,82 +215,13 @@
             </div>
             <div class="column is-four-fifths">
               <!-- <b-button @click="idbSet(iidbMisc, ds.dev1, ds.dev2)">idbSet</b-button> -->
-              <b-button size="is-small" @click="idbStart()">idbStart</b-button>
-              <b-button size="is-small" @click="idbRemove(idbSQue, ds.dev1)">remove queue</b-button>
-              <b-button size="is-small" @click="retrySQ()">retrySQ</b-button>
-              <b-button size="is-small" @click="syncLSlocalDB()">syncLSlocalDB</b-button>
-              <b-button size="is-small" @click="idbClear(idbCls)">remove ALL</b-button>
+              <b-button @click="idbStart()">idbStart</b-button>
+              <b-button @click="idbRemove(idbSQue, ds.dev1)">remove queue</b-button>
+              <b-button @click="retrySQ()">retrySQ</b-button>
+              <b-button @click="syncLSlocalDB()">syncLSlocalDB</b-button>
+              <b-button @click="idbClear(idbCls)">remove ALL</b-button>
               <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
-              <b-button size="is-small" @click="testlogg()">testloggg</b-button>
-              <br />
-              <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-              <template v-if="sett.devshow">
-                <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
-                <template v-if="classmembers.length > 0 && sett.devshowMem">
-                  {{ classmembers[0] }}
-                </template>
-                <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
-                <template v-if="sett.sw1">
-                  <div>
-                    yourClasses | {{ yourClasses }}
-                    <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-                    <!-- -- {{ isAuthenticated }}          <br /> -->
-                    <!-- user: {{ authd }} -->
-                    <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-                    <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-                    <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-                  </div>
-                  <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-                  <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-                </template>
-                <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-                <!-- sett.alias:: {{ sett.alias }} -->
-                <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
-                <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
-                <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-                clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
-                <br />
-                dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
-                <br />
-                <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-                -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
-                <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
-                <br />
-                getTodayJSON: {{ getTodayJSON }} |
-                <br />
-                getTodayJSON今日:
-                {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
-                <br />
-                getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
-                <br />
-                getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
-                <br />
-                getThisWeekHwicJSON[this.selClrm.dayofweek]
-                {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
-                <br />
-                getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
-                <br />
-                isEnteredselClrm: {{ isEnteredselClrm }} |
-                <br />
-                getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
-                <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
-                <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
-                <br />
-                getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
-                <br />
-                monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
-                <br />
-                <!-- {{indiRow}} -->
-                <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-                <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
-                <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
-                <b-icon
-                  pack="fas"
-                  icon="grin-stars"
-                  size="is-large"
-                  type="is-attndone"
-                ></b-icon> </template
-              >A0042_19117001
+              <b-button @click="testlogg()">testloggg</b-button>
             </div>
             <!-- <div class="column">            </div> -->
           </div>

@@ -69,15 +69,13 @@
             "
             >isClrmNeedAppSync</b-button
           >
-          <b-button size="is-small" @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
-          <b-button size="is-small" @click="spliceTESTKick()">spliceTESTKick()</b-button>
+          <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
+          <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
           <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
-          <b-button size="is-small" @click="getAttnDoneStateSelClrm()"
-            >getAttnDoneStateSelClrm()</b-button
-          >
+          <b-button @click="getAttnDoneStateSelClrm()">getAttnDoneStateSelClrm()</b-button>
 
-          <b-button size="is-small" @click="chkfindtest()">chkfindtest</b-button>
-          <b-button size="is-small" @click="dummytest">dummytest</b-button>
+          <b-button @click="chkfindtest()">chkfindtest</b-button>
+          <b-button @click="dummytest">dummytest</b-button>
           " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
             sett.dummy3
           }}
@@ -114,12 +112,14 @@
             >
             <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
           </b-field>
-          <b-button size="is-small" @click="fetchClrms()">fetchClrms()</b-button>
-          <b-button size="is-small" @click="instClockOut()">instClockOut()</b-button>
-          <b-button size="is-small" @click="instClockIn()">instClockIn</b-button>
-          <b-button size="is-small" @click="classBackupTEST()">classBackupTEST</b-button>
+          <b-button @click="fetchClrms()">fetchClrms()</b-button>
+          <b-button @click="instClockOut()">instClockOut()</b-button>
+          <b-button @click="instClockIn()">instClockIn</b-button>
+          <b-button @click="sendUserAgent()">sendUserAgent</b-button>
+          <b-button @click="classBackupTEST()">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
+          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
           <b-switch size="is-small" v-model="sett.devsummary"
             >devshow : {{ sett.devshow }}</b-switch
           >
@@ -140,93 +140,83 @@
             instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
           </template>
 
-          <div class="columns">
-            <div class="column">
-              <b-input v-model="ds.dev1" placeholder="classcode">A0238</b-input>
-              <b-input v-model="ds.dev2" placeholder="name.."></b-input>
-              <b-input v-model="ds.dev3" placeholder="detail"></b-input>
-            </div>
-            <div class="column is-four-fifths">
-              <!-- <b-button @click="idbSet(iidbMisc, ds.dev1, ds.dev2)">idbSet</b-button> -->
-              <b-button size="is-small" @click="idbStart()">idbStart</b-button>
-              <b-button size="is-small" @click="idbRemove(idbSQue, ds.dev1)">remove queue</b-button>
-              <b-button size="is-small" @click="retrySQ()">retrySQ</b-button>
-              <b-button size="is-small" @click="syncLSlocalDB()">syncLSlocalDB</b-button>
-              <b-button size="is-small" @click="idbClear(idbCls)">remove ALL</b-button>
-              <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
-              <b-button size="is-small" @click="testlogg()">testloggg</b-button>
-              <br />
-              <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-              <template v-if="sett.devshow">
-                <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
-                <template v-if="classmembers.length > 0 && sett.devshowMem">
-                  {{ classmembers[0] }}
-                </template>
-                <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
-                <template v-if="sett.sw1">
-                  <div>
-                    yourClasses | {{ yourClasses }}
-                    <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-                    <!-- -- {{ isAuthenticated }}          <br /> -->
-                    <!-- user: {{ authd }} -->
-                    <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-                    <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-                    <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-                  </div>
-                  <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-                  <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-                </template>
-                <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-                <!-- sett.alias:: {{ sett.alias }} -->
-                <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
-                <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
-                <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-                clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
-                <br />
-                dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
-                <br />
-                <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-                -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
-                <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
-                <br />
-                getTodayJSON: {{ getTodayJSON }} |
-                <br />
-                getTodayJSON今日:
-                {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
-                <br />
-                getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
-                <br />
-                getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
-                <br />
-                getThisWeekHwicJSON[this.selClrm.dayofweek]
-                {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
-                <br />
-                getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
-                <br />
-                isEnteredselClrm: {{ isEnteredselClrm }} |
-                <br />
-                getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
-                <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
-                <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
-                <br />
-                getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
-                <br />
-                monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
-                <br />
-                <!-- {{indiRow}} -->
-                <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-                <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
-                <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
-                <b-icon
-                  pack="fas"
-                  icon="grin-stars"
-                  size="is-large"
-                  type="is-attndone"
-                ></b-icon> </template
-              >A0042_19117001
-            </div>
-            <!-- <div class="column">            </div> -->
-          </div>
+          <template v-if="sett.devshow">
+            <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
+            <template v-if="classmembers.length > 0 && sett.devshowMem">
+              {{ classmembers[0] }}
+            </template>
+            <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
+            <template v-if="sett.sw1">
+              <div>
+                yourClasses | {{ yourClasses }}
+                <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+                <!-- -- {{ isAuthenticated }}          <br /> -->
+                <!-- user: {{ authd }} -->
+                <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+                <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+                <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
+              </div>
+              <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+              <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+            </template>
+            <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+            <!-- sett.alias:: {{ sett.alias }} -->
+            <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+            <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+            <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
+            clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
+            <br />
+            dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
+            <br />
+            <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
+            -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
+            <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
+            <br />
+            getTodayJSON: {{ getTodayJSON }} |
+            <br />
+            getTodayJSON今日:
+            {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+            <br />
+            getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+            <br />
+            getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
+            <br />
+            getThisWeekHwicJSON[this.selClrm.dayofweek]
+            {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
+            <br />
+            getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
+            <br />
+            isEnteredselClrm: {{ isEnteredselClrm }} |
+            <br />
+            getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
+            <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
+            <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
+            <br />
+            getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
+            <br />
+            monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
+            <br />
+            <!-- {{indiRow}} -->
+            <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
+            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+            <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
+            <b-icon
+              pack="fas"
+              icon="grin-stars"
+              size="is-large"
+              type="is-attndone"
+            ></b-icon> </template
+          >A0042_19117001
+          <b-input v-model="ds.dev1" placeholder="classcode">A0238</b-input>
+          <b-input v-model="ds.dev2" placeholder="name.."></b-input>
+          <b-input v-model="ds.dev3" placeholder="detail"></b-input>
+          <!-- <b-button @click="idbSet(idbMi, ds.dev1, ds.dev2)">idbSet</b-button> -->
+          <b-button @click="idbRemove(idbSq, ds.dev1)">remove queue</b-button>
+          <b-button @click="retrySQ()">retrySQ</b-button>
+          <b-button @click="syncLSlocalDB()">syncLSlocalDB</b-button>
+          <b-button @click="idbClear(idbCl)">remove ALL</b-button>
+          <!-- <b-button @click="getjudge(idbCl, ds.dev1)">getjudge</b-button> -->
+          <b-button @click="testlogg()">testloggg</b-button>
           dataAPI: {{ dataAPI.Clrms.length }} | dataLS: {{ dataLS.Clrms.length }} | dataset.Clrms:
           {{ dataset.Clrms.length }} |
           <br />
@@ -2009,7 +1999,6 @@ export default {
     this.IdleVueStatus = "ZZZ";
     // 授業中で当日出欠OKなら再送信、バックアップ送信
     // this.isEnteredselClrm
-    // this.retrySQ();
     if (this.selClrm.length > 0) {
       if (this.classmembers.length > 0) {
         //何かしら出欠編集してて未送信なら
@@ -2057,9 +2046,6 @@ export default {
         dev1: null,
         dev2: null,
         dev3: null,
-        devarr1: null,
-        devarr2: null,
-        devarr3: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
         typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" }, //定数
@@ -3077,171 +3063,6 @@ export default {
     //     }
     //   }
     // },
-    ////////// indexedDB
-    ////////// indexedDB
-    ////////// indexedDB
-    //  idbCls = idbCls;     // classmems
-    //  idbCIdx = idbCIdx;   // student Index
-    //  idbSQue = idbSQue;   // send queue
-    //  idbMng = idbMng;     // manage
-    //  idbSmry = idbSmry;   // summary
-    //  idbMisc = idbMisc;   // miscellaneous
-    //////// initialize - everytime load this app 読込時
-    // idb状況確認
-    async idbStart() {
-      // マスタ存在確認
-      const lenCls = this.idbGetLength(this.idbCls);
-      const lenCIdx = this.idbGetLength(this.idbCIdx);
-      const lenSQue = this.idbGetLength(this.idbSQue);
-      const lenMng = this.idbGetLength(this.idbMng);
-      const lenSmry = this.idbGetLength(this.idbSmry);
-      const lenMisc = this.idbGetLength(this.lenMisc);
-      console.warn(
-        "Class" + lenCls,
-        "index:" + lenCIdx,
-        "Queue:" + lenSQue,
-        "Manage:" + lenMng,
-        "Summary" + lenSmry,
-        "Misc:" + lenMisc
-      );
-      // idbInitialSetup;
-
-      // DynamoDb同期
-    },
-    //////// initialize - for very first time 初回のみ
-    // マスタ構築
-    async idbInitialSetup() {},
-    // dynamoDB同期
-    async idbSyncDynamoDB() {},
-
-    // init
-    // idbSmry 担当クラスごとになければ作成
-
-    // async idbGetTEST2() {
-    //   const ret = await this.idbGet(this.idbCIdx, "A0238");
-    //   this.ds.devarr1 = ret;
-    //   // console.warn(ret);
-    // },
-    // async idbGetTEST(nam, key) {
-    //   const ret = await this.idbGet(nam, key);
-    //   this.ds.devarr1 = ret;
-    //   // console.warn(ret);
-    // },
-    async idbSet(nam, key, obj) {
-      await nam
-        .setItem(key, obj)
-        // .then((v) => {
-        //   console.warn(v);
-        // })
-        .catch((e) => {
-          // console.warn("idborage set error");
-          // console.warn(e);
-          this.logg("idbSet", "Error", key, JSON.stringify(e) + "," + JSON.stringify(obj));
-        });
-    },
-
-    async idbGet(nam, key) {
-      // console.warn("idbGet", nam, key);
-      let ret;
-      await nam
-        .getItem(key)
-        .then((v) => {
-          if (!v) {
-            // console.warn(key + " no store");
-            this.writeNoteLS("[WARN] idbGet no store: " + key);
-          } else {
-            ret = v;
-            // return v;
-          }
-          // console.warn(v);
-        })
-        .catch((e) => {
-          this.writeNoteLS("[ERROR] idbGet no store: " + e);
-          // console.warn("idborage get error");
-          // console.warn(e);
-        });
-      return ret;
-    },
-    async idbRemove(nam, key) {
-      await nam.removeItem(key).catch((e) => {
-        this.logg("idbRemove", "Warn", key, JSON.stringify(e));
-        // console.warn("idborage set error");
-        // console.warn(e);
-      });
-    },
-    async idbGetLength(nam) {
-      await nam
-        .length()
-        .then((v) => {
-          if (!v) {
-            console.warn("no length");
-          }
-          console.warn(v);
-        })
-        .catch((e) => {
-          console.warn("idborage get error");
-          console.warn(e);
-        });
-    },
-    async retrySQ() {
-      let arr = [];
-      await this.idbSQue
-        .iterate(function(val, key) {
-          // obj.push()
-          arr.push([key]);
-        })
-        // .then(function() {
-        //   console.warn("iterethion has completed");
-        // })
-        .catch((e) => {
-          this.writeFail("retrySQ", this.authdetail.username, e + JSON.stringify(arr));
-          // console.warn("idborage iteration error");
-          // console.warn(e);
-        });
-      for await (let idx of arr) {
-        const ret = await this.idbGet(this.idbCls, idx.toString());
-        // console.warn(ret);
-        await this.updateClrmSQ(ret);
-        // await this.updateClrmAllAPI(ret);
-      }
-      // console.warn(list.length);
-      // list.forEach((k) => {
-      //   // console.warn(k);
-      //   console.warn(this.idbGet(this.idbCls, k));
-      // });
-      // 送信キューから消す
-      // this.idbRemove(this.idbSQue, row.index);
-    },
-    async updateClrmSQ(row) {
-      const dt = this.getDateYYYYMMDDhHHMMSS();
-      row.cust03 = dt;
-      // const upArr = row;
-      const upArr = {
-        id: row.id,
-        attn01: row.attn01,
-        attn02: row.attn02,
-        attn03: row.attn03,
-        attn04: row.attn04,
-        attn05: row.attn05,
-        homeworkincomplete02: row.homeworkincomplete02,
-        homeworkincomplete03: row.homeworkincomplete03,
-        homeworkincomplete04: row.homeworkincomplete04,
-        homeworkincomplete05: row.homeworkincomplete05,
-        cust03: dt,
-      };
-      //API
-      try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        this.classRealtimeBackup();
-        this.idbSet(this.idbCls, row.index, row);
-        this.idbRemove(this.idbSQue, row.index);
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        // console.warn(err);
-        this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(upArr));
-        return err; // returnの先に用途は実はない
-      }
-    },
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet

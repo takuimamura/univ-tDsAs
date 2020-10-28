@@ -22,6 +22,7 @@
     "core-js": "^3.6.4",
     "dayjs": "^1.8.27",
     "idle-vue": "^2.0.5",
+    "localforage": "^1.9.0",
     "v-idle": "^0.1.1",
     "vue": "^2.6.11",
     "vue-awesome-countdown": "^1.1.2",

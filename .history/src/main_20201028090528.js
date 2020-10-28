@@ -58,42 +58,42 @@ const dbName = "TMU App Data Storage";
 //   .then(function() {
 //     console.warn("dropped");
 //   });
-const idbCls = localforage.createInstance({
+const idbCl = localforage.createInstance({
   name: dbName,
   storeName: "classmems",
   version: 1,
 });
-const idbCIdx = localforage.createInstance({
+const idbCi = localforage.createInstance({
   name: dbName,
   storeName: "classindex",
   version: 1,
 });
-const idbSQue = localforage.createInstance({
+const idbSq = localforage.createInstance({
   name: dbName,
   storeName: "sendqueue",
   version: 1,
 });
-const idbMng = localforage.createInstance({
+const idbMn = localforage.createInstance({
   name: dbName,
   storeName: "manage",
   version: 1,
 });
-const idbSmry = localforage.createInstance({
+const idbSm = localforage.createInstance({
   name: dbName,
   storeName: "summary",
   version: 1,
 });
-const idbMisc = localforage.createInstance({
+const idbMi = localforage.createInstance({
   name: dbName,
   storeName: "miscs",
   version: 1,
 });
-Vue.prototype.idbCls = idbCls;
-Vue.prototype.idbCIdx = idbCIdx;
-Vue.prototype.idbSQue = idbSQue;
-Vue.prototype.idbMng = idbMng;
-Vue.prototype.idbSmry = idbSmry;
-Vue.prototype.idbMisc = idbMisc;
+Vue.prototype.idbCl = idbCl;
+Vue.prototype.idbCi = idbCi;
+Vue.prototype.idbSq = idbSq;
+Vue.prototype.idbMn = idbMn;
+Vue.prototype.idbSm = idbSm;
+Vue.prototype.idbMi = idbMi;
 
 //------------------------------------
 
