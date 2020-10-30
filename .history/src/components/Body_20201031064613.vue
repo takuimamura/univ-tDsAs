@@ -159,8 +159,6 @@
               <br />
               <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
               <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
-              <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
-              <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
 
               <b-switch sise="is-small" v-model="sett.devshow"
                 >devshow : {{ sett.devshow }}</b-switch
@@ -3143,12 +3141,6 @@ export default {
       //   console.warn("! get" + ret);
       // }
     },
-    async idbTEST3() {
-      await this.idbRemove(this.idbCls, this.ds.dev1);
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
     // idb状況確認
     async idbStart() {
       // マスタ存在確認
@@ -3190,16 +3182,15 @@ export default {
     //   // console.warn(ret);
     // },
     async idbSet(nam, key, obj) {
-      try {
-        const retval = await nam.setItem(key, obj); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Set", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Set", e);
-        return false;
-      }
+      nam
+        .setItem(key, obj)
+        .then((v) => {
+          return v;
+        })
+        .catch((e) => {
+          this.logg("idbSet", "Error", key, JSON.stringify(e) + "," + JSON.stringify(obj));
+          return false;
+        });
     },
     async idbGet(nam, key) {
       try {
@@ -3214,12 +3205,9 @@ export default {
       }
     },
     async idbRemove(nam, key) {
-      try {
-        await nam.removeItem(key); // get null if unable to find
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Remove", e);
-        return false;
-      }
+      await nam.removeItem(key).catch((e) => {
+        this.idbLogg("Error", nam, key, "Remove", JSON.stringify(e, null, 2));
+      });
     },
     async idbGetLength(nam) {
       await nam

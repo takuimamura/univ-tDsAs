@@ -121,10 +121,9 @@
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch size="is-small" v-model="sett.devsummary"
-            >devsummary : {{ sett.devsummary }}</b-switch
+            >devshow : {{ sett.devshow }}</b-switch
           >
           idle:{{ IdleVueStatus }}
-
           <template v-if="sett.devsummary">
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
@@ -157,14 +156,7 @@
               <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
               <b-button size="is-small" @click="testlogg()">testloggg</b-button>
               <br />
-              <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
-              <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
-              <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
-              <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
-
-              <b-switch sise="is-small" v-model="sett.devshow"
-                >devshow : {{ sett.devshow }}</b-switch
-              >
+              <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
                 <template v-if="classmembers.length > 0 && sett.devshowMem">{{
@@ -3005,65 +2997,6 @@ export default {
         }
       }
     },
-    ///// logg
-    async createLoggAPI(crArr) {
-      try {
-        // await API.graphql(graphqlOperation(createLogg, { input: crArr }));
-        const TESTArr = {
-          type: "TEST",
-          name: this.authdetail.username,
-          detail: JSON.stringify(crArr, null, 2),
-        };
-        await API.graphql(graphqlOperation(createMisc, { input: TESTArr }));
-        return true;
-      } catch (err) {
-        this.writeFail("createLoggAPI", crArr, err);
-        return err;
-      }
-    },
-    logg(level = "unknown", type = "", target = "", desc = "", detail = "") {
-      this.writeNoteLS("[" + level + "] " + type + " " + desc);
-      // this.createLoggAPI({
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          2
-        )
-      );
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          1
-        )
-      );
-    },
-    testlogg() {
-      //           level, type, target, desc, detail
-      this.logg("Info", "test", "clrm", "summary", "detail");
-      this.logg("Warn", "test", "clrm", "summary", "detail");
-      this.logg("Error", "test", "clrm", "summary", "detail");
-    },
-    async idbLogg(level = "", nam, key = "", val = "", msg) {
-      const namStr = nam._config.storeName;
-      //           level, type, target, desc, detail
-      this.logg(level, "indexdDB", namStr, key, val + "," + msg);
-    },
     ////////// updateClrm
     ////////// updateClrm
     async updateClrmAPI(row, fname, fval, logging) {
@@ -3120,35 +3053,6 @@ export default {
     ////////// indexedDB
     ////////// indexedDB
     //////// initialize - everytime load this app 読込時
-    async idbTEST1() {
-      const ret = await this.idbSet(this.idbCls, this.ds.dev1, this.ds.dev2);
-      if (ret) {
-        console.warn(ret);
-      }
-      if (!ret) {
-        console.warn("!" + ret);
-      }
-      if (ret !== undefined) {
-        console.warn("ok " + ret);
-      }
-    },
-    async idbTEST2() {
-      const ret = await this.idbGet(this.idbCls, this.ds.dev1);
-      if (ret) {
-        console.warn("get ok:" + ret);
-      } else {
-        console.warn("get ng:" + ret);
-      }
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
-    async idbTEST3() {
-      await this.idbRemove(this.idbCls, this.ds.dev1);
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
     // idb状況確認
     async idbStart() {
       // マスタ存在確認
@@ -3166,8 +3070,8 @@ export default {
         "Summary" + JSON.stringify(lenSmry),
         "Misc:" + JSON.stringify(lenMisc)
       );
-      console.warn(this.idbCls._config.storeName);
-      console.warn(JSON.stringify(this.idbCls._config.storeName));
+      console.warn(this.idbCls);
+      console.warn(JSON.stringify(this.idbCls._config));
       // idbInitialSetup;
 
       // DynamoDb同期
@@ -3190,36 +3094,45 @@ export default {
     //   // console.warn(ret);
     // },
     async idbSet(nam, key, obj) {
-      try {
-        const retval = await nam.setItem(key, obj); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Set", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Set", e);
-        return false;
-      }
+      await nam
+        .setItem(key, obj)
+        // .then((v) => {
+        //   console.warn(v);
+        // })
+        .catch((e) => {
+          // console.warn("idborage set error");
+          // console.warn(e);
+          this.logg("idbSet", "Error", key, JSON.stringify(e) + "," + JSON.stringify(obj));
+        });
     },
     async idbGet(nam, key) {
-      try {
-        const retval = await nam.getItem(key); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Get", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Get", e);
-        return false;
-      }
+      // console.warn("idbGet", nam, key);
+      let ret;
+      await nam
+        .getItem(key)
+        .then((v) => {
+          if (!v) {
+            // console.warn(key + " no store");
+            this.writeNoteLS("[WARN] idbGet no store: " + key);
+          } else {
+            ret = v;
+            // return v;
+          }
+          // console.warn(v);
+        })
+        .catch((e) => {
+          this.writeNoteLS("[ERROR] idbGet no store: " + e);
+          // console.warn("idborage get error");
+          // console.warn(e);
+        });
+      return ret;
     },
     async idbRemove(nam, key) {
-      try {
-        await nam.removeItem(key); // get null if unable to find
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Remove", e);
-        return false;
-      }
+      await nam.removeItem(key).catch((e) => {
+        this.logg("idbRemove", "Warn", key, JSON.stringify(e));
+        // console.warn("idborage set error");
+        // console.warn(e);
+      });
     },
     async idbGetLength(nam) {
       await nam
@@ -3228,12 +3141,11 @@ export default {
           if (!v) {
             console.warn("no length");
           }
-          return v;
+          console.warn(v);
         })
         .catch((e) => {
           console.warn("idborage get error");
           console.warn(e);
-          return false;
         });
     },
     async retrySQ() {

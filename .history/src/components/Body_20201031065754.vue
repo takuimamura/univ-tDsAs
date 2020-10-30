@@ -3144,7 +3144,12 @@ export default {
       // }
     },
     async idbTEST3() {
-      await this.idbRemove(this.idbCls, this.ds.dev1);
+      const ret = await this.idbRemove(this.idbCls, this.ds.dev1);
+      if (ret) {
+        console.warn("remove ok:" + ret);
+      } else {
+        console.warn("remove ng:" + ret);
+      }
       // if (!ret) {
       //   console.warn("! get" + ret);
       // }
@@ -3215,7 +3220,11 @@ export default {
     },
     async idbRemove(nam, key) {
       try {
-        await nam.removeItem(key); // get null if unable to find
+        const retval = await nam.removeItem(key); // get null if unable to find
+        if (!retval) {
+          this.idbLogg("Warn", nam, key, "remove", "no value");
+        }
+        return retval;
       } catch (e) {
         this.idbLogg("Error", nam, key, "Remove", e);
         return false;

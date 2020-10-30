@@ -3215,7 +3215,7 @@ export default {
     },
     async idbRemove(nam, key) {
       try {
-        await nam.removeItem(key); // get null if unable to find
+        const retval = await nam.removeItem(key); // get null if unable to find
       } catch (e) {
         this.idbLogg("Error", nam, key, "Remove", e);
         return false;

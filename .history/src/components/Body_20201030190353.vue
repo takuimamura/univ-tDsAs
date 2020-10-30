@@ -121,10 +121,9 @@
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch size="is-small" v-model="sett.devsummary"
-            >devsummary : {{ sett.devsummary }}</b-switch
+            >devshow : {{ sett.devshow }}</b-switch
           >
           idle:{{ IdleVueStatus }}
-
           <template v-if="sett.devsummary">
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
@@ -157,14 +156,7 @@
               <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
               <b-button size="is-small" @click="testlogg()">testloggg</b-button>
               <br />
-              <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
-              <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
-              <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
-              <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
-
-              <b-switch sise="is-small" v-model="sett.devshow"
-                >devshow : {{ sett.devshow }}</b-switch
-              >
+              <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
                 <template v-if="classmembers.length > 0 && sett.devshowMem">{{
@@ -3005,65 +2997,6 @@ export default {
         }
       }
     },
-    ///// logg
-    async createLoggAPI(crArr) {
-      try {
-        // await API.graphql(graphqlOperation(createLogg, { input: crArr }));
-        const TESTArr = {
-          type: "TEST",
-          name: this.authdetail.username,
-          detail: JSON.stringify(crArr, null, 2),
-        };
-        await API.graphql(graphqlOperation(createMisc, { input: TESTArr }));
-        return true;
-      } catch (err) {
-        this.writeFail("createLoggAPI", crArr, err);
-        return err;
-      }
-    },
-    logg(level = "unknown", type = "", target = "", desc = "", detail = "") {
-      this.writeNoteLS("[" + level + "] " + type + " " + desc);
-      // this.createLoggAPI({
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          2
-        )
-      );
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          1
-        )
-      );
-    },
-    testlogg() {
-      //           level, type, target, desc, detail
-      this.logg("Info", "test", "clrm", "summary", "detail");
-      this.logg("Warn", "test", "clrm", "summary", "detail");
-      this.logg("Error", "test", "clrm", "summary", "detail");
-    },
-    async idbLogg(level = "", nam, key = "", val = "", msg) {
-      const namStr = nam._config.storeName;
-      //           level, type, target, desc, detail
-      this.logg(level, "indexdDB", namStr, key, val + "," + msg);
-    },
     ////////// updateClrm
     ////////// updateClrm
     async updateClrmAPI(row, fname, fval, logging) {
@@ -3120,35 +3053,6 @@ export default {
     ////////// indexedDB
     ////////// indexedDB
     //////// initialize - everytime load this app 読込時
-    async idbTEST1() {
-      const ret = await this.idbSet(this.idbCls, this.ds.dev1, this.ds.dev2);
-      if (ret) {
-        console.warn(ret);
-      }
-      if (!ret) {
-        console.warn("!" + ret);
-      }
-      if (ret !== undefined) {
-        console.warn("ok " + ret);
-      }
-    },
-    async idbTEST2() {
-      const ret = await this.idbGet(this.idbCls, this.ds.dev1);
-      if (ret) {
-        console.warn("get ok:" + ret);
-      } else {
-        console.warn("get ng:" + ret);
-      }
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
-    async idbTEST3() {
-      await this.idbRemove(this.idbCls, this.ds.dev1);
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
     // idb状況確認
     async idbStart() {
       // マスタ存在確認
@@ -3159,15 +3063,13 @@ export default {
       const lenSmry = this.idbGetLength(this.idbSmry);
       const lenMisc = this.idbGetLength(this.lenMisc);
       console.warn(
-        "Class" + JSON.stringify(lenCls, null, 2),
-        "index:" + JSON.stringify(lenCIdx),
-        "Queue:" + JSON.stringify(lenSQue),
-        "Manage:" + JSON.stringify(lenMng),
-        "Summary" + JSON.stringify(lenSmry),
-        "Misc:" + JSON.stringify(lenMisc)
+        "Class" + lenCls,
+        "index:" + lenCIdx,
+        "Queue:" + lenSQue,
+        "Manage:" + lenMng,
+        "Summary" + lenSmry,
+        "Misc:" + lenMisc
       );
-      console.warn(this.idbCls._config.storeName);
-      console.warn(JSON.stringify(this.idbCls._config.storeName));
       // idbInitialSetup;
 
       // DynamoDb同期
@@ -3177,8 +3079,10 @@ export default {
     async idbInitialSetup() {},
     // dynamoDB同期
     async idbSyncDynamoDB() {},
+
     // init
     // idbSmry 担当クラスごとになければ作成
+
     // async idbGetTEST2() {
     //   const ret = await this.idbGet(this.idbCIdx, "A0238");
     //   this.ds.devarr1 = ret;
@@ -3190,36 +3094,45 @@ export default {
     //   // console.warn(ret);
     // },
     async idbSet(nam, key, obj) {
-      try {
-        const retval = await nam.setItem(key, obj); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Set", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Set", e);
-        return false;
-      }
+      await nam
+        .setItem(key, obj)
+        // .then((v) => {
+        //   console.warn(v);
+        // })
+        .catch((e) => {
+          // console.warn("idborage set error");
+          // console.warn(e);
+          this.logg("idbSet", "Error", key, JSON.stringify(e) + "," + JSON.stringify(obj));
+        });
     },
     async idbGet(nam, key) {
-      try {
-        const retval = await nam.getItem(key); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Get", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Get", e);
-        return false;
-      }
+      // console.warn("idbGet", nam, key);
+      let ret;
+      await nam
+        .getItem(key)
+        .then((v) => {
+          if (!v) {
+            // console.warn(key + " no store");
+            this.writeNoteLS("[WARN] idbGet no store: " + key);
+          } else {
+            ret = v;
+            // return v;
+          }
+          // console.warn(v);
+        })
+        .catch((e) => {
+          this.writeNoteLS("[ERROR] idbGet no store: " + e);
+          // console.warn("idborage get error");
+          // console.warn(e);
+        });
+      return ret;
     },
     async idbRemove(nam, key) {
-      try {
-        await nam.removeItem(key); // get null if unable to find
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Remove", e);
-        return false;
-      }
+      await nam.removeItem(key).catch((e) => {
+        this.logg("idbRemove", "Warn", key, JSON.stringify(e));
+        // console.warn("idborage set error");
+        // console.warn(e);
+      });
     },
     async idbGetLength(nam) {
       await nam
@@ -3228,12 +3141,11 @@ export default {
           if (!v) {
             console.warn("no length");
           }
-          return v;
+          console.warn(v);
         })
         .catch((e) => {
           console.warn("idborage get error");
           console.warn(e);
-          return false;
         });
     },
     async retrySQ() {
@@ -3471,10 +3383,12 @@ export default {
 
       //表示
       this.isOpenselClrm = true;
+      // this.scrollTop();
       window.scrollTo({
         top: 0,
         behavior: "smooth",
       });
+
       this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     enterClassroomPrevSeeIfAlter() {
@@ -3860,13 +3774,16 @@ export default {
     },
     ///// 表示変更系
     ///// 表示変更系
+    ///// 表示変更系
     showAttenChange() {
       // 0 <- -> 1
       this.cRoom.showAttenHist = this.cRoom.showAttenHist === 0 ? 1 : 0;
+
       // 0 -> 1 -> 2
       // let mde = this.cRoom.showAttenHist;
       // mde += 1;
       // this.cRoom.showAttenHist = mde > 2 ? 0 : mde;
+
       // this.cRoom.showEval = mde === 2 ? true : this.cRoom.showEval;
     },
     // 表示切替 binoculars 双眼鏡ボタンから
@@ -4278,6 +4195,34 @@ export default {
     },
     //////// クラスバックアップ
     //////// クラスバックアップ
+    //////// クラスバックアップ
+    // async classBackup(sClrm) {
+    //   // クラス出たときに単一でバックアップ
+    //   const timestamp = this.getDateYYYYMMDDhHHMMSS();
+    //   const crArr = {
+    //     type: "classBackupPoint_" + sClrm.id + " " + timestamp,
+    //     name: this.authdetail.username,
+    //     detail: JSON.stringify(this.classmembers)
+    //   };
+    //   await this.createMiscAPIDS(crArr);
+    //   // dataset.Clrm
+    //   const crArrClrm = {
+    //     type: "classBackupPointClrm_" + sClrm.id + " " + timestamp,
+    //     name: this.authdetail.username,
+    //     detail: JSON.stringify(this.getClassmembers(sClrm.id))
+    //   };
+    //   await this.createMiscAPIDS(crArrClrm);
+    //   const classmem = await DataStore.query(Clrm, c =>
+    //     c.classcode("eq", sClrm.id)
+    //   );
+    //   const crArrDS = {
+    //     type: "classBackupPointDS_" + sClrm.id + " " + timestamp,
+    //     name: this.authdetail.username,
+    //     detail: JSON.stringify(classmem)
+    //   };
+    //   await this.createMiscAPIDS(crArrDS);
+    //   this.writeNoteLS("classBackup " + sClrm.id, true);
+    // },
     async classBackupALLTypesAllClasses() {
       this.yourClasses
         .filter((x) => x.id.indexOf("A") !== -1)
@@ -4626,6 +4571,12 @@ export default {
         this.sett.actime = this.$dayjs().format("H:mm");
       }, 1000 * 60); //間隔
     },
+    // setTESTcreateMisc() {
+    //   //2. 一定間隔で
+    //   this.sett.actimeIntId10 = setInterval(() => {
+    //     this.testCreateMisc;
+    //   }, 1000 * 150); //間隔
+    // },
     setTESTcreateMisc: function() {
       setInterval(() => {
         // this.testCreateMisc;
@@ -4657,6 +4608,11 @@ export default {
     async dataStoreStart() {
       await DataStore.start();
     },
+    // async dataStoreObserve() {
+    //   DataStore.observe(Clrm).subscribe((msg) => {
+    //   });
+    //   await this.fetchClrms();
+    // },
     spliceTEST() {
       this.classmembers[1].classcount += "TTT";
       // this.classmembers.splice();
@@ -5130,8 +5086,6 @@ export default {
     });
   },
   async created() {
-    //idb
-    this.idbStart();
     //日付、基本設定
     this.dateDevAddDate();
     this.setcurrentAcDate();

@@ -159,8 +159,6 @@
               <br />
               <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
               <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
-              <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
-              <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
 
               <b-switch sise="is-small" v-model="sett.devshow"
                 >devshow : {{ sett.devshow }}</b-switch
@@ -3023,35 +3021,14 @@ export default {
     },
     logg(level = "unknown", type = "", target = "", desc = "", detail = "") {
       this.writeNoteLS("[" + level + "] " + type + " " + desc);
-      // this.createLoggAPI({
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          2
-        )
-      );
-      console.warn(
-        JSON.stringify(
-          {
-            level: level,
-            type: type,
-            target: target,
-            desc: desc,
-            name: this.authdetail.username,
-            detail: detail,
-          },
-          null,
-          1
-        )
-      );
+      this.createLoggAPI({
+        level: level,
+        type: type,
+        target: target,
+        desc: desc,
+        name: this.authdetail.username,
+        detail: detail,
+      });
     },
     testlogg() {
       //           level, type, target, desc, detail
@@ -3135,19 +3112,14 @@ export default {
     async idbTEST2() {
       const ret = await this.idbGet(this.idbCls, this.ds.dev1);
       if (ret) {
-        console.warn("get ok:" + ret);
-      } else {
-        console.warn("get ng:" + ret);
+        console.warn("get " + ret);
       }
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
-    },
-    async idbTEST3() {
-      await this.idbRemove(this.idbCls, this.ds.dev1);
-      // if (!ret) {
-      //   console.warn("! get" + ret);
-      // }
+      if (!ret) {
+        console.warn("! get" + ret);
+      }
+      if (ret !== undefined) {
+        console.warn("get ok " + ret);
+      }
     },
     // idb状況確認
     async idbStart() {
@@ -3190,36 +3162,35 @@ export default {
     //   // console.warn(ret);
     // },
     async idbSet(nam, key, obj) {
-      try {
-        const retval = await nam.setItem(key, obj); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Set", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Set", e);
-        return false;
-      }
+      await nam
+        .setItem(key, obj)
+        // .then((v) => {
+        //   console.warn(v);
+        // })
+        .catch((e) => {
+          // console.warn("idborage set error");
+          // console.warn(e);
+          this.logg("idbSet", "Error", key, JSON.stringify(e) + "," + JSON.stringify(obj));
+        });
     },
     async idbGet(nam, key) {
-      try {
-        const retval = await nam.getItem(key); // get null if unable to find
-        if (!retval) {
-          this.idbLogg("Warn", nam, key, "Get", "no value");
-        }
-        return retval;
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Get", e);
-        return false;
-      }
+      await nam
+        .getItem(key)
+        .then((v) => {
+          if (!v) {
+            this.idbLogg("Watn", nam, key, "Get", "no value");
+          }
+          return v;
+        })
+        .catch((e) => {
+          this.idbLogg("Error", nam, key, "Get", e);
+          return false;
+        });
     },
     async idbRemove(nam, key) {
-      try {
-        await nam.removeItem(key); // get null if unable to find
-      } catch (e) {
-        this.idbLogg("Error", nam, key, "Remove", e);
-        return false;
-      }
+      await nam.removeItem(key).catch((e) => {
+        this.idbLogg("Error", nam, key, "Remove", JSON.stringify(e, null, 2));
+      });
     },
     async idbGetLength(nam) {
       await nam
