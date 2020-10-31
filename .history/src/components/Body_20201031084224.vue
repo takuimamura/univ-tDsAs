@@ -103,6 +103,7 @@
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
           <b-switch size="is-small" v-model="sett.devsummary">devsummary : {{ sett.devsummary }}</b-switch>
+
           idle:{{ IdleVueStatus }}
           <template v-if="sett.devsummary">
             <!--■■■開発用 ローカル限定表示■■■-->
@@ -3058,26 +3059,14 @@ export default {
     },
     async idbTEST3() {
       await this.idbRemove(this.idbCls, this.ds.dev1);
+      // if (!ret) {
+      //   console.warn("! get" + ret);
+      // }
     },
     // idb状況確認
     async idbStart() {
       // マスタ存在確認
-      // check if already initialized yet
-      if (await this.idbGet(this.idbMng, "init")) {
-        console.warn("initial use");
-        await this.idbSet(this.idbMng, "init", this.getDateYYYYMMDDhHHMMSS());
-      } else {
-        console.warn("working");
-      }
-
-      // lenSmry クラスサマリ確認
-      if (await this.idbGet(this.lenSmry, "init")) {
-        console.warn("initial use");
-        await this.idbSet(this.lenSmry, "init", this.getDateYYYYMMDDhHHMMSS());
-      } else {
-        console.warn("working");
-      }
-
+      // index
       const ret = await this.idbSet(
         this.idbCls,
         "hello",

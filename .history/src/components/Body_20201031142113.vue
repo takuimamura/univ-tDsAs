@@ -3063,17 +3063,10 @@ export default {
     async idbStart() {
       // マスタ存在確認
       // check if already initialized yet
-      if (await this.idbGet(this.idbMng, "init")) {
+      if (
+        await this.idbSet(this.idbCls, "init", this.getDateYYYYMMDDhHHMMSS())
+      ) {
         console.warn("initial use");
-        await this.idbSet(this.idbMng, "init", this.getDateYYYYMMDDhHHMMSS());
-      } else {
-        console.warn("working");
-      }
-
-      // lenSmry クラスサマリ確認
-      if (await this.idbGet(this.lenSmry, "init")) {
-        console.warn("initial use");
-        await this.idbSet(this.lenSmry, "init", this.getDateYYYYMMDDhHHMMSS());
       } else {
         console.warn("working");
       }
