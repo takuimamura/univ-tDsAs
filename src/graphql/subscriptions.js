@@ -8,9 +8,6 @@ export const onCreateTodo = /* GraphQL */ `
       owner
       title
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -23,9 +20,6 @@ export const onUpdateTodo = /* GraphQL */ `
       owner
       title
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -38,9 +32,6 @@ export const onDeleteTodo = /* GraphQL */ `
       owner
       title
       status
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -58,9 +49,6 @@ export const onCreateInst = /* GraphQL */ `
       clockincorrect
       clockoutcorrect
       detail
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -78,9 +66,6 @@ export const onUpdateInst = /* GraphQL */ `
       clockincorrect
       clockoutcorrect
       detail
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -98,9 +83,6 @@ export const onDeleteInst = /* GraphQL */ `
       clockincorrect
       clockoutcorrect
       detail
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -113,9 +95,6 @@ export const onCreateMisc = /* GraphQL */ `
       type
       name
       detail
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -128,9 +107,6 @@ export const onUpdateMisc = /* GraphQL */ `
       type
       name
       detail
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -143,9 +119,546 @@ export const onDeleteMisc = /* GraphQL */ `
       type
       name
       detail
-      _version
-      _deleted
-      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateMiscX = /* GraphQL */ `
+  subscription OnCreateMiscX {
+    onCreateMiscX {
+      type
+      datestr
+      name
+      desc
+      cust01
+      cust02
+      cust03
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMiscX = /* GraphQL */ `
+  subscription OnUpdateMiscX {
+    onUpdateMiscX {
+      type
+      datestr
+      name
+      desc
+      cust01
+      cust02
+      cust03
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMiscX = /* GraphQL */ `
+  subscription OnDeleteMiscX {
+    onDeleteMiscX {
+      type
+      datestr
+      name
+      desc
+      cust01
+      cust02
+      cust03
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateLog = /* GraphQL */ `
+  subscription OnCreateLog {
+    onCreateLog {
+      level
+      datestr
+      name
+      type
+      target
+      desc
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateLog = /* GraphQL */ `
+  subscription OnUpdateLog {
+    onUpdateLog {
+      level
+      datestr
+      name
+      type
+      target
+      desc
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteLog = /* GraphQL */ `
+  subscription OnDeleteLog {
+    onDeleteLog {
+      level
+      datestr
+      name
+      type
+      target
+      desc
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateSmry = /* GraphQL */ `
+  subscription OnCreateSmry {
+    onCreateSmry {
+      uid
+      classcode
+      update
+      classtitle
+      classtitleJ
+      classnum
+      roomnum
+      dayofweek
+      grade
+      semester
+      slot
+      timefrom
+      timeto
+      type
+      students
+      note
+      state1
+      state2
+      state3
+      newest
+      oldest
+      detail
+      attn01done
+      attn02done
+      attn03done
+      attn04done
+      attn05done
+      attn06done
+      attn07done
+      attn08done
+      attn09done
+      attn10done
+      attn11done
+      attn12done
+      attn13done
+      attn14done
+      attn15done
+      attn16done
+      attn17done
+      attn18done
+      attn19done
+      attn20done
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateSmry = /* GraphQL */ `
+  subscription OnUpdateSmry {
+    onUpdateSmry {
+      uid
+      classcode
+      update
+      classtitle
+      classtitleJ
+      classnum
+      roomnum
+      dayofweek
+      grade
+      semester
+      slot
+      timefrom
+      timeto
+      type
+      students
+      note
+      state1
+      state2
+      state3
+      newest
+      oldest
+      detail
+      attn01done
+      attn02done
+      attn03done
+      attn04done
+      attn05done
+      attn06done
+      attn07done
+      attn08done
+      attn09done
+      attn10done
+      attn11done
+      attn12done
+      attn13done
+      attn14done
+      attn15done
+      attn16done
+      attn17done
+      attn18done
+      attn19done
+      attn20done
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteSmry = /* GraphQL */ `
+  subscription OnDeleteSmry {
+    onDeleteSmry {
+      uid
+      classcode
+      update
+      classtitle
+      classtitleJ
+      classnum
+      roomnum
+      dayofweek
+      grade
+      semester
+      slot
+      timefrom
+      timeto
+      type
+      students
+      note
+      state1
+      state2
+      state3
+      newest
+      oldest
+      detail
+      attn01done
+      attn02done
+      attn03done
+      attn04done
+      attn05done
+      attn06done
+      attn07done
+      attn08done
+      attn09done
+      attn10done
+      attn11done
+      attn12done
+      attn13done
+      attn14done
+      attn15done
+      attn16done
+      attn17done
+      attn18done
+      attn19done
+      attn20done
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateMng = /* GraphQL */ `
+  subscription OnCreateMng {
+    onCreateMng {
+      type
+      code
+      datestr
+      name
+      trigger
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateMng = /* GraphQL */ `
+  subscription OnUpdateMng {
+    onUpdateMng {
+      type
+      code
+      datestr
+      name
+      trigger
+      detail
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteMng = /* GraphQL */ `
+  subscription OnDeleteMng {
+    onDeleteMng {
+      type
+      code
+      datestr
+      name
+      trigger
+      detail
       createdAt
       updatedAt
     }
@@ -255,9 +768,6 @@ export const onCreateClrm = /* GraphQL */ `
       cust03
       cust04
       cust05
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -367,9 +877,6 @@ export const onUpdateClrm = /* GraphQL */ `
       cust03
       cust04
       cust05
-      _version
-      _deleted
-      _lastChangedAt
       createdAt
       updatedAt
     }
@@ -479,9 +986,660 @@ export const onDeleteClrm = /* GraphQL */ `
       cust03
       cust04
       cust05
-      _version
-      _deleted
-      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateClrmX = /* GraphQL */ `
+  subscription OnCreateClrmX {
+    onCreateClrmX {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateClrmX = /* GraphQL */ `
+  subscription OnUpdateClrmX {
+    onUpdateClrmX {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteClrmX = /* GraphQL */ `
+  subscription OnDeleteClrmX {
+    onDeleteClrmX {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateClrmY = /* GraphQL */ `
+  subscription OnCreateClrmY {
+    onCreateClrmY {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateClrmY = /* GraphQL */ `
+  subscription OnUpdateClrmY {
+    onUpdateClrmY {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteClrmY = /* GraphQL */ `
+  subscription OnDeleteClrmY {
+    onDeleteClrmY {
+      id
+      uid
+      index
+      sortid
+      classcount
+      classcode
+      classnameJ
+      studentcode
+      studentname
+      studentnameJ
+      studentnameJKana
+      studentnameRev
+      dayofweek
+      enable
+      group
+      note
+      attn01
+      attn02
+      attn03
+      attn04
+      attn05
+      attn06
+      attn07
+      attn08
+      attn09
+      attn10
+      attn11
+      attn12
+      attn13
+      attn14
+      attn15
+      attn16
+      attn17
+      attn18
+      attn19
+      attn20
+      attmisc
+      homeworkincomplete02
+      homeworkincomplete03
+      homeworkincomplete04
+      homeworkincomplete05
+      homeworkincomplete06
+      homeworkincomplete07
+      homeworkincomplete08
+      homeworkincomplete09
+      homeworkincomplete10
+      homeworkincomplete11
+      homeworkincomplete12
+      homeworkincomplete13
+      homeworkincomplete14
+      homeworkincomplete15
+      homeworkincomplete16
+      homeworkincomplete17
+      homeworkincomplete18
+      homeworkincomplete19
+      homeworkincomplete20
+      eval01
+      eval02
+      eval03
+      eval04
+      eval05
+      eval06
+      eval07
+      eval08
+      eval09
+      eval10
+      eval11
+      eval12
+      eval13
+      eval14
+      eval15
+      eval16
+      eval17
+      eval18
+      eval19
+      eval20
+      ecom01
+      ecom02
+      ecom03
+      ecom04
+      ecom05
+      ecom06
+      ecom07
+      ecom08
+      ecom09
+      ecom10
+      ecom11
+      ecom12
+      ecom13
+      ecom14
+      ecom15
+      ecom16
+      ecom17
+      ecom18
+      ecom19
+      ecom20
+      cust01
+      cust02
+      cust03
+      cust04
+      cust05
       createdAt
       updatedAt
     }

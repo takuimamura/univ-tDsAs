@@ -1991,7 +1991,7 @@ import { DataStore, Hub, Auth } from "aws-amplify";
 
 // import testJSON from "../assets/test.json";
 // import testJSON from "../assets/test.json";
-// import AutumnNewClssJSON from "../assets/AutumnNewClss.json";
+import AutumnNewClssJSON from "../assets/AutumnNewClss.json";
 import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
@@ -2812,6 +2812,25 @@ export default {
     };
   },
   methods: {
+    // // 開講前インポート用
+    async DEVimportSmryAPI() {
+      const logArr = [];
+      const clss = AutumnNewClssJSON;
+      for await (const m of clss) {
+        // console.warn(m);
+        try {
+          const ret = await API.graphql(graphqlOperation(createSmry, { input: m }));
+          console.warn(m.classcode);
+          logArr.push(ret);
+        } catch (e) {
+          console.warn("error", m.classcode);
+          logArr.push("error", e.errors);
+        }
+      }
+      this.sett.dummy1 = logArr;
+      console.warn(logArr);
+    },
+
     //////////講師 勤怠
     //////////講師 勤怠
     instClockIn() {

@@ -78,11 +78,10 @@
 
           <b-button size="is-small" @click="chkfindtest()">chkfindtest</b-button>
           <b-button size="is-small" @click="dummytest">dummytest</b-button>
-          ■dummy1:{{ sett.dummy1 }} ■dummy2{{ sett.dummy2 }} ■dummy3{{ sett.dummy3 }} ■dummy4:{{
-            sett.dummy4
+          " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
+            sett.dummy3
           }}
-          ■dummy5{{ sett.dummy5 }} ■dummy3{{ sett.dummy6 }} authdetail::
-          {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
+          authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
           <br />
           <b-field>
             <b-numberinput
@@ -129,11 +128,8 @@
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
-            dataIDB {{ dataIDB.Clrms.length }} | dataAPI: {{ dataAPI.Clrms.length }} | dataDS:
-            {{ dataDS.Clrms.length }} | dataLS: {{ dataLS.Clrms.length }} | dataset:
-            {{ dataset.Clrms.length }} ||| source = {{ dataset.source }} | isClrmLoading:
-            {{ isClrmLoading }}
-
+            dataAPI: {{ dataAPI.Clrms.length }} | dataDS: {{ dataDS.Clrms.length }} | dataLS:
+            {{ dataLS.Clrms.length }} | dataset: {{ dataset.Clrms.length }} |
             <br />
             allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
             <!-- InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{  dataset.Clrms.length}} | ClrmsChk::{{ dataset.ClrmsChk.length }} |-->
@@ -154,31 +150,26 @@
               <!-- <b-button @click="idbSet(iidbMisc, ds.dev1, ds.dev2)">idbSet</b-button> -->
               <b-button size="is-small" @click="idbStart()">idbStart</b-button>
               <b-button size="is-small" @click="idbRemove(idbSQue, ds.dev1)">remove queue</b-button>
-              <b-button size="is-small" @click="idbHandleSQueue()">idbHandleSQueue</b-button>
+              <b-button size="is-small" @click="retrySQ()">retrySQ</b-button>
               <b-button size="is-small" @click="syncLSlocalDB()">syncLSlocalDB</b-button>
               <b-button size="is-small" @click="idbClear(idbCls)">remove ALL</b-button>
               <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
-              <b-button size="is-small" @click="testlog()">testlog</b-button>
+              <b-button size="is-small" @click="testlogg()">testloggg</b-button>
               <br />
               <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
               <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
               <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
               <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
-              <b-button size="is-small" @click="idbTEST5()">idbTEST 5</b-button>
-              <br />
-              <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
-              <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
-              <b-button size="is-small" @click="datasetIDBGetALL()">idbTEST 3</b-button>
 
               <b-switch sise="is-small" v-model="sett.devshow"
                 >devshow : {{ sett.devshow }}</b-switch
               >
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
-                <template v-if="classmembers.length > 0 && sett.devshowMem">{{
-                  classmembers[0]
-                }}</template>
-                <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
+                <template v-if="classmembers.length > 0 && sett.devshowMem">
+                  {{ classmembers[0] }}
+                </template>
+                <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
                 <template v-if="sett.sw1">
                   <div>
                     yourClasses | {{ yourClasses }}
@@ -243,76 +234,54 @@
             </div>
             <!-- <div class="column">            </div> -->
           </div>
-          dataIDB {{ dataIDB.Clrms.length }} | dataAPI: {{ dataAPI.Clrms.length }} | dataLS:
-          {{ dataLS.Clrms.length }} ||| {{ dataset.Clrms.length }} ||| source = {{ dataset.source }}
+          dataAPI: {{ dataAPI.Clrms.length }} | dataLS: {{ dataLS.Clrms.length }} | dataset.Clrms:
+          {{ dataset.Clrms.length }} |
           <br />
-          allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }} | .Smry:{{
-            dataset.Smry.length
-          }}
+          allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
           <b-field>
             <b-numberinput
               v-model="dev.classCLimit"
               controls-position="compact"
               size="is-small"
-            ></b-numberinput>
+            ></b-numberinput
+            >dataset.Clrms
             <b-button @click="TESTarr3()" size="is-small">classroomDS</b-button>
           </b-field>
           <ul>
-            ---indexedDB
             <li v-for="r in TESTarr1" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
-              }}
-              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
-              }}- {{ getDateMDhmmss(r.ecom01) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
+              {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>
             ----classmembers
             <li v-for="r in TESTarr2" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
-              }}
-              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
-              }}- {{ getDateMDhmmss(r.ecom01) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
+              {{ getDateMDhmmss(r._lastChangedAt) }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
             </li>
             ----DataStore
             <li v-for="r in sett.dummyClrm" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
-              }}
-              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
-              }}- {{ getDateMDhmmss(r.ecom01) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
+              {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>
             ----dataAPI
             <li v-for="r in TESTarr4" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
-              }}
-              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
-              }}- {{ getDateMDhmmss(r.ecom01) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
+              {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>
             ----dataLS
             <li v-for="r in TESTarr5" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
-              }}
-              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
-              }}- {{ getDateMDhmmss(r.ecom01) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
+              {{ getDateMDhmmss(r._lastChangedAt) }}
             </li>
           </ul>
         </div>
@@ -486,9 +455,9 @@
                     </b-field>
                     <b-table :data="yourattendancesMonth">
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">
-                          {{ getDateMDddd(props.row.date) }}
-                        </b-table-column>
+                        <b-table-column field="date" label="Date" width="150">{{
+                          getDateMDddd(props.row.date)
+                        }}</b-table-column>
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
                           }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
@@ -497,9 +466,9 @@
                           {{ props.row.clockout
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
-                        <b-table-column field="detail" label="Note">
-                          {{ props.row.detail }}
-                        </b-table-column>
+                        <b-table-column field="detail" label="Note">{{
+                          props.row.detail
+                        }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -538,7 +507,7 @@
           </b-tab-item>
           <!-- schedule --------------------------------------------------------------------schedule -->
           <!-- schedule --------------------------------------------------------------------schedule -->
-          <b-tab-item label="Schedule" icon="calendar-alt" :disabled="isClrmLoading">
+          <b-tab-item label="Schedule" icon="calendar-alt">
             <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
               <div class="column"></div>
               <div class="column">
@@ -677,7 +646,6 @@
                     </template>
                     <template v-else-if="selClrm.attndone === false"></template>
                     <template v-else></template>
-                    <!-- いまのところfalseもnullも同じ扱い -->
                   </div>
                   <div class="column">
                     <!-- Force Sync 手動アップロード -->
@@ -1023,9 +991,9 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">{{
-                        att.modeset[`${att.mode}`].barcaption
-                      }}</span>
+                      <span style="font-size: 28px; color: black;">
+                        {{ att.modeset[`${att.mode}`].barcaption }}
+                      </span>
                     </b-progress>
                   </div>
                 </div>
@@ -1096,9 +1064,9 @@
                     width="10"
                     sticky
                   >
-                    <template v-if="sett.devcheck">
-                      {{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}
-                    </template>
+                    <template v-if="sett.devcheck">{{
+                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
+                    }}</template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -1278,9 +1246,9 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <!-- タイムスタンプあとまわし表示<span class="is-size-5 has-text-grey">
-                              {{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}
-                            </span> -->
+                            <span class="is-size-5 has-text-grey">{{
+                              getTimeIfTodayOrDate(indiRow._lastChangedAt)
+                            }}</span>
                           </div>
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
@@ -1349,11 +1317,12 @@
                                               icon="user-slash"
                                               size="is-medium"
                                               :type="
-                                                indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'
+                                                indiRow[k.evl] == -1 ? 'is-success' : 'is-warning'
                                               "
                                               @click="minusEvalUpTarget(indiRow, k.evl)"
                                             />
                                           </a>
+                                          <!-- type="is-danger" -->
                                         </td>
                                         <td style="padding-left:15px">
                                           <a @click="zeroEvalUpTarget(indiRow, k.evl)">
@@ -1400,9 +1369,9 @@
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{ indiRow[k.evl] }}
-                                          </span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{
+                                            indiRow[k.evl]
+                                          }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -1484,9 +1453,7 @@
                                             pack="fas"
                                             icon="user-slash"
                                             size="is-medium"
-                                            :type="
-                                              indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'
-                                            "
+                                            type="is-danger"
                                             @click="minusEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>
@@ -1610,7 +1577,7 @@
                                         pack="fas"
                                         icon="user-slash"
                                         size="is-medium"
-                                        :type="indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'"
+                                        type="is-danger"
                                         @click="minusEvalUpTarget(indiRow, k.evl)"
                                       />
                                     </a>
@@ -1656,9 +1623,9 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{ indiRow[k.evl] }}
-                                        </span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{
+                                          indiRow[k.evl]
+                                        }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -1815,11 +1782,7 @@
                                   pack="fas"
                                   icon="user-slash"
                                   size="is-medium"
-                                  :type="
-                                    indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
-                                      ? 'is-slashab'
-                                      : 'is-slashok'
-                                  "
+                                  type="is-danger"
                                   @click="
                                     minusEvalUpTarget(
                                       indiRow,
@@ -1962,9 +1925,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[selClrm.attnthisweek])">
-                              {{ st.classcount + " " + st.studentname }}
-                            </span>
+                            <span :class="getIndiAttendClass(st[selClrm.attnthisweek])">{{
+                              st.classcount + " " + st.studentname
+                            }}</span>
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -1987,49 +1950,36 @@
 import Vue from "vue";
 // import { DataStore, Predicates, Hub, Auth } from "aws-amplify";
 import { DataStore, Hub, Auth } from "aws-amplify";
-// import { Hub, Auth } from "aws-amplify";
 
-// import testJSON from "../assets/test.json";
-// import testJSON from "../assets/test.json";
-// import AutumnNewClssJSON from "../assets/AutumnNewClss.json";
 import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
 import EnvJSON from "../assets/env.json";
 // import { Clrm, Inst, Misc } from "../models";
-// import { Clrm, Misc } from "../models";
-import { Clrm } from "../models";
+import { Clrm, Misc } from "../models";
 
 import API, { graphqlOperation } from "@aws-amplify/api";
 // import { onCreateAttend } from "../graphql/subscriptions";
-// listMiscs
-// listMiscXs
-// listLogs
-// getClrmY
-// instructor
-// bydayX
-// bydayY
-
 import {
-  // listClrms,
+  // listCinfs, // 謎の取得できないやつ
+  // listCldrs,
+  listClrms,
   instByday,
   listInsts,
-  listSmrys,
-  // listClrmYs
-  // listClrmXs
-  // listMngs
+  // getInsts,
+  // listMiscs
+  // getMisc,
 } from "../graphql/queries";
+// // createCldr,
+// // createClrm,
 import {
   createInst,
   createMisc,
+  // updateCinf,
+  //   updateCldr,
   updateClrm,
   updateInst,
-  createLog,
-  updateLog,
-  createMiscX,
-  updateMiscX,
-  // createSmry,
-  updateSmry,
+  // updateMisc
 } from "../graphql/mutations";
 // import { onCreateInst, onCreateMisc,  onUpdateInst, onUpdateMisc } from "../graphql/subscriptions";
 
@@ -2067,11 +2017,10 @@ export default {
   },
   onIdle() {
     this.IdleVueStatus = "ZZZ";
-    this.idbHandleSQueue();
     // 授業中で当日出欠OKなら再送信、バックアップ送信
     // this.isEnteredselClrm
-    // this.idbHandleSQueue();
-    if (this.selClrm !== null) {
+    // this.retrySQ();
+    if (this.selClrm.length > 0) {
       if (this.classmembers.length > 0) {
         //何かしら出欠編集してて未送信なら
         if (
@@ -2084,7 +2033,7 @@ export default {
           this.selClrm.attnModified = false;
         }
         //  クラス毎のサマリDB 更新
-        this.reflectClassSummary(this.selClrm);
+        this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
       } else {
         //異常
         this.writeNoteLS("onIdle selClrm but no classmembers");
@@ -2102,22 +2051,13 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.0",
-        rev: "-",
+        version: "1.11",
+        rev: "F_noteSalvageFlash mod",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
         noteName: "appNoteTmu",
-        noteNameAPI: "appNoteTmuAPI",
-        noteNameNW: "appNoteTmuNW",
-        noteNameIDB: "appNoteTmuIDB",
         device: "deviceTmu",
-        startWhen: null,
-      },
-      state: {
-        APIfetch: false,
-        dataLS: false,
-        idbSetup: false,
       },
       ds: {
         clrms: null,
@@ -2165,9 +2105,6 @@ export default {
         dummy1: null,
         dummy2: null,
         dummy3: null,
-        dummy4: null,
-        dummy5: null,
-        dummy6: null,
         dummyClrm: [],
         sw1: false,
         sw2: false,
@@ -2181,9 +2118,6 @@ export default {
         },
         classSelected: null,
         alias: { usename: null, name: "all" },
-        intId0: undefined, // setInterval
-        intId1: undefined, // setInterval
-        intId2: undefined, // setInterval
       },
       authdetail: {
         username: "unknown",
@@ -2343,8 +2277,7 @@ export default {
           },
         ],
       },
-      selClrm: { id: "" }, //null,
-      idbClrm: { id: "" }, //null,
+      selClrm: [],
       // AppSyncUp
       isClrmAppSyncUploading: false,
       ClrmAppSyncStateShow: false,
@@ -2781,21 +2714,11 @@ export default {
         allClasses: ClssJSON, // [],
         Cldrs: SchdJSON, //[], //カレンダ
         Miscs: [], //その他便利に使う
-        Smry: [],
-        source: "",
       },
       dataAPI: {
         Clrms: [], // [], //学生データ
-        log: "",
-        status: "",
-        fetching: false,
-        ready: false,
-      },
-      dataIDB: {
-        Clrms: [], // [], //学生データ
-        log: "",
-        status: "",
-        ready: false,
+        // ClrmsInstByday: [],
+        // Miscs: [], //その他便利に使う
       },
       dataDS: {
         queryWait: false,
@@ -2829,9 +2752,10 @@ export default {
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
           const msgg =
             "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
-          ////////// APIで
           this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
-          this.writeNoteLS("ClockIn { date: " + add.date + ", clockin: " + add.clockin);
+          ////////// APIで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockIn", add, "");
           // this.instructor.yourhistory.push(add);
           // this.instructor.peopleNow.push(this.instructor.you.firstName);
         },
@@ -2842,10 +2766,7 @@ export default {
       await this.listInstsDataAPI(); // 修正があった場合のたに最新にする
       //// localStorageからバックアップ引き揚げ
       this.salvageclassRealtimeBackup();
-      this.salvageDaylogs(this.app.noteName);
-      this.salvageDaylogs(this.app.noteNameAPI);
-      this.salvageDaylogs(this.app.noteNameNW);
-      this.salvageDaylogs(this.app.noteNameIDB);
+      this.salvageNote();
       this.$buefy.dialog.confirm({
         message: "Clock Out?",
         size: "is-large",
@@ -2873,14 +2794,9 @@ export default {
           this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
           // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
           ////////// APIで
-          this.writeNoteLS(
-            "ClockOut { date: " +
-              arr.date +
-              ", clockin: " +
-              arr.clockin +
-              ", clockout: " +
-              arr.clockout
-          );
+          ////////// 一応MiscにはDataStoreで
+          ////////// Miscにも
+          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
           //   v => v == this.instructor.you.firstName
@@ -2950,11 +2866,23 @@ export default {
         this.writeFail("InstUpdate", upArr, err);
       }
     },
+    async createMiscClockInOut(typ, arr, ou) {
+      const cr = {
+        type: typ,
+        name: this.authdetail.username,
+        detail: JSON.stringify({
+          name: this.authdetail.username,
+          date: arr.date,
+          clockin: arr.clockin,
+          clockout: ou,
+        }),
+      };
+      await DataStore.save(new Misc(cr));
+    },
     // いろいろログ用： this.writeNoteLS("fetch start");
     /////API GraphQL
     //////////// fetch Clrm
     async APIgetClrmsinstBydayAll() {
-      this.dataAPI.status = "Info";
       this.sett.isLoadingClrmManage = true;
       await this.APIgetClrmsinstByday("Mon"); //★test
       await this.APIgetClrmsinstByday("Tue"); //★test
@@ -2965,17 +2893,9 @@ export default {
         await this.APIgetClrmsinstByday("Sat"); //★test
         await this.APIgetClrmsinstByday("Sun"); //★test
       }
-      this.Log(this.dataAPI.status, "APIget", "Clrm", "summary", "detail");
-      this.writeDayLogs("APIgetClrms done: " + this.dataAPI.status, this.app.noteNameAPI);
-
-      if (this.dataAPI.status == "Info") {
-        this.idbRemove(this.idbSQue, "API");
-        this.dataAPI.ready = true;
-      }
       this.sett.isLoadingClrmManage = false;
     },
     async APIgetClrmsinstByday(dow) {
-      this.dataAPI.fetching = true;
       try {
         const gql = await API.graphql(
           graphqlOperation(instByday, {
@@ -2989,548 +2909,325 @@ export default {
         const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
         this.dataAPI.Clrms = fi;
         this.dataAPI.Clrms.push(...gqld);
-        this.dataAPI.log += dow + ": " + gqld.length;
-        this.dataAPI.status = "done";
-        this.dataAPI.fetching = false;
+        this.writeNoteLS("APIgetClrmsinstByday: " + gqld.length);
         return true;
       } catch (e) {
-        this.dataAPI.status = "Error";
-        this.dataAPI.log += "\n[Error]" + dow + ": " + JSON.stringify(e.errors);
-        this.dataAPI.fetching = false;
+        this.writeNoteLS("APIFail: " + JSON.stringify(e));
+        let crArr = {
+          type: "APIFail" + this.getDateYYYYMMDDhHHMMSS(),
+          name: this.authdetail.username,
+          detail: JSON.stringify(e),
+        };
+        this.createMiscAPI(crArr);
         return false;
       }
     },
-    async dataAPIGetSelClrm() {
-      if (this.selClrm != []) {
-        await this.APIgetClrmsinstByday(this.selClrm.dayofweek); //★test
-      }
+    async APIlistClrmsData() {
+      const gql = await API.graphql(
+        // ★uidが効いてない
+        graphqlOperation(listClrms, { uid: this.sett.alias.name, limit: 5000 })
+      );
+      // 既に保持していた場合除去
+      const fi = this.dataset.Clrms.filter((n) => n.id !== this.sett.alias.name);
+      this.dataAPI.Clrms = fi;
+      this.dataAPI.Clrms.push(...gql.data.listClrms.items);
+      this.writeNoteLS("APIlistClrmsData: " + gql.data.listClrms.items.length);
     },
-    async dataIDBGetSelClrm() {
-      if (this.selClrm != []) {
-        this.dataIDB.Clrms = await this.idbGetClassmembers(this.selClrm.id);
-      }
+    /////DataStore
+    DSObserveClrms() {
+      this.writeNoteLS("DSObserveClrms");
+      DataStore.observe(Clrm).subscribe((msg) => {
+        if (msg.element.uid === this.sett.alias.name) {
+          this.fetchClrms(
+            " sbsc:" +
+              msg.element.classcode +
+              " " +
+              msg.element.studentcode +
+              " " +
+              msg.element.cust02
+          );
+        }
+      });
     },
-    async datasetIDBGetALL() {
-      this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+    async fetchClrms(str = "") {
+      this.writeNoteLS("DS fetch start" + str);
+      this.dataDS.queryWait = true;
+      const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
+      this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));
+      this.writeNoteLS("DS fetched: " + fetch.length);
+      this.dataDS.queryWait = false;
     },
     datasetManage() {
-      let srcStr = "";
       if (this.sett.priorityLS === true) {
         this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-        srcStr = "LS - priorityLS";
+        this.writeNoteLS("Clrms = localStorage - priorityLS");
       } else {
-        if (this.dataIDB.Clrms.length !== 0) {
-          this.dataset.Clrms = this.dataIDB.Clrms;
-          srcStr = "indexedDB";
-        } else if (this.dataAPI.Clrms.length !== 0) {
-          this.dataset.Clrms = this.dataAPI.Clrms;
-          srcStr = "API";
+        if (this.dataDS.Clrms.length === 0) {
+          if (this.dataset.Clrms.length === 0) {
+            this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
+            this.writeNoteLS("Clrms = localStorage");
+          } else {
+            this.dataset.Clrms = this.dataAPI.Clrms;
+            this.writeNoteLS("Clrms = API");
+          }
         } else {
-          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-          srcStr = "LS";
+          this.dataset.Clrms = this.dataDS.Clrms;
+          this.writeNoteLS("Clrms = DataStore");
         }
       }
-      this.dataset.source = srcStr;
-      this.writeDayLogs("Clrms = " + srcStr, this.app.noteName);
-    },
-    async setupWait() {
-      if (this.dataIDB.ready) {
-        await this.datasetManage();
-        // JSONからのallClassesを整える
-        await this.initallClasses();
-        //これ特別対応だけのためのやつ
-        // this.listMiscsDataID("alter", this.authdetail.username);
-        this.workspaceValication();
-        //管理用
-        // this.manageSummary();
-        this.devHelper();
-
-        clearInterval(this.sett.intId0);
-        this.writeNoteLS("clearInterval setupWait", this.app.noteNameAPI);
-      }
-    },
-    async datasetCheck() {
-      if (!this.dataAPI.ready && !this.dataAPI.fetching) {
-        await this.APIgetClrmsinstBydayAll();
-        this.datasetManage();
-      } else if (this.dataset.Clrms.length == 0) {
-        this.datasetManage();
-      } else {
-        clearInterval(this.sett.intId1);
-        this.writeNoteLS("clearInterval datasetCheck", this.app.noteNameAPI);
-      }
-    },
-
-    async idbLog(level = "", nam, key = "", val = "", msg) {
-      const namStr = this.idbGetStoreName(nam);
-      //           level, type, target, desc, detail
-      this.writeDayLogs(
-        level + " " + namStr + " " + key + " " + val + "," + msg,
-        this.app.noteNameIDB,
-        false,
-        true
-      );
-      this.salvageDaylogs(this.app.noteNameIDB, true, true); // flash & update
     },
     ///// Misc
     ///// Misc
-    async createMiscAPI(crArr, queueKey = "") {
+    async createMiscAPI(crArr) {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Misc retry done: " + queueKey, this.app.noteNameAPI);
-        }
         return true;
       } catch (err) {
-        if (queueKey !== "") {
-          this.writeDayLogs("Misc retry FAIL: " + queueKey, this.app.noteNameAPI);
-        } else {
-          this.idbAddSQueue("Misc", "", crArr);
-        }
+        this.writeFail("MiscCreateAPI", crArr, err);
         return err;
       }
     },
-    async createMiscXAPI(crArr, queueKey = "") {
-      if (crArr.datestr == null) {
-        crArr.datestr = this.getDateYYYYMMDDhHHMMssSSS();
-      }
-      crArr.name = this.authdetail.username;
+    async createMisc(arr) {
       try {
-        await API.graphql(graphqlOperation(createMiscX, { input: crArr }));
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("MiscX retry done: " + queueKey, this.app.noteNameAPI);
-        }
-        return true;
+        await DataStore.save(new Misc(arr));
       } catch (err) {
-        if (queueKey !== "") {
-          this.writeDayLogs("MiscX retry FAIL: " + queueKey, this.app.noteNameAPI);
-        } else {
-          this.idbAddSQueue("MiscX", "", crArr);
-        }
-        return err;
+        this.writeFail("MiscCreate", arr, err);
       }
     },
-    async updateMiscXAPI(crArr, queueKey = "") {
+    async createMiscAPIDS(crArr) {
       try {
-        await API.graphql(graphqlOperation(updateMiscX, { input: crArr }));
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("MiscX retry done: " + queueKey, this.app.noteNameAPI);
-        }
+        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
         return true;
-      } catch (err) {
-        if (queueKey !== "") {
-          this.writeDayLogs("MiscX retry FAIL: " + queueKey, this.app.noteNameAPI);
-        } else {
-          this.idbAddSQueue("MiscX", "", crArr);
+      } catch (er) {
+        try {
+          await DataStore.save(new Misc(crArr));
+        } catch (err) {
+          this.writeFail("createMiscAPIDS", er + err, crArr);
+          return err;
         }
-        return err;
       }
     },
-    ///// log
-    async createOrUpdateLogAPI(crArr, queueKey = "", ifUpdate = false) {
+    ///// logg
+    async createLoggAPI(crArr) {
       try {
-        if (ifUpdate) {
-          await API.graphql(graphqlOperation(updateLog, { input: crArr }));
-        } else {
-          await API.graphql(graphqlOperation(createLog, { input: crArr }));
-        }
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Log retry done: " + queueKey, this.app.noteNameAPI);
-        }
-        return true;
-      } catch (err) {
-        if (queueKey !== "") {
-          this.writeDayLogs("Log retry FAIL: " + queueKey, this.app.noteNameAPI);
-        } else {
-          this.idbAddSQueue("Log", "", crArr);
-        }
-        return err;
-      }
-    },
-    Log(level = "unknown", type = "", target = "", desc = "", detail = "", ifUpdate = false) {
-      const datestr = ifUpdate ? this.dayjsYYYYMMDDh() : this.getDateYYYYMMDDhHHMMssSSS();
-      this.writeNoteLS("[" + level + "] " + type + " " + desc);
-      this.createOrUpdateLogAPI(
-        {
-          level: level,
-          datestr: datestr,
+        // await API.graphql(graphqlOperation(createLogg, { input: crArr }));
+        const TESTArr = {
+          type: "TEST",
           name: this.authdetail.username,
-          type: type,
-          target: target,
-          desc: desc,
-          detail: detail,
-        },
-        "",
-        ifUpdate
+          detail: JSON.stringify(crArr, null, 2),
+        };
+        await API.graphql(graphqlOperation(createMisc, { input: TESTArr }));
+        return true;
+      } catch (err) {
+        this.writeFail("createLoggAPI", crArr, err);
+        return err;
+      }
+    },
+    logg(level = "unknown", type = "", target = "", desc = "", detail = "") {
+      this.writeNoteLS("[" + level + "] " + type + " " + desc);
+      // this.createLoggAPI({
+      console.warn(
+        JSON.stringify(
+          {
+            level: level,
+            type: type,
+            target: target,
+            desc: desc,
+            name: this.authdetail.username,
+            detail: detail,
+          },
+          null,
+          2
+        )
+      );
+      console.warn(
+        JSON.stringify(
+          {
+            level: level,
+            type: type,
+            target: target,
+            desc: desc,
+            name: this.authdetail.username,
+            detail: detail,
+          },
+          null,
+          1
+        )
       );
     },
-    testLog() {
-      //           level, type, target, desc, detail, ifUpdate);
-      this.Log("Info", "test", "clrm", "summary", "detail");
-      this.Log("Warn", "test", "clrm", "summary", "detail");
-      this.Log("Error", "test", "clrm", "summary", "detail");
+    testlogg() {
+      //           level, type, target, desc, detail
+      this.logg("Info", "test", "clrm", "summary", "detail");
+      this.logg("Warn", "test", "clrm", "summary", "detail");
+      this.logg("Error", "test", "clrm", "summary", "detail");
+    },
+    async idbLogg(level = "", nam, key = "", val = "", msg) {
+      const namStr = nam._config.storeName;
+      //           level, type, target, desc, detail
+      this.logg(level, "indexdDB", namStr, key, val + "," + msg);
     },
     ////////// updateClrm
     ////////// updateClrm
-    async updateClrmAPIQueue(qkey, queueKey = "") {
-      const obj = await this.idbGet(this.idbCls, qkey);
-      this.updateClrmAPI(obj, "", "", queueKey);
-    },
-    async updateClrmAPI(row, fname, fval, queueKey = "") {
-      let upArr = {};
-      if (queueKey == "") {
-        upArr.id = row.id;
-        upArr[fname] = fval;
-        upArr.cust01 = row.cust01;
-        upArr.cust02 = row.cust02;
-      } else {
-        upArr = row;
-      }
-      delete upArr._version;
-      delete upArr._lastChangedAt;
-      delete upArr._deleted;
-      delete upArr.updatedAt;
-      delete upArr.createdAt;
-
-      // console.warn(upArr);
-      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
+    async updateClrmAPI(row, fname, fval, logging) {
+      const upArr = {
+        id: row.id,
+      };
+      upArr[fname] = fval;
+      upArr.cust01 = logging;
       try {
-        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        row.cust03 = upArr.cust03;
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Clrm retry done: " + queueKey, this.app.noteNameAPI);
-        }
-      } catch (e) {
-        row.cust03 = "";
-        //// --- SendQueue
-        this.idbAddSQueue("Clrm", row.index, row);
-        this.writeDayLogs("ClrmAPI Fail: " + row.index + JSON.stringify(e), this.app.noteNameAPI);
+        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        // console.warn(callbk);
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        // console.warn(err);
+        this.writeFail("updateClrmAPI", upArr, err);
+        this.writeFail("updateClrmAPI", this.authdetail.username, err + JSON.stringify(upArr));
+        return err; // returnの先に用途は実はない
       }
-      //// --- localStorage
-      this.classRealtimeBackup();
-      //// --- indexedDB
-      this.idbSet(this.idbCls, row.index, row);
     },
     async updateClrm(row, fname, fval) {
-      row.cust03 = "";
+      // 10/21より最新操作が先頭にくるように変更
+      const logg =
+        this.getDateYYYYMMDDhHHMMSS() + ",ver." + row._version + "," + fname + "," + fval;
+      const loggHist = logg + "\n" + (row.cust01 === null ? "" : row.cust01);
+      const thi = this.classmembers.filter((n) => n.id === row.id);
+      thi.cust01 = loggHist;
+      thi.cust02 = logg;
+      this.classRealtimeBackup();
       //出欠判
       if (fname.includes("attn") == true) {
         this.selClrm.attnModified = true;
       }
-      this.sett.dummy1 = row;
-      const ret = await this.idbGet(this.idbSQue, "Clrm," + row.index);
-      if (ret) {
-        // sendqueueにある場合全カラムを更新し、Queueも消す
-        this.updateClrmAPI(row, "", "", "Clrm," + row.index);
-      } else {
-        // 10/21より最新操作が先頭にくるように変更
-        const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
-        const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
-        row.cust01 = logHist;
-        row.cust02 = log;
-        //// --- localStorage
-        this.classRealtimeBackup();
-        //// --- indexedDB
-        this.idbSet(this.idbCls, row.index, row);
-        //// --- dynamoDB
-        this.updateClrmAPI(row, fname, fval);
+      //API
+      // this.updateClrmAPI(row, fname, fval, logging);
+      //DataStore
+      const clrmItem = await DataStore.query(Clrm, row.id);
+      try {
+        const callbk = await DataStore.save(
+          Clrm.copyOf(clrmItem, (updated) => {
+            updated[fname] = fval;
+            updated.cust01 = loggHist;
+            updated.cust02 = logg;
+          })
+        );
+        // console.warn(callbk);
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
+        return err; // returnの先に用途は実はない
       }
+      // this.enterClassroomUp();
+      // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },
     ////////// indexedDB
     ////////// indexedDB
+    //////// initialize - everytime load this app 読込時
     async idbTEST1() {
-      // const chk = await this.examSyncDone(this.selClrm, true);
+      const ret = await this.idbSet(this.idbCls, this.ds.dev1, this.ds.dev2);
+      if (ret) {
+        console.warn(ret);
+      }
+      if (!ret) {
+        console.warn("!" + ret);
+      }
+      if (ret !== undefined) {
+        console.warn("ok " + ret);
+      }
     },
     async idbTEST2() {
-      // const chk = await this.examSyncDone(this.selClrm);
-      // this.createSmryAPI();
-      // this.sett.dummy1 = this.dataset.Smry[0];
-      // this.sett.dummy2 = this.yourClasses[0];
-      // const dat = testJSON; //dataAPI.filter((n) => n.index !== "A0094_19131267");
-      // this.importToIDB(dat, true);
-      // const ret = await this.idbGet(this.idbCls, this.ds.dev1);
+      const ret = await this.idbGet(this.idbCls, this.ds.dev1);
+      if (ret) {
+        console.warn("get ok:" + ret);
+      } else {
+        console.warn("get ng:" + ret);
+      }
+      // if (!ret) {
+      //   console.warn("! get" + ret);
+      // }
     },
     async idbTEST3() {
-      this.reflectSmrytoYourclasses();
-      // const all = await this.idbGetALLClassmembers();
-      // this.idbHandleSQueue();
+      await this.idbRemove(this.idbCls, this.ds.dev1);
     },
-    async idbTEST4() {
-      this.importAPItoIDB();
-      // await this.idbRemove(this.idbCls, this.ds.dev1);
-    },
-    async idbTEST5() {
-      this.importLStoIDB();
-      // await this.idbRemove(this.idbCls, this.ds.dev1);
-    },
-    // indexedDB -
-    // indexedDB -
-    //////// initialize - for very first time 初回のみ
-    async idbIfInitialUse(nam) {
-      let ret = false;
-      if (await this.idbGet(nam, "init")) {
-        ret = true;
-      } else {
-        await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
-      }
-      return ret;
-    },
+    // idb状況確認
     async idbStart() {
       // マスタ存在確認
       // check if already initialized yet
-      let logStr = "";
-      const ifInitidbCIdx = this.idbIfInitialUse(this.idbCIdx);
-      const ifInitidbCls = this.idbIfInitialUse(this.idbCls);
-      const ifInitidbSQue = this.idbIfInitialUse(this.idbSQue);
-      const ifInitidbMng = this.idbIfInitialUse(this.idbMng);
-      const ifInitidbSmry = this.idbIfInitialUse(this.idbSmry);
-      const ifInitlenMisc = this.idbIfInitialUse(this.lenMisc);
-      logStr += ifInitidbCIdx ? "idb init CIdx\n" : "";
-      logStr += ifInitidbCls ? "idb init Cls \n" : "";
-      logStr += ifInitidbSQue ? "idb init SQue\n" : "";
-      logStr += ifInitidbMng ? "idb init Mng \n" : "";
-      logStr += ifInitidbSmry ? "idb init Smry\n" : "";
-      logStr += ifInitlenMisc ? "idb init Misc\n" : "";
-
-      await this.idbSet(this.idbCIdx, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbSQue, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.lenMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
-      logStr +=
-        "idbStart: Class:" +
-        (await this.idbCls.length()) +
-        " index:" +
-        (await this.idbCIdx.length()) +
-        " Queue:" +
-        (await this.idbSQue.length()) +
-        " Manage:" +
-        (await this.idbMng.length()) +
-        " Summary" +
-        (await this.idbSmry.length()) +
-        " Misc:" +
-        (await this.idbMisc.length()) +
-        "\n";
-
-      //先読みしときたい
-      const cLen = await this.idbGetLength(this.idbCls);
-      if (cLen > 0) {
-        this.sett.dummy2 = "idb first fetching";
-        logStr += "idb first fetching";
-        this.dataIDB.Clrms = await this.idbGetALLClassmembers();
-      }
-
-      //初期実施処理を書込み（成功までリトライ対象）
-      await this.idbSet(this.idbSQue, "API", this.getDateYYYYMMDDhHHMMSS());
-
-      // idbInitialSetup;
-      this.writeDayLogs("idbStart done: " + logStr, this.app.noteNameAPI);
-    },
-    // マスタ構築
-    async idbSetup() {
-      let logStr = "";
-      ////////// Clrm
-      logStr +=
-        "importToIDB - LS: " + this.dataLS.Clrms.length + " API: " + this.dataAPI.Clrms.length;
-      // 同期 とりあえずLS優先★
-      await this.importToIDB(this.dataLS.Clrms, false);
-      // await this.importLStoIDB();
-      // DynamoDb同期
-      await this.importToIDB(this.dataAPI.Clrms, false);
-      // await this.importAPItoIDB();
-      this.dataIDB.Clrms = await this.idbGetALLClassmembers();
-      ////////// Clrm Index
-      logStr += this.updateIndexIDBbyAPI() + "\n";
-
-      ////////// Class Summary
-      this.syncSmryAll();
-
-      ////////// YourClasses
-      this.reflectSmrytoYourclasses();
-
-      this.dataIDB.ready = true;
-      // this.isClrmLoading = false;
-      this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
-    },
-    // indexedDB - Clrm
-    // indexedDB - Clrm
-    async importLStoIDB() {
-      const dat = this.dataLS.Clrms;
-      this.importToIDB(dat, false);
-    },
-    async importAPItoIDB() {
-      const dat = this.dataAPI.Clrms;
-      this.importToIDB(dat, false);
-    },
-    async importToIDB(dat, force = false) {
-      for await (const x of dat) {
-        if (!force) {
-          const chk = await this.idbGet(this.idbCls, x.index);
-          if (!chk) {
-            this.idbSet(this.idbCls, x.index, x);
-          }
-        } else {
-          this.idbSet(this.idbCls, x.index, x);
-        }
-      }
-      this.idbRemove(this.idbCls, "hello");
-    },
-    async updateIndexIDBbyAPI() {
-      let logStr = "";
-      const dat = this.dataAPI.Clrms; //APIが正しい前提
-      //担当クラス
-      const clslist = dat
-        .map((m) => {
-          return m.classcode;
-        })
-        .sort()
-        .reduce((array, item) => {
-          if (array.includes(item) === false) {
-            array.push(item);
-          }
-          return array;
-        }, []);
-      // クラスと所属生徒一覧
-      clslist.forEach((x) => {
-        const stulist = dat
-          .filter((y) => {
-            return y.classcode === x;
-          })
-          .map((m) => {
-            return m.index;
-          });
-        // dict[x] = stulist;
-        this.idbSet(this.idbCIdx, x, stulist);
-        logStr += x + ":" + stulist.length;
-      });
-      return logStr;
-    },
-    //////////// sync
-    // indexedDB - SmryのSync
-    // indexedDB - SmryのSync
-    // todo
-    // クラス内でidle時と授業終了時にHWチェック→Smryに反映、DynamoDBにも反映
-    // クラス内でidle時と授業終了時にAttnチェック→Smryに反映、DynamoDBにも反映→APIでクラス全員チェック
-    //              ちゃんとDoneならSyncDoneに昇格し、S再度反映（失敗してもQueueにあるだけ）
-    // idleとか定期的にlocalステータスはAPI確認する
-    // idleとか定期的にHWステータスは確認する（事実上は操作時だけでいいけど漏れ防止、できれば漏れでフラグ変わるときエラー出したい）
-    // 常にSmryのHWとかDonwをyourClassesに反映
-    // クラスのSyncDone判定は判定用にAPI処理して捨てる（捨てずに、撮った時間記録して再利用？今後考えよう）
-    //
-    // トリガ：idleか、クラス抜け時か、NWConnection復活時
-    async updateSmry(key, prop, val) {
-      const obj = await this.idbGet(this.idbSmry, key);
-      obj[prop] = val;
-      await this.idbSet(this.idbSmry, key, obj);
-      this.syncSmry(key);
-    },
-    async syncSmry(key, force = false) {
-      // upload to dynamoDB from indexedDB
-      if (!force) {
-        const obj = await this.idbGet(this.idbSmry, key);
-        this.updateSmryAPI(obj);
+      if (await this.idbGet(this.idbMng, "init")) {
+        console.warn("initial use");
+        await this.idbSet(this.idbMng, "init", this.getDateYYYYMMDDhHHMMSS());
       } else {
-        // overwrite indexedDB from dynamoDB
-        if (this.dataset.Smry.length == 0) {
-          await this.APIgetSmrys();
-        }
-        const tgt = this.dataset.Smry.find((m) => {
-          return m.classcode == key;
-        });
-        this.idbSet(this.idbSmry, key, tgt);
+        console.warn("working");
       }
-    },
-    async syncSmryAll(force = false) {
-      // indexedDBからdynamoDBに上書き(強制書込み時はスキップ)
-      if (!force) {
-        const keys = await this.idbSmry.keys();
-        for await (const k of keys) {
-          if (k !== "init" && k !== "hello") {
-            const obj = await this.idbGet(this.idbSmry, k);
-            await this.updateSmryAPI(obj);
-          }
-        }
-      }
-      // dynamoDBから indexedDbに書込み
-      if (this.dataset.Smry.length == 0) {
-        await this.APIgetSmrys();
-      }
-      for await (const x of this.dataset.Smry) {
-        if (!force) {
-          const chk = await this.idbGet(this.idbSmry, x.classcode);
-          if (!chk) {
-            this.idbSet(this.idbSmry, x.classcode, x);
-          }
-        } else {
-          this.idbSet(this.idbSmry, x.classcode, x);
-        }
-      }
-    },
-    async reflectSmrytoYourclasses() {
-      const keys = await this.idbSmry.keys();
-      for await (const k of keys) {
-        if (k !== "init" && k !== "hello") {
-          const obj = await this.idbGet(this.idbSmry, k);
-          let tgt = this.yourClasses.find((arr) => {
-            return arr.id == obj.classcode;
-          });
 
-          const attnstatus = obj[this.getThisWeekAttnJSON[obj.dayofweek] + "done"];
-          tgt.attndone = attnstatus !== null ? true : false;
-          tgt.syncdone = attnstatus === "sync" ? true : attnstatus === "local" ? false : null;
-          const hwic = obj[this.getThisWeekHwicJSON[obj.dayofweek]];
-          if (hwic === true) {
-            //// 識別文字列を追加（既にあればそのまま）
-            tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
-          } else {
-            tgt.detail = tgt.detail.replace("hwic", "");
-          }
-          // console.warn(
-          //   obj.classcode,
-          //   attndone,
-          //   syncdone,
-          //   hwic,
-          //   obj.dayofweek,
-          //   this.getThisWeekAttnJSON[obj.dayofweek],
-          //   obj[this.getThisWeekAttnJSON[obj.dayofweek] + "done"],
-          //   this.getThisWeekHwicJSON[obj.dayofweek],
-          //   obj[this.getThisWeekHwicJSON[obj.dayofweek]]
-          // );
-        }
+      // lenSmry クラスサマリ確認
+      if (await this.idbGet(this.lenSmry, "init")) {
+        console.warn("initial use");
+        await this.idbSet(this.lenSmry, "init", this.getDateYYYYMMDDhHHMMSS());
+      } else {
+        console.warn("working");
       }
-    },
 
-    async TESTmodifySmry(classcode) {
-      // ds.dev1
-      // const classcode = "A0042";
-      let csmry = await this.idbGet(this.idbSmry, classcode);
-      csmry.attn05done = "local"; // null -> local -> sync
-      // dynamoにおくるときはsyncに書き換えてTryする
-      // Smry書込み
-      this.idbSet(this.idbSmry, csmry.classcode, csmry);
-      // yourClassに反映
+      const ret = await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
+      if (ret) {
+        console.warn(ret);
+      }
+      if (!ret) {
+        console.warn("!" + ret);
+      }
 
-      //DynamoDB
-      csmry.attn05done = "local"; // null -> local -> sync
-      this.updateSmryAPI(csmry);
+      const chkInit = await this.idbGet(this.idbCls, "init");
+      if (chkInit) {
+        console.warn("get ok:" + chkInit);
+      } else {
+        console.warn("get ng:" + chkInit);
+      }
+
+      const lenCIdx = this.idbGetLength(this.idbCIdx);
+      const lenCls = this.idbGetLength(this.idbCls);
+      const lenSQue = this.idbGetLength(this.idbSQue);
+      const lenMng = this.idbGetLength(this.idbMng);
+      const lenSmry = this.idbGetLength(this.idbSmry);
+      const lenMisc = this.idbGetLength(this.lenMisc);
+      console.warn(
+        "Class" + JSON.stringify(lenCls, null, 2),
+        "index:" + JSON.stringify(lenCIdx),
+        "Queue:" + JSON.stringify(lenSQue),
+        "Manage:" + JSON.stringify(lenMng),
+        "Summary" + JSON.stringify(lenSmry),
+        "Misc:" + JSON.stringify(lenMisc)
+      );
+      console.warn(this.idbCls._config.storeName);
+      console.warn(JSON.stringify(this.idbCls._config.storeName));
+      // idbInitialSetup;
+
+      // DynamoDb同期
     },
-    // indexedDB basics
-    // indexedDB basics
+    //////// initialize - for very first time 初回のみ
+    // マスタ構築
+    async idbInitialSetup() {},
+    // dynamoDB同期
+    async idbSyncDynamoDB() {},
+    // init
+    // idbSmry 担当クラスごとになければ作成
+    // async idbGetTEST2() {
+    //   const ret = await this.idbGet(this.idbCIdx, "A0238");
+    //   this.ds.devarr1 = ret;
+    //   // console.warn(ret);
+    // },
+    // async idbGetTEST(nam, key) {
+    //   const ret = await this.idbGet(nam, key);
+    //   this.ds.devarr1 = ret;
+    //   // console.warn(ret);
+    // },
     async idbSet(nam, key, obj) {
       try {
         const retval = await nam.setItem(key, obj); // get null if unable to find
         if (!retval) {
-          this.idbLog("Warn", nam, key, "Set", "no value");
+          this.idbLogg("Warn", nam, key, "Set", "no value");
         }
         return retval;
       } catch (e) {
-        this.idbLog("Error", nam, key, "Set", e);
+        this.idbLogg("Error", nam, key, "Set", e);
         return false;
       }
     },
@@ -3538,194 +3235,95 @@ export default {
       try {
         const retval = await nam.getItem(key); // get null if unable to find
         if (!retval) {
-          this.idbLog("Warn", nam, key, "Get", "no value");
+          this.idbLogg("Warn", nam, key, "Get", "no value");
         }
         return retval;
       } catch (e) {
-        this.idbLog("Error", nam, key, "Get", e);
+        this.idbLogg("Error", nam, key, "Get", e);
         return false;
       }
-    },
-    async idbGetLength(nam) {
-      const keys = await nam.keys();
-      let cnt = 0;
-      for await (const k of keys) {
-        //// カウント対象外
-        if (k !== "init" && k !== "hello") {
-          cnt += 1;
-        }
-      }
-      return cnt;
     },
     async idbRemove(nam, key) {
       try {
         await nam.removeItem(key); // get null if unable to find
       } catch (e) {
-        this.idbLog("Error", nam, key, "Remove", e);
+        this.idbLogg("Error", nam, key, "Remove", e);
         return false;
       }
     },
-    // indexedDB Clrms
-    // indexedDB Clrms
-    async idbGetClassmembers(classcode) {
-      const idbg = await this.idbGet(this.idbCIdx, classcode);
-      const mems = [];
-      for await (const x of idbg) {
-        const chk = await this.idbGet(this.idbCls, x);
-        mems.push(chk);
-      }
-      return mems.sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-    },
-    async idbGetALLClassmembers() {
-      const ckeys = await this.idbCls.keys();
-      const mems = [];
-      for await (const k of ckeys) {
-        if (k !== "init" && k !== "hello") {
-          const chk = await this.idbGet(this.idbCls, k);
-          mems.push(chk);
-        }
-      }
-      return mems;
-      // const idbg = await this.idbGet(this.idbCIdx, classcode);
-      // const mems = [];
-      // for await (const x of idbg) {
-      //   const chk = await this.idbGet(this.idbCls, x);
-      //   mems.push(chk);
-      // }
-      // return mems.sort(function(a, b) {
-      //   if (a.sortid < b.sortid) return -1;
-      //   if (a.sortid > b.sortid) return 1;
-      //   return 0;
-      // });
-    },
-    async idbGetStoreName(nam) {
-      if (nam == this.idbCls) {
-        return "Clrm";
-      } else if (nam == this.idbCIdx) {
-        return "CIndex";
-      } else if (nam == this.idbSQue) {
-        return "SendQueue";
-      } else if (nam == this.idbMng) {
-        return "Manage";
-      } else if (nam == this.idbSmry) {
-        return "Summary";
-      } else if (nam == this.idbMisc) {
-        return "Miscs";
-      } else {
-        return "[unknown idb]";
-      }
-    },
-    // indexedDB Summary
-    // indexedDB Summary
-    async APIgetSmrys() {
-      try {
-        const gql = await API.graphql(
-          graphqlOperation(listSmrys, {
-            uid: this.sett.alias.name,
-          })
-        );
-        this.dataset.Smry = gql.data.listSmrys.items;
-        return true;
-      } catch (e) {
-        this.Log("Error", "APIget", "Smry", "summary", "detail");
-        this.writeDayLogs("[Error]APIgetSmry " + JSON.stringify(e.errors), this.app.noteNameAPI);
-        return false;
-      }
-    },
-    async updateSmryAPI(upArr, queueKey = "") {
-      // remove properties which are not in scope of the schema
-      delete upArr.createdAt;
-      delete upArr.updatedAt;
-      try {
-        await API.graphql(graphqlOperation(updateSmry, { input: upArr }));
-        // const ret = await API.graphql(graphqlOperation(updateSmry, { input: upArr }));
-        if (queueKey !== "") {
-          this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Smry retry done: " + queueKey, this.app.noteNameAPI);
-        }
-        return true;
-      } catch (e) {
-        // console.warn("updateSmryAPI error", e);
-        if (queueKey !== "") {
-          this.writeDayLogs("Smry retry FAIL: " + queueKey, this.app.noteNameAPI);
-        } else {
-          this.idbAddSQueue("Smry", upArr.classcode, upArr);
-        }
-        // this.dealQueue(false, msg, queueKey="",queueAddKey, val);
-        return e;
-      }
-    },
-    // indexedDB Queue
-    // indexedDB Queue
-    async idbAddSQueue(key, tailStr = "", val) {
-      tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMssSSS() : tailStr;
-      this.idbSet(this.idbSQue, key + "," + tailStr, val);
-    },
-    async idbHandleSQueue() {
-      const qkeys = await this.idbSQue.keys();
-      let qObj = {};
-      // let mtcs = [];
-      for await (const qk of qkeys) {
-        const val = await this.idbGet(this.idbSQue, qk);
-        // mtcs.push(val);
-        Object.assign(qObj, { [qk]: val });
-      }
-      for await (const qk of qkeys) {
-        // console.warn(qObj[qk]);
-        const gql = qk.split(",")[0];
-        // init, hello will be ignored
-        switch (gql) {
-          case "Log":
-            this.createOrUpdateLogAPI(qObj[qk], qk);
-            break;
-          case "Misc":
-            this.createMiscAPI(qObj[qk], qk);
-            break;
-          case "MiscX":
-            this.createMiscXAPI(qObj[qk], qk);
-            break;
-          case "Clrm":
-            this.updateClrmAPIQueue(qk.split(",")[1], qk);
-            break;
-          case "API":
-            this.APIgetClrmsinstBydayAll();
-            break;
-        }
-      }
-    },
-    //つくりかけQueueの後処理一括請負
-    dealQueue(isSuccessed, msg, queueKey = "", queueAddKey, val) {
-      if (queueKey !== "") {
-        // from SendQueue
-        if (isSuccessed) {
-          // successed
-          this.idbRemove(this.idbSQue, queueKey);
-        }
-        // successed or error
-        this.writeDayLogs(msg + queueKey, this.app.noteNameAPI);
-      } else {
-        // NOT from SendQueue
-        // Initial try but failed => write queue for next try
-        this.idbAddSQueue(msg, queueAddKey, val);
-      }
-    },
-    /// indexedDB 開発用
-    async idbClear(nam) {
+    async idbGetLength(nam) {
       await nam
-        .clear()
-        .then(function() {
-          this.sett.dummy1 = nam + "idbClear now empty";
+        .length()
+        .then((v) => {
+          if (!v) {
+            console.warn("no length");
+          }
+          return v;
         })
         .catch((e) => {
-          this.sett.dummy1 = nam + "idbClear error" + JSON.stringify(e);
+          console.warn("idborage get error");
+          console.warn(e);
+          return false;
         });
     },
-    //// 確認系
-    //// 確認系
+    async retrySQ() {
+      let arr = [];
+      await this.idbSQue
+        .iterate(function(val, key) {
+          // obj.push()
+          arr.push([key]);
+        })
+        // .then(function() {
+        //   console.warn("iterethion has completed");
+        // })
+        .catch((e) => {
+          this.writeFail("retrySQ", this.authdetail.username, e + JSON.stringify(arr));
+          // console.warn("idborage iteration error");
+          // console.warn(e);
+        });
+      for await (let idx of arr) {
+        const ret = await this.idbGet(this.idbCls, idx.toString());
+        // console.warn(ret);
+        await this.updateClrmSQ(ret);
+        // await this.updateClrmAllAPI(ret);
+      }
+      // list.forEach((k) => {
+      //   // console.warn(k);
+      //   console.warn(this.idbGet(this.idbCls, k));
+      // });
+      // 送信キューから消す
+      // this.idbRemove(this.idbSQue, row.index);
+    },
+    async updateClrmSQ(row) {
+      const dt = this.getDateYYYYMMDDhHHMMSS();
+      row.cust03 = dt;
+      // const upArr = row;
+      const upArr = {
+        id: row.id,
+        attn01: row.attn01,
+        attn02: row.attn02,
+        attn03: row.attn03,
+        attn04: row.attn04,
+        attn05: row.attn05,
+        homeworkincomplete02: row.homeworkincomplete02,
+        homeworkincomplete03: row.homeworkincomplete03,
+        homeworkincomplete04: row.homeworkincomplete04,
+        homeworkincomplete05: row.homeworkincomplete05,
+        cust03: dt,
+      };
+      //API
+      try {
+        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        this.classRealtimeBackup();
+        this.idbSet(this.idbCls, row.index, row);
+        this.idbRemove(this.idbSQue, row.index);
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        // console.warn(err);
+        this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(upArr));
+        return err; // returnの先に用途は実はない
+      }
+    },
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet
@@ -3749,9 +3347,27 @@ export default {
         }
         return [rsltStr, rslt];
       };
-      const classmem = await this.idbGetClassmembers(classcode);
+      ////////DataStore
+      const classmemDS = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
+      classmemDS.sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+      const retArrDS = chkHW(classmemDS, atEl, hwEl);
+      ////////LocalStorage
+      const classmem = this.getClassmembers(classcode);
       const retArr = chkHW(classmem, atEl, hwEl);
       ////////ログ
+      if (retArr[1] !== retArrDS[1]) {
+        this.writeNoteLS("HWConsistency NG " + classcode + " " + dow);
+        const crArr = {
+          type: "HWConsistency NG " + classcode + " " + dow,
+          name: this.authdetail.username,
+          detail: this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS,
+        };
+        this.createMiscAPIDS(crArr);
+      }
       // HWConsistency
       let tgt = this.yourClasses.find((arr) => {
         return arr.id == classcode;
@@ -3780,9 +3396,7 @@ export default {
       } else {
         tgt.detail = tgt.detail.replace("hwic", "");
       }
-      // reflect to indexedDB
-      const prop = this.getThisWeekHwicJSON[dow];
-      await this.updateSmry(classcode, prop, retArr[1]);
+      // }
     },
     // Force Sync
     // Force Sync
@@ -3792,8 +3406,7 @@ export default {
       //APIで
       let classmem;
       if (this.classmembers.length == 0) {
-        // classmem = this.getClassmembers(this.selClrm.id);
-        classmem = await this.idbGetClassmembers(this.selClrm.id);
+        classmem = this.getClassmembers(this.selClrm.id);
       } else {
         classmem = this.classmembers;
       }
@@ -3807,7 +3420,7 @@ export default {
         this.updateClrmAllAPI(rw);
       }
       // 結果表示(API)
-      this.reflectClassSummary(this.selClrm, true);
+      this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek, true);
     },
     async updateClrmAllAPI(rw) {
       // 出欠と宿題は該当週のみ、評価はすべて
@@ -3838,7 +3451,14 @@ export default {
         this.ClrmAppSyncEnd += 1;
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        this.idbAddSQueue("Clrm", rw.index, upArr);
+        const crArr = {
+          type: "failAPIgraphql",
+          name: this.authdetail.username,
+          detail: this.getDateYYYYMMDDhHHMMSS(),
+        };
+        this.ClrmAppSyncState = false; // エラー
+        await DataStore.save(new Misc(crArr));
+        this.ClrmAppSyncEnd += 1;
         return false;
       }
     },
@@ -3851,7 +3471,7 @@ export default {
         m.lssnthisweek = this.getThisWeekLssnJSON[m.dayofweek];
         m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
         // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m);
+        this.reflectClassSummary(m.id, m.dayofweek);
         this.checkAttnHWConsistency(m.id, m.dayofweek);
       });
       this.yourClasses.splice();
@@ -3863,7 +3483,7 @@ export default {
     //////////クラスルーム
     ///// クラス選択、読み込み、
     ///// クラス選択、読み込み、
-    async selectClassroom(arr) {
+    selectClassroom(arr) {
       // 前回のテスト結果くりあ（非表示）
       this.ClrmAppSyncStateShow = false;
       this.ClrmAppSyncBegin = 0;
@@ -3871,9 +3491,7 @@ export default {
       this.ClrmAppSyncState = false;
       //セット
       this.selClrm = arr;
-
-      // this.classmembers = this.getClassmembers(this.selClrm.id);
-      this.classmembers = await this.idbGetClassmembers(this.selClrm.id);
+      this.classmembers = this.getClassmembers(this.selClrm.id);
       //ここまで編集可能
       // this.selClrm.editableUntil = this.getEditableUntilJSON[
       //   this.selClrm.dayofweek
@@ -3907,6 +3525,26 @@ export default {
     async enterClassroom() {
       this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
       this.cRoom.showIndividual = false;
+      // && x.enable === trueはほんとはAppSyncの時点でやりたい
+      // const classmems = await DataStore.query(Clrm, c =>
+      //   c.classcode("eq", classcode)
+      // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+
+      // const classmem = this.dataset.Clrms.filter(
+      //   (x) => x.classcode === this.selClrm.id && x.enable === true
+      // ).sort(function(a, b) {
+      //   if (a.sortid < b.sortid) return -1;
+      //   if (a.sortid > b.sortid) return 1;
+      //   return 0;
+      // });
+      // this.classmembers = this.getClassmembers(this.selClrm.id);
+      // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
+      //   if (a.sortid < b.sortid) return -1;
+      //   if (a.sortid > b.sortid) return 1;
+      //   return 0;
+      // });
+      // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
+      // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
       this.enterClassroomInit();
       this.sett.activeTab = 2; //いざタブを切替
       this.isOpenselClrm = false;
@@ -3934,67 +3572,55 @@ export default {
     },
     // クラスサマリの更新
     //// クラス毎のサマリDB 更新
-    async examAttnDone(tgtClrm) {
-      const dow = tgtClrm.dayofweek;
-      const cmem = this.classmembers;
-      if (cmem.length == 0) {
-        return false;
-      }
-      const tst = cmem.some((m) => {
-        return m[this.getThisWeekAttnJSON[dow]] == null || m[this.getThisWeekAttnJSON[dow]] == "";
-      });
-      this.writeDayLogs(
-        "examAttn: " + tgtClrm.classcode + " " + tst === false ? "Done!" : "yet",
-        this.app.noteName
-      );
-      return !tst; // done: true
-    },
-    async examSyncDone(tgtClrm, refresh = false) {
-      const dow = tgtClrm.dayofweek;
-      if (refresh) {
-        //通信する
-        const apiRslt = await this.APIgetClrmsinstByday(dow);
-        this.writeDayLogs(
-          "examSyncDone: refresh " + dow + (apiRslt == true ? " Succeed" : " failed"),
-          this.app.noteNameAPI
-        );
-      }
-      const arrAPI = this.dataAPI.Clrms.filter((x) => x.classcode == tgtClrm.id);
-      const tst = arrAPI.some((m) => {
-        return m[this.getThisWeekAttnJSON[dow]] == null || m[this.getThisWeekAttnJSON[dow]] == "";
-      });
-      this.writeDayLogs(
-        "examSync:" + tgtClrm.classcode + " " + tst === false ? "Done!" : "yet",
-        this.app.noteName
-      );
-      return !tst; // done: true
-    },
-    async reflectClassSummary(tgtClrm, getFromAPI = false) {
+    async reflectClassSummary(classcode, dow, getFromAPI = false) {
       let tgt = this.yourClasses.find((arr) => {
-        return arr.id == tgtClrm.id;
+        return arr.id == classcode;
       });
       //// 出欠もSyncもHWも出来ていたら処理しない
-      if (tgt.syncdone == true) {
-        return true;
-      } else if (tgt.attndone == true) {
-        tgt.syncdone = await this.examSyncDone(tgtClrm, getFromAPI);
-      } else {
-        tgt.attndone = await this.examAttnDone(tgtClrm);
-        if (tgt.attndone == true) {
-          tgt.syncdone = await this.examSyncDone(tgtClrm, true);
+      if (tgt.attndone !== true || tgt.syncdone !== true) {
+        let retCloud;
+        if (getFromAPI === true) {
+          const apiRslt = await this.APIgetClrmsinstByday(dow);
+          if (apiRslt === true) {
+            retCloud = this.dataAPI.Clrms.filter((x) => x.classcode == classcode);
+          } else {
+            retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
+          }
+        } else {
+          retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
         }
+        // // クラスのタイムスタンプを取得
+        // const newest = ret.reduce((a, b) => a._lastChangedAt > b._lastChangedAt ? a : b);
+        // const oldest = ret.reduce((a, b) => a._lastChangedAt < b._lastChangedAt ? a : b);
+        // tgt.newest = newest._lastChangedAt;
+        // tgt.oldest = oldest._lastChangedAt;
+        //       )
+        const syncedsum = retCloud.reduce((accumulator, current) => {
+          return (
+            accumulator +
+            (this.getIfAttnThisWeekNotNull(
+              dow,
+              current[this.getThisWeekAttnJSON[dow]],
+              current._lastChangedAt
+            ) === true
+              ? 1
+              : 0)
+          );
+        }, 0);
+        const ret = this.dataset.Clrms.filter((x) => x.classcode === classcode); // ←syncesはこれじゃlastChancedAtわからない
+        const attnsum = ret.reduce((accumulator, current) => {
+          return (
+            accumulator + (current[this.getThisWeekAttnJSON[dow]] == null ? 0 : 1) // nullもundefinedも0
+          );
+        }, 0);
+        // 0:null >0:false ===length:true
+        // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
+        tgt.attndone =
+          ret.length === attnsum && ret.length !== 0 ? true : attnsum > 0 ? false : null;
+        tgt.syncdone =
+          ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
+        tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
       }
-      // indexedDB update
-      const val = tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
-      const prop = this.getThisWeekAttnJSON[tgtClrm.dayofweek] + "done";
-      await this.updateSmry(tgtClrm.id, prop, val);
-      // console.warn("reflect" + tgtClrm.id, prop, val);
-      // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
-      // tgt.attndone =
-      //   ret.length === attnsum && ret.length !== 0 ? true : attnsum > 0 ? false : null;
-      // tgt.syncdone =
-      //   ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
-      // tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
     },
     async discrepancyDetectAndFix(tgtClrm, desc) {
       this.cRoom.fixAwait = true;
@@ -4099,7 +3725,7 @@ export default {
           name: this.authdetail.username,
           detail: desc + " " + attnDest + "\n" + resultStr,
         };
-        this.createMiscXAPI(crArr);
+        this.createMiscAPIDS(crArr);
         // tgtClrm.attnthisweek
         const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
         this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
@@ -4107,6 +3733,21 @@ export default {
         this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
       }
       this.cRoom.fixAwait = false;
+    },
+    async updateDS(id, fname, fval, fnameHW, fvalHW) {
+      const clrmItem = await DataStore.query(Clrm, id);
+      try {
+        const callbk = await DataStore.save(
+          Clrm.copyOf(clrmItem, (updated) => {
+            updated[fname] = fval;
+            updated[fnameHW] = fvalHW;
+          })
+        );
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        this.writeFail("updateClrmFix", this.authdetail.username, err + JSON.stringify(clrmItem));
+        return err; // returnの先に用途は実はない
+      }
     },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
@@ -4357,15 +3998,13 @@ export default {
     // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
-      prow[fname] = 0;
+      // prow[fname] = 0;
       //0点にしてUpする
       this.updateClrm(prow, fname, 0);
     },
     // 評価を欠席
     minusEvalUpTarget(prow, fname) {
-      const u = prow[fname] == -1 ? null : -1;
-      prow[fname] = u;
-      this.updateClrm(prow, fname, u);
+      this.updateClrm(prow, fname, -1);
     },
     updateClrmEvalsIndi(row, fname, fval) {
       // .table(row, fname, fval);
@@ -4558,9 +4197,6 @@ export default {
     getDateYYYYMMDDhHHMMSS() {
       return this.$dayjs().format("YYYY-MM-DD HH:mm:ss");
     },
-    getDateYYYYMMDDhHHMMssSSS() {
-      return this.$dayjs().format("YYYY-MM-DD HH:mm:ss.SSS");
-    },
     // getDateMDhmm(val) {
     //   return this.$dayjs(val).format("M/D H:mm");
     // },
@@ -4652,7 +4288,22 @@ export default {
           ...detObj,
         });
         this.writeFail("sendUserAgent-sendfail", crArr, err);
-        // await this.createMisc(crArr);
+        await this.createMisc(crArr);
+      }
+    },
+    async applogSave() {
+      if (this.app.log.nw !== "") {
+        try {
+          const arr = {
+            type: this.ds.typeMisc.appNwLog,
+            name: this.authdetail.username,
+            detail: this.app.log.nw,
+          };
+          this.createMiscAPIDS(arr);
+          this.app.log.nw = "";
+        } catch (err) {
+          this.writeFail("applogSave", this.app.log.nw, err);
+        }
       }
     },
     //////// クラスバックアップ
@@ -4665,9 +4316,7 @@ export default {
     async classBackupALLTypes(sClrm) {
       // クラス出たときに単一でバックアップ
       const classobj = await this.classmembers;
-      // const clrmobj = await this.getClassmembers(sClrm.id);
-      const clrmobj = await this.idbGetClassmembers(sClrm.id);
-
+      const clrmobj = await this.getClassmembers(sClrm.id);
       const obj = await this.loadclassRealtimeBackup(sClrm.id);
       const LSobj = obj === null ? {} : obj;
       let DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
@@ -4679,7 +4328,7 @@ export default {
       const header = [{ classcode: "classmembers" }];
       const allobj = header.concat(
         classobj,
-        { classcode: "idb" },
+        { classcode: "clrm" },
         clrmobj,
         { classcode: "localStorage" },
         LSobj,
@@ -4692,7 +4341,7 @@ export default {
         name: this.authdetail.username,
         detail: JSON.stringify(allobj),
       };
-      await this.createMiscXAPI(crArr);
+      await this.createMiscAPIDS(crArr);
     },
     async classRealtimeBackup() {
       // 入力の都度バックアップ ※入力時しか呼び出さない
@@ -4729,7 +4378,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscXAPI(crArr);
+            await this.createMiscAPIDS(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -4750,7 +4399,7 @@ export default {
             detail: localStorage.getItem(key),
           };
           try {
-            await this.createMiscXAPI(crArr);
+            await this.createMiscAPIDS(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -4771,52 +4420,43 @@ export default {
       if (create != false) {
         parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
       } else {
-        const noteHist = this.fetchNoteLS(this.app.noteName);
+        const noteHist = this.fetchNoteLS();
         parsed = JSON.stringify(noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str);
       }
       localStorage.setItem(this.app.noteName, parsed);
     },
-    writeDayLogs(str, noteName, create = false, reverse = false) {
-      let parsed = "";
-      if (create != false) {
-        parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
-      } else {
-        const noteHist = this.fetchNoteLS(noteName);
-        parsed =
-          reverse == false
-            ? JSON.stringify(noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str)
-            : JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str + "\n" + noteHist);
-      }
-      localStorage.setItem(noteName, parsed);
-      if (parsed.split("\n").length > 20000) {
-        this.salvageDaylogs(noteName);
-      }
-    },
-    fetchNoteLS(noteName) {
-      if (localStorage.getItem(noteName)) {
+    fetchNoteLS() {
+      if (localStorage.getItem(this.app.noteName)) {
         try {
-          return JSON.parse(localStorage.getItem(noteName));
+          return JSON.parse(localStorage.getItem(this.app.noteName));
         } catch (e) {
-          localStorage.removeItem(noteName);
-          this.writeFail(noteName, "noteBroken", e);
+          localStorage.removeItem(this.app.noteName);
+          this.writeFail("noteBroken", "noteBroken", e);
           return false;
         }
       }
     },
-    salvageDaylogs(noteName, isFlash = false, ifUpdate = false) {
-      const noteHist = this.fetchNoteLS(noteName);
+    async salvageNote(isFlash = false) {
+      const noteHist = this.fetchNoteLS();
       if (noteHist) {
+        const crArr = {
+          type: "noteSalvage",
+          name: this.authdetail.username,
+          detail: noteHist,
+        };
         try {
-          const notelength = noteHist.split("\n").length;
-          //           level, type, target, desc, detail
-          this.Log("Info", noteName, noteName, notelength, noteHist, ifUpdate);
-          if (isFlash == false) {
-            this.writeDayLogs("uploaded", noteName, true);
+          const ret = await this.createMiscAPIDS(crArr);
+          if (ret) {
+            if (isFlash == false) {
+              this.writeNoteLS("uploaded", true);
+            } else {
+              this.writeNoteLS("uploaded flash");
+            }
           } else {
-            this.writeDayLogs("uploaded flash", noteName);
+            this.writeNoteLS("uploaded failed");
           }
         } catch (err) {
-          this.writeDayLogs("uploaded ERROR", noteName);
+          this.writeFail("salvageFail", crArr, err);
         }
       }
     },
@@ -4838,7 +4478,7 @@ export default {
           name: this.authdetail.username,
           detail: "appFail:" + dest + ", date:" + this.getDateYYYYMMDDhHHMMSS() + "," + dtl,
         };
-        this.createMiscXAPI(crArr);
+        await DataStore.save(new Misc(crArr));
       } catch (err) {
         localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
       }
@@ -4849,20 +4489,20 @@ export default {
         name: this.authdetail.username,
         detail: Object.keys(localStorage),
       };
-      this.createMiscXAPI(crArr);
+      this.createMiscAPIDS(crArr);
     },
-    // salvageDev() {
-    //   if (this.getStartingUrl !== "localhost") {
-    //     if (
-    //       // this.sett.alias.name == "Damon Bizzell" ||
-    //       this.sett.alias.name == "Leann Tyner" //||
-    //       // this.sett.alias.name == "Glenn Torrens"
-    //     ) {
-    //       this.writeNoteLS("DEVsalvageclassALLBackup");
-    //       this.DEVsalvageclassALLBackup("★");
-    //     }
-    //   }
-    // },
+    salvageDev() {
+      if (this.getStartingUrl !== "localhost") {
+        if (
+          // this.sett.alias.name == "Damon Bizzell" ||
+          this.sett.alias.name == "Leann Tyner" //||
+          // this.sett.alias.name == "Glenn Torrens"
+        ) {
+          this.writeNoteLS("DEVsalvageclassALLBackup");
+          this.DEVsalvageclassALLBackup("★");
+        }
+      }
+    },
     async salvageFail() {
       let arr = [];
       for (var key in localStorage) {
@@ -4879,7 +4519,8 @@ export default {
         detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr,
       };
       try {
-        this.createMiscXAPI(crArr);
+        await DataStore.save(new Misc({ crArr }));
+
         for (var key2 in localStorage) {
           if (key2.match(/appFail/)) {
             localStorage.removeItem(key2);
@@ -4891,7 +4532,6 @@ export default {
     },
     //////////// 設定、Validation
     async periodicValidation() {
-      this.idbHandleSQueue();
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
@@ -4906,13 +4546,13 @@ export default {
           //全員、出欠とHWのみ保存
           // this.manageupdateClrmAttnHW();
           //  クラス毎のサマリDB 更新
-          this.reflectClassSummary(sClrm);
+          this.reflectClassSummary(sClrm.id, sClrm.dayofweek);
           //欠席と宿題の齟齬チェック（アラートあり）
           this.checkAttnHWConsistency(sClrm.id, sClrm.dayofweek, true);
           this.isEnteredselClrm = false; // 部屋から出たことを記録
-          this.selClrm = { id: "" };
+          this.selClrm = [];
           await this.writeNoteLS("exit room");
-          this.salvageDaylogs(this.app.noteName, true);
+          this.salvageNote(true);
         } else {
           // 全クラス
           this.initallClasses();
@@ -4951,7 +4591,7 @@ export default {
       // }
     },
     workdateValication() {
-      this.salvageDaylogs(this.app.noteNameNW, true, true);
+      this.applogSave();
       //日付またぐとリロードする
       if (
         // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
@@ -4976,12 +4616,30 @@ export default {
           };
           this.writeDeviceUser();
         })
-        .catch((e) =>
-          this.Log("Error", "Auth", this.authdetail.username, "catch", JSON.stringify(e))
+        .catch(() =>
+          // this.authdetail = "created auth error"
+          this.createMisc({
+            type: "Auth",
+            name: this.authdetail.username,
+            detail: "ERROR: " + this.authdetail,
+          })
         );
     },
     async reloadApp(str) {
-      await this.writeDayLogs("[Info] reloadApp" + str, this.app.noteName);
+      try {
+        const crArr = {
+          type: "reloadApp",
+          name: this.authdetail.username,
+          detail: "Staff" + this.getDateYYYYMMDDhHHMMSS() + ", " + str,
+        };
+        await DataStore.save(new Misc(crArr));
+      } catch (err) {
+        this.writeFail(
+          str,
+          this.authdetail.username, //this.sett.today,
+          "Staff-" + this.getDateYYYYMMDDhHHMMSS()
+        );
+      }
       this.$router.go();
     },
     ////////// 日付設定
@@ -5007,28 +4665,37 @@ export default {
             name: this.authdetail.username,
             detail: "test",
           };
-          crArr.type = "testcreateMiscXAPI" + this.getDateYYYYMMDDhHHMMSS();
-          this.createMiscXAPI(crArr);
+          crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS();
+          this.createMiscAPI(crArr);
+          crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS();
+          this.createMisc(crArr);
+          crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS();
+          this.createMiscAPIDS(crArr);
         }
       }, 1000 * 60 * 10);
     },
     setInstMonth() {
       //勤怠用 createdのとき
       this.instructor.yourattendvisiblemonth = this.$dayjs(this.sett.acdate).format("YYYY-MM");
+      //manage用
+      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
     },
     ////////// for dev
     async dataStoreClear() {
       await DataStore.clear();
     },
+    async dataStoreStart() {
+      await DataStore.start();
+    },
     spliceTEST() {
       this.classmembers[1].classcount += "TTT";
       // this.classmembers.splice();
-      // this.yourxClasses[1].detail += "TTTT";
-      // this.yourxClasses.splice();
+      // this.yourClasses[1].detail += "TTTT";
+      // this.yourClasses.splice();
     },
     spliceTESTKick() {
       // this.classmembers.splice();
-      // this.yourxClasses[1].detail += "TTTT";
+      // this.yourClasses[1].detail += "TTTT";
       this.yourClasses.splice();
     },
     // dosomething() {
@@ -5044,13 +4711,72 @@ export default {
         this.sett.devarea = true;
         this.sett.devcheck = true;
       }
-      //開発中、全ユーザー許可★★★★★★★★★★★
-      this.cRoom.showDummy = true;
-      this.sett.devarea = true;
-      this.sett.devcheck = true;
     },
     dummytest() {
       this.sett.dummy1 = "val";
+    },
+    startDScheck: function() {
+      this.stopDScheck();
+      this.dataDS.queryChk = setInterval(() => this.retryDSifYet(), 1000 * 3);
+    },
+    stopDScheck: function() {
+      this.writeNoteLS("stopDScheck:this.dataDS.queryChk=" + this.dataDS.queryChk);
+      if (this.dataDS.queryChk) {
+        "stopDScheck:this.dataDS.queryChk=" + this.dataDS.queryChk + " clearInterval";
+        clearInterval(this.dataDS.queryChk);
+        this.dataDS.queryChk = 0;
+      }
+    },
+    retryDSifYet() {
+      if (this.dataDS.Clrms.length === 0) {
+        this.writeNoteLS("retryDSifYet => fetchClrms()");
+        this.fetchClrms();
+      }
+      if (this.dataset.Clrms.length === 0 || this.dataDS.Clrms.length > this.dataset.Clrms.length) {
+        this.writeNoteLS("retryDSifYet => datasetManage()");
+        this.datasetManage();
+      }
+    },
+    clearAllDataStoreConfirm() {
+      this.$buefy.dialog.confirm({
+        message:
+          "<b>Clear all local cache data</b>" +
+          "<br /><br />Are you sure to delete all the data in your device?" +
+          "<br /><br />* Be sure that you have synced everything to server or somewhere" +
+          "<br /><br />* This does not affect the data on the server",
+        type: "is-danger",
+        hasIcon: true,
+        icon: "exclamation-triangle",
+        iconPack: "fa",
+        size: "is-large",
+        ariaRole: "alertdialog",
+        ariaModal: true,
+        onConfirm: () => {
+          this.clearAllDataStore();
+        },
+      });
+    },
+    async clearAllDataStore() {
+      await DataStore.clear();
+      /////ログ
+      const cr = {
+        type: "DataStoreClear",
+        name: this.authdetail.username,
+        detail: this.getDateYYYYMMDDhHHMMSS(),
+      };
+      this.$buefy.toast.open({
+        message: "<span style='font-size:60px'>Please wait...</span>",
+        type: "is-danger",
+        size: "is-large",
+        duration: 5000,
+      });
+      await this.createMiscAPIDS(cr);
+      this.writeFail(
+        "DataStoreClear",
+        this.authdetail.username, //this.sett.today,
+        this.getDateYYYYMMDDhHHMMSS()
+      );
+      this.$router.go();
     },
     async TESTarr3() {
       if (this.selClrm != []) {
@@ -5068,16 +4794,43 @@ export default {
       }
     },
   },
+  filters: {
+    subStr: function(string) {
+      return string.substring(0, 509) + "...";
+    },
+  },
   computed: {
+    TESTarr0() {
+      if (this.dataset.Clrms.length > 0) {
+        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy).sort(function(a, b) {
+          if (a.sortid < b.sortid) return -1;
+          if (a.sortid > b.sortid) return 1;
+          return 0;
+        });
+
+        // this.sett.dummy1 = tgt
+      } else {
+        return null;
+      }
+    },
     TESTarr1() {
-      if (this.selClrm != [] && this.dataIDB.Clrms) {
-        return this.dataIDB.Clrms.filter(
+      if (this.selClrm != [] && this.dataset.Clrms) {
+        return this.dataset.Clrms.filter(
           (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
           return 0;
         });
+        // return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
+        //   return {
+        //     c: m.classcode,
+        //     s: m.studentcode,
+        //     n: m.studentname,
+        //     e: m.eval01,
+        //     up: m._lastChangedAt,
+        //   };
+        // });
       } else {
         return null;
       }
@@ -5085,6 +4838,16 @@ export default {
     TESTarr2() {
       if (this.classmembers) {
         return this.classmembers.filter((x) => x.classcount <= this.dev.classCLimit);
+        // .filter((x) => x.classcode === "X0063")
+        // .map((m) => {
+        //   return {
+        //     c: m.classcode,
+        //     s: m.studentcode,
+        //     n: m.studentname,
+        //     e: m.eval01,
+        //     up: m._lastChangedAt,
+        //   };
+        // });
       } else {
         return null;
       }
@@ -5389,11 +5152,14 @@ export default {
           this.authManage();
           break;
       }
-      this.writeNoteLS("Auth: " + event + localStorage.getItem(this.app.device) + payload);
+      this.createMisc({
+        type: "Auth: " + event,
+        name: localStorage.getItem(this.app.device),
+        detail: payload,
+      });
     });
   },
   async created() {
-    this.app.startWhen = this.getDateYYYYMMDDhHHMMssSSS();
     //idb
     this.idbStart();
     //日付、基本設定
@@ -5402,16 +5168,17 @@ export default {
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.setInstMonth();
     this.salvageFail();
-    // this.salvageDev();
+    this.salvageDev();
     this.listLocalStorage();
     this.sendUserAgent();
-
-    // Students data manaement
-    await this.APIgetClrmsinstBydayAll(); // API
-    await this.loadclassRealtimeBackupAll(); // LocalStorage
-    // this.datasetManage();
-
-    this.idbSetup();
+    //// ClrmはDataStoreで
+    await DataStore.start();
+    this.startDScheck();
+    await this.fetchClrms(); // DataStore
+    this.DSObserveClrms();
+    this.APIgetClrmsinstBydayAll(); // API
+    this.loadclassRealtimeBackupAll(); // LocalStorage
+    this.datasetManage();
     //// InstはAPIで
     this.listInstsDataAPI(); //今のところ全件とる
     // await this.fetchInsts(); //今のところ全件とる
@@ -5427,19 +5194,16 @@ export default {
           // this.$dayjs(this.sett.acdate).format("YYYY-MM-DD H:mm") +
           // .log(`${ctime} HUBlog User has a network connection? ${data.active}`          );
           this.app.network = data.active;
-          this.salvageDaylogs(this.app.noteNameNW, true, true);
-
+          this.applogSave();
           // if (data.active === false) {
           //   this.app.network = false;
           // }
-          // this.app.log.nw += ctime + event + ": " + data.active + "\n";
-          this.writeDayLogs(ctime + event + ": " + data.active, this.app.noteNameNW, false, true);
+          this.app.log.nw += ctime + event + ": " + data.active + "\n";
           break;
         case "syncQueriesReady":
           // .log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
-          // this.app.log.nw += ctime + event + ": " + true + "\n";
-          this.writeDayLogs(ctime + event + ": " + true, this.app.noteNameNW, false, true);
+          this.app.log.nw += ctime + event + ": " + true + "\n";
           //復帰したときクラス外なら更新する
           if (this.sett.activeTab !== 2) {
             this.initallClasses();
@@ -5456,13 +5220,7 @@ export default {
         //   break;
         case "modelSynced":
           // .log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
-          // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
-          this.writeDayLogs(
-            ctime + event + ": " + JSON.stringify(data),
-            this.app.noteNameNW,
-            false,
-            true
-          );
+          this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
           break;
         case "outboxStatus": // 変更ごとに出る
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
@@ -5473,41 +5231,50 @@ export default {
         case "ready":
           // .log(ctime + " HUBlog ready");
           this.app.ready = true;
-          // this.app.log.nw += ctime + event + "\n";
-          this.writeDayLogs(ctime + event, this.app.noteNameNW, false, true);
-          this.salvageDaylogs(this.app.noteNameNW, true, true);
+          this.app.log.nw += ctime + event + "\n";
+          this.applogSave();
           break;
       }
     });
-
-    this.sett.intId0 = setInterval(() => {
-      this.setupWait();
-    }, 1000 * 0.5); //間隔
-    this.sett.intId1 = setInterval(() => {
-      this.datasetCheck();
-    }, 1000 * 3); //間隔
-    this.sett.intId2 = setInterval(() => {
-      this.workdateValication();
-    }, 1000 * 60 * 30); //間隔
-
+    // JSONからのallClassesを整える
+    await this.initallClasses();
+    //これ特別対応だけのためのやつ
+    // this.listMiscsDataID("alter", this.authdetail.username);
+    this.workspaceValication();
+    //管理用
+    // this.manageSummary();
+    this.devHelper();
+    this.setTESTcreateMisc();
+    setInterval(
+      function() {
+        this.workdateValication;
+        // this.getCurrentTime;
+        // this.reloadIfUndefinedName;
+      }.bind(this),
+      1 * 1000 * 60
+    );
+    setInterval(
+      function() {
+        this.salvageDev;
+        // this.testCreateMisc;
+      }.bind(this),
+      1 * 1000 * 40
+    );
+    // 1 * 1000 * 60 * 20
     this.setcurrentAcTime();
     // this.setTESTcreateMisc()
     await this.writeNoteLS("Vue created done");
-    this.salvageDaylogs(this.app.noteName, true);
+    this.salvageNote(true);
   },
   async mounted() {
     this.app.log.nw += this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
+    // setTimeout(this.initAuthValidation, 3000);
+    // setTimeout(this.reloadIfUndefinedName, 3000);
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
-    clearInterval(this.sett.intId0);
-    clearInterval(this.sett.intId1);
-    clearInterval(this.sett.intId2);
-  },
-  filters: {
-    subStr: function(string) {
-      return string.substring(0, 509) + "...";
-    },
+    // clearInterval(this.sett.actimeIntId10);
+    this.stopDScheck();
   },
 };
 </script>

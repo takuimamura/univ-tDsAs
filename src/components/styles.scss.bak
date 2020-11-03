@@ -66,9 +66,7 @@ $colors: (
   "bluedark":($dark-blue,$dark-bluelighter),
   "syncdone":(rgb(203, 134, 212),$dark-bluelighter),
   "syncsome":(rgb(179, 175, 175),grey),
-  "attndone":($pink-purerrr,$pink-lighter),
-  "slashok":(#ff91a4,#ff91a4), //present evaluation
-  "slashab":(#bf2842,#bf2842) //absent evaluation
+  "attndone":($pink-purerrr,$pink-lighter)
   // "attndone":(rgb(51, 187, 146),$pink-lighter)
 
   // "white": (
