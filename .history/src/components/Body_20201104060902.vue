@@ -2103,7 +2103,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.0",
-        rev: "B_FilledAreaUp",
+        rev: "-",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",

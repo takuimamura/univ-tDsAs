@@ -2103,7 +2103,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.0",
-        rev: "B_FilledAreaUp",
+        rev: "-",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2111,7 +2111,6 @@ export default {
         noteNameAPI: "appNoteTmuAPI",
         noteNameNW: "appNoteTmuNW",
         noteNameIDB: "appNoteTmuIDB",
-        noteNameUP: "appNoteTmuUP",
         device: "deviceTmu",
         startWhen: null,
       },
@@ -3061,6 +3060,7 @@ export default {
         this.writeNoteLS("clearInterval datasetCheck", this.app.noteNameAPI);
       }
     },
+
     async idbLog(level = "", nam, key = "", val = "", msg) {
       const namStr = this.idbGetStoreName(nam);
       //           level, type, target, desc, detail
@@ -3168,6 +3168,12 @@ export default {
         ifUpdate
       );
     },
+    testLog() {
+      //           level, type, target, desc, detail, ifUpdate);
+      this.Log("Info", "test", "clrm", "summary", "detail");
+      this.Log("Warn", "test", "clrm", "summary", "detail");
+      this.Log("Error", "test", "clrm", "summary", "detail");
+    },
     ////////// updateClrm
     ////////// updateClrm
     async updateClrmAPIQueue(qkey, queueKey = "") {
@@ -3235,80 +3241,6 @@ export default {
         this.updateClrmAPI(row, fname, fval);
       }
     },
-    async updateClrmAllAPI(rw) {
-      // 出欠と宿題は該当週のみ、評価はすべて
-      const upArr = {
-        id: rw.id,
-        uid: rw.uid,
-        index: rw.index,
-      };
-      //とりあえず安全策で
-      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
-      //評価はすべて ただし値あるやつだけセットする
-      estr.forEach((x) => {
-        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
-          upArr["eval" + x] = rw["eval" + x];
-        }
-      });
-      estr.forEach((x) => {
-        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
-          upArr["ecom" + x] = rw["ecom" + x];
-        }
-      });
-      // 出欠と宿題は該当週のみ
-      upArr[this.selClrm.attnthisweek] = rw[this.selClrm.attnthisweek];
-      upArr[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
-        rw[this.getThisWeekHwicJSON[this.selClrm.dayofweek]];
-      try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        this.ClrmAppSyncEnd += 1;
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.idbAddSQueue("Clrm", rw.index, upArr);
-        return false;
-      }
-    },
-    async updateClrmFilledArea(rw) {
-      // 出欠と宿題は該当週のみ、評価はすべて
-      const upArr = {
-        id: rw.id,
-        uid: rw.uid,
-        index: rw.index,
-      };
-      //とりあえず安全策で
-      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
-      //評価はすべて ただし値あるやつだけセットする
-      estr.forEach((x) => {
-        if (rw["attn" + x] !== null && rw["attn" + x] !== "") {
-          upArr["attn" + x] = rw["attn" + x];
-        }
-        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
-          upArr["eval" + x] = rw["eval" + x];
-        }
-        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
-          upArr["ecom" + x] = rw["ecom" + x];
-        }
-      });
-      const estr2 = ["02", "03", "04", "06", "07"];
-      estr2.forEach((x) => {
-        if (rw["homeworkincomplete" + x] !== null && rw["homeworkincomplete" + x] !== "") {
-          upArr["homeworkincomplete" + x] = rw["homeworkincomplete" + x];
-        }
-      });
-      const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
-      const logHist = log + "\n" + (rw.cust01 === null ? "" : rw.cust01);
-      upArr.cust01 = logHist;
-      upArr.cust02 = log;
-      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
-
-      try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.idbAddSQueue("Clrm", rw.index, upArr);
-        return false;
-      }
-    },
     ////////// indexedDB
     ////////// indexedDB
     async idbTEST1() {
@@ -3316,6 +3248,12 @@ export default {
     },
     async idbTEST2() {
       // const chk = await this.examSyncDone(this.selClrm);
+      // this.createSmryAPI();
+      // this.sett.dummy1 = this.dataset.Smry[0];
+      // this.sett.dummy2 = this.yourClasses[0];
+      // const dat = testJSON; //dataAPI.filter((n) => n.index !== "A0094_19131267");
+      // this.importToIDB(dat, true);
+      // const ret = await this.idbGet(this.idbCls, this.ds.dev1);
     },
     async idbTEST3() {
       this.reflectSmrytoYourclasses();
@@ -3403,15 +3341,10 @@ export default {
       // await this.importLStoIDB();
 
       ////// LSからDynamoDBにブランク以外すべてUpする
-      let uplogStr = "";
       this.dataIDB.Clrms = await this.idbGetALLClassmembers();
       for await (const rw of this.dataIDB.Clrms) {
         this.updateClrmFilledArea(rw);
-        uplogStr += rw + "\n";
       }
-      await this.writeDayLogs("FilledArea done\n" + uplogStr, this.app.noteNameUP);
-      this.salvageDaylogs(this.app.noteNameUP);
-      //////
 
       // DynamoDb同期
       await this.importToIDB(this.dataAPI.Clrms, false);
@@ -3577,6 +3510,7 @@ export default {
         }
       }
     },
+
     async TESTmodifySmry(classcode) {
       // ds.dev1
       // const classcode = "A0042";
@@ -3874,6 +3808,76 @@ export default {
       // 結果表示(API)
       this.reflectClassSummary(this.selClrm, true);
     },
+    async updateClrmAllAPI(rw) {
+      // 出欠と宿題は該当週のみ、評価はすべて
+      const upArr = {
+        id: rw.id,
+        uid: rw.uid,
+        index: rw.index,
+      };
+      //とりあえず安全策で
+      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
+      //評価はすべて ただし値あるやつだけセットする
+      estr.forEach((x) => {
+        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
+          upArr["eval" + x] = rw["eval" + x];
+        }
+      });
+      estr.forEach((x) => {
+        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
+          upArr["ecom" + x] = rw["ecom" + x];
+        }
+      });
+      // 出欠と宿題は該当週のみ
+      upArr[this.selClrm.attnthisweek] = rw[this.selClrm.attnthisweek];
+      upArr[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
+        rw[this.getThisWeekHwicJSON[this.selClrm.dayofweek]];
+      try {
+        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        this.ClrmAppSyncEnd += 1;
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        this.idbAddSQueue("Clrm", rw.index, upArr);
+        return false;
+      }
+    },
+    async updateClrmFilledArea(rw) {
+      // 出欠と宿題は該当週のみ、評価はすべて
+      const upArr = {
+        id: rw.id,
+        uid: rw.uid,
+        index: rw.index,
+      };
+      //とりあえず安全策で
+      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
+      //評価はすべて ただし値あるやつだけセットする
+      estr.forEach((x) => {
+        if (rw["attn" + x] !== null && rw["attn" + x] !== "") {
+          upArr["attn" + x] = rw["attn" + x];
+        }
+        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
+          upArr["eval" + x] = rw["eval" + x];
+        }
+        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
+          upArr["ecom" + x] = rw["ecom" + x];
+        }
+      });
+      const estr2 = ["02", "03", "04", "06", "07"];
+      estr2.forEach((x) => {
+        if (rw["homeworkincomplete" + x] !== null && rw["homeworkincomplete" + x] !== "") {
+          upArr["homeworkincomplete" + x] = rw["homeworkincomplete" + x];
+        }
+      });
+      try {
+        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        this.idbAddSQueue("Clrm", rw.index, upArr);
+        return false;
+      }
+    },
+    /////DataStore
+    /////DataStore
     //初期処理
     initallClasses() {
       this.yourClasses.forEach((m) => {

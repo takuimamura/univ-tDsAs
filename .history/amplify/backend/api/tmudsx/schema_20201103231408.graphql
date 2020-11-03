@@ -1,0 +1,531 @@
+enum TodoStatus {
+  WAITING
+  DONE
+}
+
+type Todo @model @auth(rules: [{ allow: owner }]) {
+  id: ID!
+  owner: String
+  title: String
+  status: TodoStatus
+}
+
+type Inst
+  @model
+  @key(name: "byDayNumByInstructor", fields: ["daynum", "uid"])
+  @key(fields: ["id", "uid"])
+  @auth(rules: [{ allow: private }]) {
+  id: ID!
+  uid: String!
+  date: AWSDate!
+  daynum: Int
+  clockin: AWSTime
+  clockout: AWSTime
+  clockincorrect: AWSTime
+  clockoutcorrect: AWSTime
+  detail: String
+}
+
+type Misc
+  @model
+  @key(name: "byType", fields: ["type", "name"])
+  @key(fields: ["id", "type"])
+  @auth(rules: [{ allow: private }]) {
+  id: ID!
+  type: String!
+  name: String!
+  detail: String
+}
+
+type MiscX
+  @model
+  @key(fields: ["type", "datestr"])
+  @key(name: "byName", fields: ["name", "type"])
+  @auth(rules: [{ allow: private }]) {
+  type: String!
+  datestr: String!
+  name: String!
+  desc: String
+  cust01: String
+  cust02: String
+  cust03: String
+  detail: String
+}
+
+type Log
+  @model
+  @key(fields: ["type", "datestr"])
+  @key(name: "byName", fields: ["name", "type"])
+  @key(name: "byLevel", fields: ["level", "type"])
+  @auth(rules: [{ allow: private }]) {
+  level: String!
+  datestr: String!
+  name: String!
+  type: String!
+  target: String
+  desc: String
+  detail: String
+}
+
+type Smry
+  @model
+  @key(fields: ["uid", "classcode"])
+  @key(name: "byDayofweek", fields: ["dayofweek", "uid"], queryField: "smryByDay")
+  @auth(rules: [{ allow: private }]) {
+  uid: String!
+  classcode: String!
+  update: String
+  classtitle: String
+  classtitleJ: String
+  classnum: String
+  roomnum: String
+  dayofweek: String
+  grade: String
+  semester: String
+  slot: String
+  timefrom: String
+  timeto: String
+  type: String
+  students: String
+  note: String
+  state1: String
+  state2: String
+  state3: String
+  newest: String
+  oldest: String
+  detail: String
+  attn01done: String
+  attn02done: String
+  attn03done: String
+  attn04done: String
+  attn05done: String
+  attn06done: String
+  attn07done: String
+  attn08done: String
+  attn09done: String
+  attn10done: String
+  attn11done: String
+  attn12done: String
+  attn13done: String
+  attn14done: String
+  attn15done: String
+  attn16done: String
+  attn17done: String
+  attn18done: String
+  attn19done: String
+  attn20done: String
+  homeworkincomplete02: String
+  homeworkincomplete03: String
+  homeworkincomplete04: String
+  homeworkincomplete05: String
+  homeworkincomplete06: String
+  homeworkincomplete07: String
+  homeworkincomplete08: String
+  homeworkincomplete09: String
+  homeworkincomplete10: String
+  homeworkincomplete11: String
+  homeworkincomplete12: String
+  homeworkincomplete13: String
+  homeworkincomplete14: String
+  homeworkincomplete15: String
+  homeworkincomplete16: String
+  homeworkincomplete17: String
+  homeworkincomplete18: String
+  homeworkincomplete19: String
+  homeworkincomplete20: String
+  attn01: String
+  attn02: String
+  attn03: String
+  attn04: String
+  attn05: String
+  attn06: String
+  attn07: String
+  attn08: String
+  attn09: String
+  attn10: String
+  attn11: String
+  attn12: String
+  attn13: String
+  attn14: String
+  attn15: String
+  attn16: String
+  attn17: String
+  attn18: String
+  attn19: String
+  attn20: String
+  attmisc: String
+  eval01: String
+  eval02: String
+  eval03: String
+  eval04: String
+  eval05: String
+  eval06: String
+  eval07: String
+  eval08: String
+  eval09: String
+  eval10: String
+  eval11: String
+  eval12: String
+  eval13: String
+  eval14: String
+  eval15: String
+  eval16: String
+  eval17: String
+  eval18: String
+  eval19: String
+  eval20: String
+  ecom01: String
+  ecom02: String
+  ecom03: String
+  ecom04: String
+  ecom05: String
+  ecom06: String
+  ecom07: String
+  ecom08: String
+  ecom09: String
+  ecom10: String
+  ecom11: String
+  ecom12: String
+  ecom13: String
+  ecom14: String
+  ecom15: String
+  ecom16: String
+  ecom17: String
+  ecom18: String
+  ecom19: String
+  ecom20: String
+  cust01: String
+  cust02: String
+  cust03: String
+  cust04: String
+  cust05: String
+}
+
+type Mng @model @key(name: "byMType", fields: ["type", "code"]) @auth(rules: [{ allow: private }]) {
+  type: String!
+  code: String!
+  datestr: String
+  name: String
+  trigger: String
+  detail: String
+}
+
+type Clrm
+  @model
+  @key(name: "byInstructorByDayofWeek", fields: ["dayofweek", "uid"], queryField: "instByday")
+  @auth(rules: [{ allow: private }]) {
+  id: ID!
+  uid: String!
+  index: String!
+  sortid: String
+  classcount: String
+  classcode: String
+  classnameJ: String
+  studentcode: String
+  studentname: String
+  studentnameJ: String
+  studentnameJKana: String
+  studentnameRev: String
+  dayofweek: String
+  enable: Boolean
+  group: String
+  note: String
+  attn01: String
+  attn02: String
+  attn03: String
+  attn04: String
+  attn05: String
+  attn06: String
+  attn07: String
+  attn08: String
+  attn09: String
+  attn10: String
+  attn11: String
+  attn12: String
+  attn13: String
+  attn14: String
+  attn15: String
+  attn16: String
+  attn17: String
+  attn18: String
+  attn19: String
+  attn20: String
+  attmisc: String
+  homeworkincomplete02: Boolean
+  homeworkincomplete03: Boolean
+  homeworkincomplete04: Boolean
+  homeworkincomplete05: Boolean
+  homeworkincomplete06: Boolean
+  homeworkincomplete07: Boolean
+  homeworkincomplete08: Boolean
+  homeworkincomplete09: Boolean
+  homeworkincomplete10: Boolean
+  homeworkincomplete11: Boolean
+  homeworkincomplete12: Boolean
+  homeworkincomplete13: Boolean
+  homeworkincomplete14: Boolean
+  homeworkincomplete15: Boolean
+  homeworkincomplete16: Boolean
+  homeworkincomplete17: Boolean
+  homeworkincomplete18: Boolean
+  homeworkincomplete19: Boolean
+  homeworkincomplete20: Boolean
+  eval01: Int
+  eval02: Int
+  eval03: Int
+  eval04: Int
+  eval05: Int
+  eval06: Int
+  eval07: Int
+  eval08: Int
+  eval09: Int
+  eval10: Int
+  eval11: Int
+  eval12: Int
+  eval13: Int
+  eval14: Int
+  eval15: Int
+  eval16: Int
+  eval17: Int
+  eval18: Int
+  eval19: Int
+  eval20: Int
+  ecom01: String
+  ecom02: String
+  ecom03: String
+  ecom04: String
+  ecom05: String
+  ecom06: String
+  ecom07: String
+  ecom08: String
+  ecom09: String
+  ecom10: String
+  ecom11: String
+  ecom12: String
+  ecom13: String
+  ecom14: String
+  ecom15: String
+  ecom16: String
+  ecom17: String
+  ecom18: String
+  ecom19: String
+  ecom20: String
+  cust01: String
+  cust02: String
+  cust03: String
+  cust04: String
+  cust05: String
+}
+
+type ClrmX
+  @model
+  @key(name: "byDayofWeekX", fields: ["dayofweek", "uid"], queryField: "BydayX")
+  @auth(rules: [{ allow: private }]) {
+  id: ID!
+  uid: String!
+  index: String!
+  sortid: String
+  classcount: String
+  classcode: String
+  classnameJ: String
+  studentcode: String
+  studentname: String
+  studentnameJ: String
+  studentnameJKana: String
+  studentnameRev: String
+  dayofweek: String
+  enable: Boolean
+  group: String
+  note: String
+  attn01: String
+  attn02: String
+  attn03: String
+  attn04: String
+  attn05: String
+  attn06: String
+  attn07: String
+  attn08: String
+  attn09: String
+  attn10: String
+  attn11: String
+  attn12: String
+  attn13: String
+  attn14: String
+  attn15: String
+  attn16: String
+  attn17: String
+  attn18: String
+  attn19: String
+  attn20: String
+  attmisc: String
+  homeworkincomplete02: Boolean
+  homeworkincomplete03: Boolean
+  homeworkincomplete04: Boolean
+  homeworkincomplete05: Boolean
+  homeworkincomplete06: Boolean
+  homeworkincomplete07: Boolean
+  homeworkincomplete08: Boolean
+  homeworkincomplete09: Boolean
+  homeworkincomplete10: Boolean
+  homeworkincomplete11: Boolean
+  homeworkincomplete12: Boolean
+  homeworkincomplete13: Boolean
+  homeworkincomplete14: Boolean
+  homeworkincomplete15: Boolean
+  homeworkincomplete16: Boolean
+  homeworkincomplete17: Boolean
+  homeworkincomplete18: Boolean
+  homeworkincomplete19: Boolean
+  homeworkincomplete20: Boolean
+  eval01: Int
+  eval02: Int
+  eval03: Int
+  eval04: Int
+  eval05: Int
+  eval06: Int
+  eval07: Int
+  eval08: Int
+  eval09: Int
+  eval10: Int
+  eval11: Int
+  eval12: Int
+  eval13: Int
+  eval14: Int
+  eval15: Int
+  eval16: Int
+  eval17: Int
+  eval18: Int
+  eval19: Int
+  eval20: Int
+  ecom01: String
+  ecom02: String
+  ecom03: String
+  ecom04: String
+  ecom05: String
+  ecom06: String
+  ecom07: String
+  ecom08: String
+  ecom09: String
+  ecom10: String
+  ecom11: String
+  ecom12: String
+  ecom13: String
+  ecom14: String
+  ecom15: String
+  ecom16: String
+  ecom17: String
+  ecom18: String
+  ecom19: String
+  ecom20: String
+  cust01: String
+  cust02: String
+  cust03: String
+  cust04: String
+  cust05: String
+}
+type ClrmY
+  @model
+  @key(name: "byDayofWeekY", fields: ["dayofweek", "uid"], queryField: "BydayY")
+  @auth(rules: [{ allow: private }]) {
+  id: ID!
+  uid: String!
+  index: String!
+  sortid: String
+  classcount: String
+  classcode: String
+  classnameJ: String
+  studentcode: String
+  studentname: String
+  studentnameJ: String
+  studentnameJKana: String
+  studentnameRev: String
+  dayofweek: String
+  enable: Boolean
+  group: String
+  note: String
+  attn01: String
+  attn02: String
+  attn03: String
+  attn04: String
+  attn05: String
+  attn06: String
+  attn07: String
+  attn08: String
+  attn09: String
+  attn10: String
+  attn11: String
+  attn12: String
+  attn13: String
+  attn14: String
+  attn15: String
+  attn16: String
+  attn17: String
+  attn18: String
+  attn19: String
+  attn20: String
+  attmisc: String
+  homeworkincomplete02: Boolean
+  homeworkincomplete03: Boolean
+  homeworkincomplete04: Boolean
+  homeworkincomplete05: Boolean
+  homeworkincomplete06: Boolean
+  homeworkincomplete07: Boolean
+  homeworkincomplete08: Boolean
+  homeworkincomplete09: Boolean
+  homeworkincomplete10: Boolean
+  homeworkincomplete11: Boolean
+  homeworkincomplete12: Boolean
+  homeworkincomplete13: Boolean
+  homeworkincomplete14: Boolean
+  homeworkincomplete15: Boolean
+  homeworkincomplete16: Boolean
+  homeworkincomplete17: Boolean
+  homeworkincomplete18: Boolean
+  homeworkincomplete19: Boolean
+  homeworkincomplete20: Boolean
+  eval01: Int
+  eval02: Int
+  eval03: Int
+  eval04: Int
+  eval05: Int
+  eval06: Int
+  eval07: Int
+  eval08: Int
+  eval09: Int
+  eval10: Int
+  eval11: Int
+  eval12: Int
+  eval13: Int
+  eval14: Int
+  eval15: Int
+  eval16: Int
+  eval17: Int
+  eval18: Int
+  eval19: Int
+  eval20: Int
+  ecom01: String
+  ecom02: String
+  ecom03: String
+  ecom04: String
+  ecom05: String
+  ecom06: String
+  ecom07: String
+  ecom08: String
+  ecom09: String
+  ecom10: String
+  ecom11: String
+  ecom12: String
+  ecom13: String
+  ecom14: String
+  ecom15: String
+  ecom16: String
+  ecom17: String
+  ecom18: String
+  ecom19: String
+  ecom20: String
+  cust01: String
+  cust02: String
+  cust03: String
+  cust04: String
+  cust05: String
+}
