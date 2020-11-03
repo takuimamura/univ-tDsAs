@@ -2103,7 +2103,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.0",
-        rev: "C_FilledAreaUp_AuthError no throw",
+        rev: "B_FilledAreaUp",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -4992,7 +4992,7 @@ export default {
         })
         .catch((e) =>
           // this.Log("Error", "Auth", this.authdetail.username, "catch", JSON.stringify(e))
-          this.writeDayLogs("[ERROR] Auth" + e, this.app.noteNameNW)
+          this.writeDayLogs("[ERROR] Auth" + e, this.app.noteNameNW);
         );
     },
     async reloadApp(str) {
