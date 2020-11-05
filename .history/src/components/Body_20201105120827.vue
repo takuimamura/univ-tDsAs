@@ -148,26 +148,7 @@
               <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
               <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
               <b-button size="is-small" @click="datasetIDBGetALL()">idbTEST 3</b-button>
-              <br />
-              {{getThisWeekAttnJSON.Mon}} - {{getLatestJSON.Mon.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Tue}} - {{getLatestJSON.Tue.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Wed}} - {{getLatestJSON.Wed.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Thu}} - {{getLatestJSON.Thu.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Fri}} - {{getLatestJSON.Fri.attendance}}
-              -----------
-              {{getThisWeekHwicJSON.Mon}} - {{getLatestJSON.Mon.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Tue}} - {{getLatestJSON.Tue.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Wed}} - {{getLatestJSON.Wed.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Thu}} - {{getLatestJSON.Thu.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Fri}} - {{getLatestJSON.Fri.hwic}}
+
               <b-switch sise="is-small" v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
@@ -834,12 +815,7 @@
                         <!-- Sync status -->
                         <div class="column">
                           <template v-if="yitem.syncdone">
-                            <b-icon
-                              pack="fas"
-                              icon="star"
-                              size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                           </template>
                           <template v-else-if="yitem.syncdone === false">
                             <b-icon
@@ -854,12 +830,7 @@
                         <!-- Attendance record completion -->
                         <div class="column">
                           <template v-if="yitem.attndone">
-                            <b-icon
-                              pack="fas"
-                              icon="grin-stars"
-                              size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
                           <template v-else></template>
@@ -2029,8 +2000,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.01",
-        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        version: "2.0",
+        rev: "D_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3587,7 +3558,7 @@ export default {
           });
 
           const attnstatus =
-            obj[this.getLatestJSON[obj.dayofweek].attendance + "done"];
+            obj[this.getThisWeekAttnJSON[obj.dayofweek] + "done"];
           tgt.attndone = attnstatus !== null ? true : false;
           tgt.syncdone =
             attnstatus === "sync"
@@ -3845,21 +3816,33 @@ export default {
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet
-      if (this.getLatestJSON[dow].hwic == "") {
+      if (this.getThisWeekHwicJSON[dow] == "") {
         return false;
       }
-      const atEl = this.getLatestJSON[dow].attendance;
-      const hwEl = this.getLatestJSON[dow].hwic;
+      const atEl = this.getThisWeekAttnJSON[dow];
+      const hwEl = this.getThisWeekHwicJSON[dow];
       const chkHW = function(obj, atEl, hwEl) {
         let rslt = false;
+        let rsltStr = "";
         for (const rw of obj) {
           const at = rw[atEl];
           const hw = rw[hwEl];
+          rsltStr +=
+            "\t" +
+            at +
+            "\t" +
+            hw +
+            "\t" +
+            rw.studentcode +
+            "\t" +
+            rw.studentname;
           if (at == "not here" && hw !== false) {
+            rsltStr += " NG";
             rslt = true;
           }
+          rsltStr += "\n";
         }
-        return rslt;
+        return [rsltStr, rslt];
       };
       const classmem = await this.idbGetClassmembers(classcode);
       const retArr = chkHW(classmem, atEl, hwEl);
@@ -3868,7 +3851,7 @@ export default {
       let tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
-      if (retArr === true) {
+      if (retArr[1] === true) {
         //// 識別文字列を追加（既にあればそのまま）
         tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
         if (alrt) {
@@ -3893,8 +3876,8 @@ export default {
         tgt.detail = tgt.detail.replace("hwic", "");
       }
       // reflect to indexedDB
-      const prop = this.getLatestJSON[dow].hwic;
-      await this.updateSmry(classcode, prop, retArr);
+      const prop = this.getThisWeekHwicJSON[dow];
+      await this.updateSmry(classcode, prop, retArr[1]);
     },
     // Force Sync
     // Force Sync
@@ -3987,11 +3970,7 @@ export default {
       });
     },
     // 今週分の出欠完了判定
-    async getAttnDoneStateSelClrm() {
-      //必ずクラス内で実施される
-      if (this.selClrm.id == "") {
-        return false;
-      }
+    getAttnDoneStateSelClrm() {
       const cmem = this.classmembers;
       let doneNum = 0;
       for (let num = 0; num < cmem.length; num++) {
@@ -4007,14 +3986,14 @@ export default {
     //// クラス毎のサマリDB 更新
     async examAttnDone(tgtClrm) {
       const dow = tgtClrm.dayofweek;
-      const cmem = await this.idbGetClassmembers(tgtClrm.id);
+      const cmem = this.classmembers;
       if (cmem.length == 0) {
         return false;
       }
       const tst = cmem.some(m => {
         return (
-          m[this.getLatestJSON[dow].attendance] == null ||
-          m[this.getLatestJSON[dow].attendance] == ""
+          m[this.getThisWeekAttnJSON[dow]] == null ||
+          m[this.getThisWeekAttnJSON[dow]] == ""
         );
       });
       this.writeDayLogs(
@@ -4040,8 +4019,8 @@ export default {
       const arrAPI = this.dataAPI.Clrms.filter(x => x.classcode == tgtClrm.id);
       const tst = arrAPI.some(m => {
         return (
-          m[this.getLatestJSON[dow].attendance] == null ||
-          m[this.getLatestJSON[dow].attendance] == ""
+          m[this.getThisWeekAttnJSON[dow]] == null ||
+          m[this.getThisWeekAttnJSON[dow]] == ""
         );
       });
       this.writeDayLogs(
@@ -4068,7 +4047,7 @@ export default {
       // indexedDB update
       const val =
         tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
-      const prop = this.getLatestJSON[tgtClrm.dayofweek].attendance + "done";
+      const prop = this.getThisWeekAttnJSON[tgtClrm.dayofweek] + "done";
       await this.updateSmry(tgtClrm.id, prop, val);
       // console.warn("reflect" + tgtClrm.id, prop, val);
       // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;

@@ -148,26 +148,7 @@
               <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
               <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
               <b-button size="is-small" @click="datasetIDBGetALL()">idbTEST 3</b-button>
-              <br />
-              {{getThisWeekAttnJSON.Mon}} - {{getLatestJSON.Mon.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Tue}} - {{getLatestJSON.Tue.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Wed}} - {{getLatestJSON.Wed.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Thu}} - {{getLatestJSON.Thu.attendance}}
-              <br />
-              {{getThisWeekAttnJSON.Fri}} - {{getLatestJSON.Fri.attendance}}
-              -----------
-              {{getThisWeekHwicJSON.Mon}} - {{getLatestJSON.Mon.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Tue}} - {{getLatestJSON.Tue.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Wed}} - {{getLatestJSON.Wed.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Thu}} - {{getLatestJSON.Thu.hwic}}
-              <br />
-              {{getThisWeekHwicJSON.Fri}} - {{getLatestJSON.Fri.hwic}}
+
               <b-switch sise="is-small" v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
@@ -817,12 +798,9 @@
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >
-                      <template
-                        v-if="yitem.lssnthisweek !== undefined"
-                      >{{ getLatestJSON[yitem.dayofweek].lessonnum}}</template>
-                      <template v-else>
-                        <span style="color:#ccc">{{ getLatestJSON[yitem.dayofweek].lessonnum}}</span>
-                      </template>
+                      <span
+                        :class="{ has-text-grey-lighter: yitem.lssnthisweek == null}"
+                      >{{ yitem.lssnthisweek }}dddd</span>
                     </td>
 
                     <td
@@ -834,12 +812,7 @@
                         <!-- Sync status -->
                         <div class="column">
                           <template v-if="yitem.syncdone">
-                            <b-icon
-                              pack="fas"
-                              icon="star"
-                              size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                           </template>
                           <template v-else-if="yitem.syncdone === false">
                             <b-icon
@@ -854,12 +827,7 @@
                         <!-- Attendance record completion -->
                         <div class="column">
                           <template v-if="yitem.attndone">
-                            <b-icon
-                              pack="fas"
-                              icon="grin-stars"
-                              size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
                           <template v-else></template>
@@ -1054,7 +1022,7 @@
                     numeric
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
                   >
                     <span class="f23">{{ props.row.classcount }}</span>
                   </b-table-column>
@@ -1064,7 +1032,7 @@
                     width="20"
                     sticky
                     sortable
-                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
                   >
                     <div class="f30">
                       <b-tag
@@ -1082,7 +1050,7 @@
                     width="50"
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
                   >{{ props.row.studentcode }}</b-table-column>
                   <b-table-column
                     field="studentname"
@@ -1090,7 +1058,7 @@
                     sortable
                     width="220"
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
                   >
                     <span class="f23">{{ props.row.studentname }}</span>
                   </b-table-column>
@@ -1240,13 +1208,13 @@
                             <!-- 期末対応 -->
                             <b-tag
                               rounded
-                              :class="getAttendStatusClass(indiRow[selClrm.attnLatest])"
+                              :class="getAttendStatusClass(indiRow[selClrm.attnthisweek])"
                               style="font-size:25px"
                             >
                               {{
-                              indiRow[selClrm.attnLatest] === null
+                              indiRow[selClrm.attnthisweek] === null
                               ? "(attendance unconfirmed)"
-                              : indiRow[selClrm.attnLatest]
+                              : indiRow[selClrm.attnthisweek]
                               }}
                             </b-tag>
                           </div>
@@ -1888,9 +1856,8 @@
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
                             <span
-                              :class="getIndiAttendClass(st[selClrm.attnLatest])"
+                              :class="getIndiAttendClass(st[selClrm.attnthisweek])"
                             >{{ st.classcount + " " + st.studentname }}</span>
-                            <!-- :class="getIndiAttendClass(st[selClrm.attnthisweek])" -->
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -2029,8 +1996,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.01",
-        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        version: "2.0",
+        rev: "D_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3173,24 +3140,19 @@ export default {
     },
     async updateClrmAPI(row, fname, fval, queueKey = "") {
       let upArr = {};
-      try {
-        if (queueKey == "") {
-          upArr.id = row.id;
-          upArr[fname] = fval;
-          upArr.cust01 = row.cust01;
-          upArr.cust02 = row.cust02;
-        } else {
-          upArr = row;
-        }
-        delete upArr._version;
-        delete upArr._lastChangedAt;
-        delete upArr._deleted;
-        delete upArr.updatedAt;
-        delete upArr.createdAt;
-      } catch (ee) {
-        console.warn(row, fname, fval, queueKey);
-        console.warn(ee);
+      if (queueKey == "") {
+        upArr.id = row.id;
+        upArr[fname] = fval;
+        upArr.cust01 = row.cust01;
+        upArr.cust02 = row.cust02;
+      } else {
+        upArr = row;
       }
+      delete upArr._version;
+      delete upArr._lastChangedAt;
+      delete upArr._deleted;
+      delete upArr.updatedAt;
+      delete upArr.createdAt;
 
       // console.warn(upArr);
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
@@ -3207,7 +3169,6 @@ export default {
       } catch (e) {
         row.cust03 = "";
         //// --- SendQueue
-        console.warn("e API ", row.index, row, upArr);
         this.idbAddSQueue("Clrm", row.index, row);
         this.writeDayLogs(
           "ClrmAPI Fail: " + row.index + JSON.stringify(e),
@@ -3244,38 +3205,38 @@ export default {
         this.updateClrmAPI(row, fname, fval);
       }
     },
-    async updateClrmFilledArea(row) {
+    async updateClrmFilledArea(rw) {
       // 出欠と宿題は該当週のみ、評価はすべて
       const upArr = {
-        id: row.id,
-        uid: row.uid,
-        index: row.index
+        id: rw.id,
+        uid: rw.uid,
+        index: rw.index
       };
       //とりあえず安全策で
       const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
       //評価はすべて ただし値あるやつだけセットする
       estr.forEach(x => {
-        if (row["attn" + x] !== null && row["attn" + x] !== "") {
-          upArr["attn" + x] = row["attn" + x];
+        if (rw["attn" + x] !== null && rw["attn" + x] !== "") {
+          upArr["attn" + x] = rw["attn" + x];
         }
-        if (row["eval" + x] !== null && row["eval" + x] !== "") {
-          upArr["eval" + x] = row["eval" + x];
+        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
+          upArr["eval" + x] = rw["eval" + x];
         }
-        if (row["ecom" + x] !== null && row["ecom" + x] !== "") {
-          upArr["ecom" + x] = row["ecom" + x];
+        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
+          upArr["ecom" + x] = rw["ecom" + x];
         }
       });
       const estr2 = ["02", "03", "04", "06", "07"];
       estr2.forEach(x => {
         if (
-          row["homeworkincomplete" + x] !== null &&
-          row["homeworkincomplete" + x] !== ""
+          rw["homeworkincomplete" + x] !== null &&
+          rw["homeworkincomplete" + x] !== ""
         ) {
-          upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
+          upArr["homeworkincomplete" + x] = rw["homeworkincomplete" + x];
         }
       });
       const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
-      const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      const logHist = log + "\n" + (rw.cust01 === null ? "" : rw.cust01);
       upArr.cust01 = logHist;
       upArr.cust02 = log;
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
@@ -3286,8 +3247,7 @@ export default {
         );
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        console.warn("e fill ", row.index, row, upArr);
-        this.idbAddSQueue("Clrm", row.index, upArr);
+        this.idbAddSQueue("Clrm", rw.index, upArr);
         return false;
       }
     },
@@ -3587,7 +3547,7 @@ export default {
           });
 
           const attnstatus =
-            obj[this.getLatestJSON[obj.dayofweek].attendance + "done"];
+            obj[this.getThisWeekAttnJSON[obj.dayofweek] + "done"];
           tgt.attndone = attnstatus !== null ? true : false;
           tgt.syncdone =
             attnstatus === "sync"
@@ -3845,21 +3805,33 @@ export default {
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet
-      if (this.getLatestJSON[dow].hwic == "") {
+      if (this.getThisWeekHwicJSON[dow] == "") {
         return false;
       }
-      const atEl = this.getLatestJSON[dow].attendance;
-      const hwEl = this.getLatestJSON[dow].hwic;
+      const atEl = this.getThisWeekAttnJSON[dow];
+      const hwEl = this.getThisWeekHwicJSON[dow];
       const chkHW = function(obj, atEl, hwEl) {
         let rslt = false;
+        let rsltStr = "";
         for (const rw of obj) {
           const at = rw[atEl];
           const hw = rw[hwEl];
+          rsltStr +=
+            "\t" +
+            at +
+            "\t" +
+            hw +
+            "\t" +
+            rw.studentcode +
+            "\t" +
+            rw.studentname;
           if (at == "not here" && hw !== false) {
+            rsltStr += " NG";
             rslt = true;
           }
+          rsltStr += "\n";
         }
-        return rslt;
+        return [rsltStr, rslt];
       };
       const classmem = await this.idbGetClassmembers(classcode);
       const retArr = chkHW(classmem, atEl, hwEl);
@@ -3868,7 +3840,7 @@ export default {
       let tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
-      if (retArr === true) {
+      if (retArr[1] === true) {
         //// 識別文字列を追加（既にあればそのまま）
         tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
         if (alrt) {
@@ -3893,8 +3865,8 @@ export default {
         tgt.detail = tgt.detail.replace("hwic", "");
       }
       // reflect to indexedDB
-      const prop = this.getLatestJSON[dow].hwic;
-      await this.updateSmry(classcode, prop, retArr);
+      const prop = this.getThisWeekHwicJSON[dow];
+      await this.updateSmry(classcode, prop, retArr[1]);
     },
     // Force Sync
     // Force Sync
@@ -3955,11 +3927,6 @@ export default {
       this.selClrm.attnModified = false;
       this.selClrm.attnDoneReported = false;
 
-      // 直近のAttn
-      this.selClrm.attnLatest = this.getLatestJSON[
-        this.selClrm.dayofweek
-      ].attendance;
-
       //表示
       this.isOpenselClrm = true;
       window.scrollTo({
@@ -3987,16 +3954,11 @@ export default {
       });
     },
     // 今週分の出欠完了判定
-    async getAttnDoneStateSelClrm() {
-      //必ずクラス内で実施される
-      if (this.selClrm.id == "") {
-        return false;
-      }
+    getAttnDoneStateSelClrm() {
       const cmem = this.classmembers;
       let doneNum = 0;
       for (let num = 0; num < cmem.length; num++) {
-        const at = cmem[num][this.selClrm.attnLatest];
-        // const at = cmem[num][this.selClrm.attnthisweek];
+        const at = cmem[num][this.selClrm.attnthisweek];
         if (at !== null && at !== "") {
           doneNum += 1;
         }
@@ -4007,14 +3969,14 @@ export default {
     //// クラス毎のサマリDB 更新
     async examAttnDone(tgtClrm) {
       const dow = tgtClrm.dayofweek;
-      const cmem = await this.idbGetClassmembers(tgtClrm.id);
+      const cmem = this.classmembers;
       if (cmem.length == 0) {
         return false;
       }
       const tst = cmem.some(m => {
         return (
-          m[this.getLatestJSON[dow].attendance] == null ||
-          m[this.getLatestJSON[dow].attendance] == ""
+          m[this.getThisWeekAttnJSON[dow]] == null ||
+          m[this.getThisWeekAttnJSON[dow]] == ""
         );
       });
       this.writeDayLogs(
@@ -4040,8 +4002,8 @@ export default {
       const arrAPI = this.dataAPI.Clrms.filter(x => x.classcode == tgtClrm.id);
       const tst = arrAPI.some(m => {
         return (
-          m[this.getLatestJSON[dow].attendance] == null ||
-          m[this.getLatestJSON[dow].attendance] == ""
+          m[this.getThisWeekAttnJSON[dow]] == null ||
+          m[this.getThisWeekAttnJSON[dow]] == ""
         );
       });
       this.writeDayLogs(
@@ -4068,7 +4030,7 @@ export default {
       // indexedDB update
       const val =
         tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
-      const prop = this.getLatestJSON[tgtClrm.dayofweek].attendance + "done";
+      const prop = this.getThisWeekAttnJSON[tgtClrm.dayofweek] + "done";
       await this.updateSmry(tgtClrm.id, prop, val);
       // console.warn("reflect" + tgtClrm.id, prop, val);
       // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
@@ -4082,8 +4044,7 @@ export default {
       this.cRoom.fixAwait = true;
       // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
       //localStorageとDSと配列比較して補正
-      const attnDest = tgtClrm.attnLatest;
-      // const attnDest = tgtClrm.attnthisweek;
+      const attnDest = tgtClrm.attnthisweek;
       // const objDS = await DataStore.query(Clrm, c =>
       //   c.classcode("eq", tgtClrm.id)
       // );
@@ -4229,8 +4190,7 @@ export default {
       }
       this.isdeadlinelenient = true; //編集許可
       this.isEnteredselClrm = true; //状態保持
-      this.cRoom.attnEditTgt = this.selClrm.attnLatest; //出欠ボタンと編集対象週ボタンの初期値
-      // this.cRoom.attnEditTgt = this.selClrm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
+      this.cRoom.attnEditTgt = this.selClrm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
       this.cRoom.attnEditable = false; //入った時点では編集モードにしない
 
       //HWのnullをTrueにかえたい

@@ -2029,8 +2029,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.01",
-        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        version: "2.0",
+        rev: "D_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3988,11 +3988,8 @@ export default {
     },
     // 今週分の出欠完了判定
     async getAttnDoneStateSelClrm() {
-      //必ずクラス内で実施される
-      if (this.selClrm.id == "") {
-        return false;
-      }
-      const cmem = this.classmembers;
+      const cmem = await this.idbGetClassmembers(tgtClrm.id);
+      // const cmem = this.classmembers;
       let doneNum = 0;
       for (let num = 0; num < cmem.length; num++) {
         const at = cmem[num][this.selClrm.attnLatest];

@@ -834,12 +834,7 @@
                         <!-- Sync status -->
                         <div class="column">
                           <template v-if="yitem.syncdone">
-                            <b-icon
-                              pack="fas"
-                              icon="star"
-                              size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                           </template>
                           <template v-else-if="yitem.syncdone === false">
                             <b-icon
@@ -858,7 +853,7 @@
                               pack="fas"
                               icon="grin-stars"
                               size="is-large"
-                              :type="yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'"
+                              :type="yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-slashok'"
                             ></b-icon>
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
@@ -2029,8 +2024,8 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.01",
-        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        version: "2.0",
+        rev: "D_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3987,11 +3982,7 @@ export default {
       });
     },
     // 今週分の出欠完了判定
-    async getAttnDoneStateSelClrm() {
-      //必ずクラス内で実施される
-      if (this.selClrm.id == "") {
-        return false;
-      }
+    getAttnDoneStateSelClrm() {
       const cmem = this.classmembers;
       let doneNum = 0;
       for (let num = 0; num < cmem.length; num++) {
@@ -4007,7 +3998,7 @@ export default {
     //// クラス毎のサマリDB 更新
     async examAttnDone(tgtClrm) {
       const dow = tgtClrm.dayofweek;
-      const cmem = await this.idbGetClassmembers(tgtClrm.id);
+      const cmem = this.classmembers;
       if (cmem.length == 0) {
         return false;
       }
