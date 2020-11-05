@@ -2039,7 +2039,7 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.02",
+        version: "2.01",
         rev:
           "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
