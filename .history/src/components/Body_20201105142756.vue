@@ -586,7 +586,7 @@
                       <span
                         v-show="selClrm.lssnthisweek == undefined"
                         class="is-text-4 has-text-weight-bold has-text-grey-light"
-                      >No Lesson</span>
+                      >No Lesson This Week</span>
                     </p>
                   </div>
                   <div class="column is-3">
@@ -924,7 +924,7 @@
                         <b>Lesson {{ selClrm.lssnthisweek }}</b>
                       </span>
                       <span v-show="selClrm.lssnthisweek == undefined" class="has-text-grey-light">
-                        <b>No Lesson</b>
+                        <b>No Lesson This Week</b>
                       </span>
                     </p>
                   </div>
