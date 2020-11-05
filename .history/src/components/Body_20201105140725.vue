@@ -2008,7 +2008,7 @@ export default {
     // 授業中で当日出欠OKなら再送信、バックアップ送信
     // this.isEnteredselClrm
     // this.idbHandleSQueue();
-    if (this.selClrm.id !== "") {
+    if (this.selClrm !== null) {
       if (this.classmembers.length > 0) {
         //何かしら出欠編集してて未送信なら
         if (
@@ -2040,8 +2040,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.01",
-        rev:
-          "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",

@@ -2040,8 +2040,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.01",
-        rev:
-          "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        rev: "E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
