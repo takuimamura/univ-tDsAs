@@ -579,14 +579,16 @@
                       <span style="font-size:20px;">{{ selClrm.title }}</span>
                       <span style="font-size:20px;">{{ selClrm.classtitle }}</span>
                       <br />
-                      <span
-                        v-show="selClrm.lssnthisweek !== undefined"
-                        class="is-text-4 has-text-weight-bold"
-                      >Lesson No. {{ selClrm.lssnthisweek }}</span>
-                      <span
-                        v-show="selClrm.lssnthisweek == undefined"
-                        class="is-text-4 has-text-weight-bold has-text-grey-light"
-                      >No Lesson This Week</span>
+                      <template v-if="selClrm.lssnthisweek !== undefined">
+                        <span
+                          class="is-text-4 has-text-weight-bold"
+                        >Lesson No. {{ selClrm.lssnthisweek }}</span>
+                      </template>
+                      <template v-else>
+                        <span
+                          class="is-text-4 has-text-weight-bold has-text-grey"
+                        >No Lesson This Week</span>
+                      </template>
                     </p>
                   </div>
                   <div class="column is-3">
@@ -920,12 +922,7 @@
                     </p>
                     <p class="subtitle" style="line-height:0.8em;">
                       {{ selClrm.classtitle }}
-                      <span v-show="selClrm.lssnthisweek !== undefined">
-                        <b>Lesson {{ selClrm.lssnthisweek }}</b>
-                      </span>
-                      <span v-show="selClrm.lssnthisweek == undefined" class="has-text-grey-light">
-                        <b>No Lesson This Week</b>
-                      </span>
+                      <b>Lesson {{ selClrm.lssnthisweek }}</b>
                     </p>
                   </div>
                 </div>
