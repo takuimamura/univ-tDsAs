@@ -3368,19 +3368,8 @@ export default {
       // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     async idbTEST5() {
-      // const chkinit = async function(nam) {
-      //   if (await this.idbGet(nam, "init")) {
-      //     return false;
-      //   } else {
-      //     await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
-      //     return true;
-      //   }
-      // };
-      // // this.importLStoIDB();
-      // // await this.idbRemove(this.idbCls, this.ds.dev1);
-      // console.warn(chkinit(this.idbCIdx));
-      // console.warn(chkinit(this.idbCls));
-      // console.warn(chkinit(this.idbSQue));
+      this.importLStoIDB();
+      // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     // indexedDB -
     // indexedDB -

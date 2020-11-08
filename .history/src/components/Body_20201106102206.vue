@@ -5,9 +5,10 @@
       <section class="hero is-fullheight">
         <div class="hero-body">
           <div class="container has-text-centered">
-            <b-button size="title is-1 is-large is-outlined" @click="$router.go()"
-              >Click to initialize (only for the first use)</b-button
-            >
+            <b-button
+              size="title is-1 is-large is-outlined"
+              @click="$router.go()"
+            >Click to initialize (only for the first use)</b-button>
           </div>
         </div>
       </section>
@@ -20,19 +21,13 @@
           <div class="column is-four-fifths"></div>
           <div class="column">
             <b-field>
-              <b-switch v-model="sett.devscreen" size="large"
-                >devscreen : {{ sett.devscreen }}</b-switch
-              >
-              <b-switch v-model="sett.devarea" size="is-small"
-                >devarea : {{ sett.devarea }}</b-switch
-              >
+              <b-switch v-model="sett.devscreen" size="large">devscreen : {{ sett.devscreen }}</b-switch>
+              <b-switch v-model="sett.devarea" size="is-small">devarea : {{ sett.devarea }}</b-switch>
             </b-field>
           </div>
         </article>
         <div v-if="sett.devscreen">
-          <b-switch size="is-small" v-model="sett.priorityLS"
-            >priorityLS : {{ sett.priorityLS }}</b-switch
-          >
+          <b-switch size="is-small" v-model="sett.priorityLS">priorityLS : {{ sett.priorityLS }}</b-switch>
           <b-button size="is-small" @click="datasetManage()">datasetManage()</b-button>
           <!-- <b-button size="is-small" @click="()" size="is-small"></b-button> -->
           <!-- <b-switch size="is-small" v-model=""> : {{  }}</b-switch> -->
@@ -50,10 +45,7 @@
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <!-- 上部表示 -->
           <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-          <b-icon
-            icon="exclamation-triangle"
-            :class="[!app.network ? 'is-network' : 'is-normal']"
-          ></b-icon>
+          <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
           <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
           <!-- app: {{ app }} -->
           <b-modal :active.sync="sett.isModalActive"></b-modal>
@@ -67,19 +59,16 @@
               isClrmNeedAppSync == true;
               isClrmAppSyncUploading == false;
             "
-            >isClrmNeedAppSync</b-button
-          >
+          >isClrmNeedAppSync</b-button>
           <b-button size="is-small" @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
           <b-button size="is-small" @click="spliceTESTKick()">spliceTESTKick()</b-button>
           <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
-          <b-button size="is-small" @click="getAttnDoneStateSelClrm()"
-            >getAttnDoneStateSelClrm()</b-button
-          >
+          <b-button size="is-small" @click="getAttnDoneStateSelClrm()">getAttnDoneStateSelClrm()</b-button>
 
           <b-button size="is-small" @click="chkfindtest()">chkfindtest</b-button>
           <b-button size="is-small" @click="dummytest">dummytest</b-button>
           ■dummy1:{{ sett.dummy1 }} ■dummy2{{ sett.dummy2 }} ■dummy3{{ sett.dummy3 }} ■dummy4:{{
-            sett.dummy4
+          sett.dummy4
           }}
           ■dummy5{{ sett.dummy5 }} ■dummy3{{ sett.dummy6 }} authdetail::
           {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
@@ -90,29 +79,22 @@
               controls-position="compact"
               size="is-small"
             ></b-numberinput>
-            <b-button size="is-small" @click="dateDevAddDate()"
-              >dd {{ getDateMDddd(sett.ddate) }}</b-button
-            >
+            <b-button size="is-small" @click="dateDevAddDate()">dd {{ getDateMDddd(sett.ddate) }}</b-button>
             <b-numberinput
               v-model="sett.env.devAddAcDate"
               controls-position="compact"
               size="is-small"
               type="is-warning"
             ></b-numberinput>
-            <b-button size="is-small" @click="setcurrentAcDate()"
-              >AC{{ getDateMDddd(sett.ddate) }}</b-button
-            >
+            <b-button size="is-small" @click="setcurrentAcDate()">AC{{ getDateMDddd(sett.ddate) }}</b-button>
             <b-button
               size="is-small"
               @click="
                 setcurrentAcDate();
                 dateDevAddDate();
               "
-              >both</b-button
-            >
-            <b-checkbox v-model="sett.env.isTestMode"
-              >TestMode:{{ sett.env.isTestMode }}</b-checkbox
-            >
+            >both</b-button>
+            <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
             <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
           </b-field>
           <b-button size="is-small" @click="fetchClrms()">fetchClrms()</b-button>
@@ -121,9 +103,7 @@
           <b-button size="is-small" @click="classBackupTEST()">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
-          <b-switch size="is-small" v-model="sett.devsummary"
-            >devsummary : {{ sett.devsummary }}</b-switch
-          >
+          <b-switch size="is-small" v-model="sett.devsummary">devsummary : {{ sett.devsummary }}</b-switch>
           idle:{{ IdleVueStatus }}
           <template v-if="sett.devsummary">
             <!--■■■開発用 ローカル限定表示■■■-->
@@ -168,13 +148,33 @@
               <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
               <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
               <b-button size="is-small" @click="datasetIDBGetALL()">idbTEST 3</b-button>
-              <b-switch sise="is-small" v-model="sett.devshow"
-                >devshow : {{ sett.devshow }}</b-switch
-              >
+              <br />
+              {{getThisWeekAttnJSON.Mon}} - {{getLatestJSON.Mon.attendance}}
+              <br />
+              {{getThisWeekAttnJSON.Tue}} - {{getLatestJSON.Tue.attendance}}
+              <br />
+              {{getThisWeekAttnJSON.Wed}} - {{getLatestJSON.Wed.attendance}}
+              <br />
+              {{getThisWeekAttnJSON.Thu}} - {{getLatestJSON.Thu.attendance}}
+              <br />
+              {{getThisWeekAttnJSON.Fri}} - {{getLatestJSON.Fri.attendance}}
+              -----------
+              {{getThisWeekHwicJSON.Mon}} - {{getLatestJSON.Mon.hwic}}
+              <br />
+              {{getThisWeekHwicJSON.Tue}} - {{getLatestJSON.Tue.hwic}}
+              <br />
+              {{getThisWeekHwicJSON.Wed}} - {{getLatestJSON.Wed.hwic}}
+              <br />
+              {{getThisWeekHwicJSON.Thu}} - {{getLatestJSON.Thu.hwic}}
+              <br />
+              {{getThisWeekHwicJSON.Fri}} - {{getLatestJSON.Fri.hwic}}
+              <b-switch sise="is-small" v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
               <template v-if="sett.devshow">
                 <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
                 <template v-if="classmembers.length > 0 && sett.devshowMem">
-                  {{ classmembers[0] }}
+                  {{
+                  classmembers[0]
+                  }}
                 </template>
                 <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
                 <template v-if="sett.sw1">
@@ -220,12 +220,10 @@
                 isEnteredselClrm: {{ isEnteredselClrm }} |
                 <br />
                 <!-- getEditableUntilJSON: {{ getEditableUntilJSON }} -->
-                getThisSaturday {{ getThisSaturday }}
+                getThisSaturday {{getThisSaturday}}
                 <br />
-                getLatestJSON: {{ getLatestJSON.Mon.lessonnum }} -
-                {{ getLatestJSON.Tue.lessonnum }} - {{ getLatestJSON.Wed.lessonnum }} -
-                {{ getLatestJSON.Thu.lessonnum }} -{{ getLatestJSON.Fri.lessonnum }} ::
-                {{ getLatestJSON }}
+                getLatestJSON: {{ getLatestJSON.Mon.lessonnum }} - {{ getLatestJSON.Tue.lessonnum }} - {{ getLatestJSON.Wed.lessonnum }} - {{ getLatestJSON.Thu.lessonnum }} -{{ getLatestJSON.Fri.lessonnum }}
+                :: {{ getLatestJSON }}
                 <br />
                 <br />dayChainJSON:
                 <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
@@ -239,13 +237,8 @@
                 <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
                 <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                 <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
-                <b-icon
-                  pack="fas"
-                  icon="grin-stars"
-                  size="is-large"
-                  type="is-attndone"
-                ></b-icon> </template
-              >A0042_19117001
+                <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+              </template>A0042_19117001
             </div>
             <!-- <div class="column">            </div> -->
           </div>
@@ -253,14 +246,10 @@
           {{ dataLS.Clrms.length }} ||| {{ dataset.Clrms.length }} ||| source = {{ dataset.source }}
           <br />
           allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }} | .Smry:{{
-            dataset.Smry.length
+          dataset.Smry.length
           }}
           <b-field>
-            <b-numberinput
-              v-model="dev.classCLimit"
-              controls-position="compact"
-              size="is-small"
-            ></b-numberinput>
+            <b-numberinput v-model="dev.classCLimit" controls-position="compact" size="is-small"></b-numberinput>
             <b-button @click="TESTarr3()" size="is-small">classroomDS</b-button>
           </b-field>
           <ul>
@@ -269,55 +258,51 @@
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
               {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
+              getDateMDhmmss(r.cust02)
               }}
               c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
+              getDateMDhmmss(r.eval01)
               }}- {{ getDateMDhmmss(r.ecom01) }}
-            </li>
-            ----classmembers
+            </li>----classmembers
             <li v-for="r in TESTarr2" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
               {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
+              getDateMDhmmss(r.cust02)
               }}
               c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
+              getDateMDhmmss(r.eval01)
               }}- {{ getDateMDhmmss(r.ecom01) }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-            ----DataStore
+            </li>----DataStore
             <li v-for="r in sett.dummyClrm" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
               {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
+              getDateMDhmmss(r.cust02)
               }}
               c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
+              getDateMDhmmss(r.eval01)
               }}- {{ getDateMDhmmss(r.ecom01) }}
-            </li>
-            ----dataAPI
+            </li>----dataAPI
             <li v-for="r in TESTarr4" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
               {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
+              getDateMDhmmss(r.cust02)
               }}
               c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
+              getDateMDhmmss(r.eval01)
               }}- {{ getDateMDhmmss(r.ecom01) }}
-            </li>
-            ----dataLS
+            </li>----dataLS
             <li v-for="r in TESTarr5" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
               {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
-                getDateMDhmmss(r.cust02)
+              getDateMDhmmss(r.cust02)
               }}
               c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
-                getDateMDhmmss(r.eval01)
+              getDateMDhmmss(r.eval01)
               }}- {{ getDateMDhmmss(r.ecom01) }}
             </li>
           </ul>
@@ -382,8 +367,7 @@
             size="is-medium"
             @click="cRoom.showABList = !cRoom.showABList"
             expanded
-            >A / B</b-button
-          >
+          >A / B</b-button>
           <!-- <b-tooltip label="Visibility change" size="is-large" always>
         <b-switch size="is-large" v-model="cRoom.showABListStudentCode">Student Code</b-switch>
           </b-tooltip>-->
@@ -487,14 +471,15 @@
                         :key="index"
                         :native-value="m"
                         v-model="instructor.yourattendvisiblemonth"
-                        >{{ m }}</b-radio-button
-                      >
+                      >{{ m }}</b-radio-button>
                     </b-field>
                     <b-table :data="yourattendancesMonth">
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">{{
-                          getDateMDddd(props.row.date)
-                        }}</b-table-column>
+                        <b-table-column
+                          field="date"
+                          label="Date"
+                          width="150"
+                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
                           }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
@@ -503,9 +488,7 @@
                           {{ props.row.clockout
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
-                        <b-table-column field="detail" label="Note">{{
-                          props.row.detail
-                        }}</b-table-column>
+                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -518,8 +501,7 @@
                         @click="instClockIn()"
                         class="is-pulled-right"
                         :disabled="ifYouClockIn"
-                        >Clock in</b-button
-                      >
+                      >Clock in</b-button>
                     </div>
                     <div class="column">
                       <b-button
@@ -527,8 +509,7 @@
                         size="is-large"
                         @click="instClockOut()"
                         :disabled="!ifYouClockInAndStillIn"
-                        >Clock out</b-button
-                      >
+                      >Clock out</b-button>
                     </div>
                   </div>
                 </div>
@@ -590,7 +571,9 @@
                       {{ selClrm.dayofweek }}
                       {{ selClrm.slot }}
                       {{ selClrm.timefrom }}-{{ selClrm.timeto }}
-                      <span style="font-size:16px;">room:</span>
+                      <span
+                        style="font-size:16px;"
+                      >room:</span>
                       {{ selClrm.roomnum }}
                       <br />
                       <span style="font-size:20px;">{{ selClrm.title }}</span>
@@ -599,13 +582,11 @@
                       <span
                         v-show="selClrm.lssnthisweek !== undefined"
                         class="is-text-4 has-text-weight-bold"
-                        >Lesson No. {{ selClrm.lssnthisweek }}</span
-                      >
+                      >Lesson No. {{ selClrm.lssnthisweek }}</span>
                       <span
                         v-show="selClrm.lssnthisweek == undefined"
                         class="is-text-4 has-text-weight-bold has-text-grey-light"
-                        >No Lesson</span
-                      >
+                      >No Lesson</span>
                     </p>
                   </div>
                   <div class="column is-3">
@@ -616,8 +597,7 @@
                           icon-left="hand-point-right"
                           size="is-large"
                           @click="enterClassroom"
-                          >Go</b-button
-                        >
+                        >Go</b-button>
                       </template>
                       <template v-else>
                         <b-button loading size="is-large" class="w60"></b-button>
@@ -630,12 +610,7 @@
                         :active.sync="isClrmLoading"
                         :can-cancel="false"
                       >
-                        <b-icon
-                          pack="fas"
-                          icon="sync-alt"
-                          size="is-large"
-                          custom-class="fa-spin"
-                        ></b-icon>
+                        <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                       </b-loading>
                     </template>
                   </div>
@@ -645,12 +620,7 @@
                 <template v-if="checkIfHwic(selClrm.detail)">
                   <div class="columns is-gapless">
                     <div class="column">
-                      <b-icon
-                        pack="fas"
-                        icon="exclamation"
-                        size="is-large"
-                        type="is-danger"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="exclamation" size="is-large" type="is-danger"></b-icon>
                       <span class="has-text-danger f23">
                         <b>[Absent - Homework] mismatch exists.</b>
                       </span>
@@ -669,24 +639,14 @@
                       <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                     </template>
                     <template v-else-if="selClrm.syncdone === false">
-                      <b-icon
-                        pack="fas"
-                        icon="star-half-alt"
-                        size="is-large"
-                        type="is-syncsome"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
                     </template>
                     <template v-else></template>
                   </div>
                   <div class="column">
                     <!-- Attendance record completion -->
                     <template v-if="selClrm.attndone">
-                      <b-icon
-                        pack="fas"
-                        icon="grin-stars"
-                        size="is-large"
-                        type="is-attndone"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
                     </template>
                     <template v-else-if="selClrm.attndone === false"></template>
                     <template v-else></template>
@@ -701,8 +661,7 @@
                           icon-left="sync-alt"
                           size="is-large"
                           @click="manageupdateClrmAllAPI"
-                          >Force Sync</b-button
-                        >
+                        >Force Sync</b-button>
                         <template
                           v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
                         >
@@ -714,9 +673,7 @@
                               size="is-large"
                               type="is-success"
                             />
-                            <span class="is-text-2 has-text-weight-bold is-syncdone"
-                              >Sync Success</span
-                            >
+                            <span class="is-text-2 has-text-weight-bold is-syncdone">Sync Success</span>
                           </template>
                           <template v-else>
                             <b-icon
@@ -725,9 +682,9 @@
                               size="is-large"
                               type="is-danger"
                             />
-                            <span class="is-text-2 has-text-weight-bold"
-                              >Sync Failed. Please try again.</span
-                            >
+                            <span
+                              class="is-text-2 has-text-weight-bold"
+                            >Sync Failed. Please try again.</span>
                           </template>
                         </template>
                       </template>
@@ -738,12 +695,7 @@
                           :active.sync="isClrmAppSyncUploading"
                           :can-cancel="false"
                         >
-                          <b-icon
-                            pack="fas"
-                            icon="sync-alt"
-                            size="is-large"
-                            custom-class="fa-spin"
-                          ></b-icon>
+                          <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                         </b-loading>
                       </template>
                     </template>
@@ -834,27 +786,19 @@
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.id }}
-                    </td>
+                    >{{ yitem.id }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.grade }}({{ yitem.classnum }})
-                    </td>
+                    >{{ yitem.grade }}({{ yitem.classnum }})</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.dayofweek }}
-                    </td>
+                    >{{ yitem.dayofweek }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.slot }}
-                    </td>
+                    >{{ yitem.slot }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
@@ -866,29 +810,23 @@
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
-                    >
-                      {{ yitem.roomnum }}
-                    </td>
+                    >{{ yitem.roomnum }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
-                    >
-                      {{ yitem.classtitle | subStr }}
-                    </td>
+                    >{{ yitem.classtitle | subStr }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       class="is-size-3 has-text-weight-bold"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >
-                      <template v-if="yitem.lssnthisweek !== undefined">{{
-                        getLatestJSON[yitem.dayofweek].lessonnum
-                      }}</template>
+                      <template
+                        v-if="yitem.lssnthisweek !== undefined"
+                      >{{ getLatestJSON[yitem.dayofweek].lessonnum}}</template>
                       <template v-else>
-                        <span style="color:#ccc">{{
-                          getLatestJSON[yitem.dayofweek].lessonnum
-                        }}</span>
+                        <span style="color:#ccc">{{ getLatestJSON[yitem.dayofweek].lessonnum}}</span>
                       </template>
                     </td>
 
@@ -905,9 +843,7 @@
                               pack="fas"
                               icon="star"
                               size="is-large"
-                              :type="
-                                yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'
-                              "
+                              :type="yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'"
                             ></b-icon>
                           </template>
                           <template v-else-if="yitem.syncdone === false">
@@ -927,9 +863,7 @@
                               pack="fas"
                               icon="grin-stars"
                               size="is-large"
-                              :type="
-                                yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'
-                              "
+                              :type="yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'"
                             ></b-icon>
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
@@ -938,12 +872,7 @@
                         <!-- Attendance record completion -->
                         <div class="column">
                           <template v-if="checkIfHwic(yitem.detail)">
-                            <b-icon
-                              pack="fas"
-                              icon="exclamation"
-                              size="is-large"
-                              type="is-danger"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="exclamation" size="is-large" type="is-danger"></b-icon>
                           </template>
                         </div>
                       </div>
@@ -1053,7 +982,9 @@
                       show-value
                     >
                       <span style="font-size: 28px; color: black;">
-                        {{ att.modeset[`${att.mode}`].barcaption }}
+                        {{
+                        att.modeset[`${att.mode}`].barcaption
+                        }}
                       </span>
                     </b-progress>
                   </div>
@@ -1063,9 +994,7 @@
                     v-show="att.mode < 2"
                     class="button is-medium"
                     @click="attnModeChangeConfirm"
-                  >
-                    change
-                  </button>
+                  >change</button>
                   <b-button
                     v-show="att.mode === 2"
                     class="button is-medium"
@@ -1077,8 +1006,7 @@
                   icon-left="people-arrows"
                   size="is-medium"
                   @click="cRoom.showABList = !cRoom.showABList"
-                  >A / B</b-button
-                >
+                >A / B</b-button>
               </div>
               <div class="level-right">
                 <div class="level-item">
@@ -1125,9 +1053,9 @@
                     width="10"
                     sticky
                   >
-                    <template v-if="sett.devcheck">{{
-                      $dayjs(props.row._lastChangedAt).format("M/D H:mm")
-                    }}</template>
+                    <template
+                      v-if="sett.devcheck"
+                    >{{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -1165,8 +1093,7 @@
                     sortable
                     sticky
                     :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
-                    >{{ props.row.studentcode }}</b-table-column
-                  >
+                  >{{ props.row.studentcode }}</b-table-column>
                   <b-table-column
                     field="studentname"
                     label="Name"
@@ -1327,9 +1254,9 @@
                               style="font-size:25px"
                             >
                               {{
-                                indiRow[selClrm.attnLatest] === null
-                                  ? "(attendance unconfirmed)"
-                                  : indiRow[selClrm.attnLatest]
+                              indiRow[selClrm.attnLatest] === null
+                              ? "(attendance unconfirmed)"
+                              : indiRow[selClrm.attnLatest]
                               }}
                             </b-tag>
                           </div>
@@ -1423,15 +1350,13 @@
                                             ></star-rating>
                                           </span>
                                           <template v-if="!k.p1ptshow">
-                                            <div class="level has-text-grey f20 has-text-centered">
-                                              ( tap left button to edit )
-                                            </div>
+                                            <div
+                                              class="level has-text-grey f20 has-text-centered"
+                                            >( tap left button to edit )</div>
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">{{
-                                            indiRow[k.evl]
-                                          }}</span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -1444,8 +1369,7 @@
                                             <span
                                               v-show="!cRoom.showComEv[k.comm]"
                                               class="has-text-grey-light"
-                                              >{{ indiRow[k.comm] | description(6) }}</span
-                                            >
+                                            >{{ indiRow[k.comm] | description(6) }}</span>
                                             <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                           </b-button>
                                           <b-input
@@ -1472,8 +1396,7 @@
                                       :class="[
                                         cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                       ]"
-                                      >{{ " " + indiSc["subtotal" + index] }}</span
-                                    >
+                                    >{{ " " + indiSc["subtotal" + index] }}</span>
                                   </td>
                                 </tr>
                               </table>
@@ -1499,9 +1422,9 @@
                                     <template v-else>
                                       <td class="subtitle is-3" colspan="4" height="86">
                                         {{ k.title }}
-                                        <span style="color:#ce1836;"
-                                          >( incomplete {{ getHWTotal(indiRow) }})</span
-                                        >
+                                        <span
+                                          style="color:#ce1836;"
+                                        >( incomplete {{ getHWTotal(indiRow) }})</span>
                                         <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                       </td>
                                     </template>
@@ -1559,8 +1482,7 @@
                                               : 'has-text-black',
                                           ]"
                                           v-show="indiRow[k.evl] !== -1"
-                                          >{{ indiRow[k.evl] }}</span
-                                        >
+                                        >{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <td>
                                         <b-button
@@ -1573,8 +1495,7 @@
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
                                             class="has-text-grey-light"
-                                            >{{ indiRow[k.comm] | description(6) }}</span
-                                          >
+                                          >{{ indiRow[k.comm] | description(6) }}</span>
                                           <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                         </b-button>
                                         <b-input
@@ -1600,8 +1521,7 @@
                                     :class="[
                                       cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                     ]"
-                                    >{{ " " + indiSc.subtotal0 }}</span
-                                  >
+                                  >{{ " " + indiSc.subtotal0 }}</span>
                                 </td>
                               </tr>
                             </table>
@@ -1624,7 +1544,10 @@
                                       <template v-else>
                                         <span class="subtitle is-4">
                                           {{ k.title }}
-                                          <span class="has-text-grey" v-if="cRoom.showAttnEval">
+                                          <span
+                                            class="has-text-grey"
+                                            v-if="cRoom.showAttnEval"
+                                          >
                                             - (
                                             <span class="subtitle is-6">week</span>
                                             {{ k.week }})
@@ -1685,9 +1608,7 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">{{
-                                          indiRow[k.evl]
-                                        }}</span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -1698,8 +1619,7 @@
                                           rounded
                                           class="is-pulled-right attend-hist-absent"
                                           style="font-size:25px"
-                                          >Absent</b-tag
-                                        >
+                                        >Absent</b-tag>
                                       </td>
                                     </template>
                                   </template>
@@ -1725,9 +1645,7 @@
                                     class="title is-4"
                                     :class="getAttendStatusClassHist(indiRow['attn' + k.week])"
                                     v-if="cRoom.showAttnEval"
-                                  >
-                                    {{ getAttendSymbol(indiRow["attn" + k.week]) }}
-                                  </td>
+                                  >{{ getAttendSymbol(indiRow["attn" + k.week]) }}</td>
                                   <!-- 期末対応 -->
                                   <td>
                                     <b-button
@@ -1738,8 +1656,7 @@
                                       <span
                                         v-show="!cRoom.showComEv[k.comm]"
                                         class="has-text-grey-light"
-                                        >{{ indiRow[k.comm] | description(6) }}</span
-                                      >
+                                      >{{ indiRow[k.comm] | description(6) }}</span>
                                       <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                     </b-button>
                                     <b-input
@@ -1774,9 +1691,7 @@
                                         :key="`endsemester-${index}`"
                                         style="padding:0px 10px 0px 15px;"
                                         :class="getAttendStatusClassHist(indiRow[m.at])"
-                                      >
-                                        {{ getAttendSymbol(indiRow[m.at]) }}
-                                      </td>
+                                      >{{ getAttendSymbol(indiRow[m.at]) }}</td>
                                     </tr>
                                   </table>
                                 </td>
@@ -1791,8 +1706,7 @@
                                     :class="[
                                       cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                     ]"
-                                    >{{ " " + indiSc.subtotal1 }}</span
-                                  >
+                                  >{{ " " + indiSc.subtotal1 }}</span>
                                 </td>
                                 <td v-if="cRoom.showAttnEval"></td>
                                 <td></td>
@@ -1824,8 +1738,7 @@
                                 @click="cRoom.showEvalSingle = !cRoom.showEvalSingle"
                                 class="title is-3 is-fullwidth"
                                 style="height:60px"
-                                >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button
-                              >
+                              >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button>
                             </div>
                             <div class="colum"></div>
                           </section>
@@ -1893,9 +1806,7 @@
                               <div
                                 style="background-color:#ce1836;color:#fae3ec;padding:5px"
                                 v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1"
-                              >
-                                absent
-                              </div>
+                              >absent</div>
                               <span
                                 v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
                               >
@@ -1921,9 +1832,7 @@
                             <div
                               class="column title is-2"
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
-                            >
-                              {{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}
-                            </div>
+                            >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                           </section>
 
                           <!-- indi comment -->
@@ -1943,13 +1852,11 @@
                               >
                                 <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
                                   {{
-                                    indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
-                                      | description(50)
+                                  indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
+                                  | description(50)
                                   }}
                                 </span>
-                                <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5"
-                                  >Save</span
-                                >
+                                <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5">Save</span>
                               </b-button>
                               <b-input
                                 type="textarea"
@@ -1970,8 +1877,7 @@
                                 <span class="has-text-grey-light title is-4">Grand Total :</span>
                                 <span
                                   :class="[cRoom.showEvalComp === 0 ? 'title is-1' : 'title is-4']"
-                                  >{{ " " + indiSc.total }}</span
-                                >
+                                >{{ " " + indiSc.total }}</span>
                               </div>
                             </div>
                           </footer>
@@ -1991,9 +1897,9 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[selClrm.attnLatest])">{{
-                              st.classcount + " " + st.studentname
-                            }}</span>
+                            <span
+                              :class="getIndiAttendClass(st[selClrm.attnLatest])"
+                            >{{ st.classcount + " " + st.studentname }}</span>
                             <!-- :class="getIndiAttendClass(st[selClrm.attnthisweek])" -->
                           </template>
                         </b-tab-item>
@@ -2045,7 +1951,7 @@ import {
   instByday,
   listInsts,
   listSmrys,
-  listMngs,
+  listMngs
   // listClrmYs
   // listClrmXs
   // listMngs
@@ -2060,7 +1966,7 @@ import {
   createMiscX,
   updateMiscX,
   // createSmry,
-  updateSmry,
+  updateSmry
 } from "../graphql/mutations";
 // import { onCreateInst, onCreateMisc,  onUpdateInst, onUpdateMisc } from "../graphql/subscriptions";
 
@@ -2082,7 +1988,7 @@ import IdleVue from "idle-vue";
 const eventsHub = new Vue();
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: 1000 * 60,
+  idleTime: 1000 * 60
 });
 
 // 本文のトリミング
@@ -2134,7 +2040,8 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev: "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        rev:
+          "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2144,12 +2051,12 @@ export default {
         noteNameIDB: "appNoteTmuIDB",
         noteNameUP: "appNoteTmuUP",
         device: "deviceTmu",
-        startWhen: null,
+        startWhen: null
       },
       state: {
         APIfetch: false,
         dataLS: false,
-        idbSetup: false,
+        idbSetup: false
       },
       ds: {
         clrms: null,
@@ -2164,18 +2071,18 @@ export default {
         devarr3: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" }, //定数
+        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
       },
       setval1: null,
       setval2: null,
       stTable: { pagenationPosition: "both" },
       proc: {
         success: [],
-        fail: [],
+        fail: []
       },
       dev: {
         classCLimit: 3,
-        dummy: null,
+        dummy: null
       },
       sett: {
         env: EnvJSON,
@@ -2209,19 +2116,19 @@ export default {
         priorityLS: false,
         // isLoadingClrmsChk: false,
         pageStyle: {
-          "--background-color": "#ffff4f",
+          "--background-color": "#ffff4f"
         },
         classSelected: null,
         alias: { usename: null, name: "all" },
         intId0: undefined, // setInterval
         intId1: undefined, // setInterval
-        intId2: undefined, // setInterval
+        intId2: undefined // setInterval
       },
       authdetail: {
         username: "unknown",
         nickname: "unknown",
         name: "unknown",
-        role: "unknown",
+        role: "unknown"
       }, //ログインユーザー情報
       /////
       bBoard: {
@@ -2244,7 +2151,7 @@ export default {
                 <div class="column is-one-third">tmu-nse20@alc-class.jp</div>
                 <div class="column is-one-third">Gr8lesson20!</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2254,12 +2161,12 @@ export default {
               <div class="column is-one-third">kyoukasho@tmucoop.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
+            text: "(detail)"
+          }
         ],
         collapsesSample: [
           {
@@ -2279,7 +2186,7 @@ export default {
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2289,17 +2196,26 @@ export default {
               <div class="column is-one-third">123456@abcdefg.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
-        ],
+            text: "(detail)"
+          }
+        ]
       },
       instructor: {
         showPeople: false,
-        peopleNow: ["George", "John", "George1", "John1", "George2", "John3", "George3", "John4"],
+        peopleNow: [
+          "George",
+          "John",
+          "George1",
+          "John1",
+          "George2",
+          "John3",
+          "George3",
+          "John4"
+        ],
         // yourhistory: [],
         // youactive: 0, // 0 before in / 1 clock in / 2 clock out
         you: { name: "Jane Doe", firstName: "Jane", userid: "j-buckley" },
@@ -2310,7 +2226,7 @@ export default {
         yourTodaysClasses: [],
         yourattendvisiblemonth: null,
         attendvisiblemonth: null,
-        nameConv: UsersJSON,
+        nameConv: UsersJSON
       },
       lbls: {
         clCols: [
@@ -2319,61 +2235,61 @@ export default {
             label: "ID",
             width: "100",
             numeric: true,
-            sortable: true,
+            sortable: true
           },
           {
             field: "classtitle",
             label: "title",
-            sortable: true,
+            sortable: true
           },
           {
             field: "classnum",
             label: "num",
-            sortable: true,
+            sortable: true
           },
           {
             field: "roomnum",
             label: "Room",
-            centered: true,
+            centered: true
           },
           {
             field: "grade",
-            label: "grade",
-          },
+            label: "grade"
+          }
         ],
         clrmCols: [
           {
             field: "uid",
             label: "Instructor",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: true,
+            searchable: true
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
-        ],
+            searchable: true
+          }
+        ]
       },
       selClrm: { id: "" }, //null,
       idbClrm: { id: "" }, //null,
@@ -2395,7 +2311,7 @@ export default {
             title2: "not here",
             pct: 33,
             colortype: "is-success",
-            transitmsg: "open classroom",
+            transitmsg: "open classroom"
           },
           {
             num: 2,
@@ -2404,7 +2320,7 @@ export default {
             title2: "not here",
             pct: 66,
             colortype: "is-warning",
-            transitmsg: "accepting late students",
+            transitmsg: "accepting late students"
           },
           {
             num: 4,
@@ -2413,7 +2329,7 @@ export default {
             title2: "absent",
             pct: 100,
             colortype: "is-danger",
-            transitmsg: "attendance closed",
+            transitmsg: "attendance closed"
           },
           // 出欠取れないモード（当日以外）
           {
@@ -2423,9 +2339,9 @@ export default {
             title2: "-",
             pct: 0,
             colortype: "is-light",
-            transitmsg: "-",
-          },
-        ],
+            transitmsg: "-"
+          }
+        ]
       },
       cRoom: {
         fixAwait: false,
@@ -2436,7 +2352,6 @@ export default {
         attnEditTgt: "", // 出欠編集 "attn01"とか
         showAttenNote: false,
         showAttenHist: 0, // 0 当日 1 履歴 2 非表示
-        showHWist: false,
         showDummy: false, // false,
         // showEval: false, // false,
         // showEvalHist: true, // false,
@@ -2466,7 +2381,7 @@ export default {
           ecom10: false,
           ecom11: false,
           ecom12: false,
-          ecomAny: false,
+          ecomAny: false
           // eval01: false,
           // eval02: false,
           // eval03: false,
@@ -2504,7 +2419,7 @@ export default {
           46,
           19,
           31,
-          17,
+          17
         ],
         // ctype: null,
         evalCriteriaSelect: null, // ??保留 "writing", // presentationでも、どちらでも。Criteriaをデフォルト値で
@@ -2517,7 +2432,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Participation 2",
@@ -2527,7 +2442,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 1",
@@ -2537,7 +2452,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 2",
@@ -2547,7 +2462,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Homework",
@@ -2557,7 +2472,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "ALC Adademy NEXT",
@@ -2567,7 +2482,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Speech 1",
@@ -2577,7 +2492,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "06", // 実施週
+            week: "06" // 実施週
           },
           {
             title: "Speech 2",
@@ -2587,7 +2502,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "09", // 実施週
+            week: "09" // 実施週
           },
           {
             title: "Discussion 1",
@@ -2597,7 +2512,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "07", // 実施週
+            week: "07" // 実施週
           },
           {
             title: "Discussion 2",
@@ -2607,7 +2522,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "10", // 実施週
+            week: "10" // 実施週
           },
           {
             title: "Discussion Final [w11]",
@@ -2617,7 +2532,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "11", // 実施週
+            week: "11" // 実施週
           },
           {
             title: "Discussion Final [w12]",
@@ -2627,7 +2542,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "12", // 実施週
+            week: "12" // 実施週
           },
           {
             title: "Presentation Final",
@@ -2637,8 +2552,8 @@ export default {
             pt: 20,
             p1ptshow: false,
             ssize: [0, 30, 40, 0, 40],
-            week: "14", // 実施週
-          },
+            week: "14" // 実施週
+          }
         ],
         showAttnEval: false,
         evalTypeArea: null, // ["", "", "", "", "", "", ""],
@@ -2647,8 +2562,8 @@ export default {
         // shNmEvalCri: 0, //生徒一覧ページでのEvaluation項目レベル表示制御
         indirep: [
           [0, 1, 2, 3, 4, 5],
-          [6, 7, 8, 9, 10, 11, 12],
-        ],
+          [6, 7, 8, 9, 10, 11, 12]
+        ]
         // evscVa: true,
         // evscVb: false,
         // evscVc: false,
@@ -2680,72 +2595,72 @@ export default {
             field: "uid",
             label: "Instructor",
             sortable: true,
-            searchable: false,
+            searchable: false
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: false,
+            searchable: false
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
         instCols: [
           {
             field: "uid",
             label: "Name",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "date",
             label: "Date",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "clockin",
             label: "In",
-            centered: true,
+            centered: true
           },
           {
             field: "clockincorrect",
             label: "In(Correction)",
-            centered: true,
+            centered: true
           },
           {
             field: "clockout",
             label: "Out",
-            searchable: false,
+            searchable: false
           },
           {
             field: "clockoutcorrect",
             label: "Out(Correction)",
-            searchable: false,
+            searchable: false
           },
           {
             field: "detail",
             label: "Note",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
         vforEdit: [
           { at: "attn01", md: 0 },
@@ -2762,24 +2677,24 @@ export default {
           { at: "attn12", md: 11 },
           { at: "attn13", md: 12 },
           { at: "attn14", md: 13 },
-          { at: "attn15", md: 14 },
+          { at: "attn15", md: 14 }
         ],
         vforAttn: [
-          { at: "attn01", lb: "1", sc: 1, md: 0, hw: "" },
-          { at: "attn02", lb: "2", sc: 2, md: 1, hw: "homeworkincomplete02" },
-          { at: "attn03", lb: "3", sc: 3, md: 2, hw: "homeworkincomplete03" },
-          { at: "attn04", lb: "4", sc: 4, md: 3, hw: "homeworkincomplete04" },
-          { at: "attn05", lb: "5", sc: 5, md: 4, hw: "homeworkincomplete05" },
-          { at: "attn06", lb: "6", sc: 6, md: 5, hw: "homeworkincomplete06" },
-          { at: "attn07", lb: "7", sc: 7, md: 6, hw: "homeworkincomplete07" },
-          { at: "attn08", lb: "8", sc: 8, md: 7, hw: "homeworkincomplete08" },
-          { at: "attn09", lb: "9", sc: 9, md: 8, hw: "homeworkincomplete09" },
-          { at: "attn10", lb: "10", sc: 10, md: 9, hw: "homeworkincomplete10" },
-          { at: "attn11", lb: "11", sc: 11, md: 10, hw: "homeworkincomplete11" },
-          { at: "attn12", lb: "12", sc: 12, md: 11, hw: "homeworkincomplete12" },
-          { at: "attn13", lb: "13", sc: 13, md: 12, hw: "homeworkincomplete13" },
-          { at: "attn14", lb: "14", sc: 14, md: 13, hw: "homeworkincomplete14" },
-          { at: "attn15", lb: "15", sc: 15, md: 14, hw: "homeworkincomplete15" },
+          { at: "attn01", lb: "1", sc: 1, md: 0 },
+          { at: "attn02", lb: "2", sc: 2, md: 1 },
+          { at: "attn03", lb: "3", sc: 3, md: 2 },
+          { at: "attn04", lb: "4", sc: 4, md: 3 },
+          { at: "attn05", lb: "5", sc: 5, md: 4 },
+          { at: "attn06", lb: "6", sc: 6, md: 5 },
+          { at: "attn07", lb: "7", sc: 7, md: 6 },
+          { at: "attn08", lb: "8", sc: 8, md: 7 },
+          { at: "attn09", lb: "9", sc: 9, md: 8 },
+          { at: "attn10", lb: "10", sc: 10, md: 9 },
+          { at: "attn11", lb: "11", sc: 11, md: 10 },
+          { at: "attn12", lb: "12", sc: 12, md: 11 },
+          { at: "attn13", lb: "13", sc: 13, md: 12 },
+          { at: "attn14", lb: "14", sc: 14, md: 13 },
+          { at: "attn15", lb: "15", sc: 15, md: 14 }
         ],
         convAttnToDateMDNum: {
           attn01: 0,
@@ -2795,8 +2710,8 @@ export default {
           attn11: 10,
           attn12: 11,
           attn13: 12,
-          attn14: 13,
-        },
+          attn14: 13
+        }
       },
       showManagementView: false,
       showManagementViewSuper: false,
@@ -2815,7 +2730,7 @@ export default {
         Cldrs: SchdJSON, //[], //カレンダ
         Miscs: [], //その他便利に使う
         Smry: [],
-        source: "",
+        source: ""
       },
       dataAPI: {
         Clrms: [], // [], //学生データ
@@ -2823,26 +2738,26 @@ export default {
         status: "",
         fetching: false,
         ready: false,
-        Mngs: [], // [], //学生データ
+        Mngs: [] // [], //学生データ
       },
       dataIDB: {
         Clrms: [], // [], //学生データ
         log: "",
         status: "",
-        ready: false,
+        ready: false
       },
       dataDS: {
         queryWait: false,
         queryChk: 0,
-        Clrms: [], // [], //学生データ
+        Clrms: [] // [], //学生データ
         // ClrmsInstByday: [],
         // Miscs: [], //その他便利に使う
       },
       dataLS: {
-        Clrms: [], // [], //学生データ
+        Clrms: [] // [], //学生データ
         // ClrmsInstByday: [],
         // Miscs: [], //その他便利に使う
-      },
+      }
     };
   },
   methods: {
@@ -2858,17 +2773,21 @@ export default {
           ////////// APIで
           const add = {
             date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
-            clockin: this.$dayjs().format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
           };
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
           const msgg =
-            "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
+            "<span style='font-size:40px'>Good morning " +
+            this.authdetail.nickname +
+            "!</span>";
           ////////// APIで
           this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
-          this.writeNoteLS("ClockIn { date: " + add.date + ", clockin: " + add.clockin);
+          this.writeNoteLS(
+            "ClockIn { date: " + add.date + ", clockin: " + add.clockin
+          );
           // this.instructor.yourhistory.push(add);
           // this.instructor.peopleNow.push(this.instructor.you.firstName);
-        },
+        }
       });
     },
     async instClockOut() {
@@ -2890,7 +2809,7 @@ export default {
           const arr = {
             uid: arrr.uid,
             date: arrr.date,
-            clockin: arrr.clockin,
+            clockin: arrr.clockin
           };
           // ClockOut前に修正があった場合それも拾う
           if (arrr.clockincorrect !== null) {
@@ -2921,7 +2840,7 @@ export default {
           // );
           // this.instructor.peopleNow.splice(idx, 1);
           // this.instructor.showPeople = false;
-        },
+        }
       });
     },
     async listInstsDataAPI() {
@@ -2939,9 +2858,9 @@ export default {
         .sort((a, b) => this.arrayCompare(a.date, b.date))
         .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
       this.instructor.yourattendances = allclin
-        .filter((x) => x.uid === this.authdetail.username)
+        .filter(x => x.uid === this.authdetail.username)
         .reduce((a, v) => {
-          if (!a.some((e) => e.date === v.date)) {
+          if (!a.some(e => e.date === v.date)) {
             a.push(v);
           }
           return a;
@@ -2962,16 +2881,17 @@ export default {
           message: msgg,
           type: typ,
           size: siz,
-          duration: 3000,
+          duration: 3000
         });
         return true;
       } catch (err) {
         this.writeFail("InstCreate", crArr, err);
         this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Failed. please try again</span>",
+          message:
+            "<span style='font-size:60px'>Failed. please try again</span>",
           type: "is-danger",
           size: "is-large",
-          duration: 5000,
+          duration: 5000
         });
         return err;
       }
@@ -3000,7 +2920,10 @@ export default {
         await this.APIgetClrmsinstByday("Sun"); //★test
       }
       this.Log(this.dataAPI.status, "APIget", "Clrm", "summary", "detail");
-      this.writeDayLogs("APIgetClrms done: " + this.dataAPI.status, this.app.noteNameAPI);
+      this.writeDayLogs(
+        "APIgetClrms done: " + this.dataAPI.status,
+        this.app.noteNameAPI
+      );
 
       if (this.dataAPI.status == "Info") {
         this.idbRemove(this.idbSQue, "API");
@@ -3015,12 +2938,12 @@ export default {
           graphqlOperation(instByday, {
             dayofweek: dow,
             limit: 4000,
-            uid: { eq: this.sett.alias.name },
+            uid: { eq: this.sett.alias.name }
           })
         );
-        const gqld = gql.data.instByday.items.filter((n) => n._deleted !== true);
+        const gqld = gql.data.instByday.items.filter(n => n._deleted !== true);
         // 既に保持していた場合除去
-        const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
+        const fi = this.dataAPI.Clrms.filter(n => n.dayofweek !== dow);
         this.dataAPI.Clrms = fi;
         this.dataAPI.Clrms.push(...gqld);
         this.dataAPI.log += dow + ": " + gqld.length;
@@ -3041,7 +2964,9 @@ export default {
           //// ★フィルタ出来てない
         );
         this.dataAPI.Mngs = dat.data.listMngs.items;
-        this.dataAPI.Mngs = this.dataAPI.Mngs.filter((n) => n.type == this.authdetail.username);
+        this.dataAPI.Mngs = this.dataAPI.Mngs.filter(
+          n => n.type == this.authdetail.username
+        );
         return true;
       } catch (e) {
         // this.dataAPI.status = "Error";
@@ -3128,12 +3053,18 @@ export default {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Misc retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Misc retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
         return true;
       } catch (err) {
         if (queueKey !== "") {
-          this.writeDayLogs("Misc retry FAIL: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Misc retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
         } else {
           this.idbAddSQueue("Misc", "", crArr);
         }
@@ -3149,12 +3080,18 @@ export default {
         await API.graphql(graphqlOperation(createMiscX, { input: crArr }));
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("MiscX retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "MiscX retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
         return true;
       } catch (err) {
         if (queueKey !== "") {
-          this.writeDayLogs("MiscX retry FAIL: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "MiscX retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
         } else {
           this.idbAddSQueue("MiscX", "", crArr);
         }
@@ -3166,12 +3103,18 @@ export default {
         await API.graphql(graphqlOperation(updateMiscX, { input: crArr }));
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("MiscX retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "MiscX retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
         return true;
       } catch (err) {
         if (queueKey !== "") {
-          this.writeDayLogs("MiscX retry FAIL: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "MiscX retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
         } else {
           this.idbAddSQueue("MiscX", "", crArr);
         }
@@ -3188,20 +3131,35 @@ export default {
         }
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Log retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Log retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
         return true;
       } catch (err) {
         if (queueKey !== "") {
-          this.writeDayLogs("Log retry FAIL: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Log retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
         } else {
           this.idbAddSQueue("Log", "", crArr);
         }
         return err;
       }
     },
-    Log(level = "unknown", type = "", target = "", desc = "", detail = "", ifUpdate = false) {
-      const datestr = ifUpdate ? this.dayjsYYYYMMDDh() : this.getDateYYYYMMDDhHHMMssSSS();
+    Log(
+      level = "unknown",
+      type = "",
+      target = "",
+      desc = "",
+      detail = "",
+      ifUpdate = false
+    ) {
+      const datestr = ifUpdate
+        ? this.dayjsYYYYMMDDh()
+        : this.getDateYYYYMMDDhHHMMssSSS();
       this.writeNoteLS("[" + level + "] " + type + " " + desc);
       this.createOrUpdateLogAPI(
         {
@@ -3211,7 +3169,7 @@ export default {
           type: type,
           target: target,
           desc: desc,
-          detail: detail,
+          detail: detail
         },
         "",
         ifUpdate
@@ -3252,14 +3210,20 @@ export default {
         row.cust03 = upArr.cust03;
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Clrm retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Clrm retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
       } catch (e) {
         row.cust03 = "";
         //// --- SendQueue
         // console.warn("e API ", row.index, row, upArr);
         this.idbAddSQueue("Clrm", row.index, row);
-        this.writeDayLogs("ClrmAPI Fail: " + row.index + JSON.stringify(e), this.app.noteNameAPI);
+        this.writeDayLogs(
+          "ClrmAPI Fail: " + row.index + JSON.stringify(e),
+          this.app.noteNameAPI
+        );
       }
       //// --- localStorage
       this.classRealtimeBackup();
@@ -3296,28 +3260,12 @@ export default {
       const upArr = {
         id: row.id,
         uid: row.uid,
-        index: row.index,
+        index: row.index
       };
       //とりあえず安全策で
-      const estr = [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-      ];
+      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
       //評価はすべて ただし値あるやつだけセットする
-      estr.forEach((x) => {
+      estr.forEach(x => {
         if (row["attn" + x] !== null && row["attn" + x] !== "") {
           upArr["attn" + x] = row["attn" + x];
         }
@@ -3327,11 +3275,14 @@ export default {
         if (row["ecom" + x] !== null && row["ecom" + x] !== "") {
           upArr["ecom" + x] = row["ecom" + x];
         }
-        if (x !== "01") {
-          // 1週目宿題無し
-          if (row["homeworkincomplete" + x] !== null && row["homeworkincomplete" + x] !== "") {
-            upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
-          }
+      });
+      const estr2 = ["02", "03", "04", "06", "07"];
+      estr2.forEach(x => {
+        if (
+          row["homeworkincomplete" + x] !== null &&
+          row["homeworkincomplete" + x] !== ""
+        ) {
+          upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
         }
       });
       const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
@@ -3341,11 +3292,12 @@ export default {
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
 
       try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        const callbk = await API.graphql(
+          graphqlOperation(updateClrm, { input: upArr })
+        );
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         // console.warn("e fill ", row.index, row, upArr);
-        upArr.cust03 = "";
         this.idbAddSQueue("Clrm", row.index, upArr);
         return false;
       }
@@ -3368,19 +3320,8 @@ export default {
       // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     async idbTEST5() {
-      // const chkinit = async function(nam) {
-      //   if (await this.idbGet(nam, "init")) {
-      //     return false;
-      //   } else {
-      //     await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
-      //     return true;
-      //   }
-      // };
-      // // this.importLStoIDB();
-      // // await this.idbRemove(this.idbCls, this.ds.dev1);
-      // console.warn(chkinit(this.idbCIdx));
-      // console.warn(chkinit(this.idbCls));
-      // console.warn(chkinit(this.idbSQue));
+      this.importLStoIDB();
+      // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     // indexedDB -
     // indexedDB -
@@ -3468,7 +3409,10 @@ export default {
 
       ////////// Clrm
       logStr +=
-        "importToIDB - LS: " + this.dataLS.Clrms.length + " API: " + this.dataAPI.Clrms.length;
+        "importToIDB - LS: " +
+        this.dataLS.Clrms.length +
+        " API: " +
+        this.dataAPI.Clrms.length;
       // 同期 とりあえずLS優先★
       await this.importToIDB(this.dataLS.Clrms, false);
       // await this.importLStoIDB();
@@ -3480,7 +3424,10 @@ export default {
         this.updateClrmFilledArea(rw);
         uplogStr += rw + "\n";
       }
-      await this.writeDayLogs("FilledArea done\n" + uplogStr, this.app.noteNameUP);
+      await this.writeDayLogs(
+        "FilledArea done\n" + uplogStr,
+        this.app.noteNameUP
+      );
       this.salvageDaylogs(this.app.noteNameUP);
       //////
 
@@ -3523,26 +3470,36 @@ export default {
 
       if (trigger == "ClrmW") {
         const classcode = detail;
-        let tgtClass = this.yourClasses.find((arr) => {
+        let tgtClass = this.yourClasses.find(arr => {
           return arr.id == classcode;
         });
         const dow = tgtClass.dayofweek;
         const rslt = await this.APIgetClrmsinstByday(dow);
         if (rslt == false) {
-          await this.idbSet(this.idbSQue, "manageMng", this.getDateYYYYMMDDhHHMMSS());
+          await this.idbSet(
+            this.idbSQue,
+            "manageMng",
+            this.getDateYYYYMMDDhHHMMSS()
+          );
         } else {
           //// execute order
           await this.importParticularClassAPItoIDB(classcode);
           await this.idbRemove(this.idbSQue, "manageMng");
-          this.writeDayLogs("manageMng done: " + trigger + " " + detail, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "manageMng done: " + trigger + " " + detail,
+            this.app.noteNameAPI
+          );
         }
       } else {
-        this.writeDayLogs("manageMng: nothing in particular", this.app.noteNameAPI);
+        this.writeDayLogs(
+          "manageMng: nothing in particular",
+          this.app.noteNameAPI
+        );
       }
     },
     async importParticularClassAPItoIDB(classcode) {
       ///!!!!! overwrite API data !!!!!
-      const dat = this.dataset.Clrms.filter((x) => x.classcode === classcode);
+      const dat = this.dataset.Clrms.filter(x => x.classcode === classcode);
       this.importToIDB(dat, true);
     },
     async importToIDB(dat, force = false) {
@@ -3563,7 +3520,7 @@ export default {
       const dat = this.dataAPI.Clrms; //APIが正しい前提
       //担当クラス
       const clslist = dat
-        .map((m) => {
+        .map(m => {
           return m.classcode;
         })
         .sort()
@@ -3574,12 +3531,12 @@ export default {
           return array;
         }, []);
       // クラスと所属生徒一覧
-      clslist.forEach((x) => {
+      clslist.forEach(x => {
         const stulist = dat
-          .filter((y) => {
+          .filter(y => {
             return y.classcode === x;
           })
-          .map((m) => {
+          .map(m => {
             return m.index;
           });
         // dict[x] = stulist;
@@ -3617,7 +3574,7 @@ export default {
         if (this.dataset.Smry.length == 0) {
           await this.APIgetSmrys();
         }
-        const tgt = this.dataset.Smry.find((m) => {
+        const tgt = this.dataset.Smry.find(m => {
           return m.classcode == key;
         });
         this.idbSet(this.idbSmry, key, tgt);
@@ -3654,13 +3611,19 @@ export default {
       for await (const k of keys) {
         if (k !== "init" && k !== "hello") {
           const obj = await this.idbGet(this.idbSmry, k);
-          let tgt = this.yourClasses.find((arr) => {
+          let tgt = this.yourClasses.find(arr => {
             return arr.id == obj.classcode;
           });
 
-          const attnstatus = obj[this.getLatestJSON[obj.dayofweek].attendance + "done"];
+          const attnstatus =
+            obj[this.getLatestJSON[obj.dayofweek].attendance + "done"];
           tgt.attndone = attnstatus !== null ? true : false;
-          tgt.syncdone = attnstatus === "sync" ? true : attnstatus === "local" ? false : null;
+          tgt.syncdone =
+            attnstatus === "sync"
+              ? true
+              : attnstatus === "local"
+              ? false
+              : null;
           const hwic = obj[this.getThisWeekHwicJSON[obj.dayofweek]];
           if (hwic === true) {
             //// 識別文字列を追加（既にあればそのまま）
@@ -3792,14 +3755,17 @@ export default {
       try {
         const gql = await API.graphql(
           graphqlOperation(listSmrys, {
-            uid: this.sett.alias.name,
+            uid: this.sett.alias.name
           })
         );
         this.dataset.Smry = gql.data.listSmrys.items;
         return true;
       } catch (e) {
         this.Log("Error", "APIget", "Smry", "summary", "detail");
-        this.writeDayLogs("[Error]APIgetSmry " + JSON.stringify(e.errors), this.app.noteNameAPI);
+        this.writeDayLogs(
+          "[Error]APIgetSmry " + JSON.stringify(e.errors),
+          this.app.noteNameAPI
+        );
         return false;
       }
     },
@@ -3815,13 +3781,19 @@ export default {
         // const ret = await API.graphql(graphqlOperation(updateSmry, { input: upArr }));
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
-          this.writeDayLogs("Smry retry done: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Smry retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
         return true;
       } catch (e) {
         // console.warn("updateSmryAPI error", e);
         if (queueKey !== "") {
-          this.writeDayLogs("Smry retry FAIL: " + queueKey, this.app.noteNameAPI);
+          this.writeDayLogs(
+            "Smry retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
         } else {
           this.idbAddSQueue("Smry", upArr.classcode, upArr);
         }
@@ -3893,7 +3865,7 @@ export default {
         .then(function() {
           this.sett.dummy1 = nam + "idbClear now empty";
         })
-        .catch((e) => {
+        .catch(e => {
           this.sett.dummy1 = nam + "idbClear error" + JSON.stringify(e);
         });
     },
@@ -3922,7 +3894,7 @@ export default {
       const retArr = chkHW(classmem, atEl, hwEl);
       ////////ログ
       // HWConsistency
-      let tgt = this.yourClasses.find((arr) => {
+      let tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
       if (retArr === true) {
@@ -3943,7 +3915,7 @@ export default {
             iconPack: "fa",
             size: "is-large",
             ariaRole: "alertdialog",
-            ariaModal: true,
+            ariaModal: true
           });
         }
       } else {
@@ -3980,7 +3952,7 @@ export default {
     },
     //初期処理
     initallClasses() {
-      this.yourClasses.forEach((m) => {
+      this.yourClasses.forEach(m => {
         // レッスン集と出欠が今週どこなのか ※休講はundefined
         m.lssnthisweek = this.getThisWeekLssnJSON[m.dayofweek];
         m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
@@ -4014,13 +3986,15 @@ export default {
       this.selClrm.attnDoneReported = false;
 
       // 直近のAttn
-      this.selClrm.attnLatest = this.getLatestJSON[this.selClrm.dayofweek].attendance;
+      this.selClrm.attnLatest = this.getLatestJSON[
+        this.selClrm.dayofweek
+      ].attendance;
 
       //表示
       this.isOpenselClrm = true;
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth"
       });
       this.discrepancyDetectAndFix(this.selClrm, "select");
     },
@@ -4034,13 +4008,13 @@ export default {
       this.isOpenselClrm = false;
     },
     getClassmembers(classcode) {
-      return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
-        function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        }
-      );
+      return this.dataset.Clrms.filter(
+        x => x.classcode === classcode && x.enable === true
+      ).sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
     },
     // 今週分の出欠完了判定
     async getAttnDoneStateSelClrm() {
@@ -4067,14 +4041,16 @@ export default {
       if (cmem.length == 0) {
         return false;
       }
-      const tst = cmem.some((m) => {
+      const tst = cmem.some(m => {
         return (
           m[this.getLatestJSON[dow].attendance] == null ||
           m[this.getLatestJSON[dow].attendance] == ""
         );
       });
       this.writeDayLogs(
-        "examAttn: " + tgtClrm.classcode + " " + tst === false ? "Done!" : "yet",
+        "examAttn: " + tgtClrm.classcode + " " + tst === false
+          ? "Done!"
+          : "yet",
         this.app.noteName
       );
       return !tst; // done: true
@@ -4085,12 +4061,14 @@ export default {
         //通信する
         const apiRslt = await this.APIgetClrmsinstByday(dow);
         this.writeDayLogs(
-          "examSyncDone: refresh " + dow + (apiRslt == true ? " Succeed" : " failed"),
+          "examSyncDone: refresh " +
+            dow +
+            (apiRslt == true ? " Succeed" : " failed"),
           this.app.noteNameAPI
         );
       }
-      const arrAPI = this.dataAPI.Clrms.filter((x) => x.classcode == tgtClrm.id);
-      const tst = arrAPI.some((m) => {
+      const arrAPI = this.dataAPI.Clrms.filter(x => x.classcode == tgtClrm.id);
+      const tst = arrAPI.some(m => {
         return (
           m[this.getLatestJSON[dow].attendance] == null ||
           m[this.getLatestJSON[dow].attendance] == ""
@@ -4103,7 +4081,7 @@ export default {
       return !tst; // done: true
     },
     async reflectClassSummary(tgtClrm, getFromAPI = false) {
-      let tgt = this.yourClasses.find((arr) => {
+      let tgt = this.yourClasses.find(arr => {
         return arr.id == tgtClrm.id;
       });
       //// 出欠もSyncもHWも出来ていたら処理しない
@@ -4118,7 +4096,8 @@ export default {
         }
       }
       // indexedDB update
-      const val = tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
+      const val =
+        tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
       const prop = this.getLatestJSON[tgtClrm.dayofweek].attendance + "done";
       await this.updateSmry(tgtClrm.id, prop, val);
       // console.warn("reflect" + tgtClrm.id, prop, val);
@@ -4214,9 +4193,15 @@ export default {
             // }
             if (atCL == null) {
               this.classmembers[num][attnDest] = atLS;
-              this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
+              this.classmembers[num][this.attnHWEditTgt] =
+                objLS[num][this.attnHWEditTgt];
               resultAddStr +=
-                num + " " + objCL[num].studentcode + " " + attnDest + " local -> class\n";
+                num +
+                " " +
+                objCL[num].studentcode +
+                " " +
+                attnDest +
+                " local -> class\n";
             }
           }
         }
@@ -4231,14 +4216,16 @@ export default {
         const crArr = {
           type: "discrepancyDetectAndFix " + tgtClrm.id,
           name: this.authdetail.username,
-          detail: desc + " " + attnDest + "\n" + resultStr,
+          detail: desc + " " + attnDest + "\n" + resultStr
         };
         this.createMiscXAPI(crArr);
         // tgtClrm.attnthisweek
         const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
         this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
       } else {
-        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+        this.writeNoteLS(
+          "discrepancy " + tgtClrm.id + " " + desc + " no local data"
+        );
       }
       this.cRoom.fixAwait = false;
     },
@@ -4248,16 +4235,27 @@ export default {
         ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selClrm.dayofweek === this.sett.dayofweek) {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
-          (item) => item.id === this.selClrm.id
+          item => item.id === this.selClrm.id
         );
         this.cRoom.showAttenHist = 0;
         // status参照するためにインデックスを格納
-        this.att.mode = this.instructor.yourTodaysClasses[this.classroomIndex].status;
+        this.att.mode = this.instructor.yourTodaysClasses[
+          this.classroomIndex
+        ].status;
       } else {
         ////// 当日以外のクラス
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
+        ////// 出欠記録の編集許可
+        // // 出欠記録の編集許可： 設定した日数だけ
+        // if (this.dayjslenient.includes(this.selClrm.dayofweek)) {
+        //   this.isdeadlinelenient = true;
+        // } else {
+        //   this.isdeadlinelenient = false;
+        // }
+        //// 出欠記録の編集許可： 制限しない
+        // this.isdeadlinelenient = true; // ↓当日でも許可するので下に
       }
       this.isdeadlinelenient = true; //編集許可
       this.isEnteredselClrm = true; //状態保持
@@ -4267,8 +4265,9 @@ export default {
 
       //HWのnullをTrueにかえたい
       this.classmembers.forEach(
-        (m) =>
-          (m[this.attnHWEditTgt] = m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
+        m =>
+          (m[this.attnHWEditTgt] =
+            m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
       );
     },
     showABListCaptionChange() {
@@ -4303,7 +4302,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selClrm.dayofweek === this.dayjsddd) {
             // if (this.selClrm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             // this.updateClassModeChange();
           }
           this.$buefy.toast.open({
@@ -4312,15 +4313,16 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
     },
     attnModeRestartConfirm() {
       this.$buefy.dialog.confirm({
         title: "Attendance record mode change:",
-        message: "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
+        message:
+          "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
         size: "is-large",
         onConfirm: () => {
           const attMode = 0;
@@ -4328,7 +4330,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selClrm.dayofweek === this.dayjsddd) {
             // if (this.selClrm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             // this.updateClassModeChange();
           }
           this.cRoom.showAttenHist = 0;
@@ -4339,9 +4343,9 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
     },
     //// switching edit mode
@@ -4361,12 +4365,14 @@ export default {
             this.cRoom.showAttenHist = 0;
             this.cRoom.attnEditable = true;
             this.$buefy.toast.open({
-              message: "<span style='font-size:40px'>Attendance data is now editable. " + "</span>",
+              message:
+                "<span style='font-size:40px'>Attendance data is now editable. " +
+                "</span>",
               // "<span style='font-size:40px'>You can edit. " + "</span>",
               type: "is-beige",
-              size: "is-large",
+              size: "is-large"
             });
-          },
+          }
         });
       } else {
         //// disable
@@ -4403,7 +4409,9 @@ export default {
         case 0:
           return this.cRoom.showEvalComp < 2 ? true : false;
         case 1:
-          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2 ? true : false;
+          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2
+            ? true
+            : false;
       }
     },
     clearIndi() {
@@ -4422,7 +4430,8 @@ export default {
       // 行全体保存
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
       const newval = this.cRoom.indiNo + num;
-      this.cRoom.indiNo = this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
+      this.cRoom.indiNo =
+        this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
       // const modnum =
       //   bool === true
       //     ? this.classmembers.length > this.cRoom.indiNo
@@ -4474,7 +4483,11 @@ export default {
     },
     goEvalUpTarget(val) {
       //スターの確定
-      this.updateClrm(this.cRoom.evalUpTargetRow, this.cRoom.evalUpTargetCol, val);
+      this.updateClrm(
+        this.cRoom.evalUpTargetRow,
+        this.cRoom.evalUpTargetCol,
+        val
+      );
     },
     // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
@@ -4508,7 +4521,14 @@ export default {
     ////////// css class
     getCommonClassName(tgtClrm) {
       return (
-        tgtClrm.dayofweek + " P" + tgtClrm.slot + " " + tgtClrm.grade + "(" + tgtClrm.classnum + ")"
+        tgtClrm.dayofweek +
+        " P" +
+        tgtClrm.slot +
+        " " +
+        tgtClrm.grade +
+        "(" +
+        tgtClrm.classnum +
+        ")"
       );
     },
     getAttendStatusClass(num) {
@@ -4575,7 +4595,9 @@ export default {
     getIndiPaneClass(val) {
       switch (val) {
         case "left":
-          return this.cRoom.showIndiList ? "tile is-vertical is-10" : "tile is-vertical is-12";
+          return this.cRoom.showIndiList
+            ? "tile is-vertical is-10"
+            : "tile is-vertical is-12";
         case "right":
           return "tile is-parent is-narrow";
       }
@@ -4657,18 +4679,22 @@ export default {
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date).format(
-            "M/D"
-          )
+        ? this.$dayjs(
+            this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDEditTgt() {
-      return this.getDateMD(this.manage.convAttnToDateMDNum[this.manage.selAttn]);
+      return this.getDateMD(
+        this.manage.convAttnToDateMDNum[this.manage.selAttn]
+      );
     },
     getDateMD(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.selClrm.dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.selClrm.dayofweek][num].date).format("M/D")
+        ? this.$dayjs(
+            this.dayChainJSON[this.selClrm.dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDddd(val) {
@@ -4694,7 +4720,9 @@ export default {
     // },
     getIsDoneToday(val) {
       //当日更新かどうか
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD") ? "is-new" : "is-old";
+      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
+        ? "is-new"
+        : "is-old";
     },
     getTimeIfTodayOrDate(val) {
       //当日更新なら時刻、違えば日付
@@ -4756,22 +4784,22 @@ export default {
         appCodeName: navigator.appCodeName,
         cookieEnabled: navigator.cookieEnabled,
         language: navigator.language,
-        languages: navigator.languages,
+        languages: navigator.languages
       };
       let crArr = {
         type: "userAgent",
-        name: this.authdetail.username,
+        name: this.authdetail.username
       };
       try {
         crArr.detail = JSON.stringify({
           ...{ via: this.app.chrAPI },
-          ...detObj,
+          ...detObj
         });
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
         crArr.detail = JSON.stringify({
           ...{ via: this.app.chrDS },
-          ...detObj,
+          ...detObj
         });
         this.writeFail("sendUserAgent-sendfail", crArr, err);
         // await this.createMisc(crArr);
@@ -4781,8 +4809,8 @@ export default {
     //////// クラスバックアップ
     async classBackupALLTypesAllClasses() {
       this.yourClasses
-        .filter((x) => x.id.indexOf("A") !== -1)
-        .forEach((m) => this.classBackupALLTypes(m));
+        .filter(x => x.id.indexOf("A") !== -1)
+        .forEach(m => this.classBackupALLTypes(m));
     },
     async classBackupALLTypes(sClrm) {
       // クラス出たときに単一でバックアップ
@@ -4792,7 +4820,7 @@ export default {
 
       const obj = await this.loadclassRealtimeBackup(sClrm.id);
       const LSobj = obj === null ? {} : obj;
-      let DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
+      let DSobj = await DataStore.query(Clrm, c => c.classcode("eq", sClrm.id));
       DSobj.sort(function(a, b) {
         if (a.sortid < b.sortid) return -1;
         if (a.sortid > b.sortid) return 1;
@@ -4812,14 +4840,17 @@ export default {
       const crArr = {
         type: "classBackupALL_" + sClrm.id + " " + timestamp,
         name: this.authdetail.username,
-        detail: JSON.stringify(allobj),
+        detail: JSON.stringify(allobj)
       };
       await this.createMiscXAPI(crArr);
     },
     async classRealtimeBackup() {
       // 入力の都度バックアップ ※入力時しか呼び出さない
       const type = "classBackupRealtime_" + this.selClrm.id;
-      const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
+      const parsed =
+        this.getDateYYYYMMDDhHHMMSS() +
+        "\n" +
+        JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
     loadclassRealtimeBackupAll() {
@@ -4848,7 +4879,7 @@ export default {
           const crArr = {
             type: key + addStr,
             name: this.authdetail.username,
-            detail: localStorage.getItem(key),
+            detail: localStorage.getItem(key)
           };
           try {
             await this.createMiscXAPI(crArr);
@@ -4869,7 +4900,7 @@ export default {
           const crArr = {
             type: key + addStr,
             name: this.authdetail.username,
-            detail: localStorage.getItem(key),
+            detail: localStorage.getItem(key)
           };
           try {
             await this.createMiscXAPI(crArr);
@@ -4894,7 +4925,9 @@ export default {
         parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
       } else {
         const noteHist = this.fetchNoteLS(this.app.noteName);
-        parsed = JSON.stringify(noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str);
+        parsed = JSON.stringify(
+          noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str
+        );
       }
       localStorage.setItem(this.app.noteName, parsed);
     },
@@ -4906,8 +4939,12 @@ export default {
         const noteHist = this.fetchNoteLS(noteName);
         parsed =
           reverse == false
-            ? JSON.stringify(noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str)
-            : JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str + "\n" + noteHist);
+            ? JSON.stringify(
+                noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str
+              )
+            : JSON.stringify(
+                this.getDateYYYYMMDDhHHMMSS() + " " + str + "\n" + noteHist
+              );
       }
       localStorage.setItem(noteName, parsed);
       if (parsed.split("\n").length > 20000) {
@@ -4958,7 +4995,13 @@ export default {
         const crArr = {
           type: "writeFail",
           name: this.authdetail.username,
-          detail: "appFail:" + dest + ", date:" + this.getDateYYYYMMDDhHHMMSS() + "," + dtl,
+          detail:
+            "appFail:" +
+            dest +
+            ", date:" +
+            this.getDateYYYYMMDDhHHMMSS() +
+            "," +
+            dtl
         };
         this.createMiscXAPI(crArr);
       } catch (err) {
@@ -4969,7 +5012,7 @@ export default {
       const crArr = {
         type: "localStorageList",
         name: this.authdetail.username,
-        detail: Object.keys(localStorage),
+        detail: Object.keys(localStorage)
       };
       this.createMiscXAPI(crArr);
     },
@@ -4998,7 +5041,7 @@ export default {
       const crArr = {
         type: "appFailSalvage",
         name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr,
+        detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr
       };
       try {
         this.createMiscXAPI(crArr);
@@ -5051,10 +5094,10 @@ export default {
       //classroomに関係する諸々 日付が変わると必ず
       const todayclass = this.yourClasses
         // .filter((x) => x.dayofweek === this.sett.dayofweek)
-        .filter((x) => x.dayofweek === this.dayjsddd)
-        .map((x) => ({
+        .filter(x => x.dayofweek === this.dayjsddd)
+        .map(x => ({
           id: x.id,
-          status: 0,
+          status: 0
         }));
       this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
       // const crArr = {
@@ -5085,20 +5128,20 @@ export default {
     },
     async authManage() {
       await Auth.currentAuthenticatedUser()
-        .then((user) => {
+        .then(user => {
           this.authdetail = {
             username: user.username,
             name: user.attributes.name,
             nickname: user.attributes.nickname,
-            role: user.signInUserSession.idToken.payload["custom:role"],
+            role: user.signInUserSession.idToken.payload["custom:role"]
           };
           this.sett.alias = {
             username: user.username,
-            name: user.attributes.name,
+            name: user.attributes.name
           };
           this.writeDeviceUser();
         })
-        .catch((e) =>
+        .catch(e =>
           // this.Log("Error", "Auth", this.authdetail.username, "catch", JSON.stringify(e))
           this.writeDayLogs("[ERROR] Auth" + e, this.app.noteNameNW)
         );
@@ -5128,7 +5171,7 @@ export default {
           let crArr = {
             type: "test-",
             name: this.authdetail.username,
-            detail: "test",
+            detail: "test"
           };
           crArr.type = "testcreateMiscXAPI" + this.getDateYYYYMMDDhHHMMSS();
           this.createMiscXAPI(crArr);
@@ -5137,12 +5180,28 @@ export default {
     },
     setInstMonth() {
       //勤怠用 createdのとき
-      this.instructor.yourattendvisiblemonth = this.$dayjs(this.sett.acdate).format("YYYY-MM");
+      this.instructor.yourattendvisiblemonth = this.$dayjs(
+        this.sett.acdate
+      ).format("YYYY-MM");
     },
     ////////// for dev
     async dataStoreClear() {
       await DataStore.clear();
     },
+    spliceTEST() {
+      this.classmembers[1].classcount += "TTT";
+      // this.classmembers.splice();
+      // this.yourxClasses[1].detail += "TTTT";
+      // this.yourxClasses.splice();
+    },
+    spliceTESTKick() {
+      // this.classmembers.splice();
+      // this.yourxClasses[1].detail += "TTTT";
+      this.yourClasses.splice();
+    },
+    // dosomething() {
+    //   console.warn(this.$route.query.id); // URLスキーマ
+    // },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
         this.cRoom.showDummy = true;
@@ -5163,9 +5222,11 @@ export default {
     },
     async TESTarr3() {
       if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+        const data = await DataStore.query(Clrm, c =>
+          c.classcode("eq", this.selClrm.id)
+        );
         this.sett.dummyClrm = data
-          .filter((x) => x.classcount <= this.dev.classCLimit)
+          .filter(x => x.classcount <= this.dev.classCLimit)
           .sort(function(a, b) {
             if (a.sortid < b.sortid) return -1;
             if (a.sortid > b.sortid) return 1;
@@ -5175,13 +5236,15 @@ export default {
       } else {
         this.sett.dummyClrm = [];
       }
-    },
+    }
   },
   computed: {
     TESTarr1() {
       if (this.selClrm != [] && this.dataIDB.Clrms) {
         return this.dataIDB.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -5193,7 +5256,9 @@ export default {
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers.filter((x) => x.classcount <= this.dev.classCLimit);
+        return this.classmembers.filter(
+          x => x.classcount <= this.dev.classCLimit
+        );
       } else {
         return null;
       }
@@ -5201,7 +5266,9 @@ export default {
     TESTarr4() {
       if (this.selClrm != [] && this.dataAPI.Clrms) {
         return this.dataAPI.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -5214,7 +5281,9 @@ export default {
     TESTarr5() {
       if (this.selClrm != [] && this.dataLS.Clrms) {
         return this.dataLS.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -5235,7 +5304,9 @@ export default {
       }
     },
     indiRow() {
-      return this.classmembers.length > 0 ? this.classmembers[this.cRoom.indiNo] : "";
+      return this.classmembers.length > 0
+        ? this.classmembers[this.cRoom.indiNo]
+        : "";
     },
     //合計点計算
     indiSc() {
@@ -5303,6 +5374,17 @@ export default {
       return arr;
     },
     //////////////////// computed 日付関連 ////////////////////
+    dayjslenient() {
+      // 出欠履歴許可する日の配列
+      return [
+        this.$dayjs(this.sett.ddate)
+          .add(-1, "d") // 翻る日数
+          .format("ddd"),
+        this.$dayjs(this.sett.ddate)
+          .add(-2, "d")
+          .format("ddd")
+      ];
+    },
     dayACjsHmm() {
       return this.$dayjs(this.sett.acdate).format("H:mm");
     },
@@ -5332,9 +5414,9 @@ export default {
       // 休講日は直近となる
       //本日の情報 // 5/25: 土日に不具合になるので、ピンポイントではなく最大値でだすようにした
       // : { "id": "class", "date": "2020/09/25", "lessonnum": "3", "lessonstr": "Week3", "dayofweek": "Fri", "attendance": "attn03", "hwic": "homeworkincomplete03" } |
-      return this.dataset.Cldrs.filter((x) => x.date <= this.dayjsYYYYMMDDt).reduce((a, b) =>
-        a.date > b.date ? a : b
-      );
+      return this.dataset.Cldrs.filter(
+        x => x.date <= this.dayjsYYYYMMDDt
+      ).reduce((a, b) => (a.date > b.date ? a : b));
     },
     getThisSaturday() {
       // const d = this.sett.ddate; //new Date();
@@ -5348,26 +5430,34 @@ export default {
     },
     getThisWeekDateJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, date: m.date }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, date: m.date }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.date }), {});
     },
     getThisWeekLssnJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, lssn: m.lessonnum }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, lssn: m.lessonnum }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.lssn }), {});
     },
     getThisWeekAttnJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, attn: m.attendance }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, attn: m.attendance }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.attn }), {});
     },
     getThisWeekHwicJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, hwic: m.hwic }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, hwic: m.hwic }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.hwic }), {});
     },
     attnHWEditTgt: function() {
@@ -5395,34 +5485,39 @@ export default {
     // 曜日ごとの直近のレッスン回 ※当日含む
     getLatestJSON: function() {
       const cMon = this.dataset.Cldrs.filter(
-        (x) =>
-          x.dayofweek === "Mon" && this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        x =>
+          x.dayofweek === "Mon" &&
+          this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cTue = this.dataset.Cldrs.filter(
-        (x) =>
-          x.dayofweek === "Tue" && this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        x =>
+          x.dayofweek === "Tue" &&
+          this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cWed = this.dataset.Cldrs.filter(
-        (x) =>
-          x.dayofweek === "Wed" && this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        x =>
+          x.dayofweek === "Wed" &&
+          this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cThu = this.dataset.Cldrs.filter(
-        (x) =>
-          x.dayofweek === "Thu" && this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        x =>
+          x.dayofweek === "Thu" &&
+          this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
       ).reduce((a, b) => (a.date > b.date ? a : b));
       const cFri = this.dataset.Cldrs.filter(
-        (x) =>
-          x.dayofweek === "Fri" && this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        x =>
+          x.dayofweek === "Fri" &&
+          this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
       ).reduce((a, b) => (a.date > b.date ? a : b));
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },
     dayChainJSON: function() {
       // 曜日の縦の並びで日程を取得
-      const cMon = this.dataset.Cldrs.filter((x) => x.dayofweek === "Mon");
-      const cTue = this.dataset.Cldrs.filter((x) => x.dayofweek === "Tue");
-      const cWed = this.dataset.Cldrs.filter((x) => x.dayofweek === "Wed");
-      const cThu = this.dataset.Cldrs.filter((x) => x.dayofweek === "Thu");
-      const cFri = this.dataset.Cldrs.filter((x) => x.dayofweek === "Fri");
+      const cMon = this.dataset.Cldrs.filter(x => x.dayofweek === "Mon");
+      const cTue = this.dataset.Cldrs.filter(x => x.dayofweek === "Tue");
+      const cWed = this.dataset.Cldrs.filter(x => x.dayofweek === "Wed");
+      const cThu = this.dataset.Cldrs.filter(x => x.dayofweek === "Thu");
+      const cFri = this.dataset.Cldrs.filter(x => x.dayofweek === "Fri");
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },
     getDayChainUntilPrevJSON: function() {
@@ -5430,7 +5525,7 @@ export default {
       // return this.dayChainJSON.Tue; //[this.dayjsddd];
       //本日の情報
       return this.dataset.Cldrs.filter(
-        (x) =>
+        x =>
           Number(x.lessonnum) < Number(this.getTodayJSON.lessonnum) &&
           x.dayofweek === this.dayjsddd &&
           x.hwic !== undefined
@@ -5445,17 +5540,19 @@ export default {
     monthChainUntilCurrentMonthJSON: function() {
       // ClockIn/Out用・YYYY-MMで当月まで（勤怠用）  [ "2020-09" ]
       const arr = this.dataset.Cldrs.filter(
-        (x) => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
-      ).map((x) => this.$dayjs(x.date).format("YYYY-MM"));
+        x => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
+      ).map(x => this.$dayjs(x.date).format("YYYY-MM"));
       return Array.from(new Set(arr));
     },
     yourClasses: function() {
-      return this.dataset.allClasses.filter((x) => x.instructor === this.sett.alias.name);
+      return this.dataset.allClasses.filter(
+        x => x.instructor === this.sett.alias.name
+      );
     },
     yourClassesShow: function() {
       return this.cRoom.showDummy
-        ? this.yourClasses.filter((x) => x.id.indexOf("X") !== -1)
-        : this.yourClasses.filter((x) => x.id.indexOf("A") !== -1);
+        ? this.yourClasses.filter(x => x.id.indexOf("X") !== -1)
+        : this.yourClasses.filter(x => x.id.indexOf("A") !== -1);
       // return this.cRoom.showDummy
       //   ? this.dataset.allClasses.filter(
       //       x =>
@@ -5471,12 +5568,12 @@ export default {
     ////////// Clock In / Out
     ifYouClockIn: function() {
       return this.instructor.yourattendances.some(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
     },
     ifYouClockInAndStillIn: function() {
       const fnd = this.instructor.yourattendances.find(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
       if (fnd != undefined) {
         return fnd.clockout == null ? true : false; //出社/退社
@@ -5486,7 +5583,7 @@ export default {
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
-        (x) => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
+        x => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
       );
     },
     computedBlank: function() {
@@ -5497,21 +5594,25 @@ export default {
       }, this);
     },
     classmembersA: function() {
-      return this.classmembers.filter((x) => x.group === "A");
+      return this.classmembers.filter(x => x.group === "A");
     },
     classmembersB: function() {
-      return this.classmembers.filter((x) => x.group === "B");
+      return this.classmembers.filter(x => x.group === "B");
     },
     isClrmLoading: function() {
       return this.dataset.Clrms.length > 0 ? false : true;
     },
     //出席完璧なのに通信のせいでスターがパープルにならない
     isClrmNeedAppSync: function() {
-      return this.selClrm.attndone ? (this.selClrm.syncdone ? false : true) : false;
-    },
+      return this.selClrm.attndone
+        ? this.selClrm.syncdone
+          ? false
+          : true
+        : false;
+    }
   },
   async beforeCreate() {
-    Hub.listen("auth", (data) => {
+    Hub.listen("auth", data => {
       const { payload } = data;
       const { event } = payload;
       switch (event) {
@@ -5522,7 +5623,9 @@ export default {
           this.authManage();
           break;
       }
-      this.writeNoteLS("Auth: " + event + localStorage.getItem(this.app.device) + payload);
+      this.writeNoteLS(
+        "Auth: " + event + localStorage.getItem(this.app.device) + payload
+      );
     });
   },
   async created() {
@@ -5548,7 +5651,7 @@ export default {
     //// InstはAPIで
     this.listInstsDataAPI(); //今のところ全件とる
     // await this.fetchInsts(); //今のところ全件とる
-    Hub.listen("datastore", async (hubData) => {
+    Hub.listen("datastore", async hubData => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
       //   .log(`User has a network connection? ${data.active}`);
@@ -5566,13 +5669,23 @@ export default {
           //   this.app.network = false;
           // }
           // this.app.log.nw += ctime + event + ": " + data.active + "\n";
-          this.writeDayLogs(ctime + event + ": " + data.active, this.app.noteNameNW, false, true);
+          this.writeDayLogs(
+            ctime + event + ": " + data.active,
+            this.app.noteNameNW,
+            false,
+            true
+          );
           break;
         case "syncQueriesReady":
           // .log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
           // this.app.log.nw += ctime + event + ": " + true + "\n";
-          this.writeDayLogs(ctime + event + ": " + true, this.app.noteNameNW, false, true);
+          this.writeDayLogs(
+            ctime + event + ": " + true,
+            this.app.noteNameNW,
+            false,
+            true
+          );
           //復帰したときクラス外なら更新する
           if (this.sett.activeTab !== 2) {
             this.initallClasses();
@@ -5629,7 +5742,8 @@ export default {
     this.salvageDaylogs(this.app.noteName, true);
   },
   async mounted() {
-    this.app.log.nw += this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
+    this.app.log.nw +=
+      this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
@@ -5640,8 +5754,8 @@ export default {
   filters: {
     subStr: function(string) {
       return string.substring(0, 509) + "...";
-    },
-  },
+    }
+  }
 };
 </script>
 

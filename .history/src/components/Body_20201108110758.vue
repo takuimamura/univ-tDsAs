@@ -3299,23 +3299,7 @@ export default {
         index: row.index,
       };
       //とりあえず安全策で
-      const estr = [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-      ];
+      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
       //評価はすべて ただし値あるやつだけセットする
       estr.forEach((x) => {
         if (row["attn" + x] !== null && row["attn" + x] !== "") {
@@ -3327,11 +3311,11 @@ export default {
         if (row["ecom" + x] !== null && row["ecom" + x] !== "") {
           upArr["ecom" + x] = row["ecom" + x];
         }
-        if (x !== "01") {
-          // 1週目宿題無し
-          if (row["homeworkincomplete" + x] !== null && row["homeworkincomplete" + x] !== "") {
-            upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
-          }
+      });
+      const estr2 = ["02", "03", "04", "06", "07"];
+      estr2.forEach((x) => {
+        if (row["homeworkincomplete" + x] !== null && row["homeworkincomplete" + x] !== "") {
+          upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
         }
       });
       const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
@@ -3345,7 +3329,6 @@ export default {
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         // console.warn("e fill ", row.index, row, upArr);
-        upArr.cust03 = "";
         this.idbAddSQueue("Clrm", row.index, upArr);
         return false;
       }
@@ -3368,19 +3351,8 @@ export default {
       // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     async idbTEST5() {
-      // const chkinit = async function(nam) {
-      //   if (await this.idbGet(nam, "init")) {
-      //     return false;
-      //   } else {
-      //     await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
-      //     return true;
-      //   }
-      // };
-      // // this.importLStoIDB();
-      // // await this.idbRemove(this.idbCls, this.ds.dev1);
-      // console.warn(chkinit(this.idbCIdx));
-      // console.warn(chkinit(this.idbCls));
-      // console.warn(chkinit(this.idbSQue));
+      this.importLStoIDB();
+      // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     // indexedDB -
     // indexedDB -

@@ -2436,7 +2436,6 @@ export default {
         attnEditTgt: "", // 出欠編集 "attn01"とか
         showAttenNote: false,
         showAttenHist: 0, // 0 当日 1 履歴 2 非表示
-        showHWist: false,
         showDummy: false, // false,
         // showEval: false, // false,
         // showEvalHist: true, // false,
@@ -2765,21 +2764,21 @@ export default {
           { at: "attn15", md: 14 },
         ],
         vforAttn: [
-          { at: "attn01", lb: "1", sc: 1, md: 0, hw: "" },
-          { at: "attn02", lb: "2", sc: 2, md: 1, hw: "homeworkincomplete02" },
-          { at: "attn03", lb: "3", sc: 3, md: 2, hw: "homeworkincomplete03" },
-          { at: "attn04", lb: "4", sc: 4, md: 3, hw: "homeworkincomplete04" },
-          { at: "attn05", lb: "5", sc: 5, md: 4, hw: "homeworkincomplete05" },
-          { at: "attn06", lb: "6", sc: 6, md: 5, hw: "homeworkincomplete06" },
-          { at: "attn07", lb: "7", sc: 7, md: 6, hw: "homeworkincomplete07" },
-          { at: "attn08", lb: "8", sc: 8, md: 7, hw: "homeworkincomplete08" },
-          { at: "attn09", lb: "9", sc: 9, md: 8, hw: "homeworkincomplete09" },
-          { at: "attn10", lb: "10", sc: 10, md: 9, hw: "homeworkincomplete10" },
-          { at: "attn11", lb: "11", sc: 11, md: 10, hw: "homeworkincomplete11" },
-          { at: "attn12", lb: "12", sc: 12, md: 11, hw: "homeworkincomplete12" },
-          { at: "attn13", lb: "13", sc: 13, md: 12, hw: "homeworkincomplete13" },
-          { at: "attn14", lb: "14", sc: 14, md: 13, hw: "homeworkincomplete14" },
-          { at: "attn15", lb: "15", sc: 15, md: 14, hw: "homeworkincomplete15" },
+          { at: "attn01", lb: "1", sc: 1, md: 0 },
+          { at: "attn02", lb: "2", sc: 2, md: 1 },
+          { at: "attn03", lb: "3", sc: 3, md: 2 },
+          { at: "attn04", lb: "4", sc: 4, md: 3 },
+          { at: "attn05", lb: "5", sc: 5, md: 4 },
+          { at: "attn06", lb: "6", sc: 6, md: 5 },
+          { at: "attn07", lb: "7", sc: 7, md: 6 },
+          { at: "attn08", lb: "8", sc: 8, md: 7 },
+          { at: "attn09", lb: "9", sc: 9, md: 8 },
+          { at: "attn10", lb: "10", sc: 10, md: 9 },
+          { at: "attn11", lb: "11", sc: 11, md: 10 },
+          { at: "attn12", lb: "12", sc: 12, md: 11 },
+          { at: "attn13", lb: "13", sc: 13, md: 12 },
+          { at: "attn14", lb: "14", sc: 14, md: 13 },
+          { at: "attn15", lb: "15", sc: 15, md: 14 },
         ],
         convAttnToDateMDNum: {
           attn01: 0,
@@ -3299,23 +3298,7 @@ export default {
         index: row.index,
       };
       //とりあえず安全策で
-      const estr = [
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
-        "06",
-        "07",
-        "08",
-        "09",
-        "10",
-        "11",
-        "12",
-        "13",
-        "14",
-        "15",
-      ];
+      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
       //評価はすべて ただし値あるやつだけセットする
       estr.forEach((x) => {
         if (row["attn" + x] !== null && row["attn" + x] !== "") {
@@ -3327,11 +3310,11 @@ export default {
         if (row["ecom" + x] !== null && row["ecom" + x] !== "") {
           upArr["ecom" + x] = row["ecom" + x];
         }
-        if (x !== "01") {
-          // 1週目宿題無し
-          if (row["homeworkincomplete" + x] !== null && row["homeworkincomplete" + x] !== "") {
-            upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
-          }
+      });
+      const estr2 = ["02", "03", "04", "06", "07"];
+      estr2.forEach((x) => {
+        if (row["homeworkincomplete" + x] !== null && row["homeworkincomplete" + x] !== "") {
+          upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
         }
       });
       const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
@@ -3345,7 +3328,6 @@ export default {
         return callbk; // returnの先に用途は実はない
       } catch (err) {
         // console.warn("e fill ", row.index, row, upArr);
-        upArr.cust03 = "";
         this.idbAddSQueue("Clrm", row.index, upArr);
         return false;
       }
@@ -3368,19 +3350,8 @@ export default {
       // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     async idbTEST5() {
-      // const chkinit = async function(nam) {
-      //   if (await this.idbGet(nam, "init")) {
-      //     return false;
-      //   } else {
-      //     await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
-      //     return true;
-      //   }
-      // };
-      // // this.importLStoIDB();
-      // // await this.idbRemove(this.idbCls, this.ds.dev1);
-      // console.warn(chkinit(this.idbCIdx));
-      // console.warn(chkinit(this.idbCls));
-      // console.warn(chkinit(this.idbSQue));
+      this.importLStoIDB();
+      // await this.idbRemove(this.idbCls, this.ds.dev1);
     },
     // indexedDB -
     // indexedDB -
