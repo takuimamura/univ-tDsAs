@@ -2134,8 +2134,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev:
-          "G_AttnFix1109_F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
+        rev: "F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3482,20 +3481,33 @@ export default {
       //idbに反映
       //ログ
 
-      let filllogStr = "";
       for await (const rw of this.dataIDB.Clrms) {
+        this.updateClrmFilledArea(rw);
+        let logStr = "";
         if (rw.attn01 == null) {
-          rw.attn01 = "here";
-          filllogStr += rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
-          this.idbSet(this.idbCls, rw.index, rw);
+          logStr += "null " + rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
         }
+        if (rw.attn01 == undefined) {
+          logStr += "unde " + rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
+        }
+        // logStr += rw + "\n";
       }
-      const crArr = {
-        type: "attnFix1109",
-        name: this.authdetail.username,
-        detail: filllogStr,
-      };
-      this.createMiscXAPI(crArr);
+      console.warn(logStr);
+      if (
+        this.sett.alias.name == "Samuel Harper" ||
+        this.sett.alias.name == "John Buckley" ||
+        this.sett.alias.name == "Daniel Anderson"
+      ) {
+        this.writeDayLogs("blanc fix start", this.app.noteNameMng);
+        // get API specific data
+
+        // check and write particular column
+        // ls realtime
+        // log
+
+        this.writeDayLogs("blanc fix done", this.app.noteNameMng);
+        this.salvageDaylogs(this.app.noteNameMng);
+      }
 
       ////////// Class Summary
       this.syncSmryAll();
@@ -4028,7 +4040,7 @@ export default {
         top: 0,
         behavior: "smooth",
       });
-      // this.discrepancyDetectAndFix(this.selClrm, "select");
+      this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     async enterClassroom() {
       //★要らない気がする
@@ -4135,119 +4147,119 @@ export default {
       //   ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
       // tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
     },
-    // async discrepancyDetectAndFix(tgtClrm, desc) {
-    //   this.cRoom.fixAwait = true;
-    //   // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
-    //   //localStorageとDSと配列比較して補正
-    //   const attnDest = tgtClrm.attnLatest;
-    //   // const attnDest = tgtClrm.attnthisweek;
-    //   // const objDS = await DataStore.query(Clrm, c =>
-    //   //   c.classcode("eq", tgtClrm.id)
-    //   // );
-    //   const objCL = this.classmembers;
-    //   const objLS = this.loadclassRealtimeBackup(tgtClrm.id);
-    //   let resultStr = "";
-    //   let resultAddStr = "";
-    //   //localStorageあるときだけ処理★厳密には対象attnがある状態、なおそう
-    //   if (objLS !== null) {
-    //     // let atDS = "";
-    //     let atLS = "";
-    //     let atCL = "";
-    //     for (let num = 0; num < objCL.length; num++) {
-    //       //localStorage優先、文字アリ優先、判定は出欠、修正はHW含める
-    //       //処理前
-    //       // atDS =
-    //       //   objDS[num][attnDest] == null || objDS[num][attnDest] == ""
-    //       //     ? null
-    //       //     : objDS[num][attnDest];
-    //       atCL =
-    //         objCL[num][attnDest] == null || objCL[num][attnDest] == ""
-    //           ? null
-    //           : objCL[num][attnDest];
-    //       atLS =
-    //         objLS[num][attnDest] == null || objLS[num][attnDest] == ""
-    //           ? null
-    //           : objLS[num][attnDest];
-    //       // resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
-    //       resultStr += num + "[" + atCL + ", " + atLS + "],\n";
+    async discrepancyDetectAndFix(tgtClrm, desc) {
+      this.cRoom.fixAwait = true;
+      // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
+      //localStorageとDSと配列比較して補正
+      const attnDest = tgtClrm.attnLatest;
+      // const attnDest = tgtClrm.attnthisweek;
+      // const objDS = await DataStore.query(Clrm, c =>
+      //   c.classcode("eq", tgtClrm.id)
+      // );
+      const objCL = this.classmembers;
+      const objLS = this.loadclassRealtimeBackup(tgtClrm.id);
+      let resultStr = "";
+      let resultAddStr = "";
+      //localStorageあるときだけ処理★厳密には対象attnがある状態、なおそう
+      if (objLS !== null) {
+        // let atDS = "";
+        let atLS = "";
+        let atCL = "";
+        for (let num = 0; num < objCL.length; num++) {
+          //localStorage優先、文字アリ優先、判定は出欠、修正はHW含める
+          //処理前
+          // atDS =
+          //   objDS[num][attnDest] == null || objDS[num][attnDest] == ""
+          //     ? null
+          //     : objDS[num][attnDest];
+          atCL =
+            objCL[num][attnDest] == null || objCL[num][attnDest] == ""
+              ? null
+              : objCL[num][attnDest];
+          atLS =
+            objLS[num][attnDest] == null || objLS[num][attnDest] == ""
+              ? null
+              : objLS[num][attnDest];
+          // resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
+          resultStr += num + "[" + atCL + ", " + atLS + "],\n";
 
-    //       if (atLS !== null) {
-    //         // if (atLS == null) {
-    //         //   if (atDS == null && atCL !== null) {
-    //         //     this.updateDS(
-    //         //       objCL[num].id,
-    //         //       attnDest,
-    //         //       atCL,
-    //         //       this.attnHWEditTgt,
-    //         //       objCL[num][this.attnHWEditTgt]
-    //         //     );
-    //         //     resultAddStr +=
-    //         //       num +
-    //         //       " " +
-    //         //       objCL[num].studentcode +
-    //         //       " " +
-    //         //       attnDest +
-    //         //       " class -> DS\n";
-    //         //   }
-    //         //   if (atCL == null && atDS !== null) {
-    //         //     this.classmembers[num][attnDest] = atCL;
-    //         //     this.classmembers[num][this.attnHWEditTgt] =
-    //         //       objDS[num][this.attnHWEditTgt];
-    //         //     resultAddStr +=
-    //         //       num +
-    //         //       " " +
-    //         //       objCL[num].studentcode +
-    //         //       " " +
-    //         //       attnDest +
-    //         //       " DS -> class\n";
-    //         //   }
-    //         // } else {
-    //         // if (atDS == null) {
-    //         //   this.updateDS(
-    //         //     objCL[num].id,
-    //         //     attnDest,
-    //         //     atLS,
-    //         //     this.attnHWEditTgt,
-    //         //     objLS[num][this.attnHWEditTgt]
-    //         //   );
-    //         //   resultAddStr +=
-    //         //     num +
-    //         //     " " +
-    //         //     objCL[num].studentcode +
-    //         //     " " +
-    //         //     attnDest +
-    //         //     " local -> DS\n";
-    //         // }
-    //         if (atCL == null) {
-    //           this.classmembers[num][attnDest] = atLS;
-    //           this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
-    //           resultAddStr +=
-    //             num + " " + objCL[num].studentcode + " " + attnDest + " local -> class\n";
-    //         }
-    //       }
-    //     }
-    //     resultStr +=
-    //       resultAddStr +
-    //       // JSON.stringify(objDS) +
-    //       // "_@#@#" +
-    //       JSON.stringify(this.classmembers) +
-    //       "_@#@#" +
-    //       JSON.stringify(objLS);
-    //     ////// report
-    //     const crArr = {
-    //       type: "discrepancyDetectAndFix " + tgtClrm.id,
-    //       name: this.authdetail.username,
-    //       detail: desc + " " + attnDest + "\n" + resultStr,
-    //     };
-    //     this.createMiscXAPI(crArr);
-    //     // tgtClrm.attnthisweek
-    //     const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
-    //     this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
-    //   } else {
-    //     this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
-    //   }
-    //   this.cRoom.fixAwait = false;
-    // },
+          if (atLS !== null) {
+            // if (atLS == null) {
+            //   if (atDS == null && atCL !== null) {
+            //     this.updateDS(
+            //       objCL[num].id,
+            //       attnDest,
+            //       atCL,
+            //       this.attnHWEditTgt,
+            //       objCL[num][this.attnHWEditTgt]
+            //     );
+            //     resultAddStr +=
+            //       num +
+            //       " " +
+            //       objCL[num].studentcode +
+            //       " " +
+            //       attnDest +
+            //       " class -> DS\n";
+            //   }
+            //   if (atCL == null && atDS !== null) {
+            //     this.classmembers[num][attnDest] = atCL;
+            //     this.classmembers[num][this.attnHWEditTgt] =
+            //       objDS[num][this.attnHWEditTgt];
+            //     resultAddStr +=
+            //       num +
+            //       " " +
+            //       objCL[num].studentcode +
+            //       " " +
+            //       attnDest +
+            //       " DS -> class\n";
+            //   }
+            // } else {
+            // if (atDS == null) {
+            //   this.updateDS(
+            //     objCL[num].id,
+            //     attnDest,
+            //     atLS,
+            //     this.attnHWEditTgt,
+            //     objLS[num][this.attnHWEditTgt]
+            //   );
+            //   resultAddStr +=
+            //     num +
+            //     " " +
+            //     objCL[num].studentcode +
+            //     " " +
+            //     attnDest +
+            //     " local -> DS\n";
+            // }
+            if (atCL == null) {
+              this.classmembers[num][attnDest] = atLS;
+              this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
+              resultAddStr +=
+                num + " " + objCL[num].studentcode + " " + attnDest + " local -> class\n";
+            }
+          }
+        }
+        resultStr +=
+          resultAddStr +
+          // JSON.stringify(objDS) +
+          // "_@#@#" +
+          JSON.stringify(this.classmembers) +
+          "_@#@#" +
+          JSON.stringify(objLS);
+        ////// report
+        const crArr = {
+          type: "discrepancyDetectAndFix " + tgtClrm.id,
+          name: this.authdetail.username,
+          detail: desc + " " + attnDest + "\n" + resultStr,
+        };
+        this.createMiscXAPI(crArr);
+        // tgtClrm.attnthisweek
+        const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
+        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
+      } else {
+        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+      }
+      this.cRoom.fixAwait = false;
+    },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
       if (this.selClrm.dayofweek === this.dayjsddd) {
@@ -5030,7 +5042,7 @@ export default {
           this.classBackupALLTypes(sClrm);
           // this.classBackup(sClrm);
           // fix
-          // this.discrepancyDetectAndFix(sClrm, "exit");
+          this.discrepancyDetectAndFix(sClrm, "exit");
           //全員、出欠とHWのみ保存
           // this.manageupdateClrmAttnHW();
           //  クラス毎のサマリDB 更新
