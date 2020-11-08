@@ -3460,6 +3460,7 @@ export default {
       ////// idbからDynamoDBにブランク以外すべてUpする
       let uplogStr = "";
       this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      console.warn("dataAPI.Clrms" + this.dataAPI.Clrms.length + " idbからDynamoDBに");
       for await (const rw of this.dataIDB.Clrms) {
         this.updateClrmFilledArea(rw);
         uplogStr += rw + "\n";
@@ -3472,6 +3473,7 @@ export default {
       await this.importToIDB(this.dataAPI.Clrms, false);
       // await this.importAPItoIDB();
       this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      console.warn("dataAPI.Clrms" + this.dataAPI.Clrms.length + " DynamoDb同期");
       ////////// Clrm Index
       logStr += (await this.updateIndexIDBbyAPI()) + "\n";
 
@@ -3481,48 +3483,47 @@ export default {
       //hereにする
       //idbに反映
       //ログ
-      // dummy data generator
-      // if (this.authdetail.username === "dummy") {
-      //   console.warn("fill fill fill");
-      //   const lorem = [
-      //     "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
-      //     " hendrerit imperdiet, elit sapien laoreet elit",
-      //     " adipiscing elit. Fusce id fermentum quam.",
-      //     "Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
-      //     " nibh id hendrerit imperdiet, elit sapien laoreet elit",
-      //     "Lorem ipsum dolor ",
-      //     "imperdiet, ",
-      //     " fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, ",
-      //     " fermentum quam. Proin sagittis, , ",
-      //   ];
-      //   for await (const rw of this.dataIDB.Clrms) {
-      //     if (rw.attn02 == null) {
-      //       rw.attn02 = "here";
-      //     }
-      //     if (rw.attn03 == null) {
-      //       rw.attn03 = "here";
-      //     }
-      //     if (rw.attn04 == null) {
-      //       rw.attn04 = "here";
-      //     }
-      //     if (rw.attn05 == null) {
-      //       rw.attn05 = "here";
-      //     }
-      //     if (rw.eval06 == null) {
-      //       rw.eval06 = Math.floor(Math.random() * 9) + 1;
-      //     }
-      //     if (rw.eval08 == null) {
-      //       rw.eval08 = Math.floor(Math.random() * 9) + 1;
-      //     }
-      //     if (rw.ecom06 == null) {
-      //       rw.ecom06 = lorem[Math.floor(Math.random() * 9)];
-      //     }
-      //     if (rw.ecom08 == null) {
-      //       rw.ecom08 = lorem[Math.floor(Math.random() * 9)];
-      //     }
-      //     this.idbSet(this.idbCls, rw.index, rw);
-      //   }
-      // }
+      if (this.authdetail.username === "dummy") {
+        console.warn("fill fill fill");
+        const lorem = [
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          " hendrerit imperdiet, elit sapien laoreet elit",
+          " adipiscing elit. Fusce id fermentum quam.",
+          "Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          " nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          "Lorem ipsum dolor ",
+          "imperdiet, ",
+          " fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, ",
+          " fermentum quam. Proin sagittis, , ",
+        ];
+        for await (const rw of this.dataIDB.Clrms) {
+          if (rw.attn02 == null) {
+            rw.attn02 = "here";
+          }
+          if (rw.attn03 == null) {
+            rw.attn03 = "here";
+          }
+          if (rw.attn04 == null) {
+            rw.attn04 = "here";
+          }
+          if (rw.attn05 == null) {
+            rw.attn05 = "here";
+          }
+          if (rw.eval06 == null) {
+            rw.eval06 = Math.floor(Math.random() * 9) + 1;
+          }
+          if (rw.eval08 == null) {
+            rw.eval08 = Math.floor(Math.random() * 9) + 1;
+          }
+          if (rw.ecom06 == null) {
+            rw.ecom06 = lorem[Math.floor(Math.random() * 9)];
+          }
+          if (rw.ecom08 == null) {
+            rw.ecom08 = lorem[Math.floor(Math.random() * 9)];
+          }
+          this.idbSet(this.idbCls, rw.index, rw);
+        }
+      }
 
       let filllogStr = "";
       for await (const rw of this.dataIDB.Clrms) {
@@ -3609,6 +3610,7 @@ export default {
     async updateIndexIDBbyAPI() {
       let logStr = "";
       const dat = this.dataAPI.Clrms; //APIが正しい前提
+      console.warn("dataAPI.Clrms" + this.dataAPI.Clrms.length + " updateIndexIDBbyAPI");
       //担当クラス
       const clslist = dat
         .map((m) => {
@@ -4054,6 +4056,7 @@ export default {
 
       // this.classmembers = this.getClassmembers(this.selClrm.id);
       this.classmembers = await this.idbGetClassmembers(this.selClrm.id);
+      console.warn(this.classmembers);
       //ここまで編集可能
       // this.selClrm.editableUntil = this.getEditableUntilJSON[
       //   this.selClrm.dayofweek
