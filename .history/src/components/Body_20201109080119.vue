@@ -4091,7 +4091,7 @@ export default {
         const apiRslt = await this.APIgetClrmsinstByday(dow);
         this.writeDayLogs(
           "examSyncDone: refresh " + dow + (apiRslt == true ? " Succeed" : " failed"),
-          this.app.noteName
+          this.app.noteNameAPI
         );
       }
       const arrAPI = this.dataAPI.Clrms.filter((x) => x.classcode == tgtClrm.id);
