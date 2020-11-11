@@ -3479,27 +3479,27 @@ export default {
       ////////// Clrm Index
       logStr += (await this.updateIndexIDBbyAPI()) + "\n";
 
-      // //////////////////// 特別処理★
-      // //////////////////// 特別処理★
-      // //idb全データをみる
-      // let filllogStr = "";
-      // for await (const rw of this.dataIDB.Clrms) {
-      //   //1stweekでブランクか
-      //   if (rw.attn01 == null) {
-      //     rw.attn01 = "here";
-      //     filllogStr +=
-      //       rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
-      //     //idbに反映
-      //     this.idbSet(this.idbCls, rw.index, rw);
-      //   }
-      // }
-      // //ログ
-      // const crArr = {
-      //   type: "attnFix1109",
-      //   name: this.authdetail.username,
-      //   detail: filllogStr
-      // };
-      // this.createMiscXAPI(crArr);
+      //////////////////// 特別処理★
+      //////////////////// 特別処理★
+      //idb全データをみる
+      let filllogStr = "";
+      for await (const rw of this.dataIDB.Clrms) {
+        //1stweekでブランクか
+        if (rw.attn01 == null) {
+          rw.attn01 = "here";
+          filllogStr +=
+            rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
+          //idbに反映
+          this.idbSet(this.idbCls, rw.index, rw);
+        }
+      }
+      //ログ
+      const crArr = {
+        type: "attnFix1109",
+        name: this.authdetail.username,
+        detail: filllogStr
+      };
+      this.createMiscXAPI(crArr);
 
       ////////// Class Summary
       this.syncSmryAll();

@@ -106,7 +106,7 @@
           <b-switch size="is-small" v-model="sett.devsummary">devsummary : {{ sett.devsummary }}</b-switch>
           idle:{{ IdleVueStatus }}
           <template v-if="sett.devsummary">
-            <!-- dataIDB.Clrms--{{dataIDB.Clrms}} -->
+            dataIDB.Clrms--{{dataIDB.Clrms}}
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
@@ -3479,27 +3479,70 @@ export default {
       ////////// Clrm Index
       logStr += (await this.updateIndexIDBbyAPI()) + "\n";
 
-      // //////////////////// 特別処理★
-      // //////////////////// 特別処理★
-      // //idb全データをみる
-      // let filllogStr = "";
-      // for await (const rw of this.dataIDB.Clrms) {
-      //   //1stweekでブランクか
-      //   if (rw.attn01 == null) {
-      //     rw.attn01 = "here";
-      //     filllogStr +=
-      //       rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
-      //     //idbに反映
-      //     this.idbSet(this.idbCls, rw.index, rw);
-      //   }
-      // }
-      // //ログ
-      // const crArr = {
-      //   type: "attnFix1109",
-      //   name: this.authdetail.username,
-      //   detail: filllogStr
-      // };
-      // this.createMiscXAPI(crArr);
+      //////////////////// 特別処理★
+      //////////////////// 特別処理★
+
+      // dummy data generator
+      if (this.authdetail.username === "dummy") {
+        console.warn("fill fill fill");
+        const lorem = [
+          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce id fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          " hendrerit imperdiet, elit sapien laoreet elit",
+          " adipiscing elit. Fusce id fermentum quam.",
+          "Proin sagittis, nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          " nibh id hendrerit imperdiet, elit sapien laoreet elit",
+          "Lorem ipsum dolor ",
+          "imperdiet, ",
+          " fermentum quam. Proin sagittis, nibh id hendrerit imperdiet, ",
+          " fermentum quam. Proin sagittis, , "
+        ];
+        for await (const rw of this.dataIDB.Clrms) {
+          if (rw.attn02 == null) {
+            rw.attn02 = "here";
+          }
+          if (rw.attn03 == null) {
+            rw.attn03 = "here";
+          }
+          if (rw.attn04 == null) {
+            rw.attn04 = "here";
+          }
+          if (rw.attn05 == null) {
+            rw.attn05 = "here";
+          }
+          if (rw.eval06 == null) {
+            rw.eval06 = Math.floor(Math.random() * 9) + 1;
+          }
+          if (rw.eval08 == null) {
+            rw.eval08 = Math.floor(Math.random() * 9) + 1;
+          }
+          if (rw.ecom06 == null) {
+            rw.ecom06 = lorem[Math.floor(Math.random() * 9)];
+          }
+          if (rw.ecom08 == null) {
+            rw.ecom08 = lorem[Math.floor(Math.random() * 9)];
+          }
+          this.idbSet(this.idbCls, rw.index, rw);
+        }
+      }
+      //idb全データをみる
+      let filllogStr = "";
+      for await (const rw of this.dataIDB.Clrms) {
+        //1stweekでブランクか
+        if (rw.attn01 == null) {
+          rw.attn01 = "here";
+          filllogStr +=
+            rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
+          //idbに反映
+          this.idbSet(this.idbCls, rw.index, rw);
+        }
+      }
+      //ログ
+      const crArr = {
+        type: "attnFix1109",
+        name: this.authdetail.username,
+        detail: filllogStr
+      };
+      this.createMiscXAPI(crArr);
 
       ////////// Class Summary
       this.syncSmryAll();
