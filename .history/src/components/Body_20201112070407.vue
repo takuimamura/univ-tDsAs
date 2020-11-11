@@ -5782,6 +5782,4 @@ export default {
 };
 </script>
 
-<style lang="scss" src="./styles.scss"></style>
-<style lang="css" src="./styles.css"></style>
 <!-- <style scoped></style>-->

@@ -3503,8 +3503,10 @@ export default {
 
       ////////// Class Summary
       this.syncSmryAll();
+
       ////////// YourClasses
       this.reflectSmrytoYourclasses();
+
       this.dataIDB.ready = true;
       // this.isClrmLoading = false;
 
