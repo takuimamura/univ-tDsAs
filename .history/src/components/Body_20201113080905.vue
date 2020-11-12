@@ -2043,7 +2043,8 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev: "I_servageFail-improve and listlocalstorage-disabled",
+        rev:
+          "H_G_AttnFix1109_F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",

@@ -2043,7 +2043,8 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev: "I_servageFail-improve and listlocalstorage-disabled",
+        rev:
+          "H_G_AttnFix1109_F_bugfix_E_LatestAttnSyncDoneD_ForceDL_C_FilledAreaUp_AuthError no throw",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2901,8 +2902,6 @@ export default {
     },
     async createInstAPI(crArr, msgg, typ, siz) {
       crArr.uid = this.authdetail.username;
-      crArr.udxid = this.authdetail.username;
-
       try {
         await API.graphql(graphqlOperation(createInst, { input: crArr }));
         this.listInstsDataAPI();
@@ -5029,6 +5028,8 @@ export default {
     async writeFail(dest, arr, ret) {
       const dtl =
         (this.getStartingUrl == "localhost" ? this.getStartingUrl : "web") +
+        ", auth:" +
+        this.authdetail.name +
         ", dest:" +
         dest +
         ", input:" +
@@ -5038,7 +5039,14 @@ export default {
       try {
         const crArr = {
           type: "writeFail",
-          detail: "appFail:" + dest + "," + dtl
+          name: this.authdetail.username,
+          detail:
+            "appFail:" +
+            dest +
+            ", date:" +
+            this.getDateYYYYMMDDhHHMMSS() +
+            "," +
+            dtl
         };
         this.createMiscXAPI(crArr);
       } catch (err) {
@@ -5081,7 +5089,7 @@ export default {
         const crArr = {
           type: "appFailSalvage",
           name: this.authdetail.username,
-          detail: arr
+          detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr
         };
         try {
           this.createMiscXAPI(crArr);
@@ -5091,7 +5099,7 @@ export default {
             }
           }
         } catch (err) {
-          this.writeFail("appFailSalvageFail", crArr, err);
+          this.writeFail("salvageFail", crArr, err);
         }
       }
     },
