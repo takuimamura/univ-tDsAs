@@ -2031,8 +2031,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev:
-          "J_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+        rev: "J_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3476,9 +3475,8 @@ export default {
       // };
       // this.createMiscXAPI(crArr);
 
-      ////////// attnFix1116
-      ////////// attnFix1116
       // local側にブランクがあれば埋める。直近のattnまで
+      const attnFix1116 = function(){
       let flLogStr = "";
       // let ifAny = false;
       let ifAnyUpdate = false;
@@ -3557,10 +3555,9 @@ export default {
       flLogStr += ifAnyUpdate == false ? "no changes" : "found or fixed";
       //ログ
       this.createMiscXAPI({ type: "attnFix1116", detail: flLogStr });
-      //★即時関数にしようとしたらthisが中から触れない
-      // )(this.dataAPI.Clrms,this.dataIDB.Clrms);
-      ////////// attnFix1116
-      ////////// attnFix1116
+        
+      };
+      attnFix1116;
 
       ////////// Class Summary
       this.syncSmryAll();
@@ -3574,7 +3571,7 @@ export default {
 
       this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
     },
-
+    
     // indexedDB - Clrm
     // indexedDB - Clrm
     async importLStoIDB() {

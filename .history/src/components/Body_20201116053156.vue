@@ -2031,8 +2031,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev:
-          "J_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+        rev: "I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3390,7 +3389,7 @@ export default {
       await this.idbSet(this.idbSQue, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.lenMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3476,11 +3475,6 @@ export default {
       // };
       // this.createMiscXAPI(crArr);
 
-      ////////// attnFix1116
-      ////////// attnFix1116
-      // local側にブランクがあれば埋める。直近のattnまで
-      let flLogStr = "";
-      // let ifAny = false;
       let ifAnyUpdate = false;
       const api = this.dataAPI.Clrms;
       const dat = this.dataIDB.Clrms;
@@ -3499,8 +3493,11 @@ export default {
         // cday[m.id] = m.dayofweek;
         clnum[m.id] = arr;
       });
+
+      // console.warn(cday);
+      console.warn(clnum);
       for await (const x of dat) {
-        if (x !== undefined && clnum[x.classcode] !== undefined) {
+        if (x !== undefined) {
           const ax = api.find(m => {
             return m.id == x.id;
           });
@@ -3511,56 +3508,59 @@ export default {
                 if (x[v] !== null && x[v] !== "") {
                   //相違あり またはAPIがブランク
                   //記録するにとどめる
-                  // ifAny = true;
-                  flLogStr +=
-                    ["diff", ax.index, ax.studentname, v, x[v], ax[v]].join(
-                      " "
-                    ) + "\n";
+                  console.warn(
+                    "diff",
+                    ax.index,
+                    ax.studentname,
+                    v,
+                    x[v],
+                    ax[v]
+                  );
                 } else {
                   //ブランク
                   if (ax[v] !== null && ax[v] !== "") {
                     // idbブランク apiあり
-                    // ifAny = true;
-                    //書き込む
-                    x[v] = ax[v];
-                    this.idbSet(this.idbCls, x.index, x);
-                    ifAnyUpdate = true;
-                    flLogStr +=
-                      ["write", ax.index, ax.studentname, v, x[v], ax[v]].join(
-                        " "
-                      ) + "\n";
+                    console.warn(
+                      "x-o",
+                      ax.index,
+                      ax.studentname,
+                      v,
+                      x[v],
+                      ax[v]
+                    );
                   } else {
                     //両方ブランク
-                    //記録するにとどめる
-                    // ifAny = true;
-                    flLogStr +=
-                      ["blank", ax.index, ax.studentname, v, x[v], ax[v]].join(
-                        " "
-                      ) + "\n";
+                    console.warn(
+                      "x-x",
+                      ax.index,
+                      ax.studentname,
+                      v,
+                      x[v],
+                      ax[v]
+                    );
                   }
                 }
-                // } else {
-                //   console.warn("same", ax.index, ax.studentname, v, x[v], ax[v]);
+              } else {
+                console.warn("same", ax.index, ax.studentname, v, x[v], ax[v]);
               }
             }
           } else {
-            // apiになかった？
-            // ifAny = true;
-            flLogStr += ["!no result", x.index, x.studentname].join(" ") + "\n";
+            console.warn("!no result", x.index, x.studentname);
           }
+          // if (!force) {
+          //   const chk = await this.idbGet(this.idbCls, x.index);
+          //   if (!chk) {
+          //     this.idbSet(this.idbCls, x.index, x);
+          //   }
+          // } else {
+          //   this.idbSet(this.idbCls, x.index, x);
+          // }
         }
       }
 
       if (ifAnyUpdate) {
         this.dataIDB.Clrms = await this.idbGetALLClassmembers();
       }
-      flLogStr += ifAnyUpdate == false ? "no changes" : "found or fixed";
-      //ログ
-      this.createMiscXAPI({ type: "attnFix1116", detail: flLogStr });
-      //★即時関数にしようとしたらthisが中から触れない
-      // )(this.dataAPI.Clrms,this.dataIDB.Clrms);
-      ////////// attnFix1116
-      ////////// attnFix1116
 
       ////////// Class Summary
       this.syncSmryAll();
@@ -3574,7 +3574,6 @@ export default {
 
       this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
     },
-
     // indexedDB - Clrm
     // indexedDB - Clrm
     async importLStoIDB() {

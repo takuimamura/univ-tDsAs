@@ -2031,8 +2031,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev:
-          "J_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+        rev: "I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3390,7 +3389,7 @@ export default {
       await this.idbSet(this.idbSQue, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.lenMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3476,8 +3475,6 @@ export default {
       // };
       // this.createMiscXAPI(crArr);
 
-      ////////// attnFix1116
-      ////////// attnFix1116
       // local側にブランクがあれば埋める。直近のattnまで
       let flLogStr = "";
       // let ifAny = false;
@@ -3554,13 +3551,9 @@ export default {
       if (ifAnyUpdate) {
         this.dataIDB.Clrms = await this.idbGetALLClassmembers();
       }
-      flLogStr += ifAnyUpdate == false ? "no changes" : "found or fixed";
+      flLogStr += "ifAnyUpdate: " + ifAnyUpdate;
       //ログ
       this.createMiscXAPI({ type: "attnFix1116", detail: flLogStr });
-      //★即時関数にしようとしたらthisが中から触れない
-      // )(this.dataAPI.Clrms,this.dataIDB.Clrms);
-      ////////// attnFix1116
-      ////////// attnFix1116
 
       ////////// Class Summary
       this.syncSmryAll();
@@ -3574,7 +3567,6 @@ export default {
 
       this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
     },
-
     // indexedDB - Clrm
     // indexedDB - Clrm
     async importLStoIDB() {

@@ -2031,8 +2031,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.02",
-        rev:
-          "J_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+        rev: "I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3390,7 +3389,7 @@ export default {
       await this.idbSet(this.idbSQue, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.lenMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3476,9 +3475,6 @@ export default {
       // };
       // this.createMiscXAPI(crArr);
 
-      ////////// attnFix1116
-      ////////// attnFix1116
-      // local側にブランクがあれば埋める。直近のattnまで
       let flLogStr = "";
       // let ifAny = false;
       let ifAnyUpdate = false;
@@ -3515,7 +3511,7 @@ export default {
                   flLogStr +=
                     ["diff", ax.index, ax.studentname, v, x[v], ax[v]].join(
                       " "
-                    ) + "\n";
+                    ) + "/n";
                 } else {
                   //ブランク
                   if (ax[v] !== null && ax[v] !== "") {
@@ -3528,7 +3524,7 @@ export default {
                     flLogStr +=
                       ["write", ax.index, ax.studentname, v, x[v], ax[v]].join(
                         " "
-                      ) + "\n";
+                      ) + "/n";
                   } else {
                     //両方ブランク
                     //記録するにとどめる
@@ -3536,7 +3532,7 @@ export default {
                     flLogStr +=
                       ["blank", ax.index, ax.studentname, v, x[v], ax[v]].join(
                         " "
-                      ) + "\n";
+                      ) + "/n";
                   }
                 }
                 // } else {
@@ -3546,7 +3542,7 @@ export default {
           } else {
             // apiになかった？
             // ifAny = true;
-            flLogStr += ["!no result", x.index, x.studentname].join(" ") + "\n";
+            flLogStr += ["!no result", x.index, x.studentname].join(" ") + "/n";
           }
         }
       }
@@ -3554,13 +3550,9 @@ export default {
       if (ifAnyUpdate) {
         this.dataIDB.Clrms = await this.idbGetALLClassmembers();
       }
-      flLogStr += ifAnyUpdate == false ? "no changes" : "found or fixed";
+      flLogStr += "ifAnyUpdate: " + ifAnyUpdate;
       //ログ
       this.createMiscXAPI({ type: "attnFix1116", detail: flLogStr });
-      //★即時関数にしようとしたらthisが中から触れない
-      // )(this.dataAPI.Clrms,this.dataIDB.Clrms);
-      ////////// attnFix1116
-      ////////// attnFix1116
 
       ////////// Class Summary
       this.syncSmryAll();
@@ -3574,7 +3566,6 @@ export default {
 
       this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
     },
-
     // indexedDB - Clrm
     // indexedDB - Clrm
     async importLStoIDB() {
