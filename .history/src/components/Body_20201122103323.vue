@@ -141,11 +141,11 @@
               <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
               <b-button size="is-small" @click="testlog()">testlog</b-button>
               <br />
-              <b-button size="is-small" @click="devtest('idbTEST1')">idbTEST 1</b-button>
-              <b-button size="is-small" @click="devtest('idbTEST2')">idbTEST 2</b-button>
-              <b-button size="is-small" @click="devtest('idbTEST3')">idbTEST 3</b-button>
-              <b-button size="is-small" @click="devtest('idbTEST4')">idbTEST 4</b-button>
-              <b-button size="is-small" @click="devtest('idbTEST5')">idbTEST 5</b-button>
+              <b-button size="is-small" @click="idbTEST1()">idbTEST 1()</b-button>
+              <b-button size="is-small" @click="idbTEST2()">idbTEST 2</b-button>
+              <b-button size="is-small" @click="idbTEST3()">idbTEST 3</b-button>
+              <b-button size="is-small" @click="idbTEST4()">idbTEST 4</b-button>
+              <b-button size="is-small" @click="idbTEST5()">idbTEST 5</b-button>
               <br />
               <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
               <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
@@ -300,7 +300,7 @@
       <template v-if="cRoom.showABList">
         <section v-if="cRoom.showABList">
           <div class="columns">
-            <div class="column is-half">
+            <div class="column is-half" v-show="cRoom.showABListShowA">
               <div class="has-text-centered f40">Group A</div>
               <div class="f26" style="margin: 0px 40px;">
                 <table class="table is-fullwidth">
@@ -321,7 +321,7 @@
                 </table>
               </div>
             </div>
-            <div class="column is-half is-centered">
+            <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
               <div class="has-text-centered f40">Group B</div>
               <div class="f26" style="margin: 0px 40px;">
                 <table class="table is-fullwidth">
@@ -348,6 +348,7 @@
           <br />
           <br />
           <br />
+          <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
           <b-button
             icon-left="people-arrows"
             size="is-medium"
@@ -1277,6 +1278,13 @@
                                             {{ getHWTotal(indiRow) }}
                                             )
                                           </span>
+                                          <!-- {{getHWTotal(indiRow) -->
+                                          <!-- {{getHWr(indiRow.homeworkincomplete02) +
+                                            getHWr(indiRow.homeworkincomplete03) +
+                                            getHWr(indiRow.homeworkincomplete04) +
+                                          getHWr(indiRow.homeworkincomplete05)}}-->
+
+                                          <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                         </td>
                                       </template>
                                       <!-- 欠、０ボタンいっこめ -->
@@ -2024,7 +2032,7 @@ export default {
         log: { nw: "", act: "" },
         version: "2.02",
         rev:
-          "K_BackupReduce_J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+          "J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -2348,6 +2356,9 @@ export default {
         showClassesSum: false,
         // showEvalGlance: false,
         showABList: false,
+        showABListCaption: "Group A - Group B",
+        showABListShowA: true,
+        showABListShowB: true,
         showABListStudentCode: false,
         showComment: false,
         showCommEval: [false, false, false, false, false, false, false],
@@ -3184,28 +3195,21 @@ export default {
     },
     ////////// updateClrm
     ////////// updateClrm
-    // async updateClrmAPIQueue(qkey, queueKey = "") {
-    //   const obj = await this.idbGet(this.idbCls, qkey);
-    //   // console.warn(qkey, queueKey, obj);
-    //   this.updateClrmAPI(obj, "", "", queueKey, tgtProps);
-    // },
-    async updateClrmAPI(row, fname, fval, queueKey = "", tgtProps = []) {
+    async updateClrmAPIQueue(qkey, queueKey = "") {
+      const obj = await this.idbGet(this.idbCls, qkey);
+      // console.warn(qkey, queueKey, obj);
+      this.updateClrmAPI(obj, "", "", queueKey);
+    },
+    async updateClrmAPI(row, fname, fval, queueKey = "") {
       let upArr = {};
-      let optStr;
-      upArr.id = row.id;
-      upArr.cust01 = row.cust01;
-      upArr.cust02 = row.cust02;
       try {
         if (queueKey == "") {
+          upArr.id = row.id;
           upArr[fname] = fval;
+          upArr.cust01 = row.cust01;
+          upArr.cust02 = row.cust02;
         } else {
-          tgtProps.forEach(m => {
-            if (m.includes(":")) {
-              optStr = m.split(":")[1];
-            } else {
-              upArr[m] = row[m];
-            }
-          });
+          upArr = row;
         }
         delete upArr._version;
         delete upArr._lastChangedAt;
@@ -3216,6 +3220,8 @@ export default {
         // console.warn(row, fname, fval, queueKey);
         // console.warn(ee);
       }
+
+      // console.warn(upArr);
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
       try {
         await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -3223,12 +3229,7 @@ export default {
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
           this.writeDayLogs(
-            "Clrm retry done: " +
-              queueKey +
-              " " +
-              optStr +
-              " - " +
-              upArr.cust03,
+            "Clrm retry done: " + queueKey,
             this.app.noteNameAPI
           );
         }
@@ -3236,7 +3237,7 @@ export default {
         row.cust03 = "";
         //// --- SendQueue
         // console.warn("e API ", row.index, row, upArr);
-        this.idbAddSQueue("Clrm", row.index, fname);
+        this.idbAddSQueue("Clrm", row.index, [fname]);
         this.writeDayLogs(
           "ClrmAPI Fail: " + row.index + JSON.stringify(e),
           this.app.noteNameAPI
@@ -3254,23 +3255,23 @@ export default {
         this.selClrm.attnModified = true;
       }
       this.sett.dummy1 = row;
-      // const ret = await this.idbGet(this.idbSQue, "Clrm," + row.index);
-      // if (ret) {
-      //   // sendqueueにある場合全カラムを更新し、Queueも消す
-      //   this.updateClrmAPI(row, "", "", "Clrm," + row.index);
-      // } else {
-      // 10/21より最新操作が先頭にくるように変更
-      const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
-      const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
-      row.cust01 = logHist;
-      row.cust02 = log;
-      //// --- localStorage
-      this.classRealtimeBackup();
-      //// --- indexedDB
-      this.idbSet(this.idbCls, row.index, row);
-      //// --- dynamoDB
-      this.updateClrmAPI(row, fname, fval);
-      // }
+      const ret = await this.idbGet(this.idbSQue, "Clrm," + row.index);
+      if (ret) {
+        // sendqueueにある場合全カラムを更新し、Queueも消す
+        this.updateClrmAPI(row, "", "", "Clrm," + row.index);
+      } else {
+        // 10/21より最新操作が先頭にくるように変更
+        const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
+        const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+        row.cust01 = logHist;
+        row.cust02 = log;
+        //// --- localStorage
+        this.classRealtimeBackup();
+        //// --- indexedDB
+        this.idbSet(this.idbCls, row.index, row);
+        //// --- dynamoDB
+        this.updateClrmAPI(row, fname, fval);
+      }
     },
     async updateClrmFilledArea(row) {
       // 出欠と宿題は該当週のみ、評価はすべて
@@ -3340,6 +3341,25 @@ export default {
     },
     ////////// indexedDB
     ////////// indexedDB
+    async idbTEST1() {
+      this.manageMng();
+      // const chk = await this.examSyncDone(this.selClrm, true);
+    },
+    async idbTEST2() {
+      // const chk = await this.examSyncDone(this.selClrm);
+    },
+    async idbTEST3() {
+      this.reflectSmrytoYourclasses();
+      // this.idbHandleSQueue();
+    },
+    async idbTEST4() {
+      this.importAPItoIDB();
+      // await this.idbRemove(this.idbCls, this.ds.dev1);
+    },
+    async idbTEST5() {},
+    // indexedDB -
+    // indexedDB -
+    //////// initialize - for very first time 初回のみ
     async idbIfInitialUse(nam) {
       if (await this.idbGet(nam, "init")) {
         return false;
@@ -3357,16 +3377,13 @@ export default {
       const ifInitidbSQue = this.idbIfInitialUse(this.idbSQue);
       const ifInitidbMng = this.idbIfInitialUse(this.idbMng);
       const ifInitidbSmry = this.idbIfInitialUse(this.idbSmry);
-      const ifInitlenMisc = this.idbIfInitialUse(this.idbMisc);
-      const ifInitlenBkup = this.idbIfInitialUse(this.idbBkup);
-
+      const ifInitlenMisc = this.idbIfInitialUse(this.lenMisc);
       logStr += ifInitidbCIdx ? "idb init CIdx\n" : "";
       logStr += ifInitidbCls ? "idb init Cls \n" : "";
       logStr += ifInitidbSQue ? "idb init SQue\n" : "";
       logStr += ifInitidbMng ? "idb init Mng \n" : "";
       logStr += ifInitidbSmry ? "idb init Smry\n" : "";
       logStr += ifInitlenMisc ? "idb init Misc\n" : "";
-      logStr += ifInitlenBkup ? "idb init Bkup\n" : "";
 
       await this.idbSet(this.idbCIdx, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
@@ -3374,7 +3391,6 @@ export default {
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbBkup, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3388,8 +3404,6 @@ export default {
         (await this.idbSmry.length()) +
         " Misc:" +
         (await this.idbMisc.length()) +
-        " Bkup:" +
-        (await this.idbBkup.length()) +
         "\n";
 
       //先読みしときたい
@@ -3564,6 +3578,7 @@ export default {
 
       this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
     },
+
     // indexedDB - Clrm
     // indexedDB - Clrm
     async importLStoIDB() {
@@ -3763,6 +3778,20 @@ export default {
         }
       }
     },
+    async TESTmodifySmry(classcode) {
+      // ds.dev1
+      // const classcode = "A0042";
+      let csmry = await this.idbGet(this.idbSmry, classcode);
+      csmry.attn05done = "local"; // null -> local -> sync
+      // dynamoにおくるときはsyncに書き換えてTryする
+      // Smry書込み
+      this.idbSet(this.idbSmry, csmry.classcode, csmry);
+      // yourClassに反映
+
+      //DynamoDB
+      csmry.attn05done = "local"; // null -> local -> sync
+      this.updateSmryAPI(csmry);
+    },
     // indexedDB basics
     // indexedDB basics
     async idbSet(nam, key, obj) {
@@ -3908,21 +3937,15 @@ export default {
     // indexedDB Queue
     // indexedDB Queue
     async idbAddSQueue(key, tailStr = "", val) {
-      let arr = [];
-      let chk;
-      switch (key) {
+          let arr =[];
+      switch(key){
         case "Clrm":
-          chk = await this.idbGet(this.idbSQue, "Clrm," + tailStr);
-          if (chk) {
-            arr = arr.concat(chk, val);
-          } else {
-            arr = arr.concat("added:" + this.getDateYYYYMMDDhHHMMSS(), val);
-          }
-          arr = Array.from(new Set(arr));
+          arr = arr.concat(val,this.getDateYYYYMMDDhHHMMssSSS());
           this.idbSet(this.idbSQue, key + "," + tailStr, arr);
-          break;
+
+        break;
         default:
-          tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMSS() : tailStr;
+          tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMssSSS() : tailStr;
           this.idbSet(this.idbSQue, key + "," + tailStr, val);
       }
     },
@@ -3935,8 +3958,8 @@ export default {
         // mtcs.push(val);
         Object.assign(qObj, { [qk]: val });
       }
-      let objCls = {};
       for await (const qk of qkeys) {
+        // console.warn(qObj[qk]);
         const gql = qk.split(",")[0];
         // init, hello will be ignored
         switch (gql) {
@@ -3950,9 +3973,7 @@ export default {
             this.createMiscXAPI(qObj[qk], qk);
             break;
           case "Clrm":
-            objCls = await this.idbGet(this.idbCls, qk.split(",")[1]);
-            this.updateClrmAPI(objCls, "", "", qk, qObj[qk]);
-
+            this.updateClrmAPIQueue(qk.split(",")[1], qk);
             break;
           case "API":
             this.APIgetClrmsinstBydayAll();
@@ -4086,6 +4107,8 @@ export default {
     },
     //////////クラスルーム
     //////////クラスルーム
+    ///// クラス選択、読み込み、
+    ///// クラス選択、読み込み、
     async selectClassroom(arr) {
       // 前回のテスト結果くりあ（非表示）
       this.ClrmAppSyncStateShow = false;
@@ -4126,8 +4149,18 @@ export default {
       this.sett.activeTab = 2; //いざタブを切替
       this.isOpenselClrm = false;
     },
+    // getClassmembers(classcode) {
+    //   return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
+    //     function(a, b) {
+    //       if (a.sortid < b.sortid) return -1;
+    //       if (a.sortid > b.sortid) return 1;
+    //       return 0;
+    //     }
+    //   );
+    // },
+    // 今週分の出欠完了判定
     async getAttnDoneStateSelClrm() {
-      //今週分の出欠完了判定 必ずクラス内で実施される
+      //必ずクラス内で実施される
       if (this.selClrm.id == "") {
         return false;
       }
@@ -4142,6 +4175,7 @@ export default {
       }
       return doneNum === cmem.length ? true : false;
     },
+    // クラスサマリの更新
     //// クラス毎のサマリDB 更新
     async examAttnDone(tgtClrm) {
       const dow = tgtClrm.dayofweek;
@@ -4217,6 +4251,119 @@ export default {
       //   ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
       // tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
     },
+    // async discrepancyDetectAndFix(tgtClrm, desc) {
+    //   this.cRoom.fixAwait = true;
+    //   // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
+    //   //localStorageとDSと配列比較して補正
+    //   const attnDest = tgtClrm.attnLatest;
+    //   // const attnDest = tgtClrm.attnthisweek;
+    //   // const objDS = await DataStore.query(Clrm, c =>
+    //   //   c.classcode("eq", tgtClrm.id)
+    //   // );
+    //   const objCL = this.classmembers;
+    //   const objLS = this.loadclassRealtimeBackup(tgtClrm.id);
+    //   let resultStr = "";
+    //   let resultAddStr = "";
+    //   //localStorageあるときだけ処理★厳密には対象attnがある状態、なおそう
+    //   if (objLS !== null) {
+    //     // let atDS = "";
+    //     let atLS = "";
+    //     let atCL = "";
+    //     for (let num = 0; num < objCL.length; num++) {
+    //       //localStorage優先、文字アリ優先、判定は出欠、修正はHW含める
+    //       //処理前
+    //       // atDS =
+    //       //   objDS[num][attnDest] == null || objDS[num][attnDest] == ""
+    //       //     ? null
+    //       //     : objDS[num][attnDest];
+    //       atCL =
+    //         objCL[num][attnDest] == null || objCL[num][attnDest] == ""
+    //           ? null
+    //           : objCL[num][attnDest];
+    //       atLS =
+    //         objLS[num][attnDest] == null || objLS[num][attnDest] == ""
+    //           ? null
+    //           : objLS[num][attnDest];
+    //       // resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
+    //       resultStr += num + "[" + atCL + ", " + atLS + "],\n";
+
+    //       if (atLS !== null) {
+    //         // if (atLS == null) {
+    //         //   if (atDS == null && atCL !== null) {
+    //         //     this.updateDS(
+    //         //       objCL[num].id,
+    //         //       attnDest,
+    //         //       atCL,
+    //         //       this.attnHWEditTgt,
+    //         //       objCL[num][this.attnHWEditTgt]
+    //         //     );
+    //         //     resultAddStr +=
+    //         //       num +
+    //         //       " " +
+    //         //       objCL[num].studentcode +
+    //         //       " " +
+    //         //       attnDest +
+    //         //       " class -> DS\n";
+    //         //   }
+    //         //   if (atCL == null && atDS !== null) {
+    //         //     this.classmembers[num][attnDest] = atCL;
+    //         //     this.classmembers[num][this.attnHWEditTgt] =
+    //         //       objDS[num][this.attnHWEditTgt];
+    //         //     resultAddStr +=
+    //         //       num +
+    //         //       " " +
+    //         //       objCL[num].studentcode +
+    //         //       " " +
+    //         //       attnDest +
+    //         //       " DS -> class\n";
+    //         //   }
+    //         // } else {
+    //         // if (atDS == null) {
+    //         //   this.updateDS(
+    //         //     objCL[num].id,
+    //         //     attnDest,
+    //         //     atLS,
+    //         //     this.attnHWEditTgt,
+    //         //     objLS[num][this.attnHWEditTgt]
+    //         //   );
+    //         //   resultAddStr +=
+    //         //     num +
+    //         //     " " +
+    //         //     objCL[num].studentcode +
+    //         //     " " +
+    //         //     attnDest +
+    //         //     " local -> DS\n";
+    //         // }
+    //         if (atCL == null) {
+    //           this.classmembers[num][attnDest] = atLS;
+    //           this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
+    //           resultAddStr +=
+    //             num + " " + objCL[num].studentcode + " " + attnDest + " local -> class\n";
+    //         }
+    //       }
+    //     }
+    //     resultStr +=
+    //       resultAddStr +
+    //       // JSON.stringify(objDS) +
+    //       // "_@#@#" +
+    //       JSON.stringify(this.classmembers) +
+    //       "_@#@#" +
+    //       JSON.stringify(objLS);
+    //     ////// report
+    //     const crArr = {
+    //       type: "discrepancyDetectAndFix " + tgtClrm.id,
+    //       name: this.authdetail.username,
+    //       detail: desc + " " + attnDest + "\n" + resultStr,
+    //     };
+    //     this.createMiscXAPI(crArr);
+    //     // tgtClrm.attnthisweek
+    //     const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
+    //     this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
+    //   } else {
+    //     this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+    //   }
+    //   this.cRoom.fixAwait = false;
+    // },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
       if (this.selClrm.dayofweek === this.dayjsddd) {
@@ -4248,6 +4395,25 @@ export default {
           (m[this.attnHWEditTgt] =
             m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
       );
+    },
+    showABListCaptionChange() {
+      switch (this.cRoom.showABListCaption) {
+        case "Group A":
+          this.cRoom.showABListCaption = "Group B";
+          this.cRoom.showABListShowA = false;
+          this.cRoom.showABListShowB = true;
+          break;
+        case "Group B":
+          this.cRoom.showABListCaption = "Group A - Group B";
+          this.cRoom.showABListShowA = true;
+          this.cRoom.showABListShowB = true;
+          break;
+        case "Group A - Group B":
+          this.cRoom.showABListCaption = "Group A";
+          this.cRoom.showABListShowA = true;
+          this.cRoom.showABListShowB = false;
+          break;
+      }
     },
     attnModeChangeConfirm() {
       // if (this.computedBlank.length == 0) {
@@ -4573,6 +4739,10 @@ export default {
         case 3:
           return "table is-striped";
       }
+    },
+    // HW inomplete total
+    getHWr(val) {
+      return val === false ? 1 : 0;
     },
     getHWTotal(row) {
       const chk = function(r, str) {
@@ -5118,7 +5288,7 @@ export default {
       // this.sett.devarea = true;
       // this.sett.devcheck = true;
     },
-    async devtest(str, val = "", num = 0) {
+    devtest(str, val = "", num = 0) {
       switch (str) {
         case "dummy":
           this.sett.dummy1 = "val";
@@ -5129,22 +5299,6 @@ export default {
           this.sett.env.devAddAcDate += num;
           this.setcurrentAcDate();
           this.dateDevAddDate();
-          break;
-        case "idbTEST1":
-          this.manageMng();
-          break;
-        case "idbTEST2":
-          // const chk = await this.examSyncDone(this.selClrm);
-          break;
-        case "idbTEST3":
-          this.reflectSmrytoYourclasses();
-          // this.idbHandleSQueue();
-          break;
-        case "idbTEST4":
-          this.importAPItoIDB();
-          // await this.idbRemove(this.idbCls, this.ds.dev1);
-          break;
-        case "idbTEST5":
           break;
         case "TESTarr3":
           if (this.selClrm != []) {
@@ -5168,21 +5322,6 @@ export default {
           break;
         case "xxx":
           break;
-
-        // async TESTmodifySmry(classcode) {
-        //   // ds.dev1
-        //   // const classcode = "A0042";
-        //   let csmry = await this.idbGet(this.idbSmry, classcode);
-        //   csmry.attn05done = "local"; // null -> local -> sync
-        //   // dynamoにおくるときはsyncに書き換えてTryする
-        //   // Smry書込み
-        //   this.idbSet(this.idbSmry, csmry.classcode, csmry);
-        //   // yourClassに反映
-
-        //   //DynamoDB
-        //   csmry.attn05done = "local"; // null -> local -> sync
-        //   this.updateSmryAPI(csmry);
-        // },
 
         // salvageDev() {
         //   if (this.getStartingUrl !== "localhost") {
@@ -5211,6 +5350,7 @@ export default {
         //     }
         //   }, 1000 * 60 * 10);
         // },
+
       }
       this.writeDayLogs(
         str + " " + val + " " + num,
@@ -5670,6 +5810,7 @@ export default {
           break;
       }
     });
+
     this.sett.intId0 = setInterval(() => {
       this.setupWait();
     }, 1000 * 0.5); //間隔

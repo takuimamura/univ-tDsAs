@@ -2024,7 +2024,7 @@ export default {
         log: { nw: "", act: "" },
         version: "2.02",
         rev:
-          "K_BackupReduce_J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+          "J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3216,6 +3216,8 @@ export default {
         // console.warn(row, fname, fval, queueKey);
         // console.warn(ee);
       }
+
+      console.warn(upArr);
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
       try {
         await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -3357,16 +3359,13 @@ export default {
       const ifInitidbSQue = this.idbIfInitialUse(this.idbSQue);
       const ifInitidbMng = this.idbIfInitialUse(this.idbMng);
       const ifInitidbSmry = this.idbIfInitialUse(this.idbSmry);
-      const ifInitlenMisc = this.idbIfInitialUse(this.idbMisc);
-      const ifInitlenBkup = this.idbIfInitialUse(this.idbBkup);
-
+      const ifInitlenMisc = this.idbIfInitialUse(this.lenMisc);
       logStr += ifInitidbCIdx ? "idb init CIdx\n" : "";
       logStr += ifInitidbCls ? "idb init Cls \n" : "";
       logStr += ifInitidbSQue ? "idb init SQue\n" : "";
       logStr += ifInitidbMng ? "idb init Mng \n" : "";
       logStr += ifInitidbSmry ? "idb init Smry\n" : "";
       logStr += ifInitlenMisc ? "idb init Misc\n" : "";
-      logStr += ifInitlenBkup ? "idb init Bkup\n" : "";
 
       await this.idbSet(this.idbCIdx, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
@@ -3374,7 +3373,6 @@ export default {
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbBkup, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3388,8 +3386,6 @@ export default {
         (await this.idbSmry.length()) +
         " Misc:" +
         (await this.idbMisc.length()) +
-        " Bkup:" +
-        (await this.idbBkup.length()) +
         "\n";
 
       //先読みしときたい
@@ -3729,6 +3725,9 @@ export default {
       for await (const k of keys) {
         if (k !== "init" && k !== "hello") {
           const obj = await this.idbGet(this.idbSmry, k);
+          if (!obj) {
+            console.warn("reflectSmrytoYourclasses no obj", k, obj);
+          }
           let tgt = this.yourClasses.find(arr => {
             return arr.id == obj.classcode;
           });
@@ -3937,6 +3936,7 @@ export default {
       }
       let objCls = {};
       for await (const qk of qkeys) {
+        // console.warn(qObj[qk]);
         const gql = qk.split(",")[0];
         // init, hello will be ignored
         switch (gql) {

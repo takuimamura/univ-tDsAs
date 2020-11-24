@@ -2024,7 +2024,7 @@ export default {
         log: { nw: "", act: "" },
         version: "2.02",
         rev:
-          "K_BackupReduce_J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+          "J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",

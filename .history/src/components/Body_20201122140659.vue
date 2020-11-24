@@ -2024,7 +2024,7 @@ export default {
         log: { nw: "", act: "" },
         version: "2.02",
         rev:
-          "K_BackupReduce_J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
+          "J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3184,28 +3184,21 @@ export default {
     },
     ////////// updateClrm
     ////////// updateClrm
-    // async updateClrmAPIQueue(qkey, queueKey = "") {
-    //   const obj = await this.idbGet(this.idbCls, qkey);
-    //   // console.warn(qkey, queueKey, obj);
-    //   this.updateClrmAPI(obj, "", "", queueKey, tgtProps);
-    // },
-    async updateClrmAPI(row, fname, fval, queueKey = "", tgtProps = []) {
+    async updateClrmAPIQueue(qkey, queueKey = "") {
+      const obj = await this.idbGet(this.idbCls, qkey);
+      // console.warn(qkey, queueKey, obj);
+      this.updateClrmAPI(obj, "", "", queueKey);
+    },
+    async updateClrmAPI(row, fname, fval, queueKey = "") {
       let upArr = {};
-      let optStr;
-      upArr.id = row.id;
-      upArr.cust01 = row.cust01;
-      upArr.cust02 = row.cust02;
       try {
         if (queueKey == "") {
+          upArr.id = row.id;
           upArr[fname] = fval;
+          upArr.cust01 = row.cust01;
+          upArr.cust02 = row.cust02;
         } else {
-          tgtProps.forEach(m => {
-            if (m.includes(":")) {
-              optStr = m.split(":")[1];
-            } else {
-              upArr[m] = row[m];
-            }
-          });
+          upArr = row;
         }
         delete upArr._version;
         delete upArr._lastChangedAt;
@@ -3216,6 +3209,8 @@ export default {
         // console.warn(row, fname, fval, queueKey);
         // console.warn(ee);
       }
+
+      // console.warn(upArr);
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
       try {
         await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
@@ -3223,12 +3218,7 @@ export default {
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
           this.writeDayLogs(
-            "Clrm retry done: " +
-              queueKey +
-              " " +
-              optStr +
-              " - " +
-              upArr.cust03,
+            "Clrm retry done: " + queueKey,
             this.app.noteNameAPI
           );
         }
@@ -3236,7 +3226,7 @@ export default {
         row.cust03 = "";
         //// --- SendQueue
         // console.warn("e API ", row.index, row, upArr);
-        this.idbAddSQueue("Clrm", row.index, fname);
+        this.idbAddSQueue("Clrm", row.index, [fname]);
         this.writeDayLogs(
           "ClrmAPI Fail: " + row.index + JSON.stringify(e),
           this.app.noteNameAPI
@@ -3357,16 +3347,13 @@ export default {
       const ifInitidbSQue = this.idbIfInitialUse(this.idbSQue);
       const ifInitidbMng = this.idbIfInitialUse(this.idbMng);
       const ifInitidbSmry = this.idbIfInitialUse(this.idbSmry);
-      const ifInitlenMisc = this.idbIfInitialUse(this.idbMisc);
-      const ifInitlenBkup = this.idbIfInitialUse(this.idbBkup);
-
+      const ifInitlenMisc = this.idbIfInitialUse(this.lenMisc);
       logStr += ifInitidbCIdx ? "idb init CIdx\n" : "";
       logStr += ifInitidbCls ? "idb init Cls \n" : "";
       logStr += ifInitidbSQue ? "idb init SQue\n" : "";
       logStr += ifInitidbMng ? "idb init Mng \n" : "";
       logStr += ifInitidbSmry ? "idb init Smry\n" : "";
       logStr += ifInitlenMisc ? "idb init Misc\n" : "";
-      logStr += ifInitlenBkup ? "idb init Bkup\n" : "";
 
       await this.idbSet(this.idbCIdx, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
@@ -3374,7 +3361,6 @@ export default {
       await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
       await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
-      await this.idbSet(this.idbBkup, "hello", this.getDateYYYYMMDDhHHMMSS());
       logStr +=
         "idbStart: Class:" +
         (await this.idbCls.length()) +
@@ -3388,8 +3374,6 @@ export default {
         (await this.idbSmry.length()) +
         " Misc:" +
         (await this.idbMisc.length()) +
-        " Bkup:" +
-        (await this.idbBkup.length()) +
         "\n";
 
       //先読みしときたい
@@ -3729,6 +3713,9 @@ export default {
       for await (const k of keys) {
         if (k !== "init" && k !== "hello") {
           const obj = await this.idbGet(this.idbSmry, k);
+          if (!obj) {
+            console.warn("reflectSmrytoYourclasses no obj", k, obj);
+          }
           let tgt = this.yourClasses.find(arr => {
             return arr.id == obj.classcode;
           });
@@ -3914,15 +3901,16 @@ export default {
         case "Clrm":
           chk = await this.idbGet(this.idbSQue, "Clrm," + tailStr);
           if (chk) {
+            console.warn("SQueue exists:" + key, tailStr, val);
             arr = arr.concat(chk, val);
           } else {
-            arr = arr.concat("added:" + this.getDateYYYYMMDDhHHMMSS(), val);
+            arr = arr.concat("added:" + this.getDateYYYYMMDDhHHMMssSSS(), val);
           }
           arr = Array.from(new Set(arr));
           this.idbSet(this.idbSQue, key + "," + tailStr, arr);
           break;
         default:
-          tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMSS() : tailStr;
+          tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMssSSS() : tailStr;
           this.idbSet(this.idbSQue, key + "," + tailStr, val);
       }
     },
@@ -3935,8 +3923,8 @@ export default {
         // mtcs.push(val);
         Object.assign(qObj, { [qk]: val });
       }
-      let objCls = {};
       for await (const qk of qkeys) {
+        // console.warn(qObj[qk]);
         const gql = qk.split(",")[0];
         // init, hello will be ignored
         switch (gql) {
@@ -3950,9 +3938,7 @@ export default {
             this.createMiscXAPI(qObj[qk], qk);
             break;
           case "Clrm":
-            objCls = await this.idbGet(this.idbCls, qk.split(",")[1]);
-            this.updateClrmAPI(objCls, "", "", qk, qObj[qk]);
-
+            this.updateClrmAPIQueue(qk.split(",")[1], qk);
             break;
           case "API":
             this.APIgetClrmsinstBydayAll();
