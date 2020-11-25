@@ -2027,8 +2027,9 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "2.1",
-        rev: "Data Viewer Release",
+        version: "2.02",
+        rev:
+          "K_BackupReduce_J2hw_fillBlankUntilRecent&InstFix I_servageFail-improve and listlocalstorage-disabled",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3188,6 +3189,11 @@ export default {
     },
     ////////// updateClrm
     ////////// updateClrm
+    // async updateClrmAPIQueue(qkey, queueKey = "") {
+    //   const obj = await this.idbGet(this.idbCls, qkey);
+    //   // console.warn(qkey, queueKey, obj);
+    //   this.updateClrmAPI(obj, "", "", queueKey, tgtProps);
+    // },
     async updateClrmAPI(row, fname, fval, queueKey = "", tgtProps = []) {
       let upArr = {};
       let optStr;
