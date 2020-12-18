@@ -2512,7 +2512,7 @@ export default {
             week: "10" // 実施週
           },
           {
-            title: "Discussion Final [w11]",
+            title: "Discussion Final [w12]",
             sub: "Fluency, Topic Devel., Language, Logic, Active Comm.",
             evl: "eval10",
             comm: "ecom10",
@@ -2522,7 +2522,7 @@ export default {
             week: "11" // 実施週
           },
           {
-            title: "Discussion Final [w12]",
+            title: "Discussion Final [w13]",
             sub: "Fluency, Topic Devel., Language, Logic, Active Comm.",
             evl: "eval12",
             comm: "ecom12",
