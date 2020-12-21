@@ -2028,7 +2028,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.1",
-        rev: "Data Viewer Release",
+        rev: "reduce cust01",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3260,8 +3260,9 @@ export default {
       // } else {
       // 10/21より最新操作が先頭にくるように変更
       const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
-      const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
-      row.cust01 = logHist;
+      // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      // upArr.cust01 = logHist;
+      row.cust01 = "";
       row.cust02 = log;
       //// --- localStorage
       this.classRealtimeBackup();
@@ -3318,8 +3319,9 @@ export default {
         }
       });
       const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
-      const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
-      upArr.cust01 = logHist;
+      // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      // upArr.cust01 = logHist;
+      upArr.cust01 = "filled";
       upArr.cust02 = log;
       upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
 

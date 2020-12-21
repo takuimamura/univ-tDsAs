@@ -5,9 +5,10 @@
       <section class="hero is-fullheight">
         <div class="hero-body">
           <div class="container has-text-centered">
-            <b-button size="title is-1 is-large is-outlined" @click="$router.go()"
-              >Click to initialize (only for the first use)</b-button
-            >
+            <b-button
+              size="title is-1 is-large is-outlined"
+              @click="$router.go()"
+            >Click to initialize (only for the first use)</b-button>
           </div>
         </div>
       </section>
@@ -20,16 +21,17 @@
           <div class="column is-four-fifths"></div>
           <div class="column">
             <b-field>
-              <b-switch v-model="sett.devscreen" size="large"
-                >devscreen : {{ sett.devscreen }}</b-switch
-              >
-              <b-switch v-model="sett.devarea" size="is-small"
-                >devarea : {{ sett.devarea }}</b-switch
-              >
+              <b-switch v-model="sett.devscreen" size="large">devscreen : {{ sett.devscreen }}</b-switch>
+              <b-switch v-model="sett.devarea" size="is-small">devarea : {{ sett.devarea }}</b-switch>
             </b-field>
           </div>
         </article>
         <div v-if="sett.devscreen">
+          <b-switch size="is-small" v-model="sett.priorityLS">priorityLS : {{ sett.priorityLS }}</b-switch>
+          <b-button size="is-small" @click="datasetManage()">datasetManage()</b-button>
+          <!-- <b-button size="is-small" @click="()" size="is-small"></b-button> -->
+          <!-- <b-switch size="is-small" v-model=""> : {{  }}</b-switch> -->
+
           <!-- <b-field>
           <b-modal :active.sync="sett.isModalActive"></b-modal>
           <b-input v-model="ds.crMisc.type" placeholder="type.."></b-input>
@@ -43,10 +45,7 @@
           <b-icon pack="fas" icon="check-circle" size="is-medium" type="is-success" />
           <!-- 上部表示 -->
           <b-icon icon="times-circle" :class="[!app.ready ? 'is-ready' : 'is-normal']"></b-icon>
-          <b-icon
-            icon="exclamation-triangle"
-            :class="[!app.network ? 'is-network' : 'is-normal']"
-          ></b-icon>
+          <b-icon icon="exclamation-triangle" :class="[!app.network ? 'is-network' : 'is-normal']"></b-icon>
           <b-icon icon="sync-alt" :class="[!app.syncing ? 'is-syncing' : 'is-normal']"></b-icon>
           <!-- app: {{ app }} -->
           <b-modal :active.sync="sett.isModalActive"></b-modal>
@@ -60,19 +59,18 @@
               isClrmNeedAppSync == true;
               isClrmAppSyncUploading == false;
             "
-            >isClrmNeedAppSync</b-button
-          >
-          <b-button @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
-          <b-button @click="spliceTESTKick()">spliceTESTKick()</b-button>
+          >isClrmNeedAppSync</b-button>
+          <b-button size="is-small" @click="getClrmsinstByday('Mon')">getClrmsinstByday()</b-button>
+          <b-button size="is-small" @click="spliceTESTKick()">spliceTESTKick()</b-button>
           <!-- <b-button @click="loadclassRealtimeBackupAll()">loadclassRealtimeBackupAll()</b-button> -->
-          <b-button @click="getAttnDoneStateSelClrm()">getAttnDoneStateSelClrm()</b-button>
+          <b-button size="is-small" @click="getAttnDoneStateSelClrm()">getAttnDoneStateSelClrm()</b-button>
 
-          <b-button @click="chkfindtest()">chkfindtest</b-button>
-          <b-button @click="dummytest">dummytest</b-button>
-          " sett.dummy1:{{ sett.dummy1 }} ■sett.dummy2{{ sett.dummy2 }} ■sett.dummy3{{
-            sett.dummy3
+          <b-button size="is-small" @click="chkfindtest()">chkfindtest</b-button>
+          ■dummy1:{{ sett.dummy1 }} ■dummy2{{ sett.dummy2 }} ■dummy3{{ sett.dummy3 }} ■dummy4:{{
+          sett.dummy4
           }}
-          authdetail:: {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
+          ■dummy5{{ sett.dummy5 }} ■dummy3{{ sett.dummy6 }} authdetail::
+          {{ authdetail }} cRoom.showEvalComp {{ cRoom.showEvalComp }}
           <br />
           <b-field>
             <b-numberinput
@@ -80,41 +78,43 @@
               controls-position="compact"
               size="is-small"
             ></b-numberinput>
-            <b-button size="is-small" @click="dateDevAddDate()"
-              >Tgt {{ getDateMDddd(sett.ddate) }} change</b-button
-            >
+            <b-button size="is-small" @click="dateDevAddDate()">dd {{ getDateMDddd(sett.ddate) }}</b-button>
             <b-numberinput
               v-model="sett.env.devAddAcDate"
               controls-position="compact"
               size="is-small"
               type="is-warning"
             ></b-numberinput>
-            <b-button size="is-small" @click="setcurrentAcDate()"
-              >AC{{ getDateMDddd(sett.ddate) }} change</b-button
-            >
-            <b-checkbox v-model="sett.env.isTestMode"
-              >TestMode:{{ sett.env.isTestMode }}</b-checkbox
-            >
+            <b-button size="is-small" @click="setcurrentAcDate()">AC{{ getDateMDddd(sett.ddate) }}</b-button>
+            <b-button
+              size="is-small"
+              @click="
+                setcurrentAcDate();
+                dateDevAddDate();
+              "
+            >both</b-button>
+            <b-button size="is-small" @click="devtest('setAcDDate','',1)">+</b-button>
+            <b-button size="is-small" @click="devtest('setAcDDate','',-1)">-</b-button>
+            <b-checkbox v-model="sett.env.isTestMode">TestMode:{{ sett.env.isTestMode }}</b-checkbox>
             <b-switch v-model="sett.devcheck">devcheck : {{ sett.devcheck }}</b-switch>
           </b-field>
-          <b-button @click="fetchClrms()">fetchClrms()</b-button>
-          <b-button @click="instClockOut()">instClockOut()</b-button>
-          <b-button @click="instClockIn()">instClockIn</b-button>
-          <b-button @click="sendUserAgent()">sendUserAgent</b-button>
-          <b-button @click="classBackupTEST(selClrm)">classBackupTEST</b-button>
+          <b-button size="is-small" @click="fetchClrms()">fetchClrms()</b-button>
+          <b-button size="is-small" @click="instClockOut()">instClockOut()</b-button>
+          <b-button size="is-small" @click="instClockIn()">instClockIn</b-button>
+          <b-button size="is-small" @click="classBackupTEST()">classBackupTEST</b-button>
           <!-- <b-button @click="testCreateMisc()">testCreateMisc</b-button> -->
           <!-- <b-button @click="getDateYYYYMMDDhHHMMSSTEST()">getDateYYYYMMDDhHHMMSSTEST</b-button> -->
-          <b-switch v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
-          <b-switch size="is-small" v-model="sett.devsummary"
-            >devshow : {{ sett.devshow }}</b-switch
-          >
+          <b-switch size="is-small" v-model="sett.devsummary">devsummary : {{ sett.devsummary }}</b-switch>
           idle:{{ IdleVueStatus }}
           <template v-if="sett.devsummary">
+            <!-- dataIDB.Clrms--{{dataIDB.Clrms}} -->
             <!--■■■開発用 ローカル限定表示■■■-->
             sett.alias {{ sett.alias }} | authdetai {{ authdetail }}
             <br />
-            dataAPI: {{ dataAPI.Clrms.length }} | dataDS: {{ dataDS.Clrms.length }} | dataLS:
-            {{ dataLS.Clrms.length }} | dataset: {{ dataset.Clrms.length }} |
+            dataIDB {{ dataIDB.Clrms.length }} | dataAPI: {{ dataAPI.Clrms.length }} | dataDS:
+            {{ dataDS.Clrms.length }} | dataLS: {{ dataLS.Clrms.length }} | dataset:
+            {{ dataset.Clrms.length }} ||| source = {{ dataset.source }} | isClrmLoading:
+            {{ isClrmLoading }}
             <br />
             allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }}
             <!-- InstByday::{{ dataset.ClrmsInstByday.length }} | Clrms::{{  dataset.Clrms.length}} | ClrmsChk::{{ dataset.ClrmsChk.length }} |-->
@@ -125,112 +125,172 @@
             instructor.yourTodaysClasses {{ instructor.yourTodaysClasses }}
           </template>
 
-          <template v-if="sett.devshow">
-            <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
-            <template v-if="classmembers.length > 0 && sett.devshowMem">{{
-              classmembers[0]
-            }}</template>
-            <b-switch v-model="sett.sw1">yourclasses{{ sett.sw1 }}</b-switch>
-            <template v-if="sett.sw1">
-              <div>
-                yourClasses | {{ yourClasses }}
-                <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
-                <!-- -- {{ isAuthenticated }}          <br /> -->
-                <!-- user: {{ authd }} -->
-                <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
-                <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
-                <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
-              </div>
-              <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
-              <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
-            </template>
-            <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
-            <!-- sett.alias:: {{ sett.alias }} -->
-            <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
-            <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
-            <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
-            clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
-            <br />
-            dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
-            <br />
-            <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
-            -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
-            <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
-            <br />
-            getTodayJSON: {{ getTodayJSON }} |
-            <br />
-            getTodayJSON今日:
-            {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
-            <br />
-            getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
-            <br />
-            getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
-            <br />
-            getThisWeekHwicJSON[this.selClrm.dayofweek]
-            {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
-            <br />
-            getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
-            <br />
-            isEnteredselClrm: {{ isEnteredselClrm }} |
-            <br />
-            getEditableUntilJSON: {{ getEditableUntilJSON }} <br />dayChainJSON:
-            <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
-            <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
-            <br />
-            getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
-            <br />
-            monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
-            <br />
-            <!-- {{indiRow}} -->
-            <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
-            <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
-            <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
-            <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
-          </template>
+          <div class="columns">
+            <div class="column">
+              <b-input v-model="ds.dev1" placeholder="classcode">A0238</b-input>
+              <b-input v-model="ds.dev2" placeholder="name.."></b-input>
+              <b-input v-model="ds.dev3" placeholder="detail"></b-input>
+            </div>
+            <div class="column is-four-fifths">
+              <!-- <b-button @click="idbSet(iidbMisc, ds.dev1, ds.dev2)">idbSet</b-button> -->
+              <b-button size="is-small" @click="idbStart()">idbStart</b-button>
+              <b-button size="is-small" @click="idbRemove(idbSQue, ds.dev1)">remove queue</b-button>
+              <b-button size="is-small" @click="idbHandleSQueue()">idbHandleSQueue</b-button>
+              <b-button size="is-small" @click="syncLSlocalDB()">syncLSlocalDB</b-button>
+              <b-button size="is-small" @click="idbClear(idbCls)">remove ALL</b-button>
+              <!-- <b-button @click="getjudge(idbCls, ds.dev1)">getjudge</b-button> -->
+              <b-button size="is-small" @click="testlog()">testlog</b-button>
+              <br />
+              <b-button size="is-small" @click="devtest('idbTEST1')">idbTEST 1</b-button>
+              <b-button size="is-small" @click="devtest('idbTEST2')">idbTEST 2</b-button>
+              <b-button size="is-small" @click="devtest('idbTEST3')">idbTEST 3</b-button>
+              <b-button size="is-small" @click="devtest('idbTEST4')">idbTEST 4</b-button>
+              <b-button size="is-small" @click="devtest('idbTEST5')">idbTEST 5</b-button>
+              <br />
+              <b-button size="is-small" @click="dataAPIGetSelClrm()">dataAPIGetSelClrm</b-button>
+              <b-button size="is-small" @click="dataIDBGetSelClrm()">dataIDBGetSelClrm</b-button>
+              <b-button size="is-small" @click="datasetIDBGetALL()">idbTEST 3</b-button>
+              <b-switch sise="is-small" v-model="sett.devshow">devshow : {{ sett.devshow }}</b-switch>
+              <template v-if="sett.devshow">
+                <b-switch size="is-small" v-model="sett.devshowMem">member</b-switch>
+                <template v-if="classmembers.length > 0 && sett.devshowMem">
+                  {{
+                  classmembers[0]
+                  }}
+                </template>
+                <b-switch v-model="sett.sw1">{{ sett.sw1 }}</b-switch>
+                <template v-if="sett.sw1">
+                  <div>
+                    yourClasses | {{ yourClasses }}
+                    <!-- <b-buftton @click="deleteClrms">全削除</b-buftton> -->
+                    <!-- -- {{ isAuthenticated }}          <br /> -->
+                    <!-- user: {{ authd }} -->
+                    <!-- <b-button label="Update" @click="updateClrm(clrm.id, crte)">Update</b-button> -->
+                    <!-- <b-button @click="deleteClrm(clrm.id, crte)">Delete</b-button> -->
+                    <!-- {{ clrm.index }} - {{ clrm.classcode }} - {{ clrm.studentcode }} -->
+                  </div>
+                  <!-- tab: {{ $store.state.tabNum }} | peri: {{ $store.state.periodical }} -->
+                  <!-- <b-button @click="$store.dispatch('updateTabs', 2)">Update</b-button> -->
+                </template>
+                <!-- getTodayJSON {{ getTodayJSON }}      <br /> -->
+                <!-- sett.alias:: {{ sett.alias }} -->
+                <!-- ds.dev1 :::{{ ds.dev1 }}<br /> -->
+                <!-- ds.dev2 :::{{ ds.dev2 }}<br /> -->
+                <!-- ds.dev3 :::{{ ds.dev3 }}<br /> -->
+                clrmShowCol {{ clrmShowCol }} dummy1::::::{{ sett.dummy1 }}
+                <br />
+                dummy2::::::{{ sett.dummy2 }} ::dummy3::::::{{ sett.dummy3 }}
+                <br />
+                <!-- <template v-if="classmembers.length>0">{{classmembers}} |</template> -->
+                -- classroomIndex {{ classroomIndex }} | selClrm {{ selClrm }} |
+                <!-- dataset.allClasses {{dataset.allClasses[0]}} -->
+                <br />
+                getTodayJSON: {{ getTodayJSON }} |
+                <br />
+                getTodayJSON今日:
+                {{ getTodayJSON.dayofweek + ":" + getThisWeekAttnJSON[getTodayJSON.dayofweek] }} |
+                <br />
+                getThisWeekAttnJSON: {{ getThisWeekAttnJSON }} | {{ getThisWeekAttnJSON.Mon }}
+                <br />
+                getThisWeekHwicJSON:{{ getThisWeekHwicJSON }} | {{ getThisWeekHwicJSON["Thu"] }}
+                <br />
+                getThisWeekHwicJSON[this.selClrm.dayofweek]
+                {{ getThisWeekHwicJSON[selClrm.dayofweek] }}| attnHWEditTgt {{ attnHWEditTgt }}
+                <br />
+                getThisWeekLssnJSON:{{ getThisWeekLssnJSON }} | {{ getThisWeekLssnJSON["Thu"] }}
+                <br />
+                isEnteredselClrm: {{ isEnteredselClrm }} |
+                <br />
+                getLatestJSON: {{ getLatestJSON.Mon.lessonnum }} -
+                {{ getLatestJSON.Tue.lessonnum }} - {{ getLatestJSON.Wed.lessonnum }} -
+                {{ getLatestJSON.Thu.lessonnum }} -{{ getLatestJSON.Fri.lessonnum }} ::
+                {{ getLatestJSON }}
+                <br />
+                getPrevJSON: {{ getPrevJSON.Mon.lessonnum }} -
+                {{ getPrevJSON.Tue.lessonnum }} - {{ getPrevJSON.Wed.lessonnum }} -
+                {{ getPrevJSON.Thu.lessonnum }} -{{ getPrevJSON.Fri.lessonnum }} ::
+                {{ getPrevJSON }}
+                <br />
+
+                <br />dayChainJSON:
+                <b-switch v-model="sett.sw2" size="is-small">{{ sett.sw2 }}</b-switch>
+                <template v-if="sett.sw2">{{ dayChainJSON }}</template> |
+                <br />
+                getDayChainUntilPrevJSON: {{ getDayChainUntilPrevJSON }}|
+                <br />
+                monthChainUntilCurrentMonthJSON: {{ monthChainUntilCurrentMonthJSON }}
+                <br />
+                <!-- {{indiRow}} -->
+                <!-- <ul>        <li v-for="sm in dataSummary" :key="sm.classcode">{{ sm }}</li>   </ul> -->
+                <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
+                <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
+                <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
+              </template>A0042_19117001
+            </div>
+            <!-- <div class="column">            </div> -->
+          </div>
+          dataIDB {{ dataIDB.Clrms.length }} | dataAPI: {{ dataAPI.Clrms.length }} | dataLS:
+          {{ dataLS.Clrms.length }} ||| {{ dataset.Clrms.length }} ||| source = {{ dataset.source }}
+          <br />
+          allClasses; {{ dataset.allClasses.length }} | yours | {{ yourClasses.length }} | .Smry:{{
+          dataset.Smry.length
+          }}
           <b-field>
-            <b-numberinput
-              v-model="dev.classCLimit"
-              controls-position="compact"
-              size="is-small"
-            ></b-numberinput
-            >dataset.Clrms
-            <b-button @click="TESTarr3()" size="is-small">classroomDS</b-button>
+            <b-numberinput v-model="dev.classCLimit" controls-position="compact" size="is-small"></b-numberinput>
+            <b-button @click="devtest('TESTarr3')" size="is-small">classroomDS</b-button>
           </b-field>
           <ul>
+            ---indexedDB
             <li v-for="r in TESTarr1" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
-              {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>
-            ----classmembers
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
+              getDateMDhmmss(r.cust02)
+              }}
+              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
+              getDateMDhmmss(r.eval01)
+              }}- {{ getDateMDhmmss(r.ecom01) }}
+            </li>----classmembers
             <li v-for="r in TESTarr2" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
-              {{ getDateMDhmmss(r._lastChangedAt) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
+              getDateMDhmmss(r.cust02)
+              }}
+              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
+              getDateMDhmmss(r.eval01)
+              }}- {{ getDateMDhmmss(r.ecom01) }}
               <!-- {{ $dayjs(r.up).format("M/D H:mm") }} - {{ r }} -->
-            </li>
-            ----DataStore
+            </li>----DataStore
             <li v-for="r in sett.dummyClrm" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
-              {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>
-            ----dataAPI
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
+              getDateMDhmmss(r.cust02)
+              }}
+              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
+              getDateMDhmmss(r.eval01)
+              }}- {{ getDateMDhmmss(r.ecom01) }}
+            </li>----dataAPI
             <li v-for="r in TESTarr4" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
-              {{ getDateMDhmmss(r._lastChangedAt) }}
-            </li>
-            ----dataLS
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
+              getDateMDhmmss(r.cust02)
+              }}
+              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
+              getDateMDhmmss(r.eval01)
+              }}- {{ getDateMDhmmss(r.ecom01) }}
+            </li>----dataLS
             <li v-for="r in TESTarr5" :key="r.s">
               {{ r.classcode }} - {{ r.studentname }} 1 {{ getAttendSymbol(r.attn01) }} 2
               {{ getAttendSymbol(r.attn02) }} 3 {{ getAttendSymbol(r.attn03) }} 4
-              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} -{{ r.cust02 }} -
-              {{ getDateMDhmmss(r._lastChangedAt) }}
+              {{ getAttendSymbol(r.attn04) }} -{{ r.homeworkincomplete04 }} - {{ r.ecom01 }} c2:{{
+              getDateMDhmmss(r.cust02)
+              }}
+              c3:{{ getDateMDhmmss(r.cust03) }}- {{ getDateMDhmmss(r._lastChangedAt) }} e1:{{
+              getDateMDhmmss(r.eval01)
+              }}- {{ getDateMDhmmss(r.ecom01) }}
             </li>
           </ul>
         </div>
@@ -240,7 +300,7 @@
       <template v-if="cRoom.showABList">
         <section v-if="cRoom.showABList">
           <div class="columns">
-            <div class="column is-half" v-show="cRoom.showABListShowA">
+            <div class="column is-half">
               <div class="has-text-centered f40">Group A</div>
               <div class="f26" style="margin: 0px 40px;">
                 <table class="table is-fullwidth">
@@ -261,7 +321,7 @@
                 </table>
               </div>
             </div>
-            <div class="column is-half is-centered" v-show="cRoom.showABListShowB">
+            <div class="column is-half is-centered">
               <div class="has-text-centered f40">Group B</div>
               <div class="f26" style="margin: 0px 40px;">
                 <table class="table is-fullwidth">
@@ -288,14 +348,12 @@
           <br />
           <br />
           <br />
-          <!-- <b-button size="is-large" @click="cRoom.showABListCaptionChange" expanded>{{cRoom.showABListCaption}}</b-button> -->
           <b-button
             icon-left="people-arrows"
             size="is-medium"
             @click="cRoom.showABList = !cRoom.showABList"
             expanded
-            >A / B</b-button
-          >
+          >A / B</b-button>
           <!-- <b-tooltip label="Visibility change" size="is-large" always>
         <b-switch size="is-large" v-model="cRoom.showABListStudentCode">Student Code</b-switch>
           </b-tooltip>-->
@@ -399,14 +457,15 @@
                         :key="index"
                         :native-value="m"
                         v-model="instructor.yourattendvisiblemonth"
-                        >{{ m }}</b-radio-button
-                      >
+                      >{{ m }}</b-radio-button>
                     </b-field>
                     <b-table :data="yourattendancesMonth">
                       <template slot-scope="props">
-                        <b-table-column field="date" label="Date" width="150">
-                          {{ getDateMDddd(props.row.date) }}
-                        </b-table-column>
+                        <b-table-column
+                          field="date"
+                          label="Date"
+                          width="150"
+                        >{{ getDateMDddd(props.row.date) }}</b-table-column>
                         <b-table-column field="clockin" label="In">
                           {{ props.row.clockin
                           }}{{ addParenthesisIfCorrectExists(props.row.clockincorrect) }}
@@ -415,9 +474,7 @@
                           {{ props.row.clockout
                           }}{{ addParenthesisIfCorrectExists(props.row.clockoutcorrect) }}
                         </b-table-column>
-                        <b-table-column field="detail" label="Note">
-                          {{ props.row.detail }}
-                        </b-table-column>
+                        <b-table-column field="detail" label="Note">{{ props.row.detail }}</b-table-column>
                       </template>
                     </b-table>
                   </div>
@@ -430,8 +487,7 @@
                         @click="instClockIn()"
                         class="is-pulled-right"
                         :disabled="ifYouClockIn"
-                        >Clock in</b-button
-                      >
+                      >Clock in</b-button>
                     </div>
                     <div class="column">
                       <b-button
@@ -439,8 +495,7 @@
                         size="is-large"
                         @click="instClockOut()"
                         :disabled="!ifYouClockInAndStillIn"
-                        >Clock out</b-button
-                      >
+                      >Clock out</b-button>
                     </div>
                   </div>
                 </div>
@@ -456,7 +511,7 @@
           </b-tab-item>
           <!-- schedule --------------------------------------------------------------------schedule -->
           <!-- schedule --------------------------------------------------------------------schedule -->
-          <b-tab-item label="Schedule" icon="calendar-alt">
+          <b-tab-item label="Schedule" icon="calendar-alt" :disabled="isClrmLoading">
             <section class="columns is-centered" style="font-size: 16px; padding: 20px 10px;">
               <div class="column"></div>
               <div class="column">
@@ -468,6 +523,11 @@
                   <b-switch v-model="cRoom.showClassesSum" @input="chkClassesSum">Total Counts</b-switch>
                   <template v-if="cRoom.showClassesSum"></template>
                 </b-field>-->
+                <b-field>
+                  <a href="https://tmudata.d28kzmtlq0m26j.amplifyapp.com/" target="_blank">
+                    <b-button size="is-medium" icon-left="database">Data Viewer</b-button>
+                  </a>
+                </b-field>
                 <b-switch v-model="cRoom.showDummy">
                   <span v-show="!cRoom.showDummy" style="color:#c5c5c5">Dummy</span>
                   <span v-show="cRoom.showDummy" style="color:#a0e">Dummy</span>
@@ -502,15 +562,22 @@
                       {{ selClrm.dayofweek }}
                       {{ selClrm.slot }}
                       {{ selClrm.timefrom }}-{{ selClrm.timeto }}
-                      <span style="font-size:16px;">room:</span>
+                      <span
+                        style="font-size:16px;"
+                      >room:</span>
                       {{ selClrm.roomnum }}
                       <br />
                       <span style="font-size:20px;">{{ selClrm.title }}</span>
                       <span style="font-size:20px;">{{ selClrm.classtitle }}</span>
                       <br />
-                      <span class="is-text-4 has-text-weight-bold"
-                        >Lesson No. {{ selClrm.lssnthisweek }}</span
-                      >
+                      <span
+                        v-show="selClrm.lssnthisweek !== undefined"
+                        class="is-text-4 has-text-weight-bold"
+                      >Lesson No. {{ selClrm.lssnthisweek }}</span>
+                      <span
+                        v-show="selClrm.lssnthisweek == undefined"
+                        class="is-text-4 has-text-weight-bold has-text-grey-light"
+                      >No Lesson</span>
                     </p>
                   </div>
                   <div class="column is-3">
@@ -521,8 +588,7 @@
                           icon-left="hand-point-right"
                           size="is-large"
                           @click="enterClassroom"
-                          >Go</b-button
-                        >
+                        >Go</b-button>
                       </template>
                       <template v-else>
                         <b-button loading size="is-large" class="w60"></b-button>
@@ -535,12 +601,7 @@
                         :active.sync="isClrmLoading"
                         :can-cancel="false"
                       >
-                        <b-icon
-                          pack="fas"
-                          icon="sync-alt"
-                          size="is-large"
-                          custom-class="fa-spin"
-                        ></b-icon>
+                        <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                       </b-loading>
                     </template>
                   </div>
@@ -550,12 +611,7 @@
                 <template v-if="checkIfHwic(selClrm.detail)">
                   <div class="columns is-gapless">
                     <div class="column">
-                      <b-icon
-                        pack="fas"
-                        icon="exclamation"
-                        size="is-large"
-                        type="is-danger"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="exclamation" size="is-large" type="is-danger"></b-icon>
                       <span class="has-text-danger f23">
                         <b>[Absent - Homework] mismatch exists.</b>
                       </span>
@@ -574,27 +630,18 @@
                       <b-icon pack="fas" icon="star" size="is-large" type="is-syncdone"></b-icon>
                     </template>
                     <template v-else-if="selClrm.syncdone === false">
-                      <b-icon
-                        pack="fas"
-                        icon="star-half-alt"
-                        size="is-large"
-                        type="is-syncsome"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="star-half-alt" size="is-large" type="is-syncsome"></b-icon>
                     </template>
                     <template v-else></template>
                   </div>
                   <div class="column">
                     <!-- Attendance record completion -->
                     <template v-if="selClrm.attndone">
-                      <b-icon
-                        pack="fas"
-                        icon="grin-stars"
-                        size="is-large"
-                        type="is-attndone"
-                      ></b-icon>
+                      <b-icon pack="fas" icon="grin-stars" size="is-large" type="is-attndone"></b-icon>
                     </template>
                     <template v-else-if="selClrm.attndone === false"></template>
                     <template v-else></template>
+                    <!-- いまのところfalseもnullも同じ扱い -->
                   </div>
                   <div class="column">
                     <!-- Force Sync 手動アップロード -->
@@ -605,8 +652,7 @@
                           icon-left="sync-alt"
                           size="is-large"
                           @click="manageupdateClrmAllAPI"
-                          >Force Sync</b-button
-                        >
+                        >Force Sync</b-button>
                         <template
                           v-if="ClrmAppSyncBegin != 0 && ClrmAppSyncBegin == ClrmAppSyncEnd"
                         >
@@ -618,9 +664,7 @@
                               size="is-large"
                               type="is-success"
                             />
-                            <span class="is-text-2 has-text-weight-bold is-syncdone"
-                              >Sync Success</span
-                            >
+                            <span class="is-text-2 has-text-weight-bold is-syncdone">Sync Success</span>
                           </template>
                           <template v-else>
                             <b-icon
@@ -629,9 +673,9 @@
                               size="is-large"
                               type="is-danger"
                             />
-                            <span class="is-text-2 has-text-weight-bold"
-                              >Sync Failed. Please try again.</span
-                            >
+                            <span
+                              class="is-text-2 has-text-weight-bold"
+                            >Sync Failed. Please try again.</span>
                           </template>
                         </template>
                       </template>
@@ -642,12 +686,7 @@
                           :active.sync="isClrmAppSyncUploading"
                           :can-cancel="false"
                         >
-                          <b-icon
-                            pack="fas"
-                            icon="sync-alt"
-                            size="is-large"
-                            custom-class="fa-spin"
-                          ></b-icon>
+                          <b-icon pack="fas" icon="sync-alt" size="is-large" custom-class="fa-spin"></b-icon>
                         </b-loading>
                       </template>
                     </template>
@@ -738,27 +777,19 @@
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.id }}
-                    </td>
+                    >{{ yitem.id }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.grade }}({{ yitem.classnum }})
-                    </td>
+                    >{{ yitem.grade }}({{ yitem.classnum }})</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.dayofweek }}
-                    </td>
+                    >{{ yitem.dayofweek }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
-                    >
-                      {{ yitem.slot }}
-                    </td>
+                    >{{ yitem.slot }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
@@ -770,23 +801,24 @@
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
-                    >
-                      {{ yitem.roomnum }}
-                    </td>
+                    >{{ yitem.roomnum }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
-                    >
-                      {{ yitem.classtitle | subStr }}
-                    </td>
+                    >{{ yitem.classtitle | subStr }}</td>
                     <td
                       :class="{ dayofweekToday: yitem.dayofweek === dayjsddd }"
                       class="is-size-3 has-text-weight-bold"
                       @click="selectClassroom(yitem)"
                       v-show="!cRoom.showClassesSum"
                     >
-                      {{ yitem.lssnthisweek }}
+                      <template
+                        v-if="yitem.lssnthisweek !== undefined"
+                      >{{ getLatestJSON[yitem.dayofweek].lessonnum }}</template>
+                      <template v-else>
+                        <span style="color:#ccc">{{ getLatestJSON[yitem.dayofweek].lessonnum }}</span>
+                      </template>
                     </td>
 
                     <td
@@ -802,7 +834,9 @@
                               pack="fas"
                               icon="star"
                               size="is-large"
-                              type="is-syncdone"
+                              :type="
+                                yitem.lssnthisweek !== undefined ? 'is-syncdone' : 'is-syncdoneprev'
+                              "
                             ></b-icon>
                           </template>
                           <template v-else-if="yitem.syncdone === false">
@@ -822,7 +856,9 @@
                               pack="fas"
                               icon="grin-stars"
                               size="is-large"
-                              type="is-attndone"
+                              :type="
+                                yitem.lssnthisweek !== undefined ? 'is-attndone' : 'is-attndoneprev'
+                              "
                             ></b-icon>
                           </template>
                           <template v-else-if="yitem.attndone === false"></template>
@@ -831,12 +867,7 @@
                         <!-- Attendance record completion -->
                         <div class="column">
                           <template v-if="checkIfHwic(yitem.detail)">
-                            <b-icon
-                              pack="fas"
-                              icon="exclamation"
-                              size="is-large"
-                              type="is-danger"
-                            ></b-icon>
+                            <b-icon pack="fas" icon="exclamation" size="is-large" type="is-danger"></b-icon>
                           </template>
                         </div>
                       </div>
@@ -884,7 +915,12 @@
                     </p>
                     <p class="subtitle" style="line-height:0.8em;">
                       {{ selClrm.classtitle }}
-                      <b>Lesson {{ selClrm.lssnthisweek }}</b>
+                      <span v-show="selClrm.lssnthisweek !== undefined">
+                        <b>Lesson {{ selClrm.lssnthisweek }}</b>
+                      </span>
+                      <span v-show="selClrm.lssnthisweek == undefined" class="has-text-grey-light">
+                        <b>No Lesson</b>
+                      </span>
                     </p>
                   </div>
                 </div>
@@ -940,9 +976,11 @@
                       :type="att.modeset[`${att.mode}`].colortype"
                       show-value
                     >
-                      <span style="font-size: 28px; color: black;">{{
+                      <span style="font-size: 28px; color: black;">
+                        {{
                         att.modeset[`${att.mode}`].barcaption
-                      }}</span>
+                        }}
+                      </span>
                     </b-progress>
                   </div>
                 </div>
@@ -951,9 +989,7 @@
                     v-show="att.mode < 2"
                     class="button is-medium"
                     @click="attnModeChangeConfirm"
-                  >
-                    change
-                  </button>
+                  >change</button>
                   <b-button
                     v-show="att.mode === 2"
                     class="button is-medium"
@@ -965,8 +1001,7 @@
                   icon-left="people-arrows"
                   size="is-medium"
                   @click="cRoom.showABList = !cRoom.showABList"
-                  >A / B</b-button
-                >
+                >A / B</b-button>
               </div>
               <div class="level-right">
                 <div class="level-item">
@@ -1013,9 +1048,9 @@
                     width="10"
                     sticky
                   >
-                    <template v-if="sett.devcheck">
-                      {{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}
-                    </template>
+                    <template
+                      v-if="sett.devcheck"
+                    >{{ $dayjs(props.row._lastChangedAt).format("M/D H:mm") }}</template>
                   </b-table-column>
                   <b-table-column
                     field="sortid"
@@ -1024,7 +1059,7 @@
                     numeric
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
                   >
                     <span class="f23">{{ props.row.classcount }}</span>
                   </b-table-column>
@@ -1034,7 +1069,7 @@
                     width="20"
                     sticky
                     sortable
-                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
                   >
                     <div class="f30">
                       <b-tag
@@ -1052,16 +1087,15 @@
                     width="50"
                     sortable
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
-                    >{{ props.row.studentcode }}</b-table-column
-                  >
+                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
+                  >{{ props.row.studentcode }}</b-table-column>
                   <b-table-column
                     field="studentname"
                     label="Name"
                     sortable
                     width="220"
                     sticky
-                    :class="getAttendStatusClass(props.row[selClrm.attnthisweek])"
+                    :class="getAttendStatusClass(props.row[selClrm.attnLatest])"
                   >
                     <span class="f23">{{ props.row.studentname }}</span>
                   </b-table-column>
@@ -1195,9 +1229,9 @@
                             {{ " " + indiRow.studentname }}
                             <div style="margin:0px 10px;"></div>
                             <span class="is-size-5 has-text-grey-light"></span>
-                            <span class="is-size-5 has-text-grey">
+                            <!-- タイムスタンプあとまわし表示<span class="is-size-5 has-text-grey">
                               {{ getTimeIfTodayOrDate(indiRow._lastChangedAt) }}
-                            </span>
+                            </span>-->
                           </div>
                           <div class="level-right title is-4">
                             <!-- 期末対応 -->
@@ -1211,13 +1245,13 @@
                             <!-- 期末対応 -->
                             <b-tag
                               rounded
-                              :class="getAttendStatusClass(indiRow[selClrm.attnthisweek])"
+                              :class="getAttendStatusClass(indiRow[selClrm.attnLatest])"
                               style="font-size:25px"
                             >
                               {{
-                                indiRow[selClrm.attnthisweek] === null
-                                  ? "(attendance unconfirmed)"
-                                  : indiRow[selClrm.attnthisweek]
+                              indiRow[selClrm.attnLatest] === null
+                              ? "(attendance unconfirmed)"
+                              : indiRow[selClrm.attnLatest]
                               }}
                             </b-tag>
                           </div>
@@ -1248,13 +1282,6 @@
                                             {{ getHWTotal(indiRow) }}
                                             )
                                           </span>
-                                          <!-- {{getHWTotal(indiRow) -->
-                                          <!-- {{getHWr(indiRow.homeworkincomplete02) +
-                                            getHWr(indiRow.homeworkincomplete03) +
-                                            getHWr(indiRow.homeworkincomplete04) +
-                                          getHWr(indiRow.homeworkincomplete05)}}-->
-
-                                          <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                         </td>
                                       </template>
                                       <!-- 欠、０ボタンいっこめ -->
@@ -1265,7 +1292,9 @@
                                               pack="fas"
                                               icon="user-slash"
                                               size="is-medium"
-                                              type="is-danger"
+                                              :type="
+                                                indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'
+                                              "
                                               @click="minusEvalUpTarget(indiRow, k.evl)"
                                             />
                                           </a>
@@ -1309,15 +1338,13 @@
                                             ></star-rating>
                                           </span>
                                           <template v-if="!k.p1ptshow">
-                                            <div class="level has-text-grey f20 has-text-centered">
-                                              ( tap left button to edit )
-                                            </div>
+                                            <div
+                                              class="level has-text-grey f20 has-text-centered"
+                                            >( tap left button to edit )</div>
                                           </template>
                                         </td>
                                         <td class="title is-4">
-                                          <span v-show="indiRow[k.evl] !== -1">
-                                            {{ indiRow[k.evl] }}
-                                          </span>
+                                          <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                         </td>
                                         <td v-show="cRoom.showEvalComp === 2">
                                           <b-button
@@ -1330,8 +1357,7 @@
                                             <span
                                               v-show="!cRoom.showComEv[k.comm]"
                                               class="has-text-grey-light"
-                                              >{{ indiRow[k.comm] | description(6) }}</span
-                                            >
+                                            >{{ indiRow[k.comm] | description(6) }}</span>
                                             <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                           </b-button>
                                           <b-input
@@ -1358,8 +1384,7 @@
                                       :class="[
                                         cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                       ]"
-                                      >{{ " " + indiSc["subtotal" + index] }}</span
-                                    >
+                                    >{{ " " + indiSc["subtotal" + index] }}</span>
                                   </td>
                                 </tr>
                               </table>
@@ -1385,9 +1410,9 @@
                                     <template v-else>
                                       <td class="subtitle is-3" colspan="4" height="86">
                                         {{ k.title }}
-                                        <span style="color:#ce1836;"
-                                          >( incomplete {{ getHWTotal(indiRow) }})</span
-                                        >
+                                        <span
+                                          style="color:#ce1836;"
+                                        >( incomplete {{ getHWTotal(indiRow) }})</span>
                                         <!-- {{ indiRow.homeworkincomplete20 + (indiRow[attnHWEditTgt] === false ? 1 : 0) }}) -->
                                       </td>
                                     </template>
@@ -1399,7 +1424,9 @@
                                             pack="fas"
                                             icon="user-slash"
                                             size="is-medium"
-                                            type="is-danger"
+                                            :type="
+                                              indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'
+                                            "
                                             @click="minusEvalUpTarget(indiRow, k.evl)"
                                           />
                                         </a>
@@ -1443,8 +1470,7 @@
                                               : 'has-text-black',
                                           ]"
                                           v-show="indiRow[k.evl] !== -1"
-                                          >{{ indiRow[k.evl] }}</span
-                                        >
+                                        >{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <td>
                                         <b-button
@@ -1457,8 +1483,7 @@
                                           <span
                                             v-show="!cRoom.showComEv[k.comm]"
                                             class="has-text-grey-light"
-                                            >{{ indiRow[k.comm] | description(6) }}</span
-                                          >
+                                          >{{ indiRow[k.comm] | description(6) }}</span>
                                           <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                         </b-button>
                                         <b-input
@@ -1484,8 +1509,7 @@
                                     :class="[
                                       cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                     ]"
-                                    >{{ " " + indiSc.subtotal0 }}</span
-                                  >
+                                  >{{ " " + indiSc.subtotal0 }}</span>
                                 </td>
                               </tr>
                             </table>
@@ -1508,7 +1532,10 @@
                                       <template v-else>
                                         <span class="subtitle is-4">
                                           {{ k.title }}
-                                          <span class="has-text-grey" v-if="cRoom.showAttnEval">
+                                          <span
+                                            class="has-text-grey"
+                                            v-if="cRoom.showAttnEval"
+                                          >
                                             - (
                                             <span class="subtitle is-6">week</span>
                                             {{ k.week }})
@@ -1523,7 +1550,7 @@
                                         pack="fas"
                                         icon="user-slash"
                                         size="is-medium"
-                                        type="is-danger"
+                                        :type="indiRow[k.evl] == -1 ? 'is-slashab' : 'is-slashok'"
                                         @click="minusEvalUpTarget(indiRow, k.evl)"
                                       />
                                     </a>
@@ -1569,9 +1596,7 @@
                                       "
                                       >{{ indiRow[k.evl] }}</td>-->
                                       <td class="title is-4">
-                                        <span v-show="indiRow[k.evl] !== -1">
-                                          {{ indiRow[k.evl] }}
-                                        </span>
+                                        <span v-show="indiRow[k.evl] !== -1">{{ indiRow[k.evl] }}</span>
                                       </td>
                                       <!-- indiRow[k.evl] === null ? 'has-background-orange' : '' -->
                                     </template>
@@ -1582,8 +1607,7 @@
                                           rounded
                                           class="is-pulled-right attend-hist-absent"
                                           style="font-size:25px"
-                                          >Absent</b-tag
-                                        >
+                                        >Absent</b-tag>
                                       </td>
                                     </template>
                                   </template>
@@ -1609,9 +1633,7 @@
                                     class="title is-4"
                                     :class="getAttendStatusClassHist(indiRow['attn' + k.week])"
                                     v-if="cRoom.showAttnEval"
-                                  >
-                                    {{ getAttendSymbol(indiRow["attn" + k.week]) }}
-                                  </td>
+                                  >{{ getAttendSymbol(indiRow["attn" + k.week]) }}</td>
                                   <!-- 期末対応 -->
                                   <td>
                                     <b-button
@@ -1622,8 +1644,7 @@
                                       <span
                                         v-show="!cRoom.showComEv[k.comm]"
                                         class="has-text-grey-light"
-                                        >{{ indiRow[k.comm] | description(6) }}</span
-                                      >
+                                      >{{ indiRow[k.comm] | description(6) }}</span>
                                       <span v-show="cRoom.showComEv[k.comm]">Save</span>
                                     </b-button>
                                     <b-input
@@ -1658,9 +1679,7 @@
                                         :key="`endsemester-${index}`"
                                         style="padding:0px 10px 0px 15px;"
                                         :class="getAttendStatusClassHist(indiRow[m.at])"
-                                      >
-                                        {{ getAttendSymbol(indiRow[m.at]) }}
-                                      </td>
+                                      >{{ getAttendSymbol(indiRow[m.at]) }}</td>
                                     </tr>
                                   </table>
                                 </td>
@@ -1675,8 +1694,7 @@
                                     :class="[
                                       cRoom.showEvalComp === 0 ? 'title is-3' : 'title is-3',
                                     ]"
-                                    >{{ " " + indiSc.subtotal1 }}</span
-                                  >
+                                  >{{ " " + indiSc.subtotal1 }}</span>
                                 </td>
                                 <td v-if="cRoom.showAttnEval"></td>
                                 <td></td>
@@ -1708,8 +1726,7 @@
                                 @click="cRoom.showEvalSingle = !cRoom.showEvalSingle"
                                 class="title is-3 is-fullwidth"
                                 style="height:60px"
-                                >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button
-                              >
+                              >{{ cRoom.evalCriItems[cRoom.tgtEvalSingle].title }}</b-button>
                             </div>
                             <div class="colum"></div>
                           </section>
@@ -1728,7 +1745,11 @@
                                   pack="fas"
                                   icon="user-slash"
                                   size="is-medium"
-                                  type="is-danger"
+                                  :type="
+                                    indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1
+                                      ? 'is-slashab'
+                                      : 'is-slashok'
+                                  "
                                   @click="
                                     minusEvalUpTarget(
                                       indiRow,
@@ -1773,9 +1794,7 @@
                               <div
                                 style="background-color:#ce1836;color:#fae3ec;padding:5px"
                                 v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] == -1"
-                              >
-                                absent
-                              </div>
+                              >absent</div>
                               <span
                                 v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
                               >
@@ -1801,9 +1820,7 @@
                             <div
                               class="column title is-2"
                               v-show="indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] !== -1"
-                            >
-                              {{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}
-                            </div>
+                            >{{ indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].evl] }}</div>
                           </section>
 
                           <!-- indi comment -->
@@ -1823,13 +1840,11 @@
                               >
                                 <span v-show="!cRoom.showComEv.ecomAny" class="has-text-grey-light">
                                   {{
-                                    indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
-                                      | description(50)
+                                  indiRow[cRoom.evalCriItems[cRoom.tgtEvalSingle].comm]
+                                  | description(50)
                                   }}
                                 </span>
-                                <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5"
-                                  >Save</span
-                                >
+                                <span v-show="cRoom.showComEv.ecomAny" class="subtitle is-5">Save</span>
                               </b-button>
                               <b-input
                                 type="textarea"
@@ -1850,8 +1865,7 @@
                                 <span class="has-text-grey-light title is-4">Grand Total :</span>
                                 <span
                                   :class="[cRoom.showEvalComp === 0 ? 'title is-1' : 'title is-4']"
-                                  >{{ " " + indiSc.total }}</span
-                                >
+                                >{{ " " + indiSc.total }}</span>
                               </div>
                             </div>
                           </footer>
@@ -1871,9 +1885,10 @@
                           <template slot="header">
                             <!-- :label="st.classcount + ' ' + st.studentname" -->
                             <!-- ><template slot="header" slot-scope="{ column }"> -->
-                            <span :class="getIndiAttendClass(st[selClrm.attnthisweek])">
-                              {{ st.classcount + " " + st.studentname }}
-                            </span>
+                            <span
+                              :class="getIndiAttendClass(st[selClrm.attnLatest])"
+                            >{{ st.classcount + " " + st.studentname }}</span>
+                            <!-- :class="getIndiAttendClass(st[selClrm.attnthisweek])" -->
                           </template>
                         </b-tab-item>
                       </b-tabs>
@@ -1896,36 +1911,50 @@
 import Vue from "vue";
 // import { DataStore, Predicates, Hub, Auth } from "aws-amplify";
 import { DataStore, Hub, Auth } from "aws-amplify";
+// import { Hub, Auth } from "aws-amplify";
 
+// import testJSON from "../assets/test.json";
+// import testJSON from "../assets/test.json";
+// import AutumnNewClssJSON from "../assets/AutumnNewClss.json";
 import ClssJSON from "../assets/Clss.json";
 import SchdJSON from "../assets/Schd.json";
 import UsersJSON from "../assets/Users.json";
 import EnvJSON from "../assets/env.json";
 // import { Clrm, Inst, Misc } from "../models";
-import { Clrm, Misc } from "../models";
+// import { Clrm, Misc } from "../models";
+import { Clrm } from "../models";
 
 import API, { graphqlOperation } from "@aws-amplify/api";
 // import { onCreateAttend } from "../graphql/subscriptions";
+// listMiscs
+// listMiscXs
+// listLogs
+// getClrmY
+// instructor
+// bydayX
+// bydayY
+
 import {
-  // listCinfs, // 謎の取得できないやつ
-  // listCldrs,
-  listClrms,
+  // listClrms,
   instByday,
   listInsts,
-  // getInsts,
-  // listMiscs
-  // getMisc,
+  listSmrys,
+  listMngs
+  // listClrmYs
+  // listClrmXs
+  // listMngs
 } from "../graphql/queries";
-// // createCldr,
-// // createClrm,
 import {
   createInst,
   createMisc,
-  // updateCinf,
-  //   updateCldr,
   updateClrm,
   updateInst,
-  // updateMisc
+  createLog,
+  updateLog,
+  createMiscX,
+  updateMiscX,
+  // createSmry,
+  updateSmry
 } from "../graphql/mutations";
 // import { onCreateInst, onCreateMisc,  onUpdateInst, onUpdateMisc } from "../graphql/subscriptions";
 
@@ -1947,7 +1976,7 @@ import IdleVue from "idle-vue";
 const eventsHub = new Vue();
 Vue.use(IdleVue, {
   eventEmitter: eventsHub,
-  idleTime: 1000 * 60,
+  idleTime: 1000 * 60
 });
 
 // 本文のトリミング
@@ -1963,9 +1992,11 @@ export default {
   },
   onIdle() {
     this.IdleVueStatus = "ZZZ";
+    this.idbHandleSQueue();
     // 授業中で当日出欠OKなら再送信、バックアップ送信
     // this.isEnteredselClrm
-    if (this.selClrm.length > 0) {
+    // this.idbHandleSQueue();
+    if (this.selClrm.id !== "") {
       if (this.classmembers.length > 0) {
         //何かしら出欠編集してて未送信なら
         if (
@@ -1978,7 +2009,7 @@ export default {
           this.selClrm.attnModified = false;
         }
         //  クラス毎のサマリDB 更新
-        this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek);
+        this.reflectClassSummary(this.selClrm);
       } else {
         //異常
         this.writeNoteLS("onIdle selClrm but no classmembers");
@@ -1996,13 +2027,24 @@ export default {
         network: false,
         syncing: false,
         log: { nw: "", act: "" },
-        version: "1.11",
-        rev: "C_SalvageLeann",
+        version: "2.1",
+        rev: "Data Viewer Release",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
         noteName: "appNoteTmu",
+        noteNameAPI: "appNoteTmuAPI",
+        noteNameNW: "appNoteTmuNW",
+        noteNameIDB: "appNoteTmuIDB",
+        noteNameUP: "appNoteTmuUP",
+        noteNameDEV: "appNoteTmuDEV",
         device: "deviceTmu",
+        startWhen: null
+      },
+      state: {
+        APIfetch: false,
+        dataLS: false,
+        idbSetup: false
       },
       ds: {
         clrms: null,
@@ -2012,19 +2054,23 @@ export default {
         dev1: null,
         dev2: null,
         dev3: null,
+        devarr1: null,
+        devarr2: null,
+        devarr3: null,
         crMisc: { type: null, name: null, detail: null },
         nMisc: { id: null, type: null, name: null, detail: null, return: null },
-        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" }, //定数
+        typeMisc: { classSum: "classSummary", appNwLog: "DataStoreConnection" } //定数
       },
       setval1: null,
       setval2: null,
       stTable: { pagenationPosition: "both" },
       proc: {
         success: [],
-        fail: [],
+        fail: []
       },
       dev: {
         classCLimit: 3,
+        dummy: null
       },
       sett: {
         env: EnvJSON,
@@ -2041,29 +2087,37 @@ export default {
         actimeIntId10: undefined,
         ddate: null, // 処理につかう日付
         today: null, // YYYY/MM/DD
+        weekdays: ["Mon", "Tue", "Wed", "Thu", "Fri"],
         hasMobileCards: false, //buefy
         dummy: "hoge", //null,
         dummy1: null,
         dummy2: null,
         dummy3: null,
+        dummy4: null,
+        dummy5: null,
+        dummy6: null,
         dummyClrm: [],
         sw1: false,
         sw2: false,
         activeTab: 0,
         activeTabManage: 0,
         isLoadingClrmManage: false,
+        priorityLS: false,
         // isLoadingClrmsChk: false,
         pageStyle: {
-          "--background-color": "#ffff4f",
+          "--background-color": "#ffff4f"
         },
         classSelected: null,
         alias: { usename: null, name: "all" },
+        intId0: undefined, // setInterval
+        intId1: undefined, // setInterval
+        intId2: undefined // setInterval
       },
       authdetail: {
         username: "unknown",
         nickname: "unknown",
         name: "unknown",
-        role: "unknown",
+        role: "unknown"
       }, //ログインユーザー情報
       /////
       bBoard: {
@@ -2086,7 +2140,7 @@ export default {
                 <div class="column is-one-third">tmu-nse20@alc-class.jp</div>
                 <div class="column is-one-third">Gr8lesson20!</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2096,12 +2150,12 @@ export default {
               <div class="column is-one-third">kyoukasho@tmucoop.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
+            text: "(detail)"
+          }
         ],
         collapsesSample: [
           {
@@ -2121,7 +2175,7 @@ export default {
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third">abcdefg</div>
                 <div class="column is-one-third"></div>
-              </div>`,
+              </div>`
           },
           {
             title: "to students",
@@ -2131,17 +2185,26 @@ export default {
               <div class="column is-one-third">123456@abcdefg.jp</div>
               <div class="column is-one-third"></div>
               <div class="column is-one-third"></div>
-            </div>`,
+            </div>`
           },
           {
             title: "(title)",
-            text: "(detail)",
-          },
-        ],
+            text: "(detail)"
+          }
+        ]
       },
       instructor: {
         showPeople: false,
-        peopleNow: ["George", "John", "George1", "John1", "George2", "John3", "George3", "John4"],
+        peopleNow: [
+          "George",
+          "John",
+          "George1",
+          "John1",
+          "George2",
+          "John3",
+          "George3",
+          "John4"
+        ],
         // yourhistory: [],
         // youactive: 0, // 0 before in / 1 clock in / 2 clock out
         you: { name: "Jane Doe", firstName: "Jane", userid: "j-buckley" },
@@ -2152,7 +2215,7 @@ export default {
         yourTodaysClasses: [],
         yourattendvisiblemonth: null,
         attendvisiblemonth: null,
-        nameConv: UsersJSON,
+        nameConv: UsersJSON
       },
       lbls: {
         clCols: [
@@ -2161,63 +2224,64 @@ export default {
             label: "ID",
             width: "100",
             numeric: true,
-            sortable: true,
+            sortable: true
           },
           {
             field: "classtitle",
             label: "title",
-            sortable: true,
+            sortable: true
           },
           {
             field: "classnum",
             label: "num",
-            sortable: true,
+            sortable: true
           },
           {
             field: "roomnum",
             label: "Room",
-            centered: true,
+            centered: true
           },
           {
             field: "grade",
-            label: "grade",
-          },
+            label: "grade"
+          }
         ],
         clrmCols: [
           {
             field: "uid",
             label: "Instructor",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: true,
+            searchable: true
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
-        ],
+            searchable: true
+          }
+        ]
       },
-      selClrm: [],
+      selClrm: { id: "" }, //null,
+      idbClrm: { id: "" }, //null,
       // AppSyncUp
       isClrmAppSyncUploading: false,
       ClrmAppSyncStateShow: false,
@@ -2236,7 +2300,7 @@ export default {
             title2: "not here",
             pct: 33,
             colortype: "is-success",
-            transitmsg: "open classroom",
+            transitmsg: "open classroom"
           },
           {
             num: 2,
@@ -2245,7 +2309,7 @@ export default {
             title2: "not here",
             pct: 66,
             colortype: "is-warning",
-            transitmsg: "accepting late students",
+            transitmsg: "accepting late students"
           },
           {
             num: 4,
@@ -2254,7 +2318,7 @@ export default {
             title2: "absent",
             pct: 100,
             colortype: "is-danger",
-            transitmsg: "attendance closed",
+            transitmsg: "attendance closed"
           },
           // 出欠取れないモード（当日以外）
           {
@@ -2264,9 +2328,9 @@ export default {
             title2: "-",
             pct: 0,
             colortype: "is-light",
-            transitmsg: "-",
-          },
-        ],
+            transitmsg: "-"
+          }
+        ]
       },
       cRoom: {
         fixAwait: false,
@@ -2277,6 +2341,7 @@ export default {
         attnEditTgt: "", // 出欠編集 "attn01"とか
         showAttenNote: false,
         showAttenHist: 0, // 0 当日 1 履歴 2 非表示
+        showHWist: false,
         showDummy: false, // false,
         // showEval: false, // false,
         // showEvalHist: true, // false,
@@ -2287,9 +2352,6 @@ export default {
         showClassesSum: false,
         // showEvalGlance: false,
         showABList: false,
-        showABListCaption: "Group A - Group B",
-        showABListShowA: true,
-        showABListShowB: true,
         showABListStudentCode: false,
         showComment: false,
         showCommEval: [false, false, false, false, false, false, false],
@@ -2306,7 +2368,7 @@ export default {
           ecom10: false,
           ecom11: false,
           ecom12: false,
-          ecomAny: false,
+          ecomAny: false
           // eval01: false,
           // eval02: false,
           // eval03: false,
@@ -2344,7 +2406,7 @@ export default {
           46,
           19,
           31,
-          17,
+          17
         ],
         // ctype: null,
         evalCriteriaSelect: null, // ??保留 "writing", // presentationでも、どちらでも。Criteriaをデフォルト値で
@@ -2357,7 +2419,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Participation 2",
@@ -2367,7 +2429,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 1",
@@ -2377,7 +2439,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Improvement 2",
@@ -2387,7 +2449,7 @@ export default {
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 0, 0, 50],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Homework",
@@ -2397,7 +2459,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "ALC Adademy NEXT",
@@ -2407,7 +2469,7 @@ export default {
             pt: 5,
             p1ptshow: false,
             ssize: [0, 0, 0, 0, 0],
-            week: 0, // 実施週
+            week: 0 // 実施週
           },
           {
             title: "Speech 1",
@@ -2417,7 +2479,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "06", // 実施週
+            week: "06" // 実施週
           },
           {
             title: "Speech 2",
@@ -2427,7 +2489,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "09", // 実施週
+            week: "09" // 実施週
           },
           {
             title: "Discussion 1",
@@ -2437,7 +2499,7 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "07", // 実施週
+            week: "07" // 実施週
           },
           {
             title: "Discussion 2",
@@ -2447,27 +2509,27 @@ export default {
             pt: 10,
             p1ptshow: true,
             ssize: [20, 40, 40, 0, 50],
-            week: "10", // 実施週
+            week: "10" // 実施週
           },
           {
-            title: "Discussion Final [w11]",
+            title: "Discussion Final [w12]",
             sub: "Fluency, Topic Devel., Language, Logic, Active Comm.",
             evl: "eval10",
             comm: "ecom10",
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "11", // 実施週
+            week: "11" // 実施週
           },
           {
-            title: "Discussion Final [w12]",
+            title: "Discussion Final [w13]",
             sub: "Fluency, Topic Devel., Language, Logic, Active Comm.",
             evl: "eval12",
             comm: "ecom12",
             pt: 5,
             p1ptshow: true,
             ssize: [30, 40, 40, 0, 50],
-            week: "12", // 実施週
+            week: "12" // 実施週
           },
           {
             title: "Presentation Final",
@@ -2477,8 +2539,8 @@ export default {
             pt: 20,
             p1ptshow: false,
             ssize: [0, 30, 40, 0, 40],
-            week: "14", // 実施週
-          },
+            week: "14" // 実施週
+          }
         ],
         showAttnEval: false,
         evalTypeArea: null, // ["", "", "", "", "", "", ""],
@@ -2487,8 +2549,8 @@ export default {
         // shNmEvalCri: 0, //生徒一覧ページでのEvaluation項目レベル表示制御
         indirep: [
           [0, 1, 2, 3, 4, 5],
-          [6, 7, 8, 9, 10, 11, 12],
-        ],
+          [6, 7, 8, 9, 10, 11, 12]
+        ]
         // evscVa: true,
         // evscVb: false,
         // evscVc: false,
@@ -2520,72 +2582,72 @@ export default {
             field: "uid",
             label: "Instructor",
             sortable: true,
-            searchable: false,
+            searchable: false
           },
           {
             field: "group",
             label: "Group",
-            centered: true,
+            centered: true
           },
           {
             field: "dayofweek",
             label: "Day",
-            searchable: false,
+            searchable: false
           },
           {
             field: "classcode",
             label: "ClassCode",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentcode",
             label: "Code",
-            searchable: true,
+            searchable: true
           },
           {
             field: "studentname",
             label: "name",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
         instCols: [
           {
             field: "uid",
             label: "Name",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "date",
             label: "Date",
             sortable: true,
-            searchable: true,
+            searchable: true
           },
           {
             field: "clockin",
             label: "In",
-            centered: true,
+            centered: true
           },
           {
             field: "clockincorrect",
             label: "In(Correction)",
-            centered: true,
+            centered: true
           },
           {
             field: "clockout",
             label: "Out",
-            searchable: false,
+            searchable: false
           },
           {
             field: "clockoutcorrect",
             label: "Out(Correction)",
-            searchable: false,
+            searchable: false
           },
           {
             field: "detail",
             label: "Note",
-            searchable: true,
-          },
+            searchable: true
+          }
         ],
         vforEdit: [
           { at: "attn01", md: 0 },
@@ -2602,24 +2664,48 @@ export default {
           { at: "attn12", md: 11 },
           { at: "attn13", md: 12 },
           { at: "attn14", md: 13 },
-          { at: "attn15", md: 14 },
+          { at: "attn15", md: 14 }
         ],
         vforAttn: [
-          { at: "attn01", lb: "1", sc: 1, md: 0 },
-          { at: "attn02", lb: "2", sc: 2, md: 1 },
-          { at: "attn03", lb: "3", sc: 3, md: 2 },
-          { at: "attn04", lb: "4", sc: 4, md: 3 },
-          { at: "attn05", lb: "5", sc: 5, md: 4 },
-          { at: "attn06", lb: "6", sc: 6, md: 5 },
-          { at: "attn07", lb: "7", sc: 7, md: 6 },
-          { at: "attn08", lb: "8", sc: 8, md: 7 },
-          { at: "attn09", lb: "9", sc: 9, md: 8 },
-          { at: "attn10", lb: "10", sc: 10, md: 9 },
-          { at: "attn11", lb: "11", sc: 11, md: 10 },
-          { at: "attn12", lb: "12", sc: 12, md: 11 },
-          { at: "attn13", lb: "13", sc: 13, md: 12 },
-          { at: "attn14", lb: "14", sc: 14, md: 13 },
-          { at: "attn15", lb: "15", sc: 15, md: 14 },
+          { at: "attn01", lb: "1", sc: 1, md: 0, hw: "" },
+          { at: "attn02", lb: "2", sc: 2, md: 1, hw: "homeworkincomplete02" },
+          { at: "attn03", lb: "3", sc: 3, md: 2, hw: "homeworkincomplete03" },
+          { at: "attn04", lb: "4", sc: 4, md: 3, hw: "homeworkincomplete04" },
+          { at: "attn05", lb: "5", sc: 5, md: 4, hw: "homeworkincomplete05" },
+          { at: "attn06", lb: "6", sc: 6, md: 5, hw: "homeworkincomplete06" },
+          { at: "attn07", lb: "7", sc: 7, md: 6, hw: "homeworkincomplete07" },
+          { at: "attn08", lb: "8", sc: 8, md: 7, hw: "homeworkincomplete08" },
+          { at: "attn09", lb: "9", sc: 9, md: 8, hw: "homeworkincomplete09" },
+          { at: "attn10", lb: "10", sc: 10, md: 9, hw: "homeworkincomplete10" },
+          {
+            at: "attn11",
+            lb: "11",
+            sc: 11,
+            md: 10,
+            hw: "homeworkincomplete11"
+          },
+          {
+            at: "attn12",
+            lb: "12",
+            sc: 12,
+            md: 11,
+            hw: "homeworkincomplete12"
+          },
+          {
+            at: "attn13",
+            lb: "13",
+            sc: 13,
+            md: 12,
+            hw: "homeworkincomplete13"
+          },
+          {
+            at: "attn14",
+            lb: "14",
+            sc: 14,
+            md: 13,
+            hw: "homeworkincomplete14"
+          },
+          { at: "attn15", lb: "15", sc: 15, md: 14, hw: "homeworkincomplete15" }
         ],
         convAttnToDateMDNum: {
           attn01: 0,
@@ -2635,8 +2721,8 @@ export default {
           attn11: 10,
           attn12: 11,
           attn13: 12,
-          attn14: 13,
-        },
+          attn14: 13
+        }
       },
       showManagementView: false,
       showManagementViewSuper: false,
@@ -2654,32 +2740,43 @@ export default {
         allClasses: ClssJSON, // [],
         Cldrs: SchdJSON, //[], //カレンダ
         Miscs: [], //その他便利に使う
+        Smry: [],
+        source: ""
       },
       dataAPI: {
         Clrms: [], // [], //学生データ
-        // ClrmsInstByday: [],
-        // Miscs: [], //その他便利に使う
+        log: "",
+        status: "",
+        fetching: false,
+        ready: false,
+        Mngs: [] // [], //学生データ
+      },
+      dataIDB: {
+        Clrms: [], // [], //学生データ
+        log: "",
+        status: "",
+        ready: false
       },
       dataDS: {
         queryWait: false,
         queryChk: 0,
-        Clrms: [], // [], //学生データ
+        Clrms: [] // [], //学生データ
         // ClrmsInstByday: [],
         // Miscs: [], //その他便利に使う
       },
       dataLS: {
-        Clrms: [], // [], //学生データ
+        Clrms: [] // [], //学生データ
         // ClrmsInstByday: [],
         // Miscs: [], //その他便利に使う
-      },
+      }
     };
   },
   methods: {
     //////////講師 勤怠
     //////////講師 勤怠
-    //////////講師 勤怠
     instClockIn() {
       this.periodicValidation(); // 日付とユーザー検証
+      // this.classBackupALLTypesAllClasses(); //全バックアップ吸い上げ
       this.$buefy.dialog.confirm({
         message: "Clock In?",
         size: "is-large",
@@ -2687,25 +2784,32 @@ export default {
           ////////// APIで
           const add = {
             date: this.$dayjs().format("YYYY-MM-DD"), //.format("M/D ddd"),
-            clockin: this.$dayjs().format("HH:mm"), //.format("hh:mm:ss.sss"), //.format("h:mm"),
+            clockin: this.$dayjs().format("HH:mm") //.format("hh:mm:ss.sss"), //.format("h:mm"),
           };
           // this.instructor.yourattendances.push(add); //ローカル配列に追加
           const msgg =
-            "<span style='font-size:40px'>Good morning " + this.authdetail.nickname + "!</span>";
-          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+            "<span style='font-size:40px'>Good morning " +
+            this.authdetail.nickname +
+            "!</span>";
           ////////// APIで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockIn", add, "");
+          this.createInstAPI(add, msgg, "is-success", "is-large"); //DBに追加
+          this.writeNoteLS(
+            "ClockIn { date: " + add.date + ", clockin: " + add.clockin
+          );
           // this.instructor.yourhistory.push(add);
           // this.instructor.peopleNow.push(this.instructor.you.firstName);
-        },
+        }
       });
     },
-    instClockOut() {
+    async instClockOut() {
       this.periodicValidation(); // 日付とユーザー検証
+      await this.listInstsDataAPI(); // 修正があった場合のたに最新にする
       //// localStorageからバックアップ引き揚げ
       this.salvageclassRealtimeBackup();
-      this.salvageNote();
+      this.salvageDaylogs(this.app.noteName);
+      this.salvageDaylogs(this.app.noteNameAPI);
+      this.salvageDaylogs(this.app.noteNameNW);
+      this.salvageDaylogs(this.app.noteNameIDB);
       this.$buefy.dialog.confirm({
         message: "Clock Out?",
         size: "is-large",
@@ -2716,8 +2820,15 @@ export default {
           const arr = {
             uid: arrr.uid,
             date: arrr.date,
-            clockin: arrr.clockin,
+            clockin: arrr.clockin
           };
+          // ClockOut前に修正があった場合それも拾う
+          if (arrr.clockincorrect !== null) {
+            arr.clockincorrect = arrr.clockincorrect;
+          }
+          if (arrr.detail !== null) {
+            arr.detail = arrr.detail;
+          }
           arr.clockout = this.$dayjs().format("HH:mm");
           const msgg =
             "<span style='font-size:40px'>Thanks " +
@@ -2726,16 +2837,21 @@ export default {
           this.createInstAPI(arr, msgg, "is-pinkish", "is-large"); //DBに追加
           // this.updateInstAPI(arr); // AppSyncを更新 clockoutがNullになってしまう
           ////////// APIで
-          ////////// 一応MiscにはDataStoreで
-          ////////// Miscにも
-          this.createMiscClockInOut("ClockOut", arr, arr.clockout);
+          this.writeNoteLS(
+            "ClockOut { date: " +
+              arr.date +
+              ", clockin: " +
+              arr.clockin +
+              ", clockout: " +
+              arr.clockout
+          );
           // // People nowから削除
           // const idx = this.instructor.peopleNow.findIndex(
           //   v => v == this.instructor.you.firstName
           // );
           // this.instructor.peopleNow.splice(idx, 1);
           // this.instructor.showPeople = false;
-        },
+        }
       });
     },
     async listInstsDataAPI() {
@@ -2749,12 +2865,13 @@ export default {
       //   ...InstsData.data.listInsts.items
       // );
       const allclin = InstsData.data.listInsts.items
+        .sort((a, b) => this.arrayCompare(a.updatedAt, b.updatedAt))
         .sort((a, b) => this.arrayCompare(a.date, b.date))
-        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout)); //自分の勤怠
+        .sort((a, b) => this.arrayCompare(a.clockout, b.clockout));
       this.instructor.yourattendances = allclin
-        .filter((x) => x.uid === this.authdetail.username)
+        .filter(x => x.uid === this.authdetail.username)
         .reduce((a, v) => {
-          if (!a.some((e) => e.date === v.date)) {
+          if (!a.some(e => e.date === v.date)) {
             a.push(v);
           }
           return a;
@@ -2775,16 +2892,17 @@ export default {
           message: msgg,
           type: typ,
           size: siz,
-          duration: 3000,
+          duration: 3000
         });
         return true;
       } catch (err) {
         this.writeFail("InstCreate", crArr, err);
         this.$buefy.toast.open({
-          message: "<span style='font-size:60px'>Failed. please try again</span>",
+          message:
+            "<span style='font-size:60px'>Failed. please try again</span>",
           type: "is-danger",
           size: "is-large",
-          duration: 5000,
+          duration: 5000
         });
         return err;
       }
@@ -2797,24 +2915,11 @@ export default {
         this.writeFail("InstUpdate", upArr, err);
       }
     },
-    async createMiscClockInOut(typ, arr, ou) {
-      const cr = {
-        type: typ,
-        name: this.authdetail.username,
-        detail: JSON.stringify({
-          name: this.authdetail.username,
-          date: arr.date,
-          clockin: arr.clockin,
-          clockout: ou,
-        }),
-      };
-      await DataStore.save(new Misc(cr));
-    },
     // いろいろログ用： this.writeNoteLS("fetch start");
-    /////API GraphQL
     /////API GraphQL
     //////////// fetch Clrm
     async APIgetClrmsinstBydayAll() {
+      this.dataAPI.status = "Info";
       this.sett.isLoadingClrmManage = true;
       await this.APIgetClrmsinstByday("Mon"); //★test
       await this.APIgetClrmsinstByday("Tue"); //★test
@@ -2825,237 +2930,1096 @@ export default {
         await this.APIgetClrmsinstByday("Sat"); //★test
         await this.APIgetClrmsinstByday("Sun"); //★test
       }
+      this.Log(this.dataAPI.status, "APIget", "Clrm", "summary", "detail");
+      this.writeDayLogs(
+        "APIgetClrms done: " + this.dataAPI.status,
+        this.app.noteNameAPI
+      );
+
+      if (this.dataAPI.status == "Info") {
+        this.idbRemove(this.idbSQue, "API");
+        this.dataAPI.ready = true;
+      }
       this.sett.isLoadingClrmManage = false;
     },
     async APIgetClrmsinstByday(dow) {
+      this.dataAPI.fetching = true;
       try {
         const gql = await API.graphql(
           graphqlOperation(instByday, {
             dayofweek: dow,
             limit: 4000,
-            uid: { eq: this.sett.alias.name },
+            uid: { eq: this.sett.alias.name }
           })
         );
-        const gqld = gql.data.instByday.items.filter((n) => n._deleted !== true);
+        const gqld = gql.data.instByday.items.filter(n => n._deleted !== true);
         // 既に保持していた場合除去
-        const fi = this.dataAPI.Clrms.filter((n) => n.dayofweek !== dow);
+        const fi = this.dataAPI.Clrms.filter(n => n.dayofweek !== dow);
         this.dataAPI.Clrms = fi;
         this.dataAPI.Clrms.push(...gqld);
-        this.writeNoteLS("APIgetClrmsinstByday: " + gqld.length);
+        this.dataAPI.log += dow + ": " + gqld.length;
+        this.dataAPI.status = "done";
+        this.dataAPI.fetching = false;
         return true;
       } catch (e) {
-        this.writeNoteLS("APIFail: " + JSON.stringify(e));
-        let crArr = {
-          type: "APIFail" + this.getDateYYYYMMDDhHHMMSS(),
-          name: this.authdetail.username,
-          detail: JSON.stringify(e),
-        };
-        this.createMiscAPI(crArr);
+        this.dataAPI.status = "Error";
+        this.dataAPI.log += "\n[Error]" + dow + ": " + JSON.stringify(e.errors);
+        this.dataAPI.fetching = false;
         return false;
       }
     },
-    async APIlistClrmsData() {
-      const gql = await API.graphql(
-        // ★uidが効いてない
-        graphqlOperation(listClrms, { uid: this.sett.alias.name, limit: 5000 })
-      );
-      // 既に保持していた場合除去
-      const fi = this.dataset.Clrms.filter((n) => n.id !== this.sett.alias.name);
-      this.dataAPI.Clrms = fi;
-      this.dataAPI.Clrms.push(...gql.data.listClrms.items);
-      this.writeNoteLS("APIlistClrmsData: " + gql.data.listClrms.items.length);
-    },
-    /////DataStore
-    DSObserveClrms() {
-      this.writeNoteLS("DSObserveClrms");
-      DataStore.observe(Clrm).subscribe((msg) => {
-        if (msg.element.uid === this.sett.alias.name) {
-          this.fetchClrms(
-            " sbsc:" +
-              msg.element.classcode +
-              " " +
-              msg.element.studentcode +
-              " " +
-              msg.element.cust02
-          );
-        }
-      });
-    },
-    async fetchClrms(str = "") {
-      this.writeNoteLS("fetch start" + str);
-      this.dataDS.queryWait = true;
-      const fetch = await DataStore.query(Clrm, (c) => c.uid("eq", this.sett.alias.name));
-      this.dataDS.Clrms = JSON.parse(JSON.stringify(fetch));
-      this.writeNoteLS("fetched: " + fetch.length);
-      this.dataDS.queryWait = false;
-    },
-    datasetManage() {
-      if (this.dataDS.Clrms.length === 0) {
-        if (this.dataset.Clrms.length === 0) {
-          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
-          this.writeNoteLS("Clrms = localStorate");
-        } else {
-          this.dataset.Clrms = this.dataAPI.Clrms;
-          this.writeNoteLS("Clrms = API");
-        }
-      } else {
-        this.dataset.Clrms = this.dataDS.Clrms;
-        this.writeNoteLS("Clrms = DataStore");
+    async listMngsAPI() {
+      try {
+        const dat = await API.graphql(
+          graphqlOperation(listMngs, { type: { eq: this.authdetail.username } })
+          //// ★フィルタ出来てない
+        );
+        this.dataAPI.Mngs = dat.data.listMngs.items;
+        this.dataAPI.Mngs = this.dataAPI.Mngs.filter(
+          n => n.type == this.authdetail.username
+        );
+        return true;
+      } catch (e) {
+        // this.dataAPI.status = "Error";
+        this.dataAPI.log += "\n[Error] fetch Mngs" + +JSON.stringify(e.errors);
+        // this.dataAPI.fetching = false;
+        return false;
       }
     },
+    async dataAPIGetSelClrm() {
+      if (this.selClrm != []) {
+        await this.APIgetClrmsinstByday(this.selClrm.dayofweek); //★test
+      }
+    },
+    async dataIDBGetSelClrm() {
+      if (this.selClrm != []) {
+        this.dataIDB.Clrms = await this.idbGetClassmembers(this.selClrm.id);
+      }
+    },
+    async datasetIDBGetALL() {
+      this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+    },
+    datasetManage() {
+      let srcStr = "";
+      if (this.sett.priorityLS === true) {
+        this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
+        srcStr = "LS - priorityLS";
+      } else {
+        if (this.dataIDB.Clrms.length !== 0) {
+          this.dataset.Clrms = this.dataIDB.Clrms;
+          srcStr = "indexedDB";
+        } else if (this.dataAPI.Clrms.length !== 0) {
+          this.dataset.Clrms = this.dataAPI.Clrms;
+          srcStr = "API";
+        } else {
+          this.dataset.Clrms = JSON.parse(JSON.stringify(this.dataLS.Clrms));
+          srcStr = "LS";
+        }
+      }
+      this.dataset.source = srcStr;
+      this.writeDayLogs("Clrms = " + srcStr, this.app.noteName);
+    },
+    async setupWait() {
+      if (this.dataIDB.ready) {
+        await this.datasetManage();
+        // JSONからのallClassesを整える
+        await this.initallClasses();
+        //これ特別対応だけのためのやつ
+        // this.listMiscsDataID("alter", this.authdetail.username);
+        this.workspaceValication();
+        //管理用
+        // this.manageSummary();
+        this.devHelper();
+
+        clearInterval(this.sett.intId0);
+        this.writeNoteLS("clearInterval setupWait", this.app.noteNameAPI);
+      }
+    },
+    async datasetCheck() {
+      if (!this.dataAPI.ready && !this.dataAPI.fetching) {
+        await this.APIgetClrmsinstBydayAll();
+        this.datasetManage();
+      } else if (this.dataset.Clrms.length == 0) {
+        this.datasetManage();
+      } else {
+        clearInterval(this.sett.intId1);
+        this.writeNoteLS("clearInterval datasetCheck", this.app.noteNameAPI);
+      }
+    },
+    async idbLog(level = "", nam, key = "", val = "", msg) {
+      const namStr = this.idbGetStoreName(nam);
+      //           level, type, target, desc, detail
+      this.writeDayLogs(
+        level + " " + namStr + " " + key + " " + val + "," + msg,
+        this.app.noteNameIDB,
+        false,
+        true
+      );
+      this.salvageDaylogs(this.app.noteNameIDB, true, true); // flash & update
+    },
     ///// Misc
     ///// Misc
-    async createMiscAPI(crArr) {
+    async createMiscAPI(crArr, queueKey = "") {
       try {
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "Misc retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
+        }
         return true;
       } catch (err) {
-        this.writeFail("MiscCreateAPI", crArr, err);
+        if (queueKey !== "") {
+          this.writeDayLogs(
+            "Misc retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
+        } else {
+          this.idbAddSQueue("Misc", "", crArr);
+        }
         return err;
       }
     },
-    async createMisc(arr) {
-      try {
-        await DataStore.save(new Misc(arr));
-      } catch (err) {
-        this.writeFail("MiscCreate", arr, err);
+    async createMiscXAPI(crArr, queueKey = "") {
+      if (crArr.datestr == null) {
+        crArr.datestr = this.getDateYYYYMMDDhHHMMssSSS();
       }
-    },
-    async createMiscAPIDS(crArr) {
+      crArr.name = this.authdetail.username;
       try {
-        await API.graphql(graphqlOperation(createMisc, { input: crArr }));
-        return true;
-      } catch (er) {
-        try {
-          await DataStore.save(new Misc(crArr));
-        } catch (err) {
-          this.writeFail("createMiscAPIDS", er + err, crArr);
-          return err;
+        await API.graphql(graphqlOperation(createMiscX, { input: crArr }));
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "MiscX retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
         }
+        return true;
+      } catch (err) {
+        if (queueKey !== "") {
+          this.writeDayLogs(
+            "MiscX retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
+        } else {
+          this.idbAddSQueue("MiscX", "", crArr);
+        }
+        return err;
       }
+    },
+    async updateMiscXAPI(crArr, queueKey = "") {
+      try {
+        await API.graphql(graphqlOperation(updateMiscX, { input: crArr }));
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "MiscX retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
+        }
+        return true;
+      } catch (err) {
+        if (queueKey !== "") {
+          this.writeDayLogs(
+            "MiscX retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
+        } else {
+          this.idbAddSQueue("MiscX", "", crArr);
+        }
+        return err;
+      }
+    },
+    ///// log
+    async createOrUpdateLogAPI(crArr, queueKey = "", ifUpdate = false) {
+      try {
+        if (ifUpdate) {
+          await API.graphql(graphqlOperation(updateLog, { input: crArr }));
+        } else {
+          await API.graphql(graphqlOperation(createLog, { input: crArr }));
+        }
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "Log retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
+        }
+        return true;
+      } catch (err) {
+        if (queueKey !== "") {
+          this.writeDayLogs(
+            "Log retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
+        } else {
+          this.idbAddSQueue("Log", "", crArr);
+        }
+        return err;
+      }
+    },
+    Log(
+      level = "unknown",
+      type = "",
+      target = "",
+      desc = "",
+      detail = "",
+      ifUpdate = false
+    ) {
+      const datestr = ifUpdate
+        ? this.dayjsYYYYMMDDh()
+        : this.getDateYYYYMMDDhHHMMssSSS();
+      this.writeNoteLS("[" + level + "] " + type + " " + desc);
+      this.createOrUpdateLogAPI(
+        {
+          level: level,
+          datestr: datestr,
+          name: this.authdetail.username,
+          type: type,
+          target: target,
+          desc: desc,
+          detail: detail
+        },
+        "",
+        ifUpdate
+      );
     },
     ////////// updateClrm
     ////////// updateClrm
-    ////////// updateClrm
-    async updateClrmAPI(row, fname, fval, logging) {
-      const upArr = {
-        id: row.id,
-      };
-      upArr[fname] = fval;
-      upArr.cust01 = logging;
+    async updateClrmAPI(row, fname, fval, queueKey = "", tgtProps = []) {
+      let upArr = {};
+      let optStr;
+      upArr.id = row.id;
+      upArr.cust01 = row.cust01;
+      upArr.cust02 = row.cust02;
       try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        // console.warn(callbk);
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        // console.warn(err);
-        this.writeFail("updateClrmAPI", upArr, err);
-        this.writeFail("updateClrmAPI", this.authdetail.username, err + JSON.stringify(upArr));
-        return err; // returnの先に用途は実はない
+        if (queueKey == "") {
+          upArr[fname] = fval;
+        } else {
+          tgtProps.forEach(m => {
+            if (m.includes(":")) {
+              optStr = m.split(":")[1];
+            } else {
+              upArr[m] = row[m];
+            }
+          });
+        }
+        delete upArr._version;
+        delete upArr._lastChangedAt;
+        delete upArr._deleted;
+        delete upArr.updatedAt;
+        delete upArr.createdAt;
+      } catch (ee) {
+        // console.warn(row, fname, fval, queueKey);
+        // console.warn(ee);
       }
+      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
+      try {
+        await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
+        row.cust03 = upArr.cust03;
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "Clrm retry done: " +
+              queueKey +
+              " " +
+              optStr +
+              " - " +
+              upArr.cust03,
+            this.app.noteNameAPI
+          );
+        }
+      } catch (e) {
+        row.cust03 = "";
+        //// --- SendQueue
+        // console.warn("e API ", row.index, row, upArr);
+        this.idbAddSQueue("Clrm", row.index, fname);
+        this.writeDayLogs(
+          "ClrmAPI Fail: " + row.index + JSON.stringify(e),
+          this.app.noteNameAPI
+        );
+      }
+      //// --- localStorage
+      this.classRealtimeBackup();
+      //// --- indexedDB
+      this.idbSet(this.idbCls, row.index, row);
     },
     async updateClrm(row, fname, fval) {
-      // 10/21より最新操作が先頭にくるように変更
-      const logg =
-        this.getDateYYYYMMDDhHHMMSS() + ",ver." + row._version + "," + fname + "," + fval;
-      const loggHist = logg + "\n" + (row.cust01 === null ? "" : row.cust01);
-      const thi = this.classmembers.filter((n) => n.id === row.id);
-      thi.cust01 = loggHist;
-      thi.cust02 = logg;
-      this.classRealtimeBackup();
+      row.cust03 = "";
       //出欠判
       if (fname.includes("attn") == true) {
         this.selClrm.attnModified = true;
       }
-      //API
-      // this.updateClrmAPI(row, fname, fval, logging);
-      //DataStore
-      const clrmItem = await DataStore.query(Clrm, row.id);
+      this.sett.dummy1 = row;
+      // const ret = await this.idbGet(this.idbSQue, "Clrm," + row.index);
+      // if (ret) {
+      //   // sendqueueにある場合全カラムを更新し、Queueも消す
+      //   this.updateClrmAPI(row, "", "", "Clrm," + row.index);
+      // } else {
+      // 10/21より最新操作が先頭にくるように変更
+      const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
+      // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      // upArr.cust01 = logHist;
+      row.cust01 = "";
+      row.cust02 = log;
+      //// --- localStorage
+      this.classRealtimeBackup();
+      //// --- indexedDB
+      this.idbSet(this.idbCls, row.index, row);
+      //// --- dynamoDB
+      this.updateClrmAPI(row, fname, fval);
+      // }
+    },
+    async updateClrmFilledArea(row) {
+      // 出欠と宿題は該当週のみ、評価はすべて
+      const upArr = {
+        id: row.id,
+        uid: row.uid,
+        index: row.index
+      };
+      //とりあえず安全策で
+      const estr = [
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15"
+      ];
+      //評価はすべて ただし値あるやつだけセットする
+      estr.forEach(x => {
+        if (row["attn" + x] !== null && row["attn" + x] !== "") {
+          upArr["attn" + x] = row["attn" + x];
+        }
+        if (row["eval" + x] !== null && row["eval" + x] !== "") {
+          upArr["eval" + x] = row["eval" + x];
+        }
+        if (row["ecom" + x] !== null && row["ecom" + x] !== "") {
+          upArr["ecom" + x] = row["ecom" + x];
+        }
+        if (x !== "01") {
+          // 1週目宿題無し
+          if (
+            row["homeworkincomplete" + x] !== null &&
+            row["homeworkincomplete" + x] !== ""
+          ) {
+            upArr["homeworkincomplete" + x] = row["homeworkincomplete" + x];
+          }
+        }
+      });
+      const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
+      // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      // upArr.cust01 = logHist;
+      upArr.cust01 = "";
+      upArr.cust02 = log;
+      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
+
       try {
-        const callbk = await DataStore.save(
-          Clrm.copyOf(clrmItem, (updated) => {
-            updated[fname] = fval;
-            updated.cust01 = loggHist;
-            updated.cust02 = logg;
-          })
+        const callbk = await API.graphql(
+          graphqlOperation(updateClrm, { input: upArr })
         );
-        // console.warn(callbk);
+        // console.warn("Force", row.index, row.studentname, upArr, callbk);
         return callbk; // returnの先に用途は実はない
       } catch (err) {
-        this.writeFail("updateClrm", this.authdetail.username, err + JSON.stringify(clrmItem));
-        return err; // returnの先に用途は実はない
+        // console.warn("e fill ", row.index, row, upArr);
+        upArr.cust03 = "";
+        // console.warn("Force Fail", row.index, row.studentname, upArr, err);
+        this.idbAddSQueue("Clrm", row.index, upArr);
+        return false;
       }
-      // this.enterClassroomUp();
-      // setTimeout(this.enterClassroomUp, 1000 * 4); // 直後だとタイムスタンプ取れないので再実施させる
     },
-    //Schedule画面切替時に作動。classmembers全員、本日の出欠とHWのみ全てUpload
-    // async manageupdateClrmAttnHW() {
-    //   for await (const rw of this.classmembers) {
-    //     this.updateClrmAttnHW(rw);
-    //   }
-    //   this.writeNoteLS("manageupdateClrmAttnHW done");
-    // },
-    // async updateClrmAttnHW(row) {
-    //   console.warn(this.selClrm);
-    //   // async investigateClrmAttnHW(row) {
-    //   if (this.selClrm.length !== 0) {
-    //     console.warn(this.selClrm.length);
-    //     if (row[this.selClrm.attnthisweek] !== null && row[this.selClrm.attnthisweek] !== "") {
-    //       const clrmItem = await DataStore.query(Clrm, row.id);
-    //       await DataStore.save(
-    //         Clrm.copyOf(clrmItem, (updated) => {
-    //           (updated[this.selClrm.attnthisweek] = row[this.selClrm.attnthisweek]),
-    //             (updated[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
-    //               row[this.getThisWeekHwicJSON[this.selClrm.dayofweek]]);
-    //         })
-    //       );
-    //     }
-    //   }
-    // },
+    ////////// indexedDB
+    ////////// indexedDB
+    async idbIfInitialUse(nam) {
+      if (await this.idbGet(nam, "init")) {
+        return false;
+      } else {
+        await this.idbSet(nam, "init", this.getDateYYYYMMDDhHHMMSS());
+        return true;
+      }
+    },
+    async idbStart() {
+      // マスタ存在確認
+      // check if already initialized yet
+      let logStr = "";
+      const ifInitidbCIdx = this.idbIfInitialUse(this.idbCIdx);
+      const ifInitidbCls = this.idbIfInitialUse(this.idbCls);
+      const ifInitidbSQue = this.idbIfInitialUse(this.idbSQue);
+      const ifInitidbMng = this.idbIfInitialUse(this.idbMng);
+      const ifInitidbSmry = this.idbIfInitialUse(this.idbSmry);
+      const ifInitlenMisc = this.idbIfInitialUse(this.idbMisc);
+      const ifInitlenBkup = this.idbIfInitialUse(this.idbBkup);
+
+      logStr += ifInitidbCIdx ? "idb init CIdx\n" : "";
+      logStr += ifInitidbCls ? "idb init Cls \n" : "";
+      logStr += ifInitidbSQue ? "idb init SQue\n" : "";
+      logStr += ifInitidbMng ? "idb init Mng \n" : "";
+      logStr += ifInitidbSmry ? "idb init Smry\n" : "";
+      logStr += ifInitlenMisc ? "idb init Misc\n" : "";
+      logStr += ifInitlenBkup ? "idb init Bkup\n" : "";
+
+      await this.idbSet(this.idbCIdx, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbCls, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbSQue, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbMng, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbSmry, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbMisc, "hello", this.getDateYYYYMMDDhHHMMSS());
+      await this.idbSet(this.idbBkup, "hello", this.getDateYYYYMMDDhHHMMSS());
+      logStr +=
+        "idbStart: Class:" +
+        (await this.idbCls.length()) +
+        " index:" +
+        (await this.idbCIdx.length()) +
+        " Queue:" +
+        (await this.idbSQue.length()) +
+        " Manage:" +
+        (await this.idbMng.length()) +
+        " Summary" +
+        (await this.idbSmry.length()) +
+        " Misc:" +
+        (await this.idbMisc.length()) +
+        " Bkup:" +
+        (await this.idbBkup.length()) +
+        "\n";
+
+      //先読みしときたい
+      const cLen = await this.idbGetLength(this.idbCls);
+      if (cLen > 0) {
+        this.sett.dummy2 = "idb first fetching";
+        logStr += "idb first fetching";
+        this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      }
+
+      //初期実施処理を書込み（成功までリトライ対象）
+      await this.idbSet(this.idbSQue, "API", this.getDateYYYYMMDDhHHMMSS());
+
+      // idbInitialSetup;
+      this.writeDayLogs("idbStart done: " + logStr, this.app.noteNameAPI);
+    },
+    // マスタ構築
+    async idbSetup() {
+      let logStr = "";
+
+      ////////// Clrm
+      logStr +=
+        "importToIDB - LS: " +
+        this.dataLS.Clrms.length +
+        " API: " +
+        this.dataAPI.Clrms.length;
+      // 同期 とりあえずLS優先★
+      await this.importToIDB(this.dataLS.Clrms, false);
+      // await this.importLStoIDB();
+
+      ////// idbからDynamoDBにブランク以外すべてUpする
+      let uplogStr = "";
+      this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      for await (const rw of this.dataIDB.Clrms) {
+        this.updateClrmFilledArea(rw);
+        uplogStr += rw + "\n";
+      }
+      await this.writeDayLogs(
+        "FilledArea done\n" + uplogStr,
+        this.app.noteNameUP
+      );
+      this.salvageDaylogs(this.app.noteNameUP);
+
+      // DynamoDb同期
+      await this.importToIDB(this.dataAPI.Clrms, false);
+      // await this.importAPItoIDB();
+      this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      ////////// Clrm Index
+      logStr += (await this.updateIndexIDBbyAPI()) + "\n";
+
+      //////////////////// 特別処理★
+      //////////////////// 特別処理★
+      // //idb全データをみる
+      // let filllogStr = "";
+      // for await (const rw of this.dataIDB.Clrms) {
+      //   //1stweekでブランクか
+      //   if (rw.attn01 == null) {
+      //     rw.attn01 = "here";
+      //     filllogStr +=
+      //       rw.classcode + " " + rw.studentcode + " " + rw.studentname + "\n";
+      //     //idbに反映
+      //     this.idbSet(this.idbCls, rw.index, rw);
+      //   }
+      // }
+      // //ログ
+      // const crArr = {
+      //   type: "attnFix1109",
+      //   name: this.authdetail.username,
+      //   detail: filllogStr
+      // };
+      // this.createMiscXAPI(crArr);
+
+      ////////// attnFix1116
+      ////////// attnFix1116
+      // local側にブランクがあれば埋める。直近のattnまで
+      let flLogStr = "";
+      // let ifAny = false;
+      let ifAnyUpdate = false;
+      const api = this.dataAPI.Clrms;
+      const dat = this.dataIDB.Clrms;
+
+      // let cday = {};
+      let clnum = {};
+      this.yourClasses.forEach(m => {
+        const prevnum = Number(this.getPrevJSON[m.dayofweek].lessonnum);
+        let arr = [];
+        for (let a of this.manage.vforAttn) {
+          if (Number(a.md) >= prevnum) {
+            break;
+          }
+          arr.push(a.at);
+        }
+        // cday[m.id] = m.dayofweek;
+        clnum[m.id] = arr;
+      });
+      for await (const x of dat) {
+        if (x !== undefined && clnum[x.classcode] !== undefined) {
+          const ax = api.find(m => {
+            return m.id == x.id;
+          });
+          if (ax !== undefined) {
+            for (let v of clnum[x.classcode]) {
+              if (x[v] !== ax[v]) {
+                //相違あり
+                if (x[v] !== null && x[v] !== "") {
+                  //相違あり またはAPIがブランク
+                  //記録するにとどめる
+                  // ifAny = true;
+                  flLogStr +=
+                    ["diff", ax.index, ax.studentname, v, x[v], ax[v]].join(
+                      " "
+                    ) + "\n";
+                } else {
+                  //ブランク
+                  if (ax[v] !== null && ax[v] !== "") {
+                    // idbブランク apiあり
+                    // ifAny = true;
+                    //書き込む
+                    x[v] = ax[v];
+                    if (v !== "attn01") {
+                      const hw = v.replace("attn", "homeworkincomplete");
+                      x[hw] = ax[hw];
+                    }
+                    this.idbSet(this.idbCls, x.index, x);
+                    ifAnyUpdate = true;
+                    flLogStr +=
+                      ["write", ax.index, ax.studentname, v, x[v], ax[v]].join(
+                        " "
+                      ) + "\n";
+                  } else {
+                    //両方ブランク
+                    //記録するにとどめる
+                    // ifAny = true;
+                    flLogStr +=
+                      ["blank", ax.index, ax.studentname, v, x[v], ax[v]].join(
+                        " "
+                      ) + "\n";
+                  }
+                }
+                // } else {
+                //   console.warn("same", ax.index, ax.studentname, v, x[v], ax[v]);
+              }
+            }
+          } else {
+            // apiになかった？
+            // ifAny = true;
+            flLogStr += ["!no result", x.index, x.studentname].join(" ") + "\n";
+          }
+        }
+      }
+
+      if (ifAnyUpdate) {
+        this.dataIDB.Clrms = await this.idbGetALLClassmembers();
+      }
+      flLogStr += ifAnyUpdate == false ? "no changes" : "found or fixed";
+      //ログ
+      this.createMiscXAPI({ type: "attnFix1116", detail: flLogStr });
+      //★即時関数にしようとしたらthisが中から触れない
+      // )(this.dataAPI.Clrms,this.dataIDB.Clrms);
+      ////////// attnFix1116
+      ////////// attnFix1116
+
+      ////////// Class Summary
+      this.syncSmryAll();
+      ////////// YourClasses
+      this.reflectSmrytoYourclasses();
+      this.dataIDB.ready = true;
+      // this.isClrmLoading = false;
+
+      // なにか指令あれば
+      this.manageMng();
+
+      this.writeDayLogs("idbSetup done: " + logStr, this.app.noteNameAPI);
+    },
+    // indexedDB - Clrm
+    // indexedDB - Clrm
+    async importLStoIDB() {
+      const dat = this.dataLS.Clrms;
+      this.importToIDB(dat, false);
+    },
+    async importAPItoIDB() {
+      const dat = this.dataAPI.Clrms;
+      this.importToIDB(dat, false);
+    },
+    async manageMng() {
+      // check order
+      await this.listMngsAPI();
+      if (this.dataAPI.Mngs.length > 0) {
+        const trigger = this.dataAPI.Mngs[0].trigger;
+        const detail = this.dataAPI.Mngs[0].detail;
+
+        if (trigger == "ClrmW") {
+          const classcode = detail;
+          let tgtClass = this.yourClasses.find(arr => {
+            return arr.id == classcode;
+          });
+          const dow = tgtClass.dayofweek;
+          const rslt = await this.APIgetClrmsinstByday(dow);
+          if (rslt == false) {
+            await this.idbSet(
+              this.idbSQue,
+              "manageMng",
+              this.getDateYYYYMMDDhHHMMSS()
+            );
+          } else {
+            //// execute order
+            await this.importParticularClassAPItoIDB(classcode);
+            await this.idbRemove(this.idbSQue, "manageMng");
+            this.writeDayLogs(
+              "manageMng done: " + trigger + " " + detail,
+              this.app.noteNameAPI
+            );
+          }
+        } else {
+          this.writeDayLogs(
+            "manageMng: nothing in particular",
+            this.app.noteNameAPI
+          );
+        }
+      }
+    },
+    async importParticularClassAPItoIDB(classcode) {
+      ///!!!!! overwrite API data !!!!!
+      const dat = this.dataAPI.Clrms.filter(x => x.classcode === classcode);
+      this.writeDayLogs(
+        "importParticularClassAPItoIDB: " + classcode,
+        this.app.noteNameIDB
+      );
+      this.importToIDB(dat, true);
+    },
+    async importToIDB(dat, force = false) {
+      for await (const x of dat) {
+        if (!force) {
+          const chk = await this.idbGet(this.idbCls, x.index);
+          if (!chk) {
+            this.idbSet(this.idbCls, x.index, x);
+          }
+        } else {
+          this.idbSet(this.idbCls, x.index, x);
+        }
+      }
+      this.idbRemove(this.idbCls, "hello");
+    },
+    async updateIndexIDBbyAPI() {
+      let logStr = "";
+      const dat = this.dataAPI.Clrms; //APIが正しい前提
+      //担当クラス
+      const clslist = dat
+        .map(m => {
+          return m.classcode;
+        })
+        .sort()
+        .reduce((array, item) => {
+          if (array.includes(item) === false) {
+            array.push(item);
+          }
+          return array;
+        }, []);
+      // クラスと所属生徒一覧
+      clslist.forEach(x => {
+        const stulist = dat
+          .filter(y => {
+            return y.classcode === x;
+          })
+          .map(m => {
+            return m.index;
+          });
+        // dict[x] = stulist;
+        this.idbSet(this.idbCIdx, x, stulist);
+        logStr += x + ":" + stulist.length;
+      });
+      return logStr;
+    },
+    //////////// sync
+    // indexedDB - SmryのSync
+    // indexedDB - SmryのSync
+    // todo
+    // クラス内でidle時と授業終了時にHWチェック→Smryに反映、DynamoDBにも反映
+    // クラス内でidle時と授業終了時にAttnチェック→Smryに反映、DynamoDBにも反映→APIでクラス全員チェック
+    //              ちゃんとDoneならSyncDoneに昇格し、S再度反映（失敗してもQueueにあるだけ）
+    // idleとか定期的にlocalステータスはAPI確認する
+    // idleとか定期的にHWステータスは確認する（事実上は操作時だけでいいけど漏れ防止、できれば漏れでフラグ変わるときエラー出したい）
+    // 常にSmryのHWとかDonwをyourClassesに反映
+    // クラスのSyncDone判定は判定用にAPI処理して捨てる（捨てずに、撮った時間記録して再利用？今後考えよう）
+    //
+    // トリガ：idleか、クラス抜け時か、NWConnection復活時
+    async updateSmry(key, prop, val) {
+      const obj = await this.idbGet(this.idbSmry, key);
+      obj[prop] = val;
+      await this.idbSet(this.idbSmry, key, obj);
+      this.syncSmry(key);
+    },
+    async syncSmry(key, force = false) {
+      // upload to dynamoDB from indexedDB
+      if (!force) {
+        const obj = await this.idbGet(this.idbSmry, key);
+        this.updateSmryAPI(obj);
+      } else {
+        // overwrite indexedDB from dynamoDB
+        if (this.dataset.Smry.length == 0) {
+          await this.APIgetSmrys();
+        }
+        const tgt = this.dataset.Smry.find(m => {
+          return m.classcode == key;
+        });
+        this.idbSet(this.idbSmry, key, tgt);
+      }
+    },
+    async syncSmryAll(force = false) {
+      // indexedDBからdynamoDBに上書き(強制書込み時はスキップ)
+      if (!force) {
+        const keys = await this.idbSmry.keys();
+        for await (const k of keys) {
+          if (k !== "init" && k !== "hello") {
+            const obj = await this.idbGet(this.idbSmry, k);
+            await this.updateSmryAPI(obj);
+          }
+        }
+      }
+      // dynamoDBから indexedDbに書込み
+      if (this.dataset.Smry.length == 0) {
+        await this.APIgetSmrys();
+      }
+      for await (const x of this.dataset.Smry) {
+        if (!force) {
+          const chk = await this.idbGet(this.idbSmry, x.classcode);
+          if (!chk) {
+            this.idbSet(this.idbSmry, x.classcode, x);
+          }
+        } else {
+          this.idbSet(this.idbSmry, x.classcode, x);
+        }
+      }
+    },
+    async reflectSmrytoYourclasses() {
+      const keys = await this.idbSmry.keys();
+      for await (const k of keys) {
+        if (k !== "init" && k !== "hello") {
+          const obj = await this.idbGet(this.idbSmry, k);
+          let tgt = this.yourClasses.find(arr => {
+            return arr.id == obj.classcode;
+          });
+
+          const attnstatus =
+            obj[this.getLatestJSON[obj.dayofweek].attendance + "done"];
+          tgt.attndone = attnstatus !== null ? true : false;
+          tgt.syncdone =
+            attnstatus === "sync"
+              ? true
+              : attnstatus === "local"
+              ? false
+              : null;
+          const hwic = obj[this.getThisWeekHwicJSON[obj.dayofweek]];
+          if (hwic === true) {
+            //// 識別文字列を追加（既にあればそのまま）
+            tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
+          } else {
+            tgt.detail = tgt.detail.replace("hwic", "");
+          }
+          // console.warn(
+          //   obj.classcode,
+          //   attndone,
+          //   syncdone,
+          //   hwic,
+          //   obj.dayofweek,
+          //   this.getThisWeekAttnJSON[obj.dayofweek],
+          //   obj[this.getThisWeekAttnJSON[obj.dayofweek] + "done"],
+          //   this.getThisWeekHwicJSON[obj.dayofweek],
+          //   obj[this.getThisWeekHwicJSON[obj.dayofweek]]
+          // );
+        }
+      }
+    },
+    // indexedDB basics
+    // indexedDB basics
+    async idbSet(nam, key, obj) {
+      try {
+        const retval = await nam.setItem(key, obj); // get null if unable to find
+        if (!retval) {
+          this.idbLog("Warn", nam, key, "Set", "no value");
+        }
+        return retval;
+      } catch (e) {
+        this.idbLog("Error", nam, key, "Set", e);
+        return false;
+      }
+    },
+    async idbGet(nam, key) {
+      try {
+        const retval = await nam.getItem(key); // get null if unable to find
+        if (!retval) {
+          this.idbLog("Warn", nam, key, "Get", "no value");
+        }
+        return retval;
+      } catch (e) {
+        this.idbLog("Error", nam, key, "Get", e);
+        return false;
+      }
+    },
+    async idbGetLength(nam) {
+      const keys = await nam.keys();
+      let cnt = 0;
+      for await (const k of keys) {
+        //// カウント対象外
+        if (k !== "init" && k !== "hello") {
+          cnt += 1;
+        }
+      }
+      return cnt;
+    },
+    async idbRemove(nam, key) {
+      try {
+        await nam.removeItem(key); // get null if unable to find
+      } catch (e) {
+        this.idbLog("Error", nam, key, "Remove", e);
+        return false;
+      }
+    },
+    // indexedDB Clrms
+    // indexedDB Clrms
+    async idbGetClassmembers(classcode) {
+      const idbg = await this.idbGet(this.idbCIdx, classcode);
+      const mems = [];
+      for await (const k of idbg) {
+        if (k !== "init" && k !== "hello") {
+          const chk = await this.idbGet(this.idbCls, k);
+          mems.push(chk);
+        }
+      }
+      return mems.sort(function(a, b) {
+        if (a.sortid < b.sortid) return -1;
+        if (a.sortid > b.sortid) return 1;
+        return 0;
+      });
+    },
+    async idbGetALLClassmembers() {
+      const ckeys = await this.idbCls.keys();
+      const mems = [];
+      for await (const k of ckeys) {
+        if (k !== "init" && k !== "hello") {
+          const chk = await this.idbGet(this.idbCls, k);
+          mems.push(chk);
+        }
+      }
+      return mems;
+    },
+    async idbGetStoreName(nam) {
+      if (nam == this.idbCls) {
+        return "Clrm";
+      } else if (nam == this.idbCIdx) {
+        return "CIndex";
+      } else if (nam == this.idbSQue) {
+        return "SendQueue";
+      } else if (nam == this.idbMng) {
+        return "Manage";
+      } else if (nam == this.idbSmry) {
+        return "Summary";
+      } else if (nam == this.idbMisc) {
+        return "Miscs";
+      } else {
+        return "[unknown idb]";
+      }
+    },
+    // indexedDB Summary
+    // indexedDB Summary
+    async APIgetSmrys() {
+      try {
+        const gql = await API.graphql(
+          graphqlOperation(listSmrys, {
+            uid: this.sett.alias.name
+          })
+        );
+        this.dataset.Smry = gql.data.listSmrys.items;
+        return true;
+      } catch (e) {
+        this.Log("Error", "APIget", "Smry", "summary", "detail");
+        this.writeDayLogs(
+          "[Error]APIgetSmry " + JSON.stringify(e.errors),
+          this.app.noteNameAPI
+        );
+        return false;
+      }
+    },
+    async updateSmryAPI(upArr, queueKey = "") {
+      // remove properties which are not in scope of the schema
+      delete upArr._version;
+      delete upArr._lastChangedAt;
+      delete upArr._deleted;
+      delete upArr.updatedAt;
+      delete upArr.createdAt;
+      try {
+        await API.graphql(graphqlOperation(updateSmry, { input: upArr }));
+        // const ret = await API.graphql(graphqlOperation(updateSmry, { input: upArr }));
+        if (queueKey !== "") {
+          this.idbRemove(this.idbSQue, queueKey);
+          this.writeDayLogs(
+            "Smry retry done: " + queueKey,
+            this.app.noteNameAPI
+          );
+        }
+        return true;
+      } catch (e) {
+        // console.warn("updateSmryAPI error", e);
+        if (queueKey !== "") {
+          this.writeDayLogs(
+            "Smry retry FAIL: " + queueKey,
+            this.app.noteNameAPI
+          );
+        } else {
+          this.idbAddSQueue("Smry", upArr.classcode, upArr);
+        }
+        // this.dealQueue(false, msg, queueKey="",queueAddKey, val);
+        return e;
+      }
+    },
+    // indexedDB Queue
+    // indexedDB Queue
+    async idbAddSQueue(key, tailStr = "", val) {
+      let arr = [];
+      let chk;
+      switch (key) {
+        case "Clrm":
+          chk = await this.idbGet(this.idbSQue, "Clrm," + tailStr);
+          if (chk) {
+            arr = arr.concat(chk, val);
+          } else {
+            arr = arr.concat("added:" + this.getDateYYYYMMDDhHHMMSS(), val);
+          }
+          arr = Array.from(new Set(arr));
+          this.idbSet(this.idbSQue, key + "," + tailStr, arr);
+          break;
+        default:
+          tailStr = tailStr == "" ? this.getDateYYYYMMDDhHHMMSS() : tailStr;
+          this.idbSet(this.idbSQue, key + "," + tailStr, val);
+      }
+    },
+    async idbHandleSQueue() {
+      const qkeys = await this.idbSQue.keys();
+      let qObj = {};
+      // let mtcs = [];
+      for await (const qk of qkeys) {
+        const val = await this.idbGet(this.idbSQue, qk);
+        // mtcs.push(val);
+        Object.assign(qObj, { [qk]: val });
+      }
+      let objCls = {};
+      for await (const qk of qkeys) {
+        const gql = qk.split(",")[0];
+        // init, hello will be ignored
+        switch (gql) {
+          case "Log":
+            this.createOrUpdateLogAPI(qObj[qk], qk);
+            break;
+          case "Misc":
+            this.createMiscAPI(qObj[qk], qk);
+            break;
+          case "MiscX":
+            this.createMiscXAPI(qObj[qk], qk);
+            break;
+          case "Clrm":
+            objCls = await this.idbGet(this.idbCls, qk.split(",")[1]);
+            this.updateClrmAPI(objCls, "", "", qk, qObj[qk]);
+
+            break;
+          case "API":
+            this.APIgetClrmsinstBydayAll();
+            break;
+          case "manageMng":
+            this.listMngsAPI();
+            break;
+        }
+      }
+    },
+    //つくりかけQueueの後処理一括請負
+    dealQueue(isSuccessed, msg, queueKey = "", queueAddKey, val) {
+      if (queueKey !== "") {
+        // from SendQueue
+        if (isSuccessed) {
+          // successed
+          this.idbRemove(this.idbSQue, queueKey);
+        }
+        // successed or error
+        this.writeDayLogs(msg + queueKey, this.app.noteNameAPI);
+      } else {
+        // NOT from SendQueue
+        // Initial try but failed => write queue for next try
+        this.idbAddSQueue(msg, queueAddKey, val);
+      }
+    },
+    /// indexedDB 開発用
+    async idbClear(nam) {
+      await nam
+        .clear()
+        .then(function() {
+          this.sett.dummy1 = nam + "idbClear now empty";
+        })
+        .catch(e => {
+          this.sett.dummy1 = nam + "idbClear error" + JSON.stringify(e);
+        });
+    },
+    //// 確認系
+    //// 確認系
     //// check クラス全員チェック
     async checkAttnHWConsistency(classcode, dow, alrt = false) {
       ////Lesson 1 is exeption because no hw required yet
-      if (this.getThisWeekHwicJSON[dow] == "") {
+      if (this.getLatestJSON[dow].hwic == "") {
         return false;
       }
-      const atEl = this.getThisWeekAttnJSON[dow];
-      const hwEl = this.getThisWeekHwicJSON[dow];
+      const atEl = this.getLatestJSON[dow].attendance;
+      const hwEl = this.getLatestJSON[dow].hwic;
       const chkHW = function(obj, atEl, hwEl) {
         let rslt = false;
-        let rsltStr = "";
         for (const rw of obj) {
           const at = rw[atEl];
           const hw = rw[hwEl];
-          rsltStr += rw.studentcode + " " + rw.studentname + " " + at + " " + hw;
           if (at == "not here" && hw !== false) {
-            rsltStr += " NG";
             rslt = true;
           }
-          rsltStr += "\n";
         }
-        return [rsltStr, rslt];
+        return rslt;
       };
-      ////////DataStore
-      const classmemDS = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-      const retArrDS = chkHW(classmemDS, atEl, hwEl);
-      ////////LocalStorage
-      const classmem = this.getClassmembers(classcode);
+      const classmem = await this.idbGetClassmembers(classcode);
       const retArr = chkHW(classmem, atEl, hwEl);
       ////////ログ
-      if (retArr[1] !== retArrDS[1]) {
-        this.writeNoteLS("HWConsistency NG " + classcode + " " + dow);
-        const crArr = {
-          type: "HWConsistency NG " + classcode + " " + dow,
-          name: this.authdetail.username,
-          detail: this.getDateYYYYMMDDhHHMMSS() + "\n" + retArr + "\n" + retArrDS,
-        };
-        this.createMiscAPIDS(crArr);
-      }
       // HWConsistency
-      let tgt = this.yourClasses.find((arr) => {
+      let tgt = this.yourClasses.find(arr => {
         return arr.id == classcode;
       });
-      if (retArr[1] === true) {
+      if (retArr === true) {
         //// 識別文字列を追加（既にあればそのまま）
         tgt.detail += this.checkIfHwic(tgt.detail) ? "" : "hwic";
         if (alrt) {
@@ -3073,24 +4037,26 @@ export default {
             iconPack: "fa",
             size: "is-large",
             ariaRole: "alertdialog",
-            ariaModal: true,
+            ariaModal: true
           });
         }
       } else {
         tgt.detail = tgt.detail.replace("hwic", "");
       }
-      // }
+      // reflect to indexedDB
+      const prop = this.getLatestJSON[dow].hwic;
+      await this.updateSmry(classcode, prop, retArr);
     },
-    // Force Sync
     // Force Sync
     // Force Sync
     async manageupdateClrmAllAPI() {
       //別系統で
-      this.salvageclassRealtimeBackup(" forceSync");
+      // this.salvageclassRealtimeBackup(" forceSync");
       //APIで
       let classmem;
       if (this.classmembers.length == 0) {
-        classmem = this.getClassmembers(this.selClrm.id);
+        // classmem = this.getClassmembers(this.selClrm.id);
+        classmem = await this.idbGetClassmembers(this.selClrm.id);
       } else {
         classmem = this.classmembers;
       }
@@ -3101,76 +4067,27 @@ export default {
       this.ClrmAppSyncEnd = 0;
       this.ClrmAppSyncState = true;
       for await (const rw of classmem) {
-        this.updateClrmAllAPI(rw);
+        this.updateClrmFilledArea(rw);
       }
       // 結果表示(API)
-      this.reflectClassSummary(this.selClrm.id, this.selClrm.dayofweek, true);
+      this.reflectClassSummary(this.selClrm, true);
     },
-    async updateClrmAllAPI(rw) {
-      // 出欠と宿題は該当週のみ、評価はすべて
-      const upArr = {
-        id: rw.id,
-        uid: rw.uid,
-        index: rw.index,
-      };
-      //とりあえず安全策で
-      const estr = ["01", "02", "03", "04", "06", "07", "08", "09", "10", "11"];
-      //評価はすべて ただし値あるやつだけセットする
-      estr.forEach((x) => {
-        if (rw["eval" + x] !== null && rw["eval" + x] !== "") {
-          upArr["eval" + x] = rw["eval" + x];
-        }
-      });
-      estr.forEach((x) => {
-        if (rw["ecom" + x] !== null && rw["ecom" + x] !== "") {
-          upArr["ecom" + x] = rw["ecom" + x];
-        }
-      });
-      // 出欠と宿題は該当週のみ
-      upArr[this.selClrm.attnthisweek] = rw[this.selClrm.attnthisweek];
-      upArr[this.getThisWeekHwicJSON[this.selClrm.dayofweek]] =
-        rw[this.getThisWeekHwicJSON[this.selClrm.dayofweek]];
-      try {
-        const callbk = await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        this.ClrmAppSyncEnd += 1;
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        const crArr = {
-          type: "failAPIgraphql",
-          name: this.authdetail.username,
-          detail: this.getDateYYYYMMDDhHHMMSS(),
-        };
-        this.ClrmAppSyncState = false; // エラー
-        await DataStore.save(new Misc(crArr));
-        this.ClrmAppSyncEnd += 1;
-        return false;
-      }
-    },
-    /////DataStore
-    /////DataStore
     //初期処理
     initallClasses() {
-      this.yourClasses.forEach((m) => {
-        // レッスン集と出欠が今週どこなのか
+      this.yourClasses.forEach(m => {
+        // レッスン集と出欠が今週どこなのか ※休講はundefined
         m.lssnthisweek = this.getThisWeekLssnJSON[m.dayofweek];
         m.attnthisweek = this.getThisWeekAttnJSON[m.dayofweek];
+        m.lssnlatest = this.getLatestJSON[m.dayofweek].lessonnum;
         // クラスのタイムスタンプを反映
-        this.reflectClassSummary(m.id, m.dayofweek);
+        this.reflectClassSummary(m);
         this.checkAttnHWConsistency(m.id, m.dayofweek);
       });
       this.yourClasses.splice();
-      // this.dataset.allClasses = [...allClassesUp];
-      //     // const timestamp = this.queryMiscClassSummary(m.classcode);
-      // this.dataset.allClasses.splice();
     },
-
     //////////クラスルーム
     //////////クラスルーム
-    //////////クラスルーム
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
-    ///// クラス選択、読み込み、
-    selectClassroom(arr) {
+    async selectClassroom(arr) {
       // 前回のテスト結果くりあ（非表示）
       this.ClrmAppSyncStateShow = false;
       this.ClrmAppSyncBegin = 0;
@@ -3178,7 +4095,9 @@ export default {
       this.ClrmAppSyncState = false;
       //セット
       this.selClrm = arr;
-      this.classmembers = this.getClassmembers(this.selClrm.id);
+
+      // this.classmembers = this.getClassmembers(this.selClrm.id);
+      this.classmembers = await this.idbGetClassmembers(this.selClrm.id);
       //ここまで編集可能
       // this.selClrm.editableUntil = this.getEditableUntilJSON[
       //   this.selClrm.dayofweek
@@ -3186,259 +4105,118 @@ export default {
       this.selClrm.attnModified = false;
       this.selClrm.attnDoneReported = false;
 
+      // 直近のAttn
+      this.selClrm.attnLatest = this.getLatestJSON[
+        this.selClrm.dayofweek
+      ].attendance;
+
       //表示
       this.isOpenselClrm = true;
-      this.scrollTop();
-
-      this.discrepancyDetectAndFix(this.selClrm, "select");
-    },
-    scrollTop: function() {
       window.scrollTo({
         top: 0,
-        behavior: "smooth",
+        behavior: "smooth"
       });
-    },
-    enterClassroomPrevSeeIfAlter() {
-      // 特別対応の権限があるか（ユーザ毎）。
-      // const dt = this.dataset.Miscs.find(el => {
-      //   return el.type === "alter";
-      // });
-      // // 設定があり曜日も合致するなら編集日付を変更する
-      // if (
-      //   dt !== undefined &&
-      //   this.selClrm.dayofweek == this.$dayjs(dt.detail).format("ddd")
-      // ) {
-      //   this.sett.ddate = this.$dayjs(dt.detail);
-      // }
-      // this.workspaceValication(true);
-      this.workspaceValication();
+      // this.discrepancyDetectAndFix(this.selClrm, "select");
     },
     async enterClassroom() {
-      this.enterClassroomPrevSeeIfAlter(); // 特別対応の有無チェック。ddateに影響
-      this.cRoom.showIndividual = false;
-      // && x.enable === trueはほんとはAppSyncの時点でやりたい
-      // const classmems = await DataStore.query(Clrm, c =>
-      //   c.classcode("eq", classcode)
-      // const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
+      //★要らない気がする
+      this.workspaceValication();
 
-      // const classmem = this.dataset.Clrms.filter(
-      //   (x) => x.classcode === this.selClrm.id && x.enable === true
-      // ).sort(function(a, b) {
-      //   if (a.sortid < b.sortid) return -1;
-      //   if (a.sortid > b.sortid) return 1;
-      //   return 0;
-      // });
-      // this.classmembers = this.getClassmembers(this.selClrm.id);
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)).sort(function(a, b) {
-      //   if (a.sortid < b.sortid) return -1;
-      //   if (a.sortid > b.sortid) return 1;
-      //   return 0;
-      // });
-      // this.classmembers = [...classmem]; // 配列じゃなくてオブジェクトだと微妙に影響受ける、だめ
-      // this.classmembers = JSON.parse(JSON.stringify(classmem)); // 独立しちゃってClrmsと齟齬が出る、だめ
+      this.cRoom.showIndividual = false;
       this.enterClassroomInit();
       this.sett.activeTab = 2; //いざタブを切替
       this.isOpenselClrm = false;
     },
-    getClassmembers(classcode) {
-      return this.dataset.Clrms.filter((x) => x.classcode === classcode && x.enable === true).sort(
-        function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        }
-      );
-    },
-    // 今週分の出欠完了判定
-    getAttnDoneStateSelClrm() {
+    async getAttnDoneStateSelClrm() {
+      //今週分の出欠完了判定 必ずクラス内で実施される
+      if (this.selClrm.id == "") {
+        return false;
+      }
       const cmem = this.classmembers;
       let doneNum = 0;
       for (let num = 0; num < cmem.length; num++) {
-        const at = cmem[num][this.selClrm.attnthisweek];
+        const at = cmem[num][this.selClrm.attnLatest];
+        // const at = cmem[num][this.selClrm.attnthisweek];
         if (at !== null && at !== "") {
           doneNum += 1;
         }
       }
       return doneNum === cmem.length ? true : false;
     },
-    // クラスサマリの更新
     //// クラス毎のサマリDB 更新
-    async reflectClassSummary(classcode, dow, getFromAPI = false) {
-      let tgt = this.yourClasses.find((arr) => {
-        return arr.id == classcode;
+    async examAttnDone(tgtClrm) {
+      const dow = tgtClrm.dayofweek;
+      const cmem = await this.idbGetClassmembers(tgtClrm.id);
+      if (cmem.length == 0) {
+        return false;
+      }
+      const tst = cmem.some(m => {
+        return (
+          m[this.getLatestJSON[dow].attendance] == null ||
+          m[this.getLatestJSON[dow].attendance] == ""
+        );
+      });
+      this.writeDayLogs(
+        "examAttn: " + tgtClrm.classcode + " " + tst === false
+          ? "Done!"
+          : "yet",
+        this.app.noteName
+      );
+      return !tst; // done: true
+    },
+    async examSyncDone(tgtClrm, refresh = false) {
+      const dow = tgtClrm.dayofweek;
+      if (refresh) {
+        //通信する
+        const apiRslt = await this.APIgetClrmsinstByday(dow);
+        this.writeDayLogs(
+          "examSyncDone: refresh " +
+            dow +
+            (apiRslt == true ? " Succeed" : " failed"),
+          this.app.noteName
+        );
+      }
+      const arrAPI = this.dataAPI.Clrms.filter(x => x.classcode == tgtClrm.id);
+      const tst = arrAPI.some(m => {
+        return (
+          m[this.getLatestJSON[dow].attendance] == null ||
+          m[this.getLatestJSON[dow].attendance] == ""
+        );
+      });
+      this.writeDayLogs(
+        "examSync:" + tgtClrm.classcode + " " + tst === false ? "Done!" : "yet",
+        this.app.noteName
+      );
+      return !tst; // done: true
+    },
+    async reflectClassSummary(tgtClrm, getFromAPI = false) {
+      let tgt = this.yourClasses.find(arr => {
+        return arr.id == tgtClrm.id;
       });
       //// 出欠もSyncもHWも出来ていたら処理しない
-      if (tgt.attndone !== true || tgt.syncdone !== true) {
-        let retCloud;
-        if (getFromAPI === true) {
-          const apiRslt = await this.APIgetClrmsinstByday(dow);
-          if (apiRslt === true) {
-            retCloud = this.dataAPI.Clrms.filter((x) => x.classcode == classcode);
-          } else {
-            retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-          }
-        } else {
-          retCloud = await DataStore.query(Clrm, (c) => c.classcode("eq", classcode));
-        }
-        // // クラスのタイムスタンプを取得
-        // const newest = ret.reduce((a, b) => a._lastChangedAt > b._lastChangedAt ? a : b);
-        // const oldest = ret.reduce((a, b) => a._lastChangedAt < b._lastChangedAt ? a : b);
-        // tgt.newest = newest._lastChangedAt;
-        // tgt.oldest = oldest._lastChangedAt;
-        //       )
-        const syncedsum = retCloud.reduce((accumulator, current) => {
-          return (
-            accumulator +
-            (this.getIfAttnThisWeekNotNull(
-              dow,
-              current[this.getThisWeekAttnJSON[dow]],
-              current._lastChangedAt
-            ) === true
-              ? 1
-              : 0)
-          );
-        }, 0);
-        const ret = this.dataset.Clrms.filter((x) => x.classcode === classcode); // ←syncesはこれじゃlastChancedAtわからない
-        const attnsum = ret.reduce((accumulator, current) => {
-          return (
-            accumulator + (current[this.getThisWeekAttnJSON[dow]] == null ? 0 : 1) // nullもundefinedも0
-          );
-        }, 0);
-        // 0:null >0:false ===length:true
-        // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
-        tgt.attndone =
-          ret.length === attnsum && ret.length !== 0 ? true : attnsum > 0 ? false : null;
-        tgt.syncdone =
-          ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
-        tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
-      }
-    },
-    async discrepancyDetectAndFix(tgtClrm, desc) {
-      this.cRoom.fixAwait = true;
-      // const objLS = localStorage.getItem("classBackupRealtime_" + classcode);
-      //localStorageとDSと配列比較して補正
-      const attnDest = tgtClrm.attnthisweek;
-      // const objDS = await DataStore.query(Clrm, c =>
-      //   c.classcode("eq", tgtClrm.id)
-      // );
-      const objCL = this.classmembers;
-      const objLS = this.loadclassRealtimeBackup(tgtClrm.id);
-      let resultStr = "";
-      let resultAddStr = "";
-      //localStorageあるときだけ処理★厳密には対象attnがある状態、なおそう
-      if (objLS !== null) {
-        // let atDS = "";
-        let atLS = "";
-        let atCL = "";
-        for (let num = 0; num < objCL.length; num++) {
-          //localStorage優先、文字アリ優先、判定は出欠、修正はHW含める
-          //処理前
-          // atDS =
-          //   objDS[num][attnDest] == null || objDS[num][attnDest] == ""
-          //     ? null
-          //     : objDS[num][attnDest];
-          atCL =
-            objCL[num][attnDest] == null || objCL[num][attnDest] == ""
-              ? null
-              : objCL[num][attnDest];
-          atLS =
-            objLS[num][attnDest] == null || objLS[num][attnDest] == ""
-              ? null
-              : objLS[num][attnDest];
-          // resultStr += num + "[" + atDS + ", " + atCL + ", " + atLS + "],\n";
-          resultStr += num + "[" + atCL + ", " + atLS + "],\n";
-
-          if (atLS !== null) {
-            // if (atLS == null) {
-            //   if (atDS == null && atCL !== null) {
-            //     this.updateDS(
-            //       objCL[num].id,
-            //       attnDest,
-            //       atCL,
-            //       this.attnHWEditTgt,
-            //       objCL[num][this.attnHWEditTgt]
-            //     );
-            //     resultAddStr +=
-            //       num +
-            //       " " +
-            //       objCL[num].studentcode +
-            //       " " +
-            //       attnDest +
-            //       " class -> DS\n";
-            //   }
-            //   if (atCL == null && atDS !== null) {
-            //     this.classmembers[num][attnDest] = atCL;
-            //     this.classmembers[num][this.attnHWEditTgt] =
-            //       objDS[num][this.attnHWEditTgt];
-            //     resultAddStr +=
-            //       num +
-            //       " " +
-            //       objCL[num].studentcode +
-            //       " " +
-            //       attnDest +
-            //       " DS -> class\n";
-            //   }
-            // } else {
-            // if (atDS == null) {
-            //   this.updateDS(
-            //     objCL[num].id,
-            //     attnDest,
-            //     atLS,
-            //     this.attnHWEditTgt,
-            //     objLS[num][this.attnHWEditTgt]
-            //   );
-            //   resultAddStr +=
-            //     num +
-            //     " " +
-            //     objCL[num].studentcode +
-            //     " " +
-            //     attnDest +
-            //     " local -> DS\n";
-            // }
-            if (atCL == null) {
-              this.classmembers[num][attnDest] = atLS;
-              this.classmembers[num][this.attnHWEditTgt] = objLS[num][this.attnHWEditTgt];
-              resultAddStr +=
-                num + " " + objCL[num].studentcode + " " + attnDest + " local -> class\n";
-            }
-          }
-        }
-        resultStr +=
-          resultAddStr +
-          // JSON.stringify(objDS) +
-          // "_@#@#" +
-          JSON.stringify(this.classmembers) +
-          "_@#@#" +
-          JSON.stringify(objLS);
-        ////// report
-        const crArr = {
-          type: "discrepancyDetectAndFix " + tgtClrm.id,
-          name: this.authdetail.username,
-          detail: desc + " " + attnDest + "\n" + resultStr,
-        };
-        this.createMiscAPIDS(crArr);
-        // tgtClrm.attnthisweek
-        const sumr = resultAddStr.length > 0 ? "some fix" : "no fix";
-        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " " + sumr);
+      if (tgt.syncdone == true) {
+        return true;
+      } else if (tgt.attndone == true) {
+        tgt.syncdone = await this.examSyncDone(tgtClrm, getFromAPI);
+        // console.warn("sync ", tgt.syncdone, tgtClrm, "dl" + getFromAPI);
       } else {
-        this.writeNoteLS("discrepancy " + tgtClrm.id + " " + desc + " no local data");
+        tgt.attndone = await this.examAttnDone(tgtClrm);
+        if (tgt.attndone == true) {
+          tgt.syncdone = await this.examSyncDone(tgtClrm, true);
+        }
       }
-      this.cRoom.fixAwait = false;
-    },
-    async updateDS(id, fname, fval, fnameHW, fvalHW) {
-      const clrmItem = await DataStore.query(Clrm, id);
-      try {
-        const callbk = await DataStore.save(
-          Clrm.copyOf(clrmItem, (updated) => {
-            updated[fname] = fval;
-            updated[fnameHW] = fvalHW;
-          })
-        );
-        return callbk; // returnの先に用途は実はない
-      } catch (err) {
-        this.writeFail("updateClrmFix", this.authdetail.username, err + JSON.stringify(clrmItem));
-        return err; // returnの先に用途は実はない
-      }
+      // indexedDB update
+      const val =
+        tgt.syncdone == true ? "sync" : tgt.attndone == true ? "local" : null;
+      const prop = this.getLatestJSON[tgtClrm.dayofweek].attendance + "done";
+      await this.updateSmry(tgtClrm.id, prop, val);
+      // console.warn("reflect" + tgtClrm.id, prop, val);
+      // tgt.attndone = ret.length === attnsum ? true : attnsum > 0 ? false : null;
+      // tgt.attndone =
+      //   ret.length === attnsum && ret.length !== 0 ? true : attnsum > 0 ? false : null;
+      // tgt.syncdone =
+      //   ret.length === syncedsum && ret.length !== 0 ? true : syncedsum > 0 ? false : null;
+      // tgt.detail = ret.length + "," + syncedsum + "," + attnsum + ",";
     },
     // クラス画面切り替え時と編集終了時
     enterClassroomInit() {
@@ -3446,55 +4224,31 @@ export default {
         ////// 当日実施クラス （出席記録状況の保持）      this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
         // if (this.selClrm.dayofweek === this.sett.dayofweek) {
         this.classroomIndex = this.instructor.yourTodaysClasses.findIndex(
-          (item) => item.id === this.selClrm.id
+          item => item.id === this.selClrm.id
         );
         this.cRoom.showAttenHist = 0;
         // status参照するためにインデックスを格納
-        this.att.mode = this.instructor.yourTodaysClasses[this.classroomIndex].status;
+        this.att.mode = this.instructor.yourTodaysClasses[
+          this.classroomIndex
+        ].status;
       } else {
         ////// 当日以外のクラス
         this.att.mode = 3; //当日ではないので出席は取れないようにする
         this.cRoom.showAttenNote = false;
         this.cRoom.showAttenHist = 1;
-        ////// 出欠記録の編集許可
-        // // 出欠記録の編集許可： 設定した日数だけ
-        // if (this.dayjslenient.includes(this.selClrm.dayofweek)) {
-        //   this.isdeadlinelenient = true;
-        // } else {
-        //   this.isdeadlinelenient = false;
-        // }
-        //// 出欠記録の編集許可： 制限しない
-        // this.isdeadlinelenient = true; // ↓当日でも許可するので下に
       }
       this.isdeadlinelenient = true; //編集許可
       this.isEnteredselClrm = true; //状態保持
-      this.cRoom.attnEditTgt = this.selClrm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
+      this.cRoom.attnEditTgt = this.selClrm.attnLatest; //出欠ボタンと編集対象週ボタンの初期値
+      // this.cRoom.attnEditTgt = this.selClrm.attnthisweek; //出欠ボタンと編集対象週ボタンの初期値
       this.cRoom.attnEditable = false; //入った時点では編集モードにしない
 
       //HWのnullをTrueにかえたい
       this.classmembers.forEach(
-        (m) =>
-          (m[this.attnHWEditTgt] = m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
+        m =>
+          (m[this.attnHWEditTgt] =
+            m[this.attnHWEditTgt] == null ? true : m[this.attnHWEditTgt])
       );
-    },
-    showABListCaptionChange() {
-      switch (this.cRoom.showABListCaption) {
-        case "Group A":
-          this.cRoom.showABListCaption = "Group B";
-          this.cRoom.showABListShowA = false;
-          this.cRoom.showABListShowB = true;
-          break;
-        case "Group B":
-          this.cRoom.showABListCaption = "Group A - Group B";
-          this.cRoom.showABListShowA = true;
-          this.cRoom.showABListShowB = true;
-          break;
-        case "Group A - Group B":
-          this.cRoom.showABListCaption = "Group A";
-          this.cRoom.showABListShowA = true;
-          this.cRoom.showABListShowB = false;
-          break;
-      }
     },
     attnModeChangeConfirm() {
       // if (this.computedBlank.length == 0) {
@@ -3509,7 +4263,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selClrm.dayofweek === this.dayjsddd) {
             // if (this.selClrm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             // this.updateClassModeChange();
           }
           this.$buefy.toast.open({
@@ -3518,15 +4274,16 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
     },
     attnModeRestartConfirm() {
       this.$buefy.dialog.confirm({
         title: "Attendance record mode change:",
-        message: "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
+        message:
+          "mode back to beginning?<b-icon pack='fas' icon='undo' size='is-medium' />",
         size: "is-large",
         onConfirm: () => {
           const attMode = 0;
@@ -3534,7 +4291,9 @@ export default {
           //当日クラスの場合のみ
           if (this.selClrm.dayofweek === this.dayjsddd) {
             // if (this.selClrm.dayofweek === this.sett.dayofweek) {
-            this.instructor.yourTodaysClasses[this.classroomIndex].status = attMode;
+            this.instructor.yourTodaysClasses[
+              this.classroomIndex
+            ].status = attMode;
             // this.updateClassModeChange();
           }
           this.cRoom.showAttenHist = 0;
@@ -3545,9 +4304,9 @@ export default {
               this.att.modeset[attMode].transitmsg +
               "</span>",
             type: this.att.modeset[attMode].colortype,
-            size: "is-large",
+            size: "is-large"
           });
-        },
+        }
       });
     },
     //// switching edit mode
@@ -3567,12 +4326,14 @@ export default {
             this.cRoom.showAttenHist = 0;
             this.cRoom.attnEditable = true;
             this.$buefy.toast.open({
-              message: "<span style='font-size:40px'>Attendance data is now editable. " + "</span>",
+              message:
+                "<span style='font-size:40px'>Attendance data is now editable. " +
+                "</span>",
               // "<span style='font-size:40px'>You can edit. " + "</span>",
               type: "is-beige",
-              size: "is-large",
+              size: "is-large"
             });
-          },
+          }
         });
       } else {
         //// disable
@@ -3581,25 +4342,18 @@ export default {
     },
     ///// 表示変更系
     ///// 表示変更系
-    ///// 表示変更系
     showAttenChange() {
       // 0 <- -> 1
       this.cRoom.showAttenHist = this.cRoom.showAttenHist === 0 ? 1 : 0;
-
       // 0 -> 1 -> 2
       // let mde = this.cRoom.showAttenHist;
       // mde += 1;
       // this.cRoom.showAttenHist = mde > 2 ? 0 : mde;
-
       // this.cRoom.showEval = mde === 2 ? true : this.cRoom.showEval;
     },
     // 表示切替 binoculars 双眼鏡ボタンから
     showIndividualChange() {
       this.cRoom.showIndividual = !this.cRoom.showIndividual;
-      // // 戻るときだけすべて保存する
-      // if (!this.cRoom.showIndividual) {
-      //   this.manageupdateClrmAllAPI();
-      // }
     },
     showEvalCompChange() {
       // 行全体保存
@@ -3616,7 +4370,9 @@ export default {
         case 0:
           return this.cRoom.showEvalComp < 2 ? true : false;
         case 1:
-          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2 ? true : false;
+          return this.cRoom.showEvalComp === 0 || this.cRoom.showEvalComp === 2
+            ? true
+            : false;
       }
     },
     clearIndi() {
@@ -3635,7 +4391,8 @@ export default {
       // 行全体保存
       // this.updateClrmAll(this.classmembers[this.cRoom.indiNo]);
       const newval = this.cRoom.indiNo + num;
-      this.cRoom.indiNo = this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
+      this.cRoom.indiNo =
+        this.classmembers[newval] === undefined ? this.cRoom.indiNo : newval;
       // const modnum =
       //   bool === true
       //     ? this.classmembers.length > this.cRoom.indiNo
@@ -3687,18 +4444,24 @@ export default {
     },
     goEvalUpTarget(val) {
       //スターの確定
-      this.updateClrm(this.cRoom.evalUpTargetRow, this.cRoom.evalUpTargetCol, val);
+      this.updateClrm(
+        this.cRoom.evalUpTargetRow,
+        this.cRoom.evalUpTargetCol,
+        val
+      );
     },
     // 評価に満たない（出席
     zeroEvalUpTarget(prow, fname) {
       // zeroEvalUpTarget(prow, fname, idx) {
-      // prow[fname] = 0;
+      prow[fname] = 0;
       //0点にしてUpする
       this.updateClrm(prow, fname, 0);
     },
     // 評価を欠席
     minusEvalUpTarget(prow, fname) {
-      this.updateClrm(prow, fname, -1);
+      const u = prow[fname] == -1 ? null : -1;
+      prow[fname] = u;
+      this.updateClrm(prow, fname, u);
     },
     updateClrmEvalsIndi(row, fname, fval) {
       // .table(row, fname, fval);
@@ -3719,7 +4482,14 @@ export default {
     ////////// css class
     getCommonClassName(tgtClrm) {
       return (
-        tgtClrm.dayofweek + " P" + tgtClrm.slot + " " + tgtClrm.grade + "(" + tgtClrm.classnum + ")"
+        tgtClrm.dayofweek +
+        " P" +
+        tgtClrm.slot +
+        " " +
+        tgtClrm.grade +
+        "(" +
+        tgtClrm.classnum +
+        ")"
       );
     },
     getAttendStatusClass(num) {
@@ -3786,7 +4556,9 @@ export default {
     getIndiPaneClass(val) {
       switch (val) {
         case "left":
-          return this.cRoom.showIndiList ? "tile is-vertical is-10" : "tile is-vertical is-12";
+          return this.cRoom.showIndiList
+            ? "tile is-vertical is-10"
+            : "tile is-vertical is-12";
         case "right":
           return "tile is-parent is-narrow";
       }
@@ -3802,10 +4574,6 @@ export default {
         case 3:
           return "table is-striped";
       }
-    },
-    // HW inomplete total
-    getHWr(val) {
-      return val === false ? 1 : 0;
     },
     getHWTotal(row) {
       const chk = function(r, str) {
@@ -3868,18 +4636,22 @@ export default {
     getDateMDEdit(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.manage.checkedRows[0].dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date).format(
-            "M/D"
-          )
+        ? this.$dayjs(
+            this.dayChainJSON[this.manage.checkedRows[0].dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDEditTgt() {
-      return this.getDateMD(this.manage.convAttnToDateMDNum[this.manage.selAttn]);
+      return this.getDateMD(
+        this.manage.convAttnToDateMDNum[this.manage.selAttn]
+      );
     },
     getDateMD(num) {
       const days = ["Mon", "Tue", "Wed", "Thu", "Fri"];
       return days.includes(this.selClrm.dayofweek)
-        ? this.$dayjs(this.dayChainJSON[this.selClrm.dayofweek][num].date).format("M/D")
+        ? this.$dayjs(
+            this.dayChainJSON[this.selClrm.dayofweek][num].date
+          ).format("M/D")
         : "--";
     },
     getDateMDddd(val) {
@@ -3890,6 +4662,9 @@ export default {
     },
     getDateYYYYMMDDhHHMMSS() {
       return this.$dayjs().format("YYYY-MM-DD HH:mm:ss");
+    },
+    getDateYYYYMMDDhHHMMssSSS() {
+      return this.$dayjs().format("YYYY-MM-DD HH:mm:ss.SSS");
     },
     // getDateMDhmm(val) {
     //   return this.$dayjs(val).format("M/D H:mm");
@@ -3902,7 +4677,9 @@ export default {
     // },
     getIsDoneToday(val) {
       //当日更新かどうか
-      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD") ? "is-new" : "is-old";
+      return this.dayACjsYYYMMDD === this.$dayjs(val).format("YYYYMMDD")
+        ? "is-new"
+        : "is-old";
     },
     getTimeIfTodayOrDate(val) {
       //当日更新なら時刻、違えば日付
@@ -3964,108 +4741,86 @@ export default {
         appCodeName: navigator.appCodeName,
         cookieEnabled: navigator.cookieEnabled,
         language: navigator.language,
-        languages: navigator.languages,
+        languages: navigator.languages
       };
       let crArr = {
         type: "userAgent",
-        name: this.authdetail.username,
+        name: this.authdetail.username
       };
       try {
         crArr.detail = JSON.stringify({
           ...{ via: this.app.chrAPI },
-          ...detObj,
+          ...detObj
         });
         await API.graphql(graphqlOperation(createMisc, { input: crArr }));
       } catch (err) {
         crArr.detail = JSON.stringify({
           ...{ via: this.app.chrDS },
-          ...detObj,
+          ...detObj
         });
         this.writeFail("sendUserAgent-sendfail", crArr, err);
-        await this.createMisc(crArr);
-      }
-    },
-    async applogSave() {
-      if (this.app.log.nw !== "") {
-        try {
-          const arr = {
-            type: this.ds.typeMisc.appNwLog,
-            name: this.authdetail.username,
-            detail: this.app.log.nw,
-          };
-          this.createMiscAPIDS(arr);
-          this.app.log.nw = "";
-        } catch (err) {
-          this.writeFail("applogSave", this.app.log.nw, err);
-        }
+        // await this.createMisc(crArr);
       }
     },
     //////// クラスバックアップ
-    async classBackup(sClrm) {
-      // クラス出たときに単一でバックアップ
-      const timestamp = this.getDateYYYYMMDDhHHMMSS();
-      const crArr = {
-        type: "classBackupPoint_" + sClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(this.classmembers),
-      };
-      await this.createMiscAPIDS(crArr);
-      // dataset.Clrm
-      const crArrClrm = {
-        type: "classBackupPointClrm_" + sClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(this.getClassmembers(sClrm.id)),
-      };
-      await this.createMiscAPIDS(crArrClrm);
-      const classmem = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
-      const crArrDS = {
-        type: "classBackupPointDS_" + sClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(classmem),
-      };
-      await this.createMiscAPIDS(crArrDS);
-      this.writeNoteLS("classBackup " + sClrm.id, true);
-    },
     //////// クラスバックアップ
-    async classBackupTEST() {
-      this.yourClasses.filter((x) => x.id.indexOf("A") !== -1).forEach((m) => console.warn(m.id));
-      // re
+    async classBackupALLTypesAllClasses() {
+      //状態管理
+      // Key: Axxxx val:{updated:false, }
+      //更新ありのクラスだけを対象とする
+      //   const tgtClasses = this.yourClasses
+      //     .filter(x => x.id.indexOf("A") !== -1);
+      //   for await (const rw of tgtClasses) {
+
+      //     this.updateClrmFilledArea(rw);
+      //     uplogStr += rw + "\n";
+      //   }
+      //     .forEach(m => this.classBackupALLTypes(m));
+      // },
+      this.yourClasses
+        .filter(x => x.id.indexOf("A") !== -1)
+        .forEach(m => this.classBackupALLTypes(m));
     },
-    //////// クラスバックアップ
-    async classBackupxTEST(sClrm) {
+    async classBackupALLTypes(sClrm) {
       // クラス出たときに単一でバックアップ
       const classobj = await this.classmembers;
-      const clrmobj = await this.getClassmembers(sClrm.id);
+      // const clrmobj = await this.getClassmembers(sClrm.id);
+      const clrmobj = await this.idbGetClassmembers(sClrm.id);
+
       const obj = await this.loadclassRealtimeBackup(sClrm.id);
       const LSobj = obj === null ? {} : obj;
-      let DSobj = await DataStore.query(Clrm, (c) => c.classcode("eq", sClrm.id));
-      DSobj.sort(function(a, b) {
-        if (a.sortid < b.sortid) return -1;
-        if (a.sortid > b.sortid) return 1;
-        return 0;
-      });
-      const header = [{ classcode: "classmembers" }];
+      // let DSobj = await DataStore.query(Clrm, c => c.classcode("eq", sClrm.id));
+      // DSobj.sort(function(a, b) {
+      //   if (a.sortid < b.sortid) return -1;
+      //   if (a.sortid > b.sortid) return 1;
+      //   return 0;
+      // });
+      const timestamp = this.getDateYYYYMMDDhHHMMSS();
+      const header = [
+        { classcode: this.authdetail.username + " " + timestamp }
+      ];
       const allobj = header.concat(
         classobj,
-        { classcode: "clrm" },
+        { classcode: "idb" },
         clrmobj,
         { classcode: "localStorage" },
-        LSobj,
-        { classcode: "DataStore" },
-        DSobj
+        LSobj
+        // { classcode: "DataStore" },
+        // DSobj
       );
-      const timestamp = this.getDateYYYYMMDDhHHMMSS();
       const crArr = {
         type: "classBackupALL_" + sClrm.id + " " + timestamp,
-        name: this.authdetail.username,
-        detail: JSON.stringify(allobj),
+        detail: JSON.stringify(allobj)
       };
-      await this.createMiscAPIDS(crArr);
+      await this.createMiscXAPI(crArr);
     },
     async classRealtimeBackup() {
       // 入力の都度バックアップ ※入力時しか呼び出さない
-      const type = "classBackupAct_" + this.selClrm.id;
-      const parsed = this.getDateYYYYMMDDhHHMMSS() + "\n" + JSON.stringify(this.classmembers);
+      const type = "classBackupRealtime_" + this.selClrm.id;
+      const parsed =
+        this.getDateYYYYMMDDhHHMMSS() +
+        "\n" +
+        JSON.stringify(this.classmembers);
       localStorage.setItem(type, parsed);
     },
     loadclassRealtimeBackupAll() {
@@ -4093,18 +4848,12 @@ export default {
         if (key.match(/classBackupRealtime/)) {
           const crArr = {
             type: key + addStr,
-            name: this.authdetail.username,
-            detail: localStorage.getItem(key),
+            detail: localStorage.getItem(key)
           };
           try {
-            await this.createMiscAPIDS(crArr);
-            // for (var key2 in localStorage) {
-            //   if (key2.match(/classRealtimeBackup/)) {
-            //     localStorage.removeItem(key2);
-            //   }
-            // }
+            await this.createMiscXAPI(crArr);
           } catch (err) {
-            this.writeFail("salvageFail", crArr, err);
+            this.writeFail("salvageclassRealtimeBackup Fail", crArr, err);
           }
         }
       }
@@ -4115,10 +4864,10 @@ export default {
           const crArr = {
             type: key + addStr,
             name: this.authdetail.username,
-            detail: localStorage.getItem(key),
+            detail: localStorage.getItem(key)
           };
           try {
-            await this.createMiscAPIDS(crArr);
+            await this.createMiscXAPI(crArr);
             // for (var key2 in localStorage) {
             //   if (key2.match(/classRealtimeBackup/)) {
             //     localStorage.removeItem(key2);
@@ -4139,39 +4888,55 @@ export default {
       if (create != false) {
         parsed = JSON.stringify(this.getDateYYYYMMDDhHHMMSS() + " " + str);
       } else {
-        const noteHist = this.fetchNoteLS();
-        parsed = JSON.stringify(noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str);
+        const noteHist = this.fetchNoteLS(this.app.noteName);
+        parsed = JSON.stringify(
+          noteHist + "\n" + this.getDateYYYYMMDDhHHMMSS() + " " + str
+        );
       }
       localStorage.setItem(this.app.noteName, parsed);
     },
-    fetchNoteLS() {
-      if (localStorage.getItem(this.app.noteName)) {
+    writeDayLogs(str, noteName, create = false, reverse = false) {
+      let parsed = "";
+      const timestamp_str = this.getDateYYYYMMDDhHHMMSS() + " " + str;
+      if (create != false) {
+        parsed = JSON.stringify(timestamp_str);
+      } else {
+        const noteHist = this.fetchNoteLS(noteName);
+        parsed =
+          reverse == false
+            ? JSON.stringify(noteHist + "\n" + timestamp_str)
+            : JSON.stringify(timestamp_str + "\n" + noteHist);
+      }
+      localStorage.setItem(noteName, parsed);
+      if (parsed.split("\n").length > 20000) {
+        this.salvageDaylogs(noteName);
+      }
+    },
+    fetchNoteLS(noteName) {
+      if (localStorage.getItem(noteName)) {
         try {
-          return JSON.parse(localStorage.getItem(this.app.noteName));
+          return JSON.parse(localStorage.getItem(noteName));
         } catch (e) {
-          localStorage.removeItem(this.app.noteName);
-          this.writeFail("noteBroken", "noteBroken", e);
+          localStorage.removeItem(noteName);
+          this.writeFail(noteName, "noteBroken", e);
           return false;
         }
       }
     },
-    async salvageNote() {
-      const noteHist = this.fetchNoteLS();
+    salvageDaylogs(noteName, isFlash = false, ifUpdate = false) {
+      const noteHist = this.fetchNoteLS(noteName);
       if (noteHist) {
-        const crArr = {
-          type: "noteSalvage",
-          name: this.authdetail.username,
-          detail: noteHist,
-        };
         try {
-          const ret = await this.createMiscAPIDS(crArr);
-          if (ret) {
-            this.writeNoteLS("uploaded", true);
+          const notelength = noteHist.split("\n").length;
+          //           level, type, target, desc, detail
+          this.Log("Info", noteName, noteName, notelength, noteHist, ifUpdate);
+          if (isFlash == false) {
+            this.writeDayLogs("uploaded", noteName, true);
           } else {
-            this.writeNoteLS("uploaded failed");
+            this.writeDayLogs("uploaded flash", noteName);
           }
         } catch (err) {
-          this.writeFail("salvageFail", crArr, err);
+          this.writeDayLogs("uploaded ERROR", noteName);
         }
       }
     },
@@ -4179,8 +4944,6 @@ export default {
     async writeFail(dest, arr, ret) {
       const dtl =
         (this.getStartingUrl == "localhost" ? this.getStartingUrl : "web") +
-        ", auth:" +
-        this.authdetail.name +
         ", dest:" +
         dest +
         ", input:" +
@@ -4190,10 +4953,9 @@ export default {
       try {
         const crArr = {
           type: "writeFail",
-          name: this.authdetail.username,
-          detail: "appFail:" + dest + ", date:" + this.getDateYYYYMMDDhHHMMSS() + "," + dtl,
+          detail: "appFail:" + dest + "," + dtl
         };
-        await DataStore.save(new Misc(crArr));
+        this.createMiscXAPI(crArr);
       } catch (err) {
         localStorage["appFail" + dest + this.getDateYYYYMMDDhHHMMSS()] = dtl;
       }
@@ -4202,51 +4964,43 @@ export default {
       const crArr = {
         type: "localStorageList",
         name: this.authdetail.username,
-        detail: Object.keys(localStorage),
+        detail: Object.keys(localStorage)
       };
-      this.createMiscAPIDS(crArr);
-    },
-    salvageDev() {
-      if (this.getStartingUrl !== "localhost") {
-        if (
-          this.sett.alias.name == "Damon Bizzell" ||
-          this.sett.alias.name == "Leann Tyner" ||
-          this.sett.alias.name == "Glenn Torrens"
-        ) {
-          this.writeNoteLS("DEVsalvageclassALLBackup");
-          this.DEVsalvageclassALLBackup("★");
-        }
-      }
+      this.createMiscXAPI(crArr);
     },
     async salvageFail() {
       let arr = [];
+      let flg = false;
       for (var key in localStorage) {
         if (key.match(/appFail/)) {
+          flg = true;
           var tmp = {};
           tmp.key = key;
           tmp.val = localStorage.getItem(key);
           arr.push(tmp);
         }
       }
-      const crArr = {
-        type: "appFailSalvage",
-        name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS() + ", " + arr,
-      };
-      try {
-        await DataStore.save(new Misc({ crArr }));
-
-        for (var key2 in localStorage) {
-          if (key2.match(/appFail/)) {
-            localStorage.removeItem(key2);
+      if (flg === true) {
+        const crArr = {
+          type: "appFailSalvage",
+          name: this.authdetail.username,
+          detail: arr
+        };
+        try {
+          this.createMiscXAPI(crArr);
+          for (var key2 in localStorage) {
+            if (key2.match(/appFail/)) {
+              localStorage.removeItem(key2);
+            }
           }
+        } catch (err) {
+          this.writeFail("appFailSalvageFail", crArr, err);
         }
-      } catch (err) {
-        this.writeFail("salvageFail", crArr, err);
       }
     },
     //////////// 設定、Validation
     async periodicValidation() {
+      this.idbHandleSQueue();
       // this.initAuthValidation();
       this.workdateValication();
       if (this.sett.activeTab !== 2) {
@@ -4254,17 +5008,20 @@ export default {
         if (this.isEnteredselClrm) {
           const sClrm = this.selClrm;
           // バックアップ
-          this.classBackup(sClrm);
+          this.classBackupALLTypes(sClrm);
+          // this.classBackup(sClrm);
           // fix
-          this.discrepancyDetectAndFix(sClrm, "exit");
+          // this.discrepancyDetectAndFix(sClrm, "exit");
           //全員、出欠とHWのみ保存
           // this.manageupdateClrmAttnHW();
           //  クラス毎のサマリDB 更新
-          this.reflectClassSummary(sClrm.id, sClrm.dayofweek);
+          this.reflectClassSummary(sClrm);
           //欠席と宿題の齟齬チェック（アラートあり）
           this.checkAttnHWConsistency(sClrm.id, sClrm.dayofweek, true);
           this.isEnteredselClrm = false; // 部屋から出たことを記録
-          this.selClrm = [];
+          this.selClrm = { id: "" };
+          await this.writeNoteLS("exit room");
+          this.salvageDaylogs(this.app.noteName, true);
         } else {
           // 全クラス
           this.initallClasses();
@@ -4281,29 +5038,15 @@ export default {
       //classroomに関係する諸々 日付が変わると必ず
       const todayclass = this.yourClasses
         // .filter((x) => x.dayofweek === this.sett.dayofweek)
-        .filter((x) => x.dayofweek === this.dayjsddd)
-        .map((x) => ({
+        .filter(x => x.dayofweek === this.dayjsddd)
+        .map(x => ({
           id: x.id,
-          status: 0,
+          status: 0
         }));
       this.instructor.yourTodaysClasses = todayclass; //本日担当クラス一覧
-      // const crArr = {
-      //   type: "class" + this.$dayjs().format("YYYY-MM-DD"),
-      //   name: this.authdetail.username,
-      //   detail: todayclass
-      // };
-      // if (ifUp) {
-      //   //出欠モード保持のレコード
-      //   this.updateMisc(crArr);
-      // } else {
-      //   this.createMisc(crArr);
-      // }
-      // if (this.instructor.yourTodaysClasses.length < 1) {
-      // this.instructor.yourTodaysClasses = tdycls.map(id => )
-      // }
     },
     workdateValication() {
-      this.applogSave();
+      this.salvageDaylogs(this.app.noteNameNW, true, true);
       //日付またぐとリロードする
       if (
         // this.dayjsYYYYMMDDt != this.$dayjs().format("YYYY/MM/DD") &&
@@ -4315,43 +5058,26 @@ export default {
     },
     async authManage() {
       await Auth.currentAuthenticatedUser()
-        .then((user) => {
+        .then(user => {
           this.authdetail = {
             username: user.username,
             name: user.attributes.name,
             nickname: user.attributes.nickname,
-            role: user.signInUserSession.idToken.payload["custom:role"],
+            role: user.signInUserSession.idToken.payload["custom:role"]
           };
           this.sett.alias = {
             username: user.username,
-            name: user.attributes.name,
+            name: user.attributes.name
           };
           this.writeDeviceUser();
         })
-        .catch(() =>
-          // this.authdetail = "created auth error"
-          this.createMisc({
-            type: "Auth",
-            name: this.authdetail.username,
-            detail: "ERROR: " + this.authdetail,
-          })
+        .catch(e =>
+          // this.Log("Error", "Auth", this.authdetail.username, "catch", JSON.stringify(e))
+          this.writeDayLogs("[ERROR] Auth" + e, this.app.noteNameNW)
         );
     },
     async reloadApp(str) {
-      try {
-        const crArr = {
-          type: "reloadApp",
-          name: this.authdetail.username,
-          detail: "Staff" + this.getDateYYYYMMDDhHHMMSS() + ", " + str,
-        };
-        await DataStore.save(new Misc(crArr));
-      } catch (err) {
-        this.writeFail(
-          str,
-          this.authdetail.username, //this.sett.today,
-          "Staff-" + this.getDateYYYYMMDDhHHMMSS()
-        );
-      }
+      await this.writeDayLogs("[Info] reloadApp" + str, this.app.noteName);
       this.$router.go();
     },
     ////////// 日付設定
@@ -4368,205 +5094,153 @@ export default {
         this.sett.actime = this.$dayjs().format("H:mm");
       }, 1000 * 60); //間隔
     },
-    // setTESTcreateMisc() {
-    //   //2. 一定間隔で
-    //   this.sett.actimeIntId10 = setInterval(() => {
-    //     this.testCreateMisc;
-    //   }, 1000 * 150); //間隔
-    // },
-    setTESTcreateMisc: function() {
-      setInterval(() => {
-        // this.testCreateMisc;
-        if (this.sett.devcheck !== true) {
-          let crArr = {
-            type: "test-",
-            name: this.authdetail.username,
-            detail: "test",
-          };
-          crArr.type = "testcreateMiscAPI" + this.getDateYYYYMMDDhHHMMSS();
-          this.createMiscAPI(crArr);
-          crArr.type = "testcreateMisc" + this.getDateYYYYMMDDhHHMMSS();
-          this.createMisc(crArr);
-          crArr.type = "testcreateMiscAPIDS" + this.getDateYYYYMMDDhHHMMSS();
-          this.createMiscAPIDS(crArr);
-        }
-      }, 1000 * 60 * 10);
-    },
     setInstMonth() {
       //勤怠用 createdのとき
-      this.instructor.yourattendvisiblemonth = this.$dayjs(this.sett.acdate).format("YYYY-MM");
-      //manage用
-      // this.instructor.attendvisiblemonth = this.instructor.yourattendvisiblemonth;
+      this.instructor.yourattendvisiblemonth = this.$dayjs(
+        this.sett.acdate
+      ).format("YYYY-MM");
     },
     ////////// for dev
-    async dataStoreClear() {
-      await DataStore.clear();
-    },
-    async dataStoreStart() {
-      await DataStore.start();
-    },
-    // async dataStoreObserve() {
-    //   DataStore.observe(Clrm).subscribe((msg) => {
-    //   });
-    //   await this.fetchClrms();
-    // },
-    spliceTEST() {
-      this.classmembers[1].classcount += "TTT";
-      // this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
-      // this.yourClasses.splice();
-    },
-    spliceTESTKick() {
-      // this.classmembers.splice();
-      // this.yourClasses[1].detail += "TTTT";
-      this.yourClasses.splice();
-    },
-    // dosomething() {
-    //   console.warn(this.$route.query.id); // URLスキーマ
-    // },
     devHelper() {
       if (this.getStartingUrl === "localhost") {
         this.cRoom.showDummy = true;
         this.sett.devcheck = true;
       }
-      if (this.authdetail.username === "t-imamura") {
+      if (
+        this.authdetail.username === "t-imamura" ||
+        this.authdetail.username === "dummy"
+      ) {
         this.cRoom.showDummy = true;
         this.sett.devarea = true;
         this.sett.devcheck = true;
       }
+      // //開発中、全ユーザー許可★★★★★★★★★★★
+      // this.cRoom.showDummy = true;
+      // this.sett.devarea = true;
+      // this.sett.devcheck = true;
     },
-    dummytest() {
-      this.sett.dummy1 = "val";
-    },
-    startDScheck: function() {
-      this.stopDScheck();
-      this.dataDS.queryChk = setInterval(() => this.retryDSifYet(), 1000 * 3);
-    },
-    stopDScheck: function() {
-      if (this.dataDS.queryChk) {
-        clearInterval(this.dataDS.queryChk);
-        this.dataDS.queryChk = 0;
+    async devtest(str, val = "", num = 0) {
+      switch (str) {
+        case "dummy":
+          this.sett.dummy1 = "val";
+          break;
+        case "setAcDDate":
+          this.sett.env.isTestMode = true;
+          this.sett.env.devAddDate += num;
+          this.sett.env.devAddAcDate += num;
+          this.setcurrentAcDate();
+          this.dateDevAddDate();
+          break;
+        case "idbTEST1":
+          this.manageMng();
+          break;
+        case "idbTEST2":
+          // const chk = await this.examSyncDone(this.selClrm);
+          break;
+        case "idbTEST3":
+          this.reflectSmrytoYourclasses();
+          // this.idbHandleSQueue();
+          break;
+        case "idbTEST4":
+          this.importAPItoIDB();
+          // await this.idbRemove(this.idbCls, this.ds.dev1);
+          break;
+        case "idbTEST5":
+          break;
+        case "TESTarr3":
+          if (this.selClrm != []) {
+            const data = await DataStore.query(Clrm, c =>
+              c.classcode("eq", this.selClrm.id)
+            );
+            this.sett.dummyClrm = data
+              .filter(x => x.classcount <= this.dev.classCLimit)
+              .sort(function(a, b) {
+                if (a.sortid < b.sortid) return -1;
+                if (a.sortid > b.sortid) return 1;
+                return 0;
+              });
+          } else {
+            this.sett.dummyClrm = [];
+          }
+          break;
+        // 予定なし
+        case "dataStoreClear":
+          await DataStore.clear();
+          break;
+        case "xxx":
+          break;
+
+        // async TESTmodifySmry(classcode) {
+        //   // ds.dev1
+        //   // const classcode = "A0042";
+        //   let csmry = await this.idbGet(this.idbSmry, classcode);
+        //   csmry.attn05done = "local"; // null -> local -> sync
+        //   // dynamoにおくるときはsyncに書き換えてTryする
+        //   // Smry書込み
+        //   this.idbSet(this.idbSmry, csmry.classcode, csmry);
+        //   // yourClassに反映
+
+        //   //DynamoDB
+        //   csmry.attn05done = "local"; // null -> local -> sync
+        //   this.updateSmryAPI(csmry);
+        // },
+
+        // salvageDev() {
+        //   if (this.getStartingUrl !== "localhost") {
+        //     if (
+        //       // this.sett.alias.name == "Damon Bizzell" ||
+        //       this.sett.alias.name == "Leann Tyner" //||
+        //       // this.sett.alias.name == "Glenn Torrens"
+        //     ) {
+        //       this.writeNoteLS("DEVsalvageclassALLBackup");
+        //       this.DEVsalvageclassALLBackup("★");
+        //     }
+        //   }
+        // },
+
+        // setTESTcreateMisc: function() {
+        //   setInterval(() => {
+        //     // this.testCreateMisc;
+        //     if (this.sett.devcheck !== true) {
+        //       let crArr = {
+        //         type: "test-",
+        //         name: this.authdetail.username,
+        //         detail: "test"
+        //       };
+        //       crArr.type = "testcreateMiscXAPI" + this.getDateYYYYMMDDhHHMMSS();
+        //       this.createMiscXAPI(crArr);
+        //     }
+        //   }, 1000 * 60 * 10);
+        // },
       }
-    },
-    retryDSifYet() {
-      if (this.dataDS.Clrms.length === 0) {
-        this.fetchClrms();
-      }
-      if (this.dataset.Clrms.length === 0 || this.dataDS.Clrms.length > this.dataset.Clrms.length) {
-        this.datasetManage();
-      }
-    },
-    clearAllDataStoreConfirm() {
-      this.$buefy.dialog.confirm({
-        message:
-          "<b>Clear all local cache data</b>" +
-          "<br /><br />Are you sure to delete all the data in your device?" +
-          "<br /><br />* Be sure that you have synced everything to server or somewhere" +
-          "<br /><br />* This does not affect the data on the server",
-        type: "is-danger",
-        hasIcon: true,
-        icon: "exclamation-triangle",
-        iconPack: "fa",
-        size: "is-large",
-        ariaRole: "alertdialog",
-        ariaModal: true,
-        onConfirm: () => {
-          this.clearAllDataStore();
-        },
-      });
-    },
-    async clearAllDataStore() {
-      await DataStore.clear();
-      /////ログ
-      const cr = {
-        type: "DataStoreClear",
-        name: this.authdetail.username,
-        detail: this.getDateYYYYMMDDhHHMMSS(),
-      };
-      this.$buefy.toast.open({
-        message: "<span style='font-size:60px'>Please wait...</span>",
-        type: "is-danger",
-        size: "is-large",
-        duration: 5000,
-      });
-      await this.createMiscAPIDS(cr);
-      this.writeFail(
-        "DataStoreClear",
-        this.authdetail.username, //this.sett.today,
-        this.getDateYYYYMMDDhHHMMSS()
+      this.writeDayLogs(
+        str + " " + val + " " + num,
+        this.app.noteNameDEV,
+        true
       );
-      this.$router.go();
-    },
-    async TESTarr3() {
-      if (this.selClrm != []) {
-        const data = await DataStore.query(Clrm, (c) => c.classcode("eq", this.selClrm.id));
-        this.sett.dummyClrm = data
-          .filter((x) => x.classcount <= this.dev.classCLimit)
-          .sort(function(a, b) {
-            if (a.sortid < b.sortid) return -1;
-            if (a.sortid > b.sortid) return 1;
-            return 0;
-          });
-        // console.warn(this.sett.dummyClrm);
-      } else {
-        this.sett.dummyClrm = [];
-      }
-    },
-  },
-  filters: {
-    subStr: function(string) {
-      return string.substring(0, 509) + "...";
-    },
+    }
   },
   computed: {
-    TESTarr0() {
-      if (this.dataset.Clrms.length > 0) {
-        return this.dataset.Clrms.find((itm) => itm.id === this.sett.dummy).sort(function(a, b) {
-          if (a.sortid < b.sortid) return -1;
-          if (a.sortid > b.sortid) return 1;
-          return 0;
-        });
-
-        // this.sett.dummy1 = tgt
-      } else {
-        return null;
-      }
-    },
     TESTarr1() {
-      if (this.selClrm != [] && this.dataset.Clrms) {
-        return this.dataset.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+      if (this.selClrm != [] && this.dataIDB.Clrms) {
+        return this.dataIDB.Clrms.filter(
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
           return 0;
         });
-        // return this.dataset.Clrms.filter((x) => x.classcode === "X0063").map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
       } else {
         return null;
       }
     },
     TESTarr2() {
       if (this.classmembers) {
-        return this.classmembers.filter((x) => x.classcount <= this.dev.classCLimit);
-        // .filter((x) => x.classcode === "X0063")
-        // .map((m) => {
-        //   return {
-        //     c: m.classcode,
-        //     s: m.studentcode,
-        //     n: m.studentname,
-        //     e: m.eval01,
-        //     up: m._lastChangedAt,
-        //   };
-        // });
+        return this.classmembers.filter(
+          x => x.classcount <= this.dev.classCLimit
+        );
       } else {
         return null;
       }
@@ -4574,7 +5248,9 @@ export default {
     TESTarr4() {
       if (this.selClrm != [] && this.dataAPI.Clrms) {
         return this.dataAPI.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -4587,7 +5263,9 @@ export default {
     TESTarr5() {
       if (this.selClrm != [] && this.dataLS.Clrms) {
         return this.dataLS.Clrms.filter(
-          (x) => x.classcode === this.selClrm.id && x.classcount <= this.dev.classCLimit
+          x =>
+            x.classcode === this.selClrm.id &&
+            x.classcount <= this.dev.classCLimit
         ).sort(function(a, b) {
           if (a.sortid < b.sortid) return -1;
           if (a.sortid > b.sortid) return 1;
@@ -4608,7 +5286,9 @@ export default {
       }
     },
     indiRow() {
-      return this.classmembers.length > 0 ? this.classmembers[this.cRoom.indiNo] : "";
+      return this.classmembers.length > 0
+        ? this.classmembers[this.cRoom.indiNo]
+        : "";
     },
     //合計点計算
     indiSc() {
@@ -4648,13 +5328,13 @@ export default {
         switch (this.cRoom.showAttenHist) {
           case 0:
             if (this.cRoom.attnEditable) {
-              arr.push(v <= Number(this.selClrm.lssnthisweek) ? true : false); //授業週以前を表示
+              arr.push(v <= Number(this.selClrm.lssnlatest) ? true : false); //授業週以前を表示
             } else {
-              arr.push(v == Number(this.selClrm.lssnthisweek) ? true : false); //授業週だけ表示
+              arr.push(v == Number(this.selClrm.lssnlatest) ? true : false); //授業週だけ表示
             }
             break;
           case 1:
-            arr.push(v <= Number(this.selClrm.lssnthisweek) ? true : false); //授業週以前を表示
+            arr.push(v <= Number(this.selClrm.lssnlatest) ? true : false); //授業週以前を表示
             break;
 
           // case 2:  // 2020-10-15無効化。なんか要らない気がしただけ
@@ -4676,17 +5356,6 @@ export default {
       return arr;
     },
     //////////////////// computed 日付関連 ////////////////////
-    dayjslenient() {
-      // 出欠履歴許可する日の配列
-      return [
-        this.$dayjs(this.sett.ddate)
-          .add(-1, "d") // 翻る日数
-          .format("ddd"),
-        this.$dayjs(this.sett.ddate)
-          .add(-2, "d")
-          .format("ddd"),
-      ];
-    },
     dayACjsHmm() {
       return this.$dayjs(this.sett.acdate).format("H:mm");
     },
@@ -4713,65 +5382,88 @@ export default {
       return location.origin.split(":")[1].split("/")[2];
     },
     getTodayJSON: function() {
+      // 休講日は直近となる
       //本日の情報 // 5/25: 土日に不具合になるので、ピンポイントではなく最大値でだすようにした
       // : { "id": "class", "date": "2020/09/25", "lessonnum": "3", "lessonstr": "Week3", "dayofweek": "Fri", "attendance": "attn03", "hwic": "homeworkincomplete03" } |
-      return this.dataset.Cldrs.filter((x) => x.date <= this.dayjsYYYYMMDDt).reduce((a, b) =>
-        a.date > b.date ? a : b
-      );
+      return this.dataset.Cldrs.filter(
+        x => x.date <= this.dayjsYYYYMMDDt
+      ).reduce((a, b) => (a.date > b.date ? a : b));
+    },
+    getThisSaturday() {
+      // const d = this.sett.ddate; //new Date();
+      const y = Number(this.$dayjs(this.sett.ddate).format("YYYY"));
+
+      const wn = Number(this.getTodayJSON.weeknum);
+      const onejan = new Date(y, 0, 1);
+      const offset = onejan.getDay() + 2; // Friday
+      const ret = onejan.setDate(onejan.getDate() + wn * 7 - offset);
+      return this.$dayjs(ret).format("YYYY/MM/DD");
     },
     getThisWeekDateJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, date: m.date }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, date: m.date }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.date }), {});
     },
     getThisWeekLssnJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, lssn: m.lessonnum }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, lssn: m.lessonnum }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.lssn }), {});
     },
     getThisWeekAttnJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, attn: m.attendance }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, attn: m.attendance }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.attn }), {});
     },
     getThisWeekHwicJSON: function() {
       //今週の授業日を全曜日抽出、無い曜日は無しで
-      return this.dataset.Cldrs.filter((x) => x.weeknum == this.getTodayJSON.weeknum)
-        .map((m) => ({ day: m.dayofweek, hwic: m.hwic }))
+      return this.dataset.Cldrs.filter(
+        x => x.weeknum == this.getTodayJSON.weeknum
+      )
+        .map(m => ({ day: m.dayofweek, hwic: m.hwic }))
         .reduce((obj, item) => ({ ...obj, [item.day]: item.hwic }), {});
     },
     attnHWEditTgt: function() {
       return this.cRoom.attnEditTgt.replace("attn", "homeworkincomplete");
     },
-    // 曜日ごとの直近のレッスン回 ※当日含まない
-    getEditableUntilJSON: function() {
-      const cMon = this.dataset.Cldrs.filter(
-        (x) => x.dayofweek === "Mon" && x.date < this.getTodayJSON.date
-      ).reduce((a, b) => (a.date > b.date ? a : b));
-      const cTue = this.dataset.Cldrs.filter(
-        (x) => x.dayofweek === "Tue" && x.date < this.getTodayJSON.date
-      ).reduce((a, b) => (a.date > b.date ? a : b));
-      const cWed = this.dataset.Cldrs.filter(
-        (x) => x.dayofweek === "Wed" && x.date < this.getTodayJSON.date
-      ).reduce((a, b) => (a.date > b.date ? a : b));
-      const cThu = this.dataset.Cldrs.filter(
-        (x) => x.dayofweek === "Thu" && x.date < this.getTodayJSON.date
-      ).reduce((a, b) => (a.date > b.date ? a : b));
-      const cFri = this.dataset.Cldrs.filter(
-        (x) => x.dayofweek === "Fri" && x.date < this.getTodayJSON.date
-      ).reduce((a, b) => (a.date > b.date ? a : b));
-      return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
+    // 曜日ごとの直近のレッスン回 ※当日含む
+    getPrevJSON: function() {
+      let obj = {};
+      this.sett.weekdays.forEach(m => {
+        obj[m] = this.dataset.Cldrs.filter(
+          x =>
+            x.dayofweek === m &&
+            this.$dayjs(x.date).format("YYYY/MM/DD") < this.getTodayJSON.date
+        ).reduce((a, b) => (a.date > b.date ? a : b));
+      });
+      return obj;
+    },
+    getLatestJSON: function() {
+      let obj = {};
+      this.sett.weekdays.forEach(m => {
+        obj[m] = this.dataset.Cldrs.filter(
+          x =>
+            x.dayofweek === m &&
+            this.$dayjs(x.date).format("YYYY/MM/DD") <= this.getThisSaturday
+        ).reduce((a, b) => (a.date > b.date ? a : b));
+      });
+      return obj;
     },
     dayChainJSON: function() {
       // 曜日の縦の並びで日程を取得
-      const cMon = this.dataset.Cldrs.filter((x) => x.dayofweek === "Mon");
-      const cTue = this.dataset.Cldrs.filter((x) => x.dayofweek === "Tue");
-      const cWed = this.dataset.Cldrs.filter((x) => x.dayofweek === "Wed");
-      const cThu = this.dataset.Cldrs.filter((x) => x.dayofweek === "Thu");
-      const cFri = this.dataset.Cldrs.filter((x) => x.dayofweek === "Fri");
+      const cMon = this.dataset.Cldrs.filter(x => x.dayofweek === "Mon");
+      const cTue = this.dataset.Cldrs.filter(x => x.dayofweek === "Tue");
+      const cWed = this.dataset.Cldrs.filter(x => x.dayofweek === "Wed");
+      const cThu = this.dataset.Cldrs.filter(x => x.dayofweek === "Thu");
+      const cFri = this.dataset.Cldrs.filter(x => x.dayofweek === "Fri");
       return { Mon: cMon, Tue: cTue, Wed: cWed, Thu: cThu, Fri: cFri };
     },
     getDayChainUntilPrevJSON: function() {
@@ -4779,7 +5471,7 @@ export default {
       // return this.dayChainJSON.Tue; //[this.dayjsddd];
       //本日の情報
       return this.dataset.Cldrs.filter(
-        (x) =>
+        x =>
           Number(x.lessonnum) < Number(this.getTodayJSON.lessonnum) &&
           x.dayofweek === this.dayjsddd &&
           x.hwic !== undefined
@@ -4794,17 +5486,19 @@ export default {
     monthChainUntilCurrentMonthJSON: function() {
       // ClockIn/Out用・YYYY-MMで当月まで（勤怠用）  [ "2020-09" ]
       const arr = this.dataset.Cldrs.filter(
-        (x) => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
-      ).map((x) => this.$dayjs(x.date).format("YYYY-MM"));
+        x => Number(x.lessonnum) <= Number(this.getTodayJSON.lessonnum)
+      ).map(x => this.$dayjs(x.date).format("YYYY-MM"));
       return Array.from(new Set(arr));
     },
     yourClasses: function() {
-      return this.dataset.allClasses.filter((x) => x.instructor === this.sett.alias.name);
+      return this.dataset.allClasses.filter(
+        x => x.instructor === this.sett.alias.name
+      );
     },
     yourClassesShow: function() {
       return this.cRoom.showDummy
-        ? this.yourClasses.filter((x) => x.id.indexOf("X") !== -1)
-        : this.yourClasses.filter((x) => x.id.indexOf("A") !== -1);
+        ? this.yourClasses.filter(x => x.id.indexOf("X") !== -1)
+        : this.yourClasses.filter(x => x.id.indexOf("A") !== -1);
       // return this.cRoom.showDummy
       //   ? this.dataset.allClasses.filter(
       //       x =>
@@ -4820,12 +5514,12 @@ export default {
     ////////// Clock In / Out
     ifYouClockIn: function() {
       return this.instructor.yourattendances.some(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
     },
     ifYouClockInAndStillIn: function() {
       const fnd = this.instructor.yourattendances.find(
-        (x) => x.date === this.$dayjs().format("YYYY-MM-DD")
+        x => x.date === this.$dayjs().format("YYYY-MM-DD")
       );
       if (fnd != undefined) {
         return fnd.clockout == null ? true : false; //出社/退社
@@ -4835,7 +5529,7 @@ export default {
     },
     yourattendancesMonth: function() {
       return this.instructor.yourattendances.filter(
-        (x) => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
+        x => x.date.substr(0, 7) === this.instructor.yourattendvisiblemonth
       );
     },
     computedBlank: function() {
@@ -4846,21 +5540,25 @@ export default {
       }, this);
     },
     classmembersA: function() {
-      return this.classmembers.filter((x) => x.group === "A");
+      return this.classmembers.filter(x => x.group === "A");
     },
     classmembersB: function() {
-      return this.classmembers.filter((x) => x.group === "B");
+      return this.classmembers.filter(x => x.group === "B");
     },
     isClrmLoading: function() {
       return this.dataset.Clrms.length > 0 ? false : true;
     },
     //出席完璧なのに通信のせいでスターがパープルにならない
     isClrmNeedAppSync: function() {
-      return this.selClrm.attndone ? (this.selClrm.syncdone ? false : true) : false;
-    },
+      return this.selClrm.attndone
+        ? this.selClrm.syncdone
+          ? false
+          : true
+        : false;
+    }
   },
   async beforeCreate() {
-    Hub.listen("auth", (data) => {
+    Hub.listen("auth", data => {
       const { payload } = data;
       const { event } = payload;
       switch (event) {
@@ -4871,35 +5569,35 @@ export default {
           this.authManage();
           break;
       }
-      this.createMisc({
-        type: "Auth: " + event,
-        name: localStorage.getItem(this.app.device),
-        detail: payload,
-      });
+      this.writeNoteLS(
+        "Auth: " + event + localStorage.getItem(this.app.device) + payload
+      );
     });
   },
   async created() {
+    this.app.startWhen = this.getDateYYYYMMDDhHHMMssSSS();
+    //idb
+    this.idbStart();
     //日付、基本設定
     this.dateDevAddDate();
     this.setcurrentAcDate();
     await this.authManage(); //beforeCreateの時点でdata()呼ばれてないので一応
     this.setInstMonth();
     this.salvageFail();
-    this.salvageDev();
-    this.listLocalStorage();
+    // this.salvageDev();
+    // this.listLocalStorage();
     this.sendUserAgent();
-    //// ClrmはDataStoreで
-    await DataStore.start();
-    this.startDScheck();
-    this.fetchClrms(); // DataStore
-    this.DSObserveClrms();
-    this.APIgetClrmsinstBydayAll(); // API
-    this.loadclassRealtimeBackupAll(); // LocalStorage
-    this.datasetManage();
+
+    // Students data manaement
+    await this.APIgetClrmsinstBydayAll(); // API
+    await this.loadclassRealtimeBackupAll(); // LocalStorage
+    // this.datasetManage();
+
+    this.idbSetup();
     //// InstはAPIで
     this.listInstsDataAPI(); //今のところ全件とる
     // await this.fetchInsts(); //今のところ全件とる
-    Hub.listen("datastore", async (hubData) => {
+    Hub.listen("datastore", async hubData => {
       const { event, data } = hubData.payload;
       // if (event === "networkStatus") {
       //   .log(`User has a network connection? ${data.active}`);
@@ -4911,16 +5609,29 @@ export default {
           // this.$dayjs(this.sett.acdate).format("YYYY-MM-DD H:mm") +
           // .log(`${ctime} HUBlog User has a network connection? ${data.active}`          );
           this.app.network = data.active;
-          this.applogSave();
+          this.salvageDaylogs(this.app.noteNameNW, true, true);
+
           // if (data.active === false) {
           //   this.app.network = false;
           // }
-          this.app.log.nw += ctime + event + ": " + data.active + "\n";
+          // this.app.log.nw += ctime + event + ": " + data.active + "\n";
+          this.writeDayLogs(
+            ctime + event + ": " + data.active,
+            this.app.noteNameNW,
+            false,
+            true
+          );
           break;
         case "syncQueriesReady":
           // .log(ctime + "HUBlog syncQueriesReady");
           this.app.network = true;
-          this.app.log.nw += ctime + event + ": " + true + "\n";
+          // this.app.log.nw += ctime + event + ": " + true + "\n";
+          this.writeDayLogs(
+            ctime + event + ": " + true,
+            this.app.noteNameNW,
+            false,
+            true
+          );
           //復帰したときクラス外なら更新する
           if (this.sett.activeTab !== 2) {
             this.initallClasses();
@@ -4937,7 +5648,13 @@ export default {
         //   break;
         case "modelSynced":
           // .log(`${ctime} HUBlog modelSynced:${JSON.stringify(data)}`);
-          this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
+          // this.app.log.nw += ctime + event + ": " + JSON.stringify(data) + "\n";
+          this.writeDayLogs(
+            ctime + event + ": " + JSON.stringify(data),
+            this.app.noteNameNW,
+            false,
+            true
+          );
           break;
         case "outboxStatus": // 変更ごとに出る
           // log(`HUB outboxStatus:${JSON.stringify(data)}`);
@@ -4948,49 +5665,41 @@ export default {
         case "ready":
           // .log(ctime + " HUBlog ready");
           this.app.ready = true;
-          this.app.log.nw += ctime + event + "\n";
-          this.applogSave();
+          // this.app.log.nw += ctime + event + "\n";
+          this.writeDayLogs(ctime + event, this.app.noteNameNW, false, true);
+          this.salvageDaylogs(this.app.noteNameNW, true, true);
           break;
       }
     });
-    // JSONからのallClassesを整える
-    await this.initallClasses();
-    //これ特別対応だけのためのやつ
-    // this.listMiscsDataID("alter", this.authdetail.username);
-    this.workspaceValication();
-    //管理用
-    // this.manageSummary();
-    this.devHelper();
-    this.setTESTcreateMisc();
-    setInterval(
-      function() {
-        this.workdateValication;
-        // this.getCurrentTime;
-        // this.reloadIfUndefinedName;
-      }.bind(this),
-      1 * 1000 * 60
-    );
-    setInterval(
-      function() {
-        this.salvageDev;
-        // this.testCreateMisc;
-      }.bind(this),
-      1 * 1000 * 40
-    );
-    // 1 * 1000 * 60 * 20
+    this.sett.intId0 = setInterval(() => {
+      this.setupWait();
+    }, 1000 * 0.5); //間隔
+    this.sett.intId1 = setInterval(() => {
+      this.datasetCheck();
+    }, 1000 * 3); //間隔
+    this.sett.intId2 = setInterval(() => {
+      this.workdateValication();
+    }, 1000 * 60 * 30); //間隔
+
     this.setcurrentAcTime();
-    // this.setTESTcreateMisc()
+    await this.writeNoteLS("Vue created done");
+    this.salvageDaylogs(this.app.noteName, true);
   },
   async mounted() {
-    this.app.log.nw += this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
-    // setTimeout(this.initAuthValidation, 3000);
-    // setTimeout(this.reloadIfUndefinedName, 3000);
+    this.app.log.nw +=
+      this.$dayjs().format("YYYY-MM-DD HH:mm:ss ") + "mounted \n";
   },
   beforeDestroy() {
     clearInterval(this.sett.actimeIntId);
-    // clearInterval(this.sett.actimeIntId10);
-    this.stopDScheck();
+    clearInterval(this.sett.intId0);
+    clearInterval(this.sett.intId1);
+    clearInterval(this.sett.intId2);
   },
+  filters: {
+    subStr: function(string) {
+      return string.substring(0, 509) + "...";
+    }
+  }
 };
 </script>
 
