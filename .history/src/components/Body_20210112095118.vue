@@ -2025,7 +2025,7 @@ export default {
         syncing: false,
         log: { nw: "", act: "" },
         version: "2.1",
-        rev: "reduce cust01, 02 and 03",
+        rev: "reduce cust01",
         showClearCache: false,
         chrAPI: "API",
         chrDS: "DataStore",
@@ -3189,8 +3189,8 @@ export default {
       let upArr = {};
       let optStr;
       upArr.id = row.id;
-      upArr.cust01 = ""; // row.cust01;
-      upArr.cust02 = ""; // row.cust02;
+      upArr.cust01 = row.cust01;
+      upArr.cust02 = row.cust02;
       try {
         if (queueKey == "") {
           upArr[fname] = fval;
@@ -3212,10 +3212,10 @@ export default {
         // console.warn(row, fname, fval, queueKey);
         // console.warn(ee);
       }
-      upArr.cust03 = ""; // this.getDateYYYYMMDDhHHMMSS();
+      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
       try {
         await API.graphql(graphqlOperation(updateClrm, { input: upArr }));
-        row.cust03 = ""; // upArr.cust03;
+        row.cust03 = upArr.cust03;
         if (queueKey !== "") {
           this.idbRemove(this.idbSQue, queueKey);
           this.writeDayLogs(
@@ -3256,11 +3256,11 @@ export default {
       //   this.updateClrmAPI(row, "", "", "Clrm," + row.index);
       // } else {
       // 10/21より最新操作が先頭にくるように変更
-      // const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
+      const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
       // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
       // upArr.cust01 = logHist;
       row.cust01 = "";
-      row.cust02 = ""; // log;
+      row.cust02 = log;
       //// --- localStorage
       this.classRealtimeBackup();
       //// --- indexedDB
@@ -3315,12 +3315,12 @@ export default {
           }
         }
       });
-      // const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
+      const log = this.getDateYYYYMMDDhHHMMSS() + ",FilledArea";
       // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
       // upArr.cust01 = logHist;
-      upArr.cust01 = ""; //"filled";
-      upArr.cust02 = ""; //log;
-      upArr.cust03 = ""; //this.getDateYYYYMMDDhHHMMSS();
+      upArr.cust01 = "filled";
+      upArr.cust02 = log;
+      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
 
       try {
         const callbk = await API.graphql(
@@ -3336,33 +3336,33 @@ export default {
         return false;
       }
     },
-    // async updateClrmMakeCust01Blank(row) {
-    //   // 出欠と宿題は該当週のみ、評価はすべて
-    //   const upArr = {
-    //     id: row.id,
-    //     uid: row.uid,
-    //     index: row.index
-    //   };
-    //   //とりあえず安全策で
-    //   // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
-    //   // upArr.cust01 = logHist;
-    //   upArr.cust01 = "--";
-    //   upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
+    async updateClrmMakeCust01Blank(row) {
+      // 出欠と宿題は該当週のみ、評価はすべて
+      const upArr = {
+        id: row.id,
+        uid: row.uid,
+        index: row.index
+      };
+      //とりあえず安全策で
+      // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
+      // upArr.cust01 = logHist;
+      upArr.cust01 = "--";
+      upArr.cust03 = this.getDateYYYYMMDDhHHMMSS();
 
-    //   try {
-    //     const callbk = await API.graphql(
-    //       graphqlOperation(updateClrm, { input: upArr })
-    //     );
-    //     // console.warn("Force", row.index, row.studentname, upArr, callbk);
-    //     return callbk; // returnの先に用途は実はない
-    //   } catch (err) {
-    //     // console.warn("e fill ", row.index, row, upArr);
-    //     upArr.cust03 = "";
-    //     // console.warn("Force Fail", row.index, row.studentname, upArr, err);
-    //     this.idbAddSQueue("Clrm", row.index, upArr);
-    //     return false;
-    //   }
-    // },
+      try {
+        const callbk = await API.graphql(
+          graphqlOperation(updateClrm, { input: upArr })
+        );
+        // console.warn("Force", row.index, row.studentname, upArr, callbk);
+        return callbk; // returnの先に用途は実はない
+      } catch (err) {
+        // console.warn("e fill ", row.index, row, upArr);
+        upArr.cust03 = "";
+        // console.warn("Force Fail", row.index, row.studentname, upArr, err);
+        this.idbAddSQueue("Clrm", row.index, upArr);
+        return false;
+      }
+    },
     ////////// indexedDB
     ////////// indexedDB
     async idbIfInitialUse(nam) {

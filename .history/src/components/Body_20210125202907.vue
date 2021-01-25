@@ -3256,7 +3256,7 @@ export default {
       //   this.updateClrmAPI(row, "", "", "Clrm," + row.index);
       // } else {
       // 10/21より最新操作が先頭にくるように変更
-      // const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
+      const log = this.getDateYYYYMMDDhHHMMSS() + "," + fname + "," + fval;
       // const logHist = log + "\n" + (row.cust01 === null ? "" : row.cust01);
       // upArr.cust01 = logHist;
       row.cust01 = "";
